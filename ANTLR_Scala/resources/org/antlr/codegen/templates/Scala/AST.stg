@@ -27,7 +27,6 @@
 */
 group AST;
 
-
 @outputFile.imports() ::= <<
 <@super.imports()>
 <if(!TREE_PARSER)><! tree parser would already have imported !>
