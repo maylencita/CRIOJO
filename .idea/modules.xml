@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ANTLR_Scala/ANTLR_Scala.iml" filepath="$PROJECT_DIR$/ANTLR_Scala/ANTLR_Scala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CREOLE.iml" filepath="$PROJECT_DIR$/CREOLE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" />
+    </modules>
+  </component>
+</project>
+
