@@ -1,4 +1,4 @@
-package fr.emn.fullers.parser.tree
+package fr.emn.creole.parser.tree
 
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.{CommonTree,Tree}

@@ -1,4 +1,4 @@
-package fr.emn.fullers.parser.tree
+package fr.emn.creole.parser.tree
 
 import java.util.Iterator
 import org.antlr.runtime.Token

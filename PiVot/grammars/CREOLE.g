@@ -2,6 +2,20 @@ grammar CREOLE;
 
 options {language=Scala;output=AST;ASTLabelType=CHRTree;backtrack=true;}
 
+tokens{
+    START;
+    ATOM;
+    VARS;
+    CONJ;
+    RULE;
+    HEAD;
+    BODY;
+    SCRIPT;
+    SEQUENCE;
+    REPEAT;
+    PARL;
+}
+
 @lexer::header {
 package fr.emn.creole.parser;
 
@@ -14,20 +28,49 @@ package fr.emn.creole.parser;
 import fr.emn.creole.parser.tree._
 }
 
+start
+    :   script -> ^(SCRIPT script)
+    ;
+
 script
+    :   bang op bang -> ^(op bang bang)
+    |   bang
+    ;
+op
+    :   BAR
+    |   SEMI
+    ;
+
+bang
+    :   primitive
+    |   BANG primitive -> ^(BANG primitive)
+    ;
+
+primitive
     :   rule
+    |   LPAREN script RPAREN  -> script
     ;
 
 rule
-    :   conjunction RARROW NEW LPAREN variable (COMMA variable)* RPAREN conjunction
+    :   conjunction RARROW nu? conjunction  ->
+            ^(RULE ^(HEAD conjunction) ^(BODY conjunction) nu?)
+    ;
+
+nu
+    :   NU LPAREN variable (COMMA variable)* RPAREN -> ^(NU variable*)
     ;
 
 conjunction
-    :   atom (COMMA variable)*
+    :   atom (COMMA atom)* -> atom*
     ;
 
 atom
-    :   relation LPAREN variable (COMMA variable)* RPAREN
+    :   relation varlist?  ->
+            ^(ATOM relation varlist?)
+    ;
+
+varlist
+    :   LPAREN variable (COMMA variable)* RPAREN ->   ^(VARS variable*)
     ;
 
 relation
@@ -41,7 +84,7 @@ variable
 /***************************************************************************************
 	TOKENS
 ***************************************************************************************/
-NEW
+NU
     :   'new'
     ;
 PACKAGE
@@ -119,6 +162,9 @@ SEMI	:	';'
 SLASH	: 	'/'
 	;
 BAR		: 	'|'
+	;
+BANG
+	:   '!'
 	;
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
