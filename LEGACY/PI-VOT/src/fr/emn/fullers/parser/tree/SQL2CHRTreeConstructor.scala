@@ -1,4 +1,4 @@
-package fr.emn.creole.parser.tree
+package fr.emn.fullers.parser.tree
 
 import org.antlr.runtime.{Token}
 import org.antlr.runtime.tree.{Tree, CommonTreeAdaptor}
@@ -7,7 +7,6 @@ class SQL2CHRTreeConstructor(tokNames: Array[String]) extends CHRTreeAdaptor{
 	val tokens = new CHRTreeTokens(tokNames)
 	
 	import tokens._
-  import tokens.ID
 	
 	def chrCreate(tokenType:Int, text:String): ^ ={
 		val fromToken = new CHRToken(tokenType, text);

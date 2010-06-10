@@ -1,7 +1,1 @@
-!(
-    (
-        A(x), B(y) => R(x,y);
-        R(x) => new(y) S(x,y)
-    ) |
-    S(x), A(x) => X(x), K
-)
+true => A,B,C | (C => D | B => X)        

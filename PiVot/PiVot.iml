@@ -29,6 +29,7 @@
     <orderEntry type="library" name="scala-2.8.0.Beta1" level="project" />
     <orderEntry type="library" exported="" name="ANTLR" level="application" />
     <orderEntry type="module" module-name="ANTLR_Scala" exported="" />
+    <orderEntry type="module" module-name="Core" exported="" />
   </component>
 </module>
 

@@ -3,17 +3,12 @@ grammar CREOLE;
 options {language=Scala;output=AST;ASTLabelType=CHRTree;backtrack=true;}
 
 tokens{
-    START;
+    SCRIPT;
     ATOM;
     VARS;
-    CONJ;
     RULE;
     HEAD;
     BODY;
-    SCRIPT;
-    SEQUENCE;
-    REPEAT;
-    PARL;
 }
 
 @lexer::header {
@@ -28,6 +23,9 @@ package fr.emn.creole.parser;
 import fr.emn.creole.parser.tree._
 }
 
+@members{
+	def getCHRTreeTokens = new CHRTreeTokens(this.tokenNames)
+}
 start
     :   script -> ^(SCRIPT script)
     ;
@@ -61,11 +59,13 @@ nu
     ;
 
 conjunction
-    :   atom (COMMA atom)* -> atom*
+    :   TRUE
+    |   atom (COMMA atom)* -> atom*
     ;
 
 atom
-    :   relation varlist?  ->
+    :   TRUE
+    |   relation varlist?  ->
             ^(ATOM relation varlist?)
     ;
 
@@ -74,11 +74,11 @@ varlist
     ;
 
 relation
-    :   ID
+    :   R_ID
     ;
 
 variable
-    :   ID
+    :   V_ID | R_ID
     ;
     
 /***************************************************************************************
@@ -87,6 +87,10 @@ variable
 NU
     :   'new'
     ;
+TRUE
+    :   'true'
+    ;
+/*
 PACKAGE
 	:	'package'
 	;
@@ -96,27 +100,32 @@ SOLVER
 ARROBAS
 	:	'@'
 	;
+*/
 RARROW
 	:	'=>'
 	;
+/*
 IS
 	:	'is'
 	;
 CONSTRAINT
 	:	'constraint'
 	;
+*/
 LET
 	:	'let'
 	;
 IN
 	:	'in'
 	;
+/*
 USE
 	:	'use'
 	;
 EQ
 	:	'='
 	;
+*/	
 EQ_OP
 	:	'=='
 	;
@@ -167,9 +176,15 @@ BANG
 	:   '!'
 	;
 
+R_ID
+    :   ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+    ;
+V_ID  :	('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+    ;
+/*
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
-
+*/
 INT :	'0'..'9'+
     ;
 /*
