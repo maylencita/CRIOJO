@@ -19,7 +19,7 @@ object InterpreterTest extends Application{
   //My own TreeAdaptor
   val adaptor = new CHRTreeAdaptor
 
-  val url = this.getClass.getClassLoader.getResource("fr/emn/creole/test/grammar_test.crl")
+  val url = this.getClass.getClassLoader.getResource("fr/emn/creole/test/naive_execution_test.crl")
   println("url: " + url)
 
   val lex = new CREOLELexer(new ANTLRFileStream(url.getFile))

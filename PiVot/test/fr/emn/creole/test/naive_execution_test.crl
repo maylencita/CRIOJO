@@ -1,0 +1,3 @@
+true => A(a,b) |
+(true => A(c,d) |
+ true => A(e,f))

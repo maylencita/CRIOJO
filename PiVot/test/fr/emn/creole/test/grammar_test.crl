@@ -1,1 +1,3 @@
-true => A,B,C | (C => D | B => X)        
+true => A,B,C | (C => D | B => X) ;
+(A,B,C => D,E |
+        true => X, Z)

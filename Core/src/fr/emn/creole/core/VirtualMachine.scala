@@ -1,6 +1,8 @@
 package fr.emn.creole.core
 
 import Creole.Substitution
+import fr.emn.creole.util.Logger
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -36,6 +38,7 @@ class VirtualMachine {
   def applyReaction(r:Rule){
     var newSolution = solution.clone
     var matches = solution.findMatches(r.head)
+    Logger.log("")
     var subs = getSubstitutions(r.head, matches)
 
     newSolution.addMolecule(r.body.map{
