@@ -10,8 +10,8 @@ import Creole.Substitution
  * To change this template use File | Settings | File Templates.
  */
 
-class Solution {
-  var atoms:List[Atom] = List()
+class Solution(var atoms: List[Atom]) {
+  //var atoms:List[Atom] = alst
 
   def findMatches(conjunction:List[Atom]):List[Atom] = {
     def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
@@ -45,4 +45,15 @@ class Solution {
       atoms.filter(a => a.active && a.matches(test))
     }
   }
+
+  def addMolecule(molecule:List[Atom]){
+    this.atoms :::= molecule   
+  }
+
+  //This removes inactive atoms
+  def cleanup{
+    this.atoms = atoms.filter(_.active)
+  }
+
+  override def clone:Solution = new Solution(this.atoms)
 }

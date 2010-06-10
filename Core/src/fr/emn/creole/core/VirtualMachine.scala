@@ -1,5 +1,6 @@
 package fr.emn.creole.core
 
+import Creole.Substitution
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -10,7 +11,7 @@ package fr.emn.creole.core
 
 class VirtualMachine {
   var rules:List[Rule] = List()
-  var solution:Solution = new Solution()
+  var solution:Solution = new Solution(List())
   var relations:List[String] = List()
 
   def start(){
@@ -30,18 +31,34 @@ class VirtualMachine {
 
   def eval(molecule:List[Atom]):Boolean = {
     molecule.head.isTrue || !solution.findMatches(molecule).isEmpty
-      //molecule.forall(this.solution.contains(_))
   }
 
   def applyReaction(r:Rule){
-    var newSolution:List[Atom] = solution.filter(x=>true)
-    r.body.foreach{
-       x => newSolution :+= x
+    var newSolution = solution.clone
+    var matches = solution.findMatches(r.head)
+    var subs = getSubstitutions(r.head, matches)
+
+    newSolution.addMolecule(r.body.map{
+      a => a.applySubstitutions(subs)
+    })
+
+    newSolution.cleanup
+
+    if (newSolution != solution)      //TODO an actual evaluation of equivalence between solutions
+      solution = newSolution
+    
+  }
+
+  def getSubstitutions(ruleAtoms:List[Atom], solAtoms:List[Atom]):List[Substitution] = {
+    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
+      case List() => acum
+      case ra :: rest =>
+        satoms match{
+          case List() => List()
+          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.vars)))
+        }
     }
 
-    newSolution = newSolution -- r.head
-
-    if (newSolution != solution)
-      solution = newSolution
+    getSubsRec(ruleAtoms, solAtoms, List())
   }
 }
