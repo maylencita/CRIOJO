@@ -1,3 +1,4 @@
-true => A(a,b) |
-(true => A(c,d) |
- true => A(e,f))
+true => new(a,b,c,d,e,f) A(a,b),A(c,d),A(e,f),B(b,c),B(c,c),B(d,f) |
+(
+    A(x,y), B(y,z), B(z,w) => C(x,w)
+)

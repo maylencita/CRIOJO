@@ -42,6 +42,6 @@ class Atom (val relName:String, val vars: List[Variable]) {
   }
 
   override def toString =
-    relName + vars.mkString("(",",",")")
+    relName + (if (vars.isEmpty) "" else vars.mkString("(",",",")"))
 
 }

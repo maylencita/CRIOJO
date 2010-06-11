@@ -55,5 +55,12 @@ class Solution(var atoms: List[Atom]) {
     this.atoms = atoms.filter(_.active)
   }
 
+  //This puts everything back to normal
+  def revert{
+    this.atoms.foreach(_.active = true)  
+  }
+
   override def clone:Solution = new Solution(this.atoms)
+
+  override def toString = this.atoms.mkString("<",",",">")
 }

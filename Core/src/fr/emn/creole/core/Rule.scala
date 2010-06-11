@@ -20,5 +20,5 @@ class Rule(val head:List[Atom], val body:List[Atom]){
     this.scope = newScope
   }
 
-  override def toString = head.mkString("", "&" ,"") + "=>" + body.mkString("", "&" ,"")
+  override def toString = head.mkString("", "&" ,"") + "=>" + (if(!scope.isEmpty) "v"+scope.mkString("(",",",")")+"." else "") + body.mkString("", "&" ,"")
 }

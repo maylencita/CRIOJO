@@ -66,8 +66,6 @@ class Interpreter(tokens:CHRTreeTokens) {
     if (!scope.isEmpty)
       rule.setScope(scope)
 
-    println("Got a rule: " + rule) 
-
     rule
     
   }
