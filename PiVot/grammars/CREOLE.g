@@ -9,6 +9,15 @@ tokens{
     RULE;
     HEAD;
     BODY;
+
+    MULTI;
+    DECLARATION;
+    EMPTYLIST;
+    PUBLIC;
+    PRIVATE;
+    PROCESS;
+
+    GUARD;
 }
 
 @lexer::header {
@@ -27,13 +36,35 @@ import fr.emn.creole.parser.tree._
 	def getCHRTreeTokens = new CHRTreeTokens(this.tokenNames)
 }
 start
-    :   script -> ^(SCRIPT script)
+    :   process
+    ;
+
+process
+    :   declaration script -> ^(PROCESS declaration ^(SCRIPT script))
+    ;
+
+declaration
+    :   LPAREN 'public' COLON rlist SEMI 'private' COLON rlist RPAREN ->
+            ^(DECLARATION ^(PUBLIC rlist) ^(PRIVATE rlist))
+    ;
+
+rlist
+    :   rdeclaration (COMMA rdeclaration)* -> rdeclaration*
+    |   UNDEF -> EMPTYLIST
+    ;
+
+rdeclaration
+    :   R_ID
+    |   TILDE R_ID -> ^(MULTI R_ID)
     ;
 
 script
-    :   bang op bang -> ^(op bang bang)
-    |   bang
+    :
+       rule*
+//        bang op bang -> ^(op bang bang)
+//    |   bang
     ;
+/*
 op
     :   BAR
     |   SEMI
@@ -48,12 +79,16 @@ primitive
     :   rule
     |   LPAREN script RPAREN  -> script
     ;
-
+*/
 rule
-    :   conjunction RARROW nu? conjunction  ->
-            ^(RULE ^(HEAD conjunction) ^(BODY conjunction) nu?)
+    :   conjunction RARROW guard? nu? conjunction  ->
+            ^(RULE guard? ^(HEAD conjunction) ^(BODY conjunction) nu?)
     ;
 
+guard
+    :   LBRACK rule* RBRACK IMARK -> ^(GUARD rule*)
+    ;
+    
 nu
     :   NU LPAREN variable (COMMA variable)* RPAREN -> ^(NU variable*)
     ;
@@ -65,6 +100,7 @@ conjunction
 
 atom
     :   TRUE
+    |   FALSE
     |   relation varlist?  ->
             ^(ATOM relation varlist?)
     ;
@@ -89,6 +125,9 @@ NU
     ;
 TRUE
     :   'true'
+    ;
+FALSE
+    :   'false'
     ;
 /*
 PACKAGE
@@ -168,6 +207,8 @@ POINT	:	'.'
 
 SEMI	:	';'
 	;
+COLON	:	':'
+	;
 SLASH	: 	'/'
 	;
 BAR		: 	'|'
@@ -175,7 +216,15 @@ BAR		: 	'|'
 BANG
 	:   '!'
 	;
-
+TILDE
+    :   '~'
+    ;
+UNDEF
+    :   '_'
+    ;
+IMARK
+    :   '?'
+    ;
 R_ID
     :   ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;

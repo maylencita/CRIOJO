@@ -1,3 +1,6 @@
-true => A,B,C | (C => D | B => X) ;
-(A,B,C => D,E |
-        true => X, Z)
+(public:A,B,~C; private:_)
+true => [A,B,C,T => Z]? A,B,C
+C => D
+B => X
+A,B,C => D,E
+true => X, Z

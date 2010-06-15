@@ -26,6 +26,13 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val STRING: Token = "STRING"
   val SEMI:Token = "SEMI"
 
+  val MULTI:Token = "MULTI"
+  val DECLARATION:Token = "DECLARATION"
+  val EMPTYLIST:Token = "EMPTYLIST"
+  val PUBLIC:Token = "PUBLIC"
+  val PRIVATE:Token = "PRIVATE"
+  val PROCESS:Token = "PROCESS"
+
   private[this] def getToken(tokName: String): Token ={
 		if (tokNames != null)
 			new CommonToken(tokNames.indexOf(tokName), tokName)

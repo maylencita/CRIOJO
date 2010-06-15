@@ -13,65 +13,32 @@ import fr.emn.creole.util.Logger
 
 class VirtualMachine {
   var rules:List[Rule] = List()
-  var solution:Solution = new Solution(List())
-  var relations:List[String] = List()
+  var solution:Solution = new Solution() //Set())
+  var relations:List[Relation] = List()
 
-  def start(){
-    for (r <- rules){
-      var matches = List[Atom]()
-      if (r.active && !{matches = eval(r.head); matches}.isEmpty){
-        if (applyReaction(r,matches))
-          r.inactivate
+  //TODO Real parallel execution
+  //TODO Sequential execution
+  //TODO Replication & multi-relations
+  //TODO Second order relations
+  //TODO Error when new variables not declared
+
+  def addRule(rule:Rule){
+    rule.solution = this.solution
+    rule.relations = this.relations
+
+    rule.head.foreach{
+      a => relations.find(_.name == a.relName) match {
+        case Some(r) => r.addObserver(rule)
+        case _ => println("Undefined relation " + a.relName)
       }
     }
 
-    println("finished with solution: " + solution)
-  }
-
-  def addRule(rule:Rule){
     rules :+= rule
+    rule.execute
   }
 
-  def eval(molecule:List[Atom]):List[Atom] = {
-    if (molecule.head.isTrue)
-      List(new Atom("True",List()))
-    else
-      solution.findMatches(molecule)
+  def addRelation(relation:Relation){
+    relations :+= relation
   }
 
-  def applyReaction(r:Rule,matches:List[Atom]):Boolean = {
-    Logger.log("============================================================================")
-    Logger.log("[VirtualMachine.applyReaction] Found Matches: " + matches + " for rule " + r)
-    var newSolution = solution.clone
-    var subs = getSubstitutions(r.head, r.scope, matches)
-    Logger.log("[VirtualMachine.applyReaction] Substitutions: " + subs)
-
-    newSolution.addMolecule(r.body.map{
-      a => a.applySubstitutions(subs)
-    })
-
-    newSolution.cleanup
-
-    if (newSolution != solution){      //TODO an actual evaluation of equivalence between solutions
-      solution = newSolution
-      Logger.log("[VirtualMachine.applyReaction] solution=" + solution)
-      true
-    }else{
-      solution.revert
-      false
-    }
-  }
-
-  def getSubstitutions(ruleAtoms:List[Atom], scope:List[Variable], solAtoms:List[Atom]):List[Substitution] = {
-    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
-      case List() => acum
-      case ra :: rest =>
-        satoms match{
-          case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.vars)))
-        }
-    }
-
-    getSubsRec(ruleAtoms, solAtoms, scope.map(v => (v,v)))
-  }
 }

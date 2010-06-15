@@ -15,25 +15,27 @@ import fr.emn.creole.interpreter.Interpreter
 import org.antlr.runtime._
 
 object InterpreterTest extends Application{
-//  println(args[0])
-  //My own TreeAdaptor
-  val adaptor = new CHRTreeAdaptor
+  override def main(args:Array[String]){
+    println(args(0))
+    //My own TreeAdaptor
+    val adaptor = new CHRTreeAdaptor
 
-  val url = this.getClass.getClassLoader.getResource("fr/emn/creole/test/naive_execution_test.crl")
-  println("url: " + url)
+    val url = this.getClass.getClassLoader.getResource(args(0))//"fr/emn/creole/test/naive_execution_test.crl")
+    println("url: " + url)
 
-  val lex = new CREOLELexer(new ANTLRFileStream(url.getFile))
-  val tokens = new CommonTokenStream(lex)
-    println("tokens: " + tokens.getTokens)
+    val lex = new CREOLELexer(new ANTLRFileStream(url.getFile))
+    val tokens = new CommonTokenStream(lex)
+      println("tokens: " + tokens.getTokens)
 
-  val g = new CREOLEParser(tokens);
-  g.setTreeAdaptor(adaptor)
-  val tree = g.start().getTree().asInstanceOf[^];
+    val g = new CREOLEParser(tokens);
+    g.setTreeAdaptor(adaptor)
+    val tree = g.start().getTree().asInstanceOf[^];
 
-  println("tree: " + tree.toStringTree)
+    println("tree: " + tree.toStringTree)
 
-  //Interpret Program
-  val interp = new Interpreter(g.getCHRTreeTokens)
-  interp.runScript(tree)
-//		println(interp.runScript(programTree))
+    //Interpret Program
+    val interp = new Interpreter(g.getCHRTreeTokens)
+    interp.runScript(tree)
+  //		println(interp.runScript(programTree))
+  }
 }

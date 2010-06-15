@@ -12,6 +12,13 @@ import Creole.Substitution
 class Atom (val relName:String, val vars: List[Variable]) {
 
   var active:Boolean = true
+  private var rel:Relation = _
+
+  def relation = rel
+  def relation_=(newRel:Relation) {
+    rel = newRel
+    rel.notifyObservers
+  }
 
   def isTrue:Boolean = relName == "true"
 
@@ -36,8 +43,10 @@ class Atom (val relName:String, val vars: List[Variable]) {
     this.vars.zip(that.vars).forall(p => p._1.matches(p._2))
   }
 
+  override def hashCode = if (relation.isMultiRel) super.hashCode else toString.hashCode
+
   override def equals(that: Any):Boolean = that match{
-    case a:Atom => this.relName == a.relName //&& this.vars. == a.vars
+    case a:Atom => this.relation == a.relation && this.vars.zip(a.vars).forall(p => p._1 == p._2)
     case _ => false
   }
 

@@ -18,17 +18,36 @@ class Interpreter(tokens:CHRTreeTokens) {
 
   def runScript(tree: ^){
     process(tree)
-    machine.start
+//    machine.start
+    println("finished with solution: " + machine.solution)
   }
 
   def process(t: ^){
     t match{
-      case ^(SCRIPT, s) => process(s.head)
+      case ^(PROCESS, declaration :: script :: Nil) => processDeclaration(declaration); process(script)
+      case ^(SCRIPT, rlst) => rlst.foreach(r => process(r))
       case ^(BAR, s1::s2::Nil) => process(s1) ; process(s2)   
       case ^(SEMI, s1::s2::Nil) => process(s1) ; process(s2)
       case ^(BANG, s) => process(s.head)
       case ^(RULE, r) => machine.addRule(processRule(r))
       case _ => println("Gna! not a valid script!")
+    }
+  }
+
+  def processDeclaration(d: ^){
+    def processRelList(public:Boolean, lst: List[^]){
+      lst match{
+        case List() => //skip
+        case ^(R_ID, _) :: res => machine.addRelation(new Relation(lst.head.getText, false, public)); processRelList(public,res)
+        case ^(MULTI, rid) :: res => machine.addRelation(new Relation(rid.head.getText, true, public)); processRelList(public,res)
+        case ^(EMPTYLIST, _) :: _ => //SKIP
+        case _ =>
+      }
+    }
+
+    d match{
+    case ^(DECLARATION, ^(PUBLIC, pulst) :: ^(PRIVATE, prlst) :: Nil) => processRelList(true, pulst); processRelList(false,prlst)
+    case _ =>
     }
   }
 

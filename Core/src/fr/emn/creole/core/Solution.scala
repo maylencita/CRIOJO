@@ -1,6 +1,7 @@
 package fr.emn.creole.core
 
 import Creole.Substitution
+import scala.collection.mutable.HashSet
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +11,7 @@ import Creole.Substitution
  * To change this template use File | Settings | File Templates.
  */
 
-class Solution(var atoms: List[Atom]) {
+class Solution extends HashSet[Atom]{ //(var atoms: Set[Atom]) {
   //var atoms:List[Atom] = alst
 
   def findMatches(conjunction:List[Atom]):List[Atom] = {
@@ -39,28 +40,45 @@ class Solution(var atoms: List[Atom]) {
 
   def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
-      atoms.filter(_.relName == relation.relName)
+      /*atoms.*/filter(_.relName == relation.relName).toList
     }else{
       val test = relation.applySubstitutions(subs)
-      atoms.filter(a => a.active && a.matches(test))
+      /*atoms.*/filter(a => a.active && a.matches(test)).toList
     }
   }
 
   def addMolecule(molecule:List[Atom]){
-    this.atoms :::= molecule   
+    molecule.foreach(/*this.atoms.*/this.add(_))
   }
 
   //This removes inactive atoms
   def cleanup{
-    this.atoms = atoms.filter(_.active)
+//    this.atoms = atoms.filter(_.active)
+    retain(_.active)
   }
 
   //This puts everything back to normal
   def revert{
-    this.atoms.foreach(_.active = true)  
+    /*this.atoms.*/foreach(_.active = true)
   }
 
-  override def clone:Solution = new Solution(this.atoms)
+  def update(newsol: Solution){
+    retain(newsol.contains(_))
+    newsol.foreach(addEntry(_))
 
-  override def toString = this.atoms.mkString("<",",",">")
+//    this.atoms = newsol.atoms
+  }
+
+  override def equals(that:Any):Boolean = that match{
+    case thatSol:Solution => thatSol.size == size &&
+      (thatSol filterNot (this contains)).isEmpty 
+    case _ => false
+  }
+  override def clone:Solution = {
+    val sol = new Solution()
+    foreach(sol.add(_))
+    sol
+  }
+
+  override def toString = this/*.atoms*/.mkString("<",",",">")
 }
