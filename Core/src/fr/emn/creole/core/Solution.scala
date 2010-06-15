@@ -11,8 +11,7 @@ import scala.collection.mutable.HashSet
  * To change this template use File | Settings | File Templates.
  */
 
-class Solution extends HashSet[Atom]{ //(var atoms: Set[Atom]) {
-  //var atoms:List[Atom] = alst
+class Solution extends HashSet[Atom]{
 
   def findMatches(conjunction:List[Atom]):List[Atom] = {
     def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
@@ -40,33 +39,30 @@ class Solution extends HashSet[Atom]{ //(var atoms: Set[Atom]) {
 
   def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
-      /*atoms.*/filter(_.relName == relation.relName).toList
+      filter(_.relName == relation.relName).toList
     }else{
       val test = relation.applySubstitutions(subs)
-      /*atoms.*/filter(a => a.active && a.matches(test)).toList
+      filter(a => a.active && a.matches(test)).toList
     }
   }
 
   def addMolecule(molecule:List[Atom]){
-    molecule.foreach(/*this.atoms.*/this.add(_))
+    molecule.foreach(this.add(_))
   }
 
   //This removes inactive atoms
   def cleanup{
-//    this.atoms = atoms.filter(_.active)
     retain(_.active)
   }
 
   //This puts everything back to normal
   def revert{
-    /*this.atoms.*/foreach(_.active = true)
+    foreach(_.active = true)
   }
 
   def update(newsol: Solution){
     retain(newsol.contains(_))
     newsol.foreach(addEntry(_))
-
-//    this.atoms = newsol.atoms
   }
 
   override def equals(that:Any):Boolean = that match{
@@ -74,11 +70,12 @@ class Solution extends HashSet[Atom]{ //(var atoms: Set[Atom]) {
       (thatSol filterNot (this contains)).isEmpty 
     case _ => false
   }
+
   override def clone:Solution = {
     val sol = new Solution()
     foreach(sol.add(_))
     sol
   }
 
-  override def toString = this/*.atoms*/.mkString("<",",",">")
+  override def toString = this.mkString("<",",",">")
 }
