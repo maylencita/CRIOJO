@@ -16,21 +16,24 @@ class VirtualMachine {
   var solution:Solution = new Solution() //Set())
   var relations:List[Relation] = List()
 
+  //TODO Handle guards
   //TODO Real parallel execution
   //TODO Sequential execution
   //TODO Replication & multi-relations
   //TODO Second order relations
   //TODO Error when new variables not declared
+  //TODO Ameliorate new variable creation
 
   def addRule(rule:Rule){
     rule.solution = this.solution
     rule.relations = this.relations
 
     rule.head.foreach{
-      a => relations.find(_.name == a.relName) match {
-        case Some(r) => r.addObserver(rule)
-        case _ => println("Undefined relation " + a.relName)
-      }
+      a => if (!a.isTrue)
+              relations.find(_.name == a.relName) match {
+                case Some(r) => r.addObserver(rule)
+                case _ => println("Undefined relation " + a.relName)
+              }
     }
 
     rules :+= rule

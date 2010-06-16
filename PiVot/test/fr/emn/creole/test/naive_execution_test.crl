@@ -1,5 +1,5 @@
 (public:A,B,C; private:_)
-//C(x,y) => C(y,x)
+C(x,y) => new(w) C(y,w)
 true => new(a,b,c,d,e,f) A(a,b),A(c,d),A(e,f),B(b,c),B(c,c),B(d,f)
 A(x,y), B(y,z), B(z,w) => C(x,w)
 true => new(a,c) C(a,c)

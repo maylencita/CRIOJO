@@ -12,15 +12,10 @@ import Creole.Substitution
 class Atom (val relName:String, val vars: List[Variable]) {
 
   var active:Boolean = true
-  private var rel:Relation = _
+  var relation:Relation = _
 
-  def relation = rel
-  def relation_=(newRel:Relation) {
-    rel = newRel
-    rel.notifyObservers
-  }
-
-  def isTrue:Boolean = relName == "true"
+  def isTrue:Boolean = false
+  def isFalse:Boolean = false
 
   def arity = vars.size
 
@@ -43,7 +38,8 @@ class Atom (val relName:String, val vars: List[Variable]) {
     this.vars.zip(that.vars).forall(p => p._1.matches(p._2))
   }
 
-  override def hashCode = if (relation.isMultiRel) super.hashCode else toString.hashCode
+  override def hashCode =
+    if (relation != null && relation.isMultiRel) super.hashCode else toString.hashCode
 
   override def equals(that: Any):Boolean = that match{
     case a:Atom => this.relation == a.relation && this.vars.zip(a.vars).forall(p => p._1 == p._2)
@@ -53,4 +49,30 @@ class Atom (val relName:String, val vars: List[Variable]) {
   override def toString =
     relName + (if (vars.isEmpty) "" else vars.mkString("(",",",")"))
 
+}
+
+object True extends Atom ("true", List()){
+  relation = new Relation("True", false, false)  
+  override def isTrue:Boolean = true
+  override def isFalse:Boolean = false
+
+  override def applySubstitutions(subs:List[Substitution]) = this
+  override def hashCode = "true".hashCode
+//  override def equals(that:Any) = that match{
+//    case True => true
+//    case _ => false
+//  }
+}
+
+object False extends Atom ("false", List()){
+  relation = new Relation("False", false, false)
+  override def isTrue:Boolean = false
+  override def isFalse:Boolean = true
+
+  override def applySubstitutions(subs:List[Substitution]) = this
+  override def hashCode = "false".hashCode
+//  override def equals(that:Any) = that match{
+//    case False => true
+//    case _ => false
+//  }
 }

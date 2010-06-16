@@ -1,0 +1,3 @@
+(public:B; private:_)
+true => new(a) B(a)
+true => [B(y) => false]? new(x) B(x)

@@ -1,6 +1,11 @@
+(public:B; private:_)
+true => [B(x) => false]? new(x) B(x)
+
+/*
 (public:A,B,~C; private:_)
 true => [A,B,C,T => Z]? A,B,C
 C => D
 B => X
 A,B,C => D,E
 true => X, Z
+*/

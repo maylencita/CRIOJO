@@ -26,4 +26,4 @@ class Variable (n: String)  {
 
 case class RelVariable(n:String) extends Variable(n)
 
-case class Undef extends Variable("_")
+case class Undef() extends Variable("_")

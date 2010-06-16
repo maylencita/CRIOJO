@@ -21,6 +21,7 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val INT: Token = "INT"
   val MINUS: Token = "MINUS"
   val TRUE: Token = "TRUE"
+  val FALSE: Token = "FALSE"
   val BAR: Token = "BAR"
   val LET: Token = "LET"
   val STRING: Token = "STRING"
@@ -32,6 +33,8 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val PUBLIC:Token = "PUBLIC"
   val PRIVATE:Token = "PRIVATE"
   val PROCESS:Token = "PROCESS"
+
+  val GUARD:Token = "GUARD"
 
   private[this] def getToken(tokName: String): Token ={
 		if (tokNames != null)

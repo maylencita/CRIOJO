@@ -12,6 +12,7 @@ import scala.collection.mutable.HashSet
  */
 
 class Solution extends HashSet[Atom]{
+  this.add(True)
 
   def findMatches(conjunction:List[Atom]):List[Atom] = {
     def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
@@ -62,8 +63,15 @@ class Solution extends HashSet[Atom]{
 
   def update(newsol: Solution){
     retain(newsol.contains(_))
-    newsol.foreach(addEntry(_))
+    if (newsol.contains(False)){
+      clear
+      add(False)
+    }else{
+      newsol.foreach(addEntry(_))
+    }
   }
+
+  def isTrue:Boolean = !this.exists(_.isFalse) && this.exists(_.isTrue)
 
   override def equals(that:Any):Boolean = that match{
     case thatSol:Solution => thatSol.size == size &&

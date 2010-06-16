@@ -51,10 +51,16 @@ class Interpreter(tokens:CHRTreeTokens) {
     }
   }
 
+  def processRule(r: ^):Rule = r match{
+    case ^(RULE, rdef) => processRule(rdef)
+    case _ => null
+  }
+
   def processRule(r: List[^]):Rule ={
     var head:List[Atom] = List()
     var body:List[Atom] = List()
     var scope:List[Variable] = List()
+    var guard:List[Guard] = List()
 
     processRuleIter(r)
 
@@ -63,13 +69,15 @@ class Interpreter(tokens:CHRTreeTokens) {
         case ^(HEAD, alst) :: res => head = alst.map(a => processAtom(a)) ; processRuleIter(res)
         case ^(BODY, alst) :: res => body = alst.map(a => processAtom(a)) ; processRuleIter(res)
         case ^(NU, vlst) :: res => scope = vlst.map(v => processVar(v)) ; processRuleIter(res)
+        case ^(GUARD, glst) :: res => guard = glst.map(g => processRule(g)) ; processRuleIter(res)
         case Nil => //finished
         case _ => println("invalid rule"); null  //TODO manage invalid rule error
       }
     }
 
     def processAtom(atom: ^): Atom = atom match{
-      case ^(TRUE, _) => new Atom("true", List())
+      case ^(TRUE, _) => True
+      case ^(FALSE, _) => False
       case ^(ATOM, name :: ^(VARS, vlist) :: Nil) => new Atom(name.getText, vlist.map(v => processVar(v)))
       case ^(ATOM, name :: Nil) => new Atom(name.getText, List())
       case _ => println("invalid atom"); null  //TODO manage invalid atom error
@@ -81,7 +89,7 @@ class Interpreter(tokens:CHRTreeTokens) {
       case _ => println("invalid var"); null //TODO manage invalid variable error
     }
 
-    val rule = new Rule(head,body)
+    val rule = new Rule(head,body,guard)
     if (!scope.isEmpty)
       rule.setScope(scope)
 

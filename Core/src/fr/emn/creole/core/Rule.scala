@@ -11,7 +11,12 @@ import fr.emn.creole.util.Logger
  * To change this template use File | Settings | File Templates.
  */
 
-class Rule(val head:List[Atom], val body:List[Atom]) extends RelationObserver{
+class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) extends RelationObserver with Guard{
+
+  def this(head:List[Atom], body:List[Atom]){
+    this(head, body, List())
+  }
+
   var linear = false;
   var active = true;
   var scope:List[Variable] = List()
@@ -35,15 +40,14 @@ class Rule(val head:List[Atom], val body:List[Atom]) extends RelationObserver{
     Logger.log("============================================================================")
     Logger.log("[Rule.activate] " + this)
     var matches = List[Atom]()
-    if (!{matches = eval(this.head); matches}.isEmpty)
+    if ((guards.isEmpty || guards.forall(_.eval(this.solution))) &&
+            !{matches = evalHead; matches}.isEmpty)
       applyReaction(matches)
   }
 
-  def eval(molecule:List[Atom]):List[Atom] = {
-    if (molecule.head.isTrue)
-      List(new Atom("True",List()))
-    else
-      solution.findMatches(molecule)
+  def evalHead:List[Atom] = head match{
+    case True ::_ => this.head
+    case _ => solution.findMatches(this.head)
   }
 
   def applyReaction(matches:List[Atom]):Boolean = {
@@ -53,20 +57,26 @@ class Rule(val head:List[Atom], val body:List[Atom]) extends RelationObserver{
     var subs = getSubstitutions(this.head, this.scope, matches)
     Logger.log("[Rule.applyReaction] Substitutions: " + subs)
 
-    newSolution.addMolecule(this.body.map{
+    val newAtoms = this.body.map{
       a => val newA = a.applySubstitutions(subs)
-      newA.relation = relations.find(r => r.name == newA.relName) match{
-        case Some(r) => r
-        case _ => null //TODO manage invalid relation error
-      }
+      if (newA != True && newA != False)
+        newA.relation = relations.find(r => r.name == newA.relName) match{
+          case Some(r) => r
+          case _ => null //TODO manage invalid relation error
+        }
       newA
-    })
+    }
 
     newSolution.cleanup
+    newSolution.addMolecule(newAtoms)
 
-    if (newSolution != solution){      //TODO an actual evaluation of equivalence between solutions
+    Logger.log("[Rule.applyReaction] solution=" + solution)
+    Logger.log("[Rule.applyReaction] newSolution=" + newSolution)
+
+    if (newSolution != solution){
       solution.update(newSolution)
-      Logger.log("[Rule.applyReaction] solution=" + solution)
+      Logger.log("[Rule.applyReaction] applied!")
+      newAtoms.foreach(_.relation.notifyObservers)
       true
     }else{
       solution.revert
@@ -85,6 +95,12 @@ class Rule(val head:List[Atom], val body:List[Atom]) extends RelationObserver{
     }
 
     getSubsRec(ruleAtoms, solAtoms, scope.map(v => (v,v)))
+  }
+
+  override def eval(solution:Solution):Boolean = {
+    this.solution = solution.clone
+    execute
+    this.solution.isTrue
   }
 
   override def receiveUpdate{
