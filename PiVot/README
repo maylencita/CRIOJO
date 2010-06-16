@@ -1,0 +1,10 @@
+This folder contains the implemention of the parser and interpreter for CREOLE.
+Content description:
+
+ - src -> The sources for the CREOLE interpreter to execute CREOLE scripts
+ - grammars -> CREOLE grammar. To come: SQL, SQL2CREOL, etc grammars.
+NOTE: To re-generate parsers execute (with ANTLR_Scala on the classpath): org.antlr.Tool grammars/CREOLE.g -fo generated/fr/emn/creole/parser
+ - generated -> The generated CREOLE Parser
+ - test -> Test code and scripts.
+NOTE: To run a script execute fr.emn.creole.test.InterpreterTest with the path of the script, for example:
+  fr/emn/creole/test/guards.crl

@@ -1,0 +1,6 @@
+This folder contains the implementation of the core of CREOLE.
+Content description:
+
+-src -> The sources
+-Core.iml -> IntelliJ Module
+

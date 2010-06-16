@@ -40,8 +40,9 @@ class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) ext
     Logger.log("============================================================================")
     Logger.log("[Rule.activate] " + this)
     var matches = List[Atom]()
-    if ((guards.isEmpty || guards.forall(_.eval(this.solution))) &&
-            !{matches = evalHead; matches}.isEmpty)
+    if (!{matches = evalHead; matches}.isEmpty) &&
+      (guards.isEmpty || guards.forall(_.eval(this.solution))) 
+
       applyReaction(matches)
   }
 

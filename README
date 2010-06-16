@@ -1,0 +1,7 @@
+This folder correspond to the project CREOLE that contains the following modules:
+
+ - ANTLR_Scala => ANTLR extension to compile into Scala
+ - Core => CREOLE core implementation
+ - PiVot => CREOLE parser and interpreter
+ - LEGACY => The old implementation
+ - thirdparty => External libraries needed to run CREOLE
