@@ -5,3 +5,6 @@ This folder correspond to the project CREOLE that contains the following modules
  - PiVot => CREOLE parser and interpreter
  - LEGACY => The old implementation
  - thirdparty => External libraries needed to run CREOLE
+
+ - .git -> Git repository
+ - .idea -> IntelliJ Project
