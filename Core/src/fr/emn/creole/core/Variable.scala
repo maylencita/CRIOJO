@@ -17,6 +17,10 @@ class Variable (n: String)  {
     case _ => this.equals(that)
   }
 
+  def +(index:Any):Variable = {
+     new Variable(this.n+index)
+  }
+
   override def equals(that: Any):Boolean = that match{
     case v:Variable => this.name == v.name
     case _ => false
@@ -24,6 +28,9 @@ class Variable (n: String)  {
   override def toString = name
 }
 
-case class RelVariable(n:String) extends Variable(n)
+case class RelVariable(n:String) extends Variable(n){
+  var relation:Relation = _
+}
+
 
 case class Undef() extends Variable("_")

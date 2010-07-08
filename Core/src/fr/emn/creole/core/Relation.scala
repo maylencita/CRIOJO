@@ -1,5 +1,7 @@
 package fr.emn.creole.core
 
+import fr.emn.creole.util.Logger
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -8,7 +10,7 @@ package fr.emn.creole.core
  * To change this template use File | Settings | File Templates.
  */
 
-class Relation(val name:String, multirelation:Boolean = false, val public:Boolean){
+class Relation(val name:String, val public:Boolean)(implicit multirelation:Boolean = true){
   var observers:List[RelationObserver] = List()
 
   def isMultiRel = this.multirelation
@@ -16,8 +18,8 @@ class Relation(val name:String, multirelation:Boolean = false, val public:Boolea
   def addObserver(observer:RelationObserver){
     observers :+= observer
   }
-  def notifyObservers{
-    observers.foreach(_.receiveUpdate)    
+  def notifyObservers(a: Atom){
+    observers.foreach{o =>Logger.log("[Relation.notifyObservers]"+ o + " notified by " + name); o.receiveUpdate(a)}    
   }
 
   override def equals(that:Any) = that match{

@@ -1,0 +1,4 @@
+(public:_; private:B,A)
+true => new(x) B(x),B(x),A(x)
+B(x),B(x) => B(x)
+A(x) => [true => ]? B(x)

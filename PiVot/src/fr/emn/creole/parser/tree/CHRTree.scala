@@ -53,7 +53,7 @@ case class ^(tok:Token, var childList:List[^]) extends CHRTree(tok){ //CommonTre
 	}
 	
 	def this(old: ^){
-		this(old.token) //, old.childList)
+		this(new CHRToken(old.token))//old.token) //, old.childList)
 		this.startIndex = old.startIndex
 		this.stopIndex = old.stopIndex
 //		setStartIndex(old.getStartIndex) //old.startIndex;

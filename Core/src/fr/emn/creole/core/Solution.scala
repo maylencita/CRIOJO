@@ -1,5 +1,7 @@
 package fr.emn.creole.core
 
+import fr.emn.creole.util.Logger
+
 import Creole.Substitution
 import scala.collection.mutable.HashSet
 
@@ -12,9 +14,32 @@ import scala.collection.mutable.HashSet
  */
 
 class Solution extends HashSet[Atom]{
-  this.add(True)
 
-  def findMatches(conjunction:List[Atom]):List[Atom] = {
+//  def findMatches(conjunction:List[Atom]):List[Atom] = {
+//    def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
+//      case List() => acum
+//      case h :: rest =>
+//        val matches = findMatches(h, subs)
+//        if (matches.isEmpty)
+//          List()
+//        else{
+//          var results = List[Atom]()
+//          var i = matches.iterator
+//          while (i.hasNext && results.isEmpty){
+//            val m = i.next
+//            m.active = false
+//            results = findMatchesRec(rest, subs.union(h.vars.zip(m.vars)), acum :+ m)
+//            m.active = results.isEmpty
+//          }
+//          results
+//        }
+//    }
+//
+//
+//    findMatchesRec(conjunction, List(), List())
+//  }
+
+  def findMatches(conjunction:List[Atom], substitutions:List[Substitution]):List[Atom] = {
     def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
       case List() => acum
       case h :: rest =>
@@ -35,10 +60,10 @@ class Solution extends HashSet[Atom]{
     }
 
 
-    findMatchesRec(conjunction, List(), List())
+    findMatchesRec(conjunction, substitutions, List())
   }
 
-  def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = {
+  private def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
       filter(_.relName == relation.relName).toList
     }else{
@@ -65,7 +90,7 @@ class Solution extends HashSet[Atom]{
     retain(newsol.contains(_))
     if (newsol.contains(False)){
       clear
-      add(False)
+//      add(False)
     }else{
       newsol.foreach(addEntry(_))
     }
@@ -81,9 +106,59 @@ class Solution extends HashSet[Atom]{
 
   override def clone:Solution = {
     val sol = new Solution()
-    foreach(sol.add(_))
+    foreach(a => sol.add(a.clone))
     sol
   }
 
-  override def toString = this.mkString("<",",",">")
+  override def containsEntry(elem: Atom): Boolean = {
+    var h = index(elemHashCode(elem))
+	    var entry = table(h)
+	    while (null != entry && entry != elem) {
+	      h = (h + 1) % table.length
+	      entry = table(h)
+	    }
+	    null != entry
+//    val i = iterator
+//    var entry = i.next
+//    while(i.hasNext && entry != elem){
+//      entry = i.next
+//    }
+//    entry == elem
+  }
+
+  override def toString = {
+    if (Logger.on){
+       mkString("<",",",">")
+    }else{
+      def getValue(v:Variable):Variable={
+        if(v.name.startsWith("$")){
+          find(a => a.relName.startsWith("$") && a.hasVariable(v)) match{
+            case Some(c) => new Variable(c.relName.substring(5))
+            case _ => v
+          }
+        }else
+          v
+      }
+
+      filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getValue(_)))).mkString("<",",",">")   
+    }
+
+  }
+
+
+//  override def toString = {
+//    def getValue(v:Variable):Variable={
+//      if(v.name.startsWith("$")){
+//        find(a => a.relName.startsWith("$") && a.hasVariable(v)) match{
+//          case Some(c) => new Variable(c.relName.substring(5))
+//          case _ => v
+//        }
+//      }else
+//        v
+//    }
+//
+////    filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getValue(_)))).mkString("<",",",">")
+//    map(a => new Atom(a.relName, a.vars.map(getValue(_)))).mkString("<",",",">")
+//  }
+
 }

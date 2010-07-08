@@ -35,6 +35,9 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val PROCESS:Token = "PROCESS"
 
   val GUARD:Token = "GUARD"
+  val EMPTY:Token = "EMPTY"
+
+  val ABS:Token = "ABS"
 
   private[this] def getToken(tokName: String): Token ={
 		if (tokNames != null)

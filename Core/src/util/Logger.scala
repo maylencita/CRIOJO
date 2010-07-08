@@ -9,9 +9,27 @@ package fr.emn.creole.util
  */
 
 object Logger {
-  val on = true
+  val on = false
+  var level = 0
+
+//  def log(text:String){
+//    println(text)
+//  }
 
   def log(text:String){
-    println(text)
+    var prefix = ""
+    for(i<- 0 until level){
+      prefix += "   "
+    }
+    println(prefix + text)
   }
+
+  def levelDown{
+    level+=1
+  }
+
+  def levelUp{
+    level-=1
+  }
+
 }

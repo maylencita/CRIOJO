@@ -1,4 +1,4 @@
-grammar CREOLE;
+grammar CREOLE_X;
 
 options {language=Scala;output=AST;ASTLabelType=CHRTree;backtrack=true;}
 
@@ -19,6 +19,7 @@ tokens{
 
     GUARD;
     EMPTY;
+        
 }
 
 @lexer::header {
@@ -60,27 +61,39 @@ rdeclaration
     ;
 
 script
-    :
-       rule*
-//        bang op bang -> ^(op bang bang)
-//    |   bang
+    :   parallel (SEMI^ parallel)*
     ;
+
+parallel
+    :   bang (BAR^ bang)*
+    ;
+
+bang
+    :   simple_script
+    |   BANG simple_script -> ^(BANG simple_script) 
+    ;
+
+simple_script
+    :   rule
+    |   LPAREN script RPAREN  -> script
+    ;
+
 /*
+primitive
+    :   rule BAR primitive -> ^(BAR rule primitive)
+    |   rule
+    |   LPAREN script RPAREN  -> script
+    ;
 op
     :   BAR
     |   SEMI
     ;
-
 bang
     :   primitive
     |   BANG primitive -> ^(BANG primitive)
     ;
-
-primitive
-    :   rule
-    |   LPAREN script RPAREN  -> script
-    ;
 */
+
 rule
     :   conjunction RARROW guard? nu? conjunction  ->
             ^(RULE guard? ^(HEAD conjunction) ^(BODY conjunction) nu?)
@@ -88,27 +101,33 @@ rule
 
 guard
     :   LBRACK rule* RBRACK IMARK -> ^(GUARD rule*)
+    |   ABS LBRACK conjunction RBRACK IMARK -> ^(GUARD ^(ABS conjunction))
     ;
-    
+
 nu
     :   NU LPAREN variable (COMMA variable)* RPAREN -> ^(NU variable*)
     ;
 
 conjunction
-    :   ZERO -> EMPTY
+    :   'T' -> EMPTY
     |   atom (COMMA atom)* -> atom*
     ;
 
 atom
     :   TRUE
     |   FALSE
-    |   relation varlist?  ->
-            ^(ATOM relation varlist?)
+    |   relation termlist?  ->
+            ^(ATOM relation termlist?)
     ;
 
-varlist
-    :   LPAREN variable (COMMA variable)* RPAREN ->   ^(VARS variable*)
+termlist
+    :   LPAREN term (COMMA term)* RPAREN ->   ^(VARS term*)
     ;
+
+term
+	:	constant
+	|	variable
+	;
 
 relation
     :   R_ID
@@ -117,7 +136,12 @@ relation
 variable
     :   V_ID | R_ID
     ;
-    
+
+constant
+	:	INT
+	|	STRING
+	;
+
 /***************************************************************************************
 	TOKENS
 ***************************************************************************************/
@@ -130,8 +154,13 @@ TRUE
 FALSE
     :   'false'
     ;
+/*
 ZERO
     :   '0'
+    ;
+*/
+ABS
+    :   'Abs'
     ;
 /*
 PACKAGE
@@ -154,21 +183,19 @@ IS
 CONSTRAINT
 	:	'constraint'
 	;
-*/
 LET
 	:	'let'
 	;
 IN
 	:	'in'
 	;
-/*
 USE
 	:	'use'
 	;
 EQ
 	:	'='
 	;
-*/	
+*/
 EQ_OP
 	:	'=='
 	;

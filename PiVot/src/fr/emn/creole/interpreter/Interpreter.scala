@@ -4,6 +4,7 @@ package fr.emn.creole.interpreter
 import fr.emn.creole.parser.tree._
 
 import fr.emn.creole.core._
+import fr.emn.creole.util.Logger
 
 import scala.collection.mutable.HashMap
 
@@ -18,7 +19,8 @@ class Interpreter(tokens:CHRTreeTokens) {
 
   def runScript(tree: ^){
     process(tree)
-//    machine.start
+    Logger.log("[Interpreter.runScript] script: \n" + machine)
+    machine.execute
     println("finished with solution: " + machine.solution)
   }
 
@@ -38,8 +40,8 @@ class Interpreter(tokens:CHRTreeTokens) {
     def processRelList(public:Boolean, lst: List[^]){
       lst match{
         case List() => //skip
-        case ^(R_ID, _) :: res => machine.addRelation(new Relation(lst.head.getText, false, public)); processRelList(public,res)
-        case ^(MULTI, rid) :: res => machine.addRelation(new Relation(rid.head.getText, true, public)); processRelList(public,res)
+        case ^(R_ID, _) :: res => machine.addRelation(new Relation(lst.head.getText, public)); processRelList(public,res)
+        case ^(MULTI, rid) :: res => machine.addRelation(new Relation(rid.head.getText, public)); processRelList(public,res)
         case ^(EMPTYLIST, _) :: _ => //SKIP
         case _ =>
       }
@@ -60,21 +62,26 @@ class Interpreter(tokens:CHRTreeTokens) {
     var head:List[Atom] = List()
     var body:List[Atom] = List()
     var scope:List[Variable] = List()
-    var guard:List[Guard] = List()
+    var guard:Guard = new Guard
 
     processRuleIter(r)
 
     def processRuleIter(lst: List[^]){
       lst match{
-        case ^(HEAD, alst) :: res => head = alst.map(a => processAtom(a)) ; processRuleIter(res)
+        case ^(HEAD, alst) :: res => head = processHead(alst) ; processRuleIter(res)
         case ^(BODY, alst) :: res => body = alst.map(a => processAtom(a)) ; processRuleIter(res)
         case ^(NU, vlst) :: res => scope = vlst.map(v => processVar(v)) ; processRuleIter(res)
-        case ^(GUARD, glst) :: res => guard = glst.map(g => processRule(g)) ; processRuleIter(res)
+        case ^(GUARD, glst) :: res => guard = new Guard(glst.map(g => processRule(g))) ; processRuleIter(res)
         case Nil => //finished
         case _ => println("invalid rule"); null  //TODO manage invalid rule error
       }
     }
 
+    def processHead(lst: List[^]):List[Atom] = lst match{
+      case ^(EMPTY,_) :: _ => List()
+      case _ => lst.map(a => processAtom(a))
+    }
+    
     def processAtom(atom: ^): Atom = atom match{
       case ^(TRUE, _) => True
       case ^(FALSE, _) => False

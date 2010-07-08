@@ -1,3 +1,39 @@
-(public:B; private:_)
-true => new(a) B(a)
-true => [B(y) => false]? new(x) B(x)
+(public:B,S; private:S2,X1,X2)
+0 => new(a,b,c) B(c),S(b),S(a)
+
+//Absence: Abs(R)->  R,true => empty
+//Relation:
+//S(x) => [true => [R,true=>false]? B(x),R
+//         B(y),B(y),true => false]? B(x)
+
+//@: (j1 => g? j2) @ X -> j1,X => g? j2,X
+//Cad: Cad(p1 => g? c1) -> p1,true => g? false
+//Sequence: [[s1;s2]] -> [[s1]] @ 1, [[s2]] @ 2, 1=>[Cad([[s1]])]? 2, true=>[Abs(1)]?1
+// S(x) => S2(x),B(x); S2(x) => S(x)
+S(x),X1 => S2(x),B(x),X1         //S(x) => S2(x),B(x) @ X1 -> S(x),X1 => S2(x),B(x),X1
+S2(x),X2 => S(x),X2              //S2(x) => S(x) @ X2 -> S2(x),X2 => S(x),X2
+X1 => [S(x),true => false]? X2   //Cad(S(x) => S2(x),B(x))-> S(x),true => false
+0 => [X1,true => false]? X1      //Abs(X1) => X1,true => false
+
+//Negation: [[Not(h)]] -> [[h]] ; T => [[Abs(F)]]? F / true => [[Abs(T) & Abs(F)]]? T,F
+//And: [[h1 & h2]] -> T => T1 & T2; [[h1]] (T1/T) / [[h2]] (T2/T); T1,T2 => T
+//R(x) => [Not(true,B(x)=>false)]? B(x)
+
+R(x) => [true,B(x)=>false;
+         true => [F,true=>F]? F
+         0 => [true,true=>false & F,true=>false]? true,F]? B(x)
+
+R(x) =>
+    [true,B(x),X1 => false,X1
+    true,X2 => [F,true=>F]? F,X2
+    0 => [true,true=>false & F,true=>false]? true,F,X2
+    X1 => [true,B(x),true=>false]? X2
+    0 => [X1,true => false]? X1]? B(x)
+
+true,true=>false & F,true=>false
+
+true => T1,T2;
+T1,T1=>false
+F,T2=>false;
+T1,T2 => true
+

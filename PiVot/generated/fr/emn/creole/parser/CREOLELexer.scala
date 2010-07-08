@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 grammars/CREOLE.g 2010-06-16 14:04:04
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 grammars/CREOLE.g 2010-06-23 16:44:52
 
 package fr.emn.creole.parser;
 
@@ -25,69 +25,71 @@ extends SLexer(input, state) {
 		// direct delegates
 
 
-    	val EXPONENT:Int = 52
-    	val LT:Int = 36
-    	val LBRACK:Int = 26
-    	val EQ_OP:Int = 35
-    	val POINT:Int = 42
+    	val EXPONENT:Int = 54
+    	val LT:Int = 38
+    	val LBRACK:Int = 27
+    	val EQ_OP:Int = 37
+    	val POINT:Int = 44
     	val HEAD:Int = 8
-    	val LTEQ:Int = 37
-    	val OCTAL_ESC:Int = 55
-    	val CHAR:Int = 51
+    	val LTEQ:Int = 39
+    	val OCTAL_ESC:Int = 57
+    	val CHAR:Int = 53
     	val MULTI:Int = 10
     	val ATOM:Int = 5
     	val EOF:Int = -1
     	val DECLARATION:Int = 11
-    	val LPAREN:Int = 17
-    	val T__56:Int = 56
-    	val RPAREN:Int = 20
-    	val T__57:Int = 57
-    	val ESC_SEQ:Int = 49
-    	val SLASH:Int = 43
-    	val IN:Int = 34
-    	val COMMA:Int = 21
-    	val TILDE:Int = 24
-    	val PLUS:Int = 38
+    	val LPAREN:Int = 18
+    	val ZERO:Int = 31
+    	val RPAREN:Int = 21
+    	val T__58:Int = 58
+    	val ESC_SEQ:Int = 51
+    	val SLASH:Int = 45
+    	val IN:Int = 36
+    	val COMMA:Int = 22
+    	val T__59:Int = 59
+    	val TILDE:Int = 25
+    	val PLUS:Int = 40
     	val BODY:Int = 9
-    	val UNDEF:Int = 22
-    	val COMMENT:Int = 47
-    	val IMARK:Int = 28
-    	val RBRACK:Int = 27
+    	val UNDEF:Int = 23
+    	val COMMENT:Int = 49
+    	val IMARK:Int = 29
+    	val RBRACK:Int = 28
     	val SCRIPT:Int = 4
     	val RULE:Int = 7
-    	val NU:Int = 29
-    	val R_ID:Int = 23
+    	val NU:Int = 30
+    	val R_ID:Int = 24
     	val PRIVATE:Int = 14
     	val VARS:Int = 6
-    	val UNICODE_ESC:Int = 54
-    	val RARROW:Int = 25
-    	val HEX_DIGIT:Int = 53
-    	val V_ID:Int = 32
-    	val INT:Int = 46
-    	val BANG:Int = 45
-    	val MINUS:Int = 39
-    	val TRUE:Int = 30
-    	val SEMI:Int = 19
-    	val COLON:Int = 18
-    	val LCURL:Int = 40
-    	val WS:Int = 48
-    	val RCURL:Int = 41
+    	val UNICODE_ESC:Int = 56
+    	val RARROW:Int = 26
+    	val HEX_DIGIT:Int = 55
+    	val V_ID:Int = 34
+    	val INT:Int = 48
+    	val BANG:Int = 47
+    	val MINUS:Int = 41
+    	val TRUE:Int = 32
+    	val SEMI:Int = 20
+    	val EMPTY:Int = 17
+    	val COLON:Int = 19
+    	val LCURL:Int = 42
+    	val WS:Int = 50
+    	val RCURL:Int = 43
     	val EMPTYLIST:Int = 12
     	val GUARD:Int = 16
     	val PROCESS:Int = 15
-    	val FALSE:Int = 31
+    	val FALSE:Int = 33
     	val PUBLIC:Int = 13
-    	val LET:Int = 33
-    	val BAR:Int = 44
-    	val STRING:Int = 50
+    	val LET:Int = 35
+    	val BAR:Int = 46
+    	val STRING:Int = 52
 
     override def getGrammarFileName = "grammars/CREOLE.g"
 
-    // $ANTLR start "T__56"
+    // $ANTLR start "T__58"
     @throws(classOf[RecognitionException])
-     final def mT__56() /*throws RecognitionException*/ {
+     final def mT__58() /*throws RecognitionException*/ {
         try {
-            var _type = T__56;
+            var _type = T__58;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
             // grammars/CREOLE.g:13:7: ( 'public' )
             // grammars/CREOLE.g:13:9: 'public'
@@ -103,13 +105,13 @@ extends SLexer(input, state) {
         finally {
         }
     }
-    // $ANTLR end "T__56"
+    // $ANTLR end "T__58"
 
-    // $ANTLR start "T__57"
+    // $ANTLR start "T__59"
     @throws(classOf[RecognitionException])
-     final def mT__57() /*throws RecognitionException*/ {
+     final def mT__59() /*throws RecognitionException*/ {
         try {
-            var _type = T__57;
+            var _type = T__59;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
             // grammars/CREOLE.g:14:7: ( 'private' )
             // grammars/CREOLE.g:14:9: 'private'
@@ -125,7 +127,7 @@ extends SLexer(input, state) {
         finally {
         }
     }
-    // $ANTLR end "T__57"
+    // $ANTLR end "T__59"
 
     // $ANTLR start "NU"
     @throws(classOf[RecognitionException])
@@ -133,8 +135,8 @@ extends SLexer(input, state) {
         try {
             var _type = NU;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:124:5: ( 'new' )
-            // grammars/CREOLE.g:124:9: 'new'
+            // grammars/CREOLE.g:125:5: ( 'new' )
+            // grammars/CREOLE.g:125:9: 'new'
             {
             smatch("new"); 
 
@@ -155,8 +157,8 @@ extends SLexer(input, state) {
         try {
             var _type = TRUE;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:127:5: ( 'true' )
-            // grammars/CREOLE.g:127:9: 'true'
+            // grammars/CREOLE.g:128:5: ( 'true' )
+            // grammars/CREOLE.g:128:9: 'true'
             {
             smatch("true"); 
 
@@ -177,8 +179,8 @@ extends SLexer(input, state) {
         try {
             var _type = FALSE;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:130:5: ( 'false' )
-            // grammars/CREOLE.g:130:9: 'false'
+            // grammars/CREOLE.g:131:5: ( 'false' )
+            // grammars/CREOLE.g:131:9: 'false'
             {
             smatch("false"); 
 
@@ -193,14 +195,35 @@ extends SLexer(input, state) {
     }
     // $ANTLR end "FALSE"
 
+    // $ANTLR start "ZERO"
+    @throws(classOf[RecognitionException])
+     final def mZERO() /*throws RecognitionException*/ {
+        try {
+            var _type = ZERO;
+            var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
+            // grammars/CREOLE.g:134:5: ( '0' )
+            // grammars/CREOLE.g:134:9: '0'
+            {
+            smatch('0'); 
+
+            }
+
+            state.setType (_type)
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ZERO"
+
     // $ANTLR start "RARROW"
     @throws(classOf[RecognitionException])
      final def mRARROW() /*throws RecognitionException*/ {
         try {
             var _type = RARROW;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:144:2: ( '=>' )
-            // grammars/CREOLE.g:144:4: '=>'
+            // grammars/CREOLE.g:148:2: ( '=>' )
+            // grammars/CREOLE.g:148:4: '=>'
             {
             smatch("=>"); 
 
@@ -221,8 +244,8 @@ extends SLexer(input, state) {
         try {
             var _type = LET;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:155:2: ( 'let' )
-            // grammars/CREOLE.g:155:4: 'let'
+            // grammars/CREOLE.g:159:2: ( 'let' )
+            // grammars/CREOLE.g:159:4: 'let'
             {
             smatch("let"); 
 
@@ -243,8 +266,8 @@ extends SLexer(input, state) {
         try {
             var _type = IN;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:158:2: ( 'in' )
-            // grammars/CREOLE.g:158:4: 'in'
+            // grammars/CREOLE.g:162:2: ( 'in' )
+            // grammars/CREOLE.g:162:4: 'in'
             {
             smatch("in"); 
 
@@ -265,8 +288,8 @@ extends SLexer(input, state) {
         try {
             var _type = EQ_OP;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:169:2: ( '==' )
-            // grammars/CREOLE.g:169:4: '=='
+            // grammars/CREOLE.g:173:2: ( '==' )
+            // grammars/CREOLE.g:173:4: '=='
             {
             smatch("=="); 
 
@@ -287,8 +310,8 @@ extends SLexer(input, state) {
         try {
             var _type = LT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:172:2: ( '<' )
-            // grammars/CREOLE.g:172:4: '<'
+            // grammars/CREOLE.g:176:2: ( '<' )
+            // grammars/CREOLE.g:176:4: '<'
             {
             smatch('<'); 
 
@@ -308,8 +331,8 @@ extends SLexer(input, state) {
         try {
             var _type = LTEQ;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:175:2: ( '=<' )
-            // grammars/CREOLE.g:175:4: '=<'
+            // grammars/CREOLE.g:179:2: ( '=<' )
+            // grammars/CREOLE.g:179:4: '=<'
             {
             smatch("=<"); 
 
@@ -330,8 +353,8 @@ extends SLexer(input, state) {
         try {
             var _type = PLUS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:178:2: ( '+' )
-            // grammars/CREOLE.g:178:4: '+'
+            // grammars/CREOLE.g:182:2: ( '+' )
+            // grammars/CREOLE.g:182:4: '+'
             {
             smatch('+'); 
 
@@ -351,8 +374,8 @@ extends SLexer(input, state) {
         try {
             var _type = MINUS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:181:2: ( '-' )
-            // grammars/CREOLE.g:181:4: '-'
+            // grammars/CREOLE.g:185:2: ( '-' )
+            // grammars/CREOLE.g:185:4: '-'
             {
             smatch('-'); 
 
@@ -372,8 +395,8 @@ extends SLexer(input, state) {
         try {
             var _type = LPAREN;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:183:9: ( '(' )
-            // grammars/CREOLE.g:183:11: '('
+            // grammars/CREOLE.g:187:9: ( '(' )
+            // grammars/CREOLE.g:187:11: '('
             {
             smatch('('); 
 
@@ -393,8 +416,8 @@ extends SLexer(input, state) {
         try {
             var _type = RPAREN;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:186:8: ( ')' )
-            // grammars/CREOLE.g:186:10: ')'
+            // grammars/CREOLE.g:190:8: ( ')' )
+            // grammars/CREOLE.g:190:10: ')'
             {
             smatch(')'); 
 
@@ -414,8 +437,8 @@ extends SLexer(input, state) {
         try {
             var _type = LCURL;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:189:7: ( '{' )
-            // grammars/CREOLE.g:189:9: '{'
+            // grammars/CREOLE.g:193:7: ( '{' )
+            // grammars/CREOLE.g:193:9: '{'
             {
             smatch('{'); 
 
@@ -435,8 +458,8 @@ extends SLexer(input, state) {
         try {
             var _type = RCURL;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:192:7: ( '}' )
-            // grammars/CREOLE.g:192:9: '}'
+            // grammars/CREOLE.g:196:7: ( '}' )
+            // grammars/CREOLE.g:196:9: '}'
             {
             smatch('}'); 
 
@@ -456,8 +479,8 @@ extends SLexer(input, state) {
         try {
             var _type = RBRACK;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:196:2: ( ']' )
-            // grammars/CREOLE.g:196:4: ']'
+            // grammars/CREOLE.g:200:2: ( ']' )
+            // grammars/CREOLE.g:200:4: ']'
             {
             smatch(']'); 
 
@@ -477,8 +500,8 @@ extends SLexer(input, state) {
         try {
             var _type = LBRACK;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:199:2: ( '[' )
-            // grammars/CREOLE.g:199:4: '['
+            // grammars/CREOLE.g:203:2: ( '[' )
+            // grammars/CREOLE.g:203:4: '['
             {
             smatch('['); 
 
@@ -498,8 +521,8 @@ extends SLexer(input, state) {
         try {
             var _type = COMMA;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:202:7: ( ',' )
-            // grammars/CREOLE.g:202:9: ','
+            // grammars/CREOLE.g:206:7: ( ',' )
+            // grammars/CREOLE.g:206:9: ','
             {
             smatch(','); 
 
@@ -519,8 +542,8 @@ extends SLexer(input, state) {
         try {
             var _type = POINT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:205:7: ( '.' )
-            // grammars/CREOLE.g:205:9: '.'
+            // grammars/CREOLE.g:209:7: ( '.' )
+            // grammars/CREOLE.g:209:9: '.'
             {
             smatch('.'); 
 
@@ -540,8 +563,8 @@ extends SLexer(input, state) {
         try {
             var _type = SEMI;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:208:6: ( ';' )
-            // grammars/CREOLE.g:208:8: ';'
+            // grammars/CREOLE.g:212:6: ( ';' )
+            // grammars/CREOLE.g:212:8: ';'
             {
             smatch(';'); 
 
@@ -561,8 +584,8 @@ extends SLexer(input, state) {
         try {
             var _type = COLON;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:210:7: ( ':' )
-            // grammars/CREOLE.g:210:9: ':'
+            // grammars/CREOLE.g:214:7: ( ':' )
+            // grammars/CREOLE.g:214:9: ':'
             {
             smatch(':'); 
 
@@ -582,8 +605,8 @@ extends SLexer(input, state) {
         try {
             var _type = SLASH;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:212:7: ( '/' )
-            // grammars/CREOLE.g:212:10: '/'
+            // grammars/CREOLE.g:216:7: ( '/' )
+            // grammars/CREOLE.g:216:10: '/'
             {
             smatch('/'); 
 
@@ -603,8 +626,8 @@ extends SLexer(input, state) {
         try {
             var _type = BAR;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:214:6: ( '|' )
-            // grammars/CREOLE.g:214:9: '|'
+            // grammars/CREOLE.g:218:6: ( '|' )
+            // grammars/CREOLE.g:218:9: '|'
             {
             smatch('|'); 
 
@@ -624,8 +647,8 @@ extends SLexer(input, state) {
         try {
             var _type = BANG;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:217:2: ( '!' )
-            // grammars/CREOLE.g:217:6: '!'
+            // grammars/CREOLE.g:221:2: ( '!' )
+            // grammars/CREOLE.g:221:6: '!'
             {
             smatch('!'); 
 
@@ -645,8 +668,8 @@ extends SLexer(input, state) {
         try {
             var _type = TILDE;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:220:5: ( '~' )
-            // grammars/CREOLE.g:220:9: '~'
+            // grammars/CREOLE.g:224:5: ( '~' )
+            // grammars/CREOLE.g:224:9: '~'
             {
             smatch('~'); 
 
@@ -666,8 +689,8 @@ extends SLexer(input, state) {
         try {
             var _type = UNDEF;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:223:5: ( '_' )
-            // grammars/CREOLE.g:223:9: '_'
+            // grammars/CREOLE.g:227:5: ( '_' )
+            // grammars/CREOLE.g:227:9: '_'
             {
             smatch('_'); 
 
@@ -687,8 +710,8 @@ extends SLexer(input, state) {
         try {
             var _type = IMARK;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:226:5: ( '?' )
-            // grammars/CREOLE.g:226:9: '?'
+            // grammars/CREOLE.g:230:5: ( '?' )
+            // grammars/CREOLE.g:230:9: '?'
             {
             smatch('?'); 
 
@@ -708,17 +731,17 @@ extends SLexer(input, state) {
         try {
             var _type = R_ID;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:229:5: ( ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // grammars/CREOLE.g:229:9: ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // grammars/CREOLE.g:233:5: ( ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // grammars/CREOLE.g:233:9: ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
-            // grammars/CREOLE.g:229:9: ( 'A' .. 'Z' )
-            // grammars/CREOLE.g:229:10: 'A' .. 'Z'
+            // grammars/CREOLE.g:233:9: ( 'A' .. 'Z' )
+            // grammars/CREOLE.g:233:10: 'A' .. 'Z'
             {
             matchRange('A','Z'); 
 
             }
 
-            // grammars/CREOLE.g:229:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // grammars/CREOLE.g:233:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             //loop1:
             var guard = true
             while(guard) {
@@ -767,17 +790,17 @@ extends SLexer(input, state) {
         try {
             var _type = V_ID;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:231:7: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // grammars/CREOLE.g:231:9: ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // grammars/CREOLE.g:235:7: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // grammars/CREOLE.g:235:9: ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
-            // grammars/CREOLE.g:231:9: ( 'a' .. 'z' )
-            // grammars/CREOLE.g:231:10: 'a' .. 'z'
+            // grammars/CREOLE.g:235:9: ( 'a' .. 'z' )
+            // grammars/CREOLE.g:235:10: 'a' .. 'z'
             {
             matchRange('a','z'); 
 
             }
 
-            // grammars/CREOLE.g:231:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // grammars/CREOLE.g:235:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             //loop2:
             var guard = true
             while(guard) {
@@ -826,10 +849,10 @@ extends SLexer(input, state) {
         try {
             var _type = INT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:237:5: ( ( '0' .. '9' )+ )
-            // grammars/CREOLE.g:237:7: ( '0' .. '9' )+
+            // grammars/CREOLE.g:241:5: ( ( '0' .. '9' )+ )
+            // grammars/CREOLE.g:241:7: ( '0' .. '9' )+
             {
-            // grammars/CREOLE.g:237:7: ( '0' .. '9' )+
+            // grammars/CREOLE.g:241:7: ( '0' .. '9' )+
             var cnt3=0;
             //loop3:
             var guard = true
@@ -844,7 +867,7 @@ extends SLexer(input, state) {
 
                 alt3 match{
             		case 1 =>
-            		    // grammars/CREOLE.g:237:7: '0' .. '9'
+            		    // grammars/CREOLE.g:241:7: '0' .. '9'
             		    {
             		    matchRange('0','9'); 
 
@@ -879,7 +902,7 @@ extends SLexer(input, state) {
         try {
             var _type = COMMENT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:247:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
+            // grammars/CREOLE.g:251:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
             var alt7=2;
             var LA7_0 = input.LA(1);
 
@@ -907,11 +930,11 @@ extends SLexer(input, state) {
             }
             alt7 match{
                 case 1 =>
-                    // grammars/CREOLE.g:247:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+                    // grammars/CREOLE.g:251:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
                     {
                     smatch("//"); 
 
-                    // grammars/CREOLE.g:247:14: (~ ( '\\n' | '\\r' ) )*
+                    // grammars/CREOLE.g:251:14: (~ ( '\\n' | '\\r' ) )*
                     //loop4:
                     var guard = true
                     while(guard) {
@@ -925,7 +948,7 @@ extends SLexer(input, state) {
 
                         alt4 match{
                     		case 1 =>
-                    		    // grammars/CREOLE.g:247:14: ~ ( '\\n' | '\\r' )
+                    		    // grammars/CREOLE.g:251:14: ~ ( '\\n' | '\\r' )
                     		    {
                     		    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
                     		        input.consume();
@@ -943,7 +966,7 @@ extends SLexer(input, state) {
                         }
                     } //while (true);
 
-                    // grammars/CREOLE.g:247:28: ( '\\r' )?
+                    // grammars/CREOLE.g:251:28: ( '\\r' )?
                     var alt5=2;
                     var LA5_0 = input.LA(1);
 
@@ -952,7 +975,7 @@ extends SLexer(input, state) {
                     }
                     alt5 match{
                         case 1 =>
-                            // grammars/CREOLE.g:247:28: '\\r'
+                            // grammars/CREOLE.g:251:28: '\\r'
                             {
                             smatch('\r'); 
 
@@ -964,11 +987,11 @@ extends SLexer(input, state) {
                     _channel=HIDDEN;
 
                     }case 2 =>
-                    // grammars/CREOLE.g:248:9: '/*' ( options {greedy=false; } : . )* '*/'
+                    // grammars/CREOLE.g:252:9: '/*' ( options {greedy=false; } : . )* '*/'
                     {
                     smatch("/*"); 
 
-                    // grammars/CREOLE.g:248:14: ( options {greedy=false; } : . )*
+                    // grammars/CREOLE.g:252:14: ( options {greedy=false; } : . )*
                     //loop6:
                     var guard = true
                     while(guard) {
@@ -994,7 +1017,7 @@ extends SLexer(input, state) {
 
                         alt6 match{
                     		case 1 =>
-                    		    // grammars/CREOLE.g:248:42: .
+                    		    // grammars/CREOLE.g:252:42: .
                     		    {
                     		    matchAny(); 
 
@@ -1025,8 +1048,8 @@ extends SLexer(input, state) {
         try {
             var _type = WS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:251:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
-            // grammars/CREOLE.g:251:9: ( ' ' | '\\t' | '\\r' | '\\n' )
+            // grammars/CREOLE.g:255:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
+            // grammars/CREOLE.g:255:9: ( ' ' | '\\t' | '\\r' | '\\n' )
             {
             if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
                 input.consume();
@@ -1055,11 +1078,11 @@ extends SLexer(input, state) {
         try {
             var _type = STRING;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:259:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
-            // grammars/CREOLE.g:259:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
+            // grammars/CREOLE.g:263:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
+            // grammars/CREOLE.g:263:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
             {
             smatch('\"'); 
-            // grammars/CREOLE.g:259:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
+            // grammars/CREOLE.g:263:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
             //loop8:
             var guard = true
             while(guard) {
@@ -1076,12 +1099,12 @@ extends SLexer(input, state) {
 
                 alt8 match{
             		case 1 =>
-            		    // grammars/CREOLE.g:259:14: ESC_SEQ
+            		    // grammars/CREOLE.g:263:14: ESC_SEQ
             		    {
             		    mESC_SEQ(); 
 
             		    }case 2 =>
-            		    // grammars/CREOLE.g:259:24: ~ ( '\\\\' | '\"' )
+            		    // grammars/CREOLE.g:263:24: ~ ( '\\\\' | '\"' )
             		    {
             		    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             		        input.consume();
@@ -1117,11 +1140,11 @@ extends SLexer(input, state) {
         try {
             var _type = CHAR;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // grammars/CREOLE.g:262:5: ( '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\'' )
-            // grammars/CREOLE.g:262:8: '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\''
+            // grammars/CREOLE.g:266:5: ( '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\'' )
+            // grammars/CREOLE.g:266:8: '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\''
             {
             smatch('\''); 
-            // grammars/CREOLE.g:262:13: ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) )
+            // grammars/CREOLE.g:266:13: ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) )
             var alt9=2;
             var LA9_0 = input.LA(1);
 
@@ -1139,12 +1162,12 @@ extends SLexer(input, state) {
             }
             alt9 match{
                 case 1 =>
-                    // grammars/CREOLE.g:262:15: ESC_SEQ
+                    // grammars/CREOLE.g:266:15: ESC_SEQ
                     {
                     mESC_SEQ(); 
 
                     }case 2 =>
-                    // grammars/CREOLE.g:262:25: ~ ( '\\'' | '\\\\' )
+                    // grammars/CREOLE.g:266:25: ~ ( '\\'' | '\\\\' )
                     {
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -1176,8 +1199,8 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mEXPONENT() /*throws RecognitionException*/ {
         try {
-            // grammars/CREOLE.g:266:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // grammars/CREOLE.g:266:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // grammars/CREOLE.g:270:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // grammars/CREOLE.g:270:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -1188,7 +1211,7 @@ extends SLexer(input, state) {
                 recover(mse);
                 throw mse;}
 
-            // grammars/CREOLE.g:266:22: ( '+' | '-' )?
+            // grammars/CREOLE.g:270:22: ( '+' | '-' )?
             var alt10=2;
             var LA10_0 = input.LA(1);
 
@@ -1213,7 +1236,7 @@ extends SLexer(input, state) {
                 case _ => //Do nothing
             }
 
-            // grammars/CREOLE.g:266:33: ( '0' .. '9' )+
+            // grammars/CREOLE.g:270:33: ( '0' .. '9' )+
             var cnt11=0;
             //loop11:
             var guard = true
@@ -1228,7 +1251,7 @@ extends SLexer(input, state) {
 
                 alt11 match{
             		case 1 =>
-            		    // grammars/CREOLE.g:266:34: '0' .. '9'
+            		    // grammars/CREOLE.g:270:34: '0' .. '9'
             		    {
             		    matchRange('0','9'); 
 
@@ -1259,8 +1282,8 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mHEX_DIGIT() /*throws RecognitionException*/ {
         try {
-            // grammars/CREOLE.g:269:11: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
-            // grammars/CREOLE.g:269:13: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+            // grammars/CREOLE.g:273:11: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // grammars/CREOLE.g:273:13: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
                 input.consume();
@@ -1284,7 +1307,7 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mESC_SEQ() /*throws RecognitionException*/ {
         try {
-            // grammars/CREOLE.g:273:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UNICODE_ESC | OCTAL_ESC )
+            // grammars/CREOLE.g:277:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UNICODE_ESC | OCTAL_ESC )
             var alt12=3;
             var LA12_0 = input.LA(1);
 
@@ -1324,7 +1347,7 @@ extends SLexer(input, state) {
             }
             alt12 match{
                 case 1 =>
-                    // grammars/CREOLE.g:273:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+                    // grammars/CREOLE.g:277:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
                     {
                     smatch('\\'); 
                     if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1338,12 +1361,12 @@ extends SLexer(input, state) {
 
 
                     }case 2 =>
-                    // grammars/CREOLE.g:274:9: UNICODE_ESC
+                    // grammars/CREOLE.g:278:9: UNICODE_ESC
                     {
                     mUNICODE_ESC(); 
 
                     }case 3 =>
-                    // grammars/CREOLE.g:275:9: OCTAL_ESC
+                    // grammars/CREOLE.g:279:9: OCTAL_ESC
                     {
                     mOCTAL_ESC(); 
 
@@ -1360,7 +1383,7 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mOCTAL_ESC() /*throws RecognitionException*/ {
         try {
-            // grammars/CREOLE.g:280:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
+            // grammars/CREOLE.g:284:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
             var alt13=3;
             var LA13_0 = input.LA(1);
 
@@ -1371,9 +1394,9 @@ extends SLexer(input, state) {
                     var LA13_2 = input.LA(3);
 
                     if ( ((LA13_2>='0' && LA13_2<='7')) ) {
-                        var LA13_4 = input.LA(4);
+                        var LA13_5 = input.LA(4);
 
-                        if ( ((LA13_4>='0' && LA13_4<='7')) ) {
+                        if ( ((LA13_5>='0' && LA13_5<='7')) ) {
                             alt13=1;
                         }
                         else {
@@ -1406,25 +1429,25 @@ extends SLexer(input, state) {
             }
             alt13 match{
                 case 1 =>
-                    // grammars/CREOLE.g:280:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+                    // grammars/CREOLE.g:284:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     smatch('\\'); 
-                    // grammars/CREOLE.g:280:14: ( '0' .. '3' )
-                    // grammars/CREOLE.g:280:15: '0' .. '3'
+                    // grammars/CREOLE.g:284:14: ( '0' .. '3' )
+                    // grammars/CREOLE.g:284:15: '0' .. '3'
                     {
                     matchRange('0','3'); 
 
                     }
 
-                    // grammars/CREOLE.g:280:25: ( '0' .. '7' )
-                    // grammars/CREOLE.g:280:26: '0' .. '7'
+                    // grammars/CREOLE.g:284:25: ( '0' .. '7' )
+                    // grammars/CREOLE.g:284:26: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
                     }
 
-                    // grammars/CREOLE.g:280:36: ( '0' .. '7' )
-                    // grammars/CREOLE.g:280:37: '0' .. '7'
+                    // grammars/CREOLE.g:284:36: ( '0' .. '7' )
+                    // grammars/CREOLE.g:284:37: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -1432,18 +1455,18 @@ extends SLexer(input, state) {
 
 
                     }case 2 =>
-                    // grammars/CREOLE.g:281:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
+                    // grammars/CREOLE.g:285:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     smatch('\\'); 
-                    // grammars/CREOLE.g:281:14: ( '0' .. '7' )
-                    // grammars/CREOLE.g:281:15: '0' .. '7'
+                    // grammars/CREOLE.g:285:14: ( '0' .. '7' )
+                    // grammars/CREOLE.g:285:15: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
                     }
 
-                    // grammars/CREOLE.g:281:25: ( '0' .. '7' )
-                    // grammars/CREOLE.g:281:26: '0' .. '7'
+                    // grammars/CREOLE.g:285:25: ( '0' .. '7' )
+                    // grammars/CREOLE.g:285:26: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -1451,11 +1474,11 @@ extends SLexer(input, state) {
 
 
                     }case 3 =>
-                    // grammars/CREOLE.g:282:9: '\\\\' ( '0' .. '7' )
+                    // grammars/CREOLE.g:286:9: '\\\\' ( '0' .. '7' )
                     {
                     smatch('\\'); 
-                    // grammars/CREOLE.g:282:14: ( '0' .. '7' )
-                    // grammars/CREOLE.g:282:15: '0' .. '7'
+                    // grammars/CREOLE.g:286:14: ( '0' .. '7' )
+                    // grammars/CREOLE.g:286:15: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -1475,8 +1498,8 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mUNICODE_ESC() /*throws RecognitionException*/ {
         try {
-            // grammars/CREOLE.g:287:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
-            // grammars/CREOLE.g:287:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+            // grammars/CREOLE.g:291:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
+            // grammars/CREOLE.g:291:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
             {
             smatch('\\'); 
             smatch('u'); 
@@ -1495,19 +1518,19 @@ extends SLexer(input, state) {
 
     @throws(classOf[RecognitionException])
      def mTokens() /*throws RecognitionException */{
-        // grammars/CREOLE.g:1:8: ( T__56 | T__57 | NU | TRUE | FALSE | RARROW | LET | IN | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR )
-        var alt14=36;
+        // grammars/CREOLE.g:1:8: ( T__58 | T__59 | NU | TRUE | FALSE | ZERO | RARROW | LET | IN | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR )
+        var alt14=37;
         alt14 = dfa14.predict(input);
         alt14 match{
             case 1 =>
-                // grammars/CREOLE.g:1:10: T__56
+                // grammars/CREOLE.g:1:10: T__58
                 {
-                mT__56(); 
+                mT__58(); 
 
                 }case 2 =>
-                // grammars/CREOLE.g:1:16: T__57
+                // grammars/CREOLE.g:1:16: T__59
                 {
-                mT__57(); 
+                mT__59(); 
 
                 }case 3 =>
                 // grammars/CREOLE.g:1:22: NU
@@ -1525,157 +1548,162 @@ extends SLexer(input, state) {
                 mFALSE(); 
 
                 }case 6 =>
-                // grammars/CREOLE.g:1:36: RARROW
+                // grammars/CREOLE.g:1:36: ZERO
+                {
+                mZERO(); 
+
+                }case 7 =>
+                // grammars/CREOLE.g:1:41: RARROW
                 {
                 mRARROW(); 
 
-                }case 7 =>
-                // grammars/CREOLE.g:1:43: LET
+                }case 8 =>
+                // grammars/CREOLE.g:1:48: LET
                 {
                 mLET(); 
 
-                }case 8 =>
-                // grammars/CREOLE.g:1:47: IN
+                }case 9 =>
+                // grammars/CREOLE.g:1:52: IN
                 {
                 mIN(); 
 
-                }case 9 =>
-                // grammars/CREOLE.g:1:50: EQ_OP
+                }case 10 =>
+                // grammars/CREOLE.g:1:55: EQ_OP
                 {
                 mEQ_OP(); 
 
-                }case 10 =>
-                // grammars/CREOLE.g:1:56: LT
+                }case 11 =>
+                // grammars/CREOLE.g:1:61: LT
                 {
                 mLT(); 
 
-                }case 11 =>
-                // grammars/CREOLE.g:1:59: LTEQ
+                }case 12 =>
+                // grammars/CREOLE.g:1:64: LTEQ
                 {
                 mLTEQ(); 
 
-                }case 12 =>
-                // grammars/CREOLE.g:1:64: PLUS
+                }case 13 =>
+                // grammars/CREOLE.g:1:69: PLUS
                 {
                 mPLUS(); 
 
-                }case 13 =>
-                // grammars/CREOLE.g:1:69: MINUS
+                }case 14 =>
+                // grammars/CREOLE.g:1:74: MINUS
                 {
                 mMINUS(); 
 
-                }case 14 =>
-                // grammars/CREOLE.g:1:75: LPAREN
+                }case 15 =>
+                // grammars/CREOLE.g:1:80: LPAREN
                 {
                 mLPAREN(); 
 
-                }case 15 =>
-                // grammars/CREOLE.g:1:82: RPAREN
+                }case 16 =>
+                // grammars/CREOLE.g:1:87: RPAREN
                 {
                 mRPAREN(); 
 
-                }case 16 =>
-                // grammars/CREOLE.g:1:89: LCURL
+                }case 17 =>
+                // grammars/CREOLE.g:1:94: LCURL
                 {
                 mLCURL(); 
 
-                }case 17 =>
-                // grammars/CREOLE.g:1:95: RCURL
+                }case 18 =>
+                // grammars/CREOLE.g:1:100: RCURL
                 {
                 mRCURL(); 
 
-                }case 18 =>
-                // grammars/CREOLE.g:1:101: RBRACK
+                }case 19 =>
+                // grammars/CREOLE.g:1:106: RBRACK
                 {
                 mRBRACK(); 
 
-                }case 19 =>
-                // grammars/CREOLE.g:1:108: LBRACK
+                }case 20 =>
+                // grammars/CREOLE.g:1:113: LBRACK
                 {
                 mLBRACK(); 
 
-                }case 20 =>
-                // grammars/CREOLE.g:1:115: COMMA
+                }case 21 =>
+                // grammars/CREOLE.g:1:120: COMMA
                 {
                 mCOMMA(); 
 
-                }case 21 =>
-                // grammars/CREOLE.g:1:121: POINT
+                }case 22 =>
+                // grammars/CREOLE.g:1:126: POINT
                 {
                 mPOINT(); 
 
-                }case 22 =>
-                // grammars/CREOLE.g:1:127: SEMI
+                }case 23 =>
+                // grammars/CREOLE.g:1:132: SEMI
                 {
                 mSEMI(); 
 
-                }case 23 =>
-                // grammars/CREOLE.g:1:132: COLON
+                }case 24 =>
+                // grammars/CREOLE.g:1:137: COLON
                 {
                 mCOLON(); 
 
-                }case 24 =>
-                // grammars/CREOLE.g:1:138: SLASH
+                }case 25 =>
+                // grammars/CREOLE.g:1:143: SLASH
                 {
                 mSLASH(); 
 
-                }case 25 =>
-                // grammars/CREOLE.g:1:144: BAR
+                }case 26 =>
+                // grammars/CREOLE.g:1:149: BAR
                 {
                 mBAR(); 
 
-                }case 26 =>
-                // grammars/CREOLE.g:1:148: BANG
+                }case 27 =>
+                // grammars/CREOLE.g:1:153: BANG
                 {
                 mBANG(); 
 
-                }case 27 =>
-                // grammars/CREOLE.g:1:153: TILDE
+                }case 28 =>
+                // grammars/CREOLE.g:1:158: TILDE
                 {
                 mTILDE(); 
 
-                }case 28 =>
-                // grammars/CREOLE.g:1:159: UNDEF
+                }case 29 =>
+                // grammars/CREOLE.g:1:164: UNDEF
                 {
                 mUNDEF(); 
 
-                }case 29 =>
-                // grammars/CREOLE.g:1:165: IMARK
+                }case 30 =>
+                // grammars/CREOLE.g:1:170: IMARK
                 {
                 mIMARK(); 
 
-                }case 30 =>
-                // grammars/CREOLE.g:1:171: R_ID
+                }case 31 =>
+                // grammars/CREOLE.g:1:176: R_ID
                 {
                 mR_ID(); 
 
-                }case 31 =>
-                // grammars/CREOLE.g:1:176: V_ID
+                }case 32 =>
+                // grammars/CREOLE.g:1:181: V_ID
                 {
                 mV_ID(); 
 
-                }case 32 =>
-                // grammars/CREOLE.g:1:181: INT
+                }case 33 =>
+                // grammars/CREOLE.g:1:186: INT
                 {
                 mINT(); 
 
-                }case 33 =>
-                // grammars/CREOLE.g:1:185: COMMENT
+                }case 34 =>
+                // grammars/CREOLE.g:1:190: COMMENT
                 {
                 mCOMMENT(); 
 
-                }case 34 =>
-                // grammars/CREOLE.g:1:193: WS
+                }case 35 =>
+                // grammars/CREOLE.g:1:198: WS
                 {
                 mWS(); 
 
-                }case 35 =>
-                // grammars/CREOLE.g:1:196: STRING
+                }case 36 =>
+                // grammars/CREOLE.g:1:201: STRING
                 {
                 mSTRING(); 
 
-                }case 36 =>
-                // grammars/CREOLE.g:1:203: CHAR
+                }case 37 =>
+                // grammars/CREOLE.g:1:208: CHAR
                 {
                 mCHAR(); 
 
@@ -1689,43 +1717,45 @@ extends SLexer(input, state) {
     protected val /*DFA14*/ dfa14 = new DFA14(this)
     /*
     final val DFA14_eotS =
-        "\1\uffff\4\34\1\uffff\2\34\15\uffff\1\54\13\uffff\5\34\3\uffff\1"+
-        "\34\1\63\2\uffff\2\34\1\66\2\34\1\71\1\uffff\2\34\1\uffff\1\74\1"+
-        "\34\1\uffff\2\34\1\uffff\1\100\1\101\1\34\2\uffff\1\103\1\uffff";
+        "\1\uffff\4\35\1\47\1\uffff\2\35\15\uffff\1\56\13\uffff\5\35\4\uffff"+
+        "\1\35\1\65\2\uffff\2\35\1\70\2\35\1\73\1\uffff\2\35\1\uffff\1\76"+
+        "\1\35\1\uffff\2\35\1\uffff\1\102\1\103\1\35\2\uffff\1\105\1\uffff";
     final val DFA14_eofS =
-        "\104\uffff";
+        "\106\uffff";
     final val DFA14_minS =
-        "\1\11\1\162\1\145\1\162\1\141\1\74\1\145\1\156\15\uffff\1\52\13"+
-        "\uffff\1\142\1\151\1\167\1\165\1\154\3\uffff\1\164\1\60\2\uffff"+
+        "\1\11\1\162\1\145\1\162\1\141\1\60\1\74\1\145\1\156\15\uffff\1\52"+
+        "\13\uffff\1\142\1\151\1\167\1\165\1\154\4\uffff\1\164\1\60\2\uffff"+
         "\1\154\1\166\1\60\1\145\1\163\1\60\1\uffff\1\151\1\141\1\uffff\1"+
         "\60\1\145\1\uffff\1\143\1\164\1\uffff\2\60\1\145\2\uffff\1\60\1"+
         "\uffff";
     final val DFA14_maxS =
-        "\1\176\1\165\1\145\1\162\1\141\1\76\1\145\1\156\15\uffff\1\57\13"+
-        "\uffff\1\142\1\151\1\167\1\165\1\154\3\uffff\1\164\1\172\2\uffff"+
-        "\1\154\1\166\1\172\1\145\1\163\1\172\1\uffff\1\151\1\141\1\uffff"+
-        "\1\172\1\145\1\uffff\1\143\1\164\1\uffff\2\172\1\145\2\uffff\1\172"+
-        "\1\uffff";
+        "\1\176\1\165\1\145\1\162\1\141\1\71\1\76\1\145\1\156\15\uffff\1"+
+        "\57\13\uffff\1\142\1\151\1\167\1\165\1\154\4\uffff\1\164\1\172\2"+
+        "\uffff\1\154\1\166\1\172\1\145\1\163\1\172\1\uffff\1\151\1\141\1"+
+        "\uffff\1\172\1\145\1\uffff\1\143\1\164\1\uffff\2\172\1\145\2\uffff"+
+        "\1\172\1\uffff";
     final val DFA14_acceptS =
-        "\10\uffff\1\12\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25"+
-        "\1\26\1\27\1\uffff\1\31\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\42"+
-        "\1\43\1\44\5\uffff\1\6\1\11\1\13\2\uffff\1\41\1\30\6\uffff\1\10"+
-        "\2\uffff\1\3\2\uffff\1\7\2\uffff\1\4\3\uffff\1\5\1\1\1\uffff\1\2";
+        "\11\uffff\1\13\1\15\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1\26"+
+        "\1\27\1\30\1\uffff\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\41\1\43"+
+        "\1\44\1\45\5\uffff\1\6\1\7\1\12\1\14\2\uffff\1\42\1\31\6\uffff\1"+
+        "\11\2\uffff\1\3\2\uffff\1\10\2\uffff\1\4\3\uffff\1\5\1\1\1\uffff"+
+        "\1\2";
     val DFA14_specialS =
-        "\104\uffff}>";
+        "\106\uffff}>";
     final val DFA14_transitionS = Array[String](
-        "\2\36\2\uffff\1\36\22\uffff\1\36\1\27\1\37\4\uffff\1\40\1\13\1\14"+
-        "\1\uffff\1\11\1\21\1\12\1\22\1\25\12\35\1\24\1\23\1\10\1\5\1\uffff"+
-        "\1\32\1\uffff\32\33\1\20\1\uffff\1\17\1\uffff\1\31\1\uffff\5\34"+
-        "\1\4\2\34\1\7\2\34\1\6\1\34\1\2\1\34\1\1\3\34\1\3\6\34\1\15\1\26"+
-        "\1\16\1\30",
-        "\1\42\2\uffff\1\41",
-        "\1\43",
+        "\2\37\2\uffff\1\37\22\uffff\1\37\1\30\1\40\4\uffff\1\41\1\14\1\15"+
+        "\1\uffff\1\12\1\22\1\13\1\23\1\26\1\5\11\36\1\25\1\24\1\11\1\6\1"+
+        "\uffff\1\33\1\uffff\32\34\1\21\1\uffff\1\20\1\uffff\1\32\1\uffff"+
+        "\5\35\1\4\2\35\1\10\2\35\1\7\1\35\1\2\1\35\1\1\3\35\1\3\6\35\1\16"+
+        "\1\27\1\17\1\31",
+        "\1\43\2\uffff\1\42",
         "\1\44",
         "\1\45",
-        "\1\50\1\47\1\46",
-        "\1\51",
-        "\1\52",
+        "\1\46",
+        "\12\36",
+        "\1\52\1\51\1\50",
+        "\1\53",
+        "\1\54",
         "",
         "",
         "",
@@ -1739,7 +1769,7 @@ extends SLexer(input, state) {
         "",
         "",
         "",
-        "\1\53\4\uffff\1\53",
+        "\1\55\4\uffff\1\55",
         "",
         "",
         "",
@@ -1751,40 +1781,41 @@ extends SLexer(input, state) {
         "",
         "",
         "",
-        "\1\55",
-        "\1\56",
         "\1\57",
         "\1\60",
         "\1\61",
-        "",
-        "",
-        "",
         "\1\62",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\1\63",
+        "",
+        "",
         "",
         "",
         "\1\64",
-        "\1\65",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "",
+        "",
+        "\1\66",
         "\1\67",
-        "\1\70",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-        "",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "\1\71",
         "\1\72",
-        "\1\73",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
         "",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\1\74",
         "\1\75",
         "",
-        "\1\76",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
         "\1\77",
         "",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-        "\1\102",
+        "\1\100",
+        "\1\101",
+        "",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "\1\104",
         "",
         "",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
         ""
     )
 
@@ -1804,44 +1835,46 @@ extends SLexer(input, state) {
     */
     class DFA14(recognizer:BaseRecognizer ) extends DFA {
     		final val DFA14_eotS =
-    		    "\1\uffff\4\34\1\uffff\2\34\15\uffff\1\54\13\uffff\5\34\3\uffff"+
-        "\1\34\1\63\2\uffff\2\34\1\66\2\34\1\71\1\uffff\2\34\1\uffff\1\74"+
-        "\1\34\1\uffff\2\34\1\uffff\1\100\1\101\1\34\2\uffff\1\103\1\uffff";
-    		final val DFA14_eofS =
-    		    "\104\uffff";
-    		final val DFA14_minS =
-    		    "\1\11\1\162\1\145\1\162\1\141\1\74\1\145\1\156\15\uffff\1\52\13"+
-        "\uffff\1\142\1\151\1\167\1\165\1\154\3\uffff\1\164\1\60\2\uffff"+
-        "\1\154\1\166\1\60\1\145\1\163\1\60\1\uffff\1\151\1\141\1\uffff\1"+
-        "\60\1\145\1\uffff\1\143\1\164\1\uffff\2\60\1\145\2\uffff\1\60\1"+
+    		    "\1\uffff\4\35\1\47\1\uffff\2\35\15\uffff\1\56\13\uffff\5\35\4"+
+        "\uffff\1\35\1\65\2\uffff\2\35\1\70\2\35\1\73\1\uffff\2\35\1\uffff"+
+        "\1\76\1\35\1\uffff\2\35\1\uffff\1\102\1\103\1\35\2\uffff\1\105\1"+
         "\uffff";
-    		final val DFA14_maxS =
-    		    "\1\176\1\165\1\145\1\162\1\141\1\76\1\145\1\156\15\uffff\1\57"+
-        "\13\uffff\1\142\1\151\1\167\1\165\1\154\3\uffff\1\164\1\172\2\uffff"+
-        "\1\154\1\166\1\172\1\145\1\163\1\172\1\uffff\1\151\1\141\1\uffff"+
-        "\1\172\1\145\1\uffff\1\143\1\164\1\uffff\2\172\1\145\2\uffff\1\172"+
+    		final val DFA14_eofS =
+    		    "\106\uffff";
+    		final val DFA14_minS =
+    		    "\1\11\1\162\1\145\1\162\1\141\1\60\1\74\1\145\1\156\15\uffff\1"+
+        "\52\13\uffff\1\142\1\151\1\167\1\165\1\154\4\uffff\1\164\1\60\2"+
+        "\uffff\1\154\1\166\1\60\1\145\1\163\1\60\1\uffff\1\151\1\141\1\uffff"+
+        "\1\60\1\145\1\uffff\1\143\1\164\1\uffff\2\60\1\145\2\uffff\1\60"+
         "\1\uffff";
+    		final val DFA14_maxS =
+    		    "\1\176\1\165\1\145\1\162\1\141\1\71\1\76\1\145\1\156\15\uffff"+
+        "\1\57\13\uffff\1\142\1\151\1\167\1\165\1\154\4\uffff\1\164\1\172"+
+        "\2\uffff\1\154\1\166\1\172\1\145\1\163\1\172\1\uffff\1\151\1\141"+
+        "\1\uffff\1\172\1\145\1\uffff\1\143\1\164\1\uffff\2\172\1\145\2\uffff"+
+        "\1\172\1\uffff";
     		final val DFA14_acceptS =
-    		    "\10\uffff\1\12\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1"+
-        "\25\1\26\1\27\1\uffff\1\31\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1"+
-        "\42\1\43\1\44\5\uffff\1\6\1\11\1\13\2\uffff\1\41\1\30\6\uffff\1"+
-        "\10\2\uffff\1\3\2\uffff\1\7\2\uffff\1\4\3\uffff\1\5\1\1\1\uffff"+
+    		    "\11\uffff\1\13\1\15\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1"+
+        "\26\1\27\1\30\1\uffff\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\41\1"+
+        "\43\1\44\1\45\5\uffff\1\6\1\7\1\12\1\14\2\uffff\1\42\1\31\6\uffff"+
+        "\1\11\2\uffff\1\3\2\uffff\1\10\2\uffff\1\4\3\uffff\1\5\1\1\1\uffff"+
         "\1\2";
     		val DFA14_specialS =
-    		    "\104\uffff}>";
+    		    "\106\uffff}>";
     		final val DFA14_transitionS = Array[String](
-    		    "\2\36\2\uffff\1\36\22\uffff\1\36\1\27\1\37\4\uffff\1\40\1\13\1"+
-    		    "\14\1\uffff\1\11\1\21\1\12\1\22\1\25\12\35\1\24\1\23\1\10\1\5"+
-    		    "\1\uffff\1\32\1\uffff\32\33\1\20\1\uffff\1\17\1\uffff\1\31\1\uffff"+
-    		    "\5\34\1\4\2\34\1\7\2\34\1\6\1\34\1\2\1\34\1\1\3\34\1\3\6\34\1"+
-    		    "\15\1\26\1\16\1\30",
-    		    "\1\42\2\uffff\1\41",
-    		    "\1\43",
+    		    "\2\37\2\uffff\1\37\22\uffff\1\37\1\30\1\40\4\uffff\1\41\1\14\1"+
+    		    "\15\1\uffff\1\12\1\22\1\13\1\23\1\26\1\5\11\36\1\25\1\24\1\11"+
+    		    "\1\6\1\uffff\1\33\1\uffff\32\34\1\21\1\uffff\1\20\1\uffff\1\32"+
+    		    "\1\uffff\5\35\1\4\2\35\1\10\2\35\1\7\1\35\1\2\1\35\1\1\3\35\1"+
+    		    "\3\6\35\1\16\1\27\1\17\1\31",
+    		    "\1\43\2\uffff\1\42",
     		    "\1\44",
     		    "\1\45",
-    		    "\1\50\1\47\1\46",
-    		    "\1\51",
-    		    "\1\52",
+    		    "\1\46",
+    		    "\12\36",
+    		    "\1\52\1\51\1\50",
+    		    "\1\53",
+    		    "\1\54",
     		    "",
     		    "",
     		    "",
@@ -1855,7 +1888,7 @@ extends SLexer(input, state) {
     		    "",
     		    "",
     		    "",
-    		    "\1\53\4\uffff\1\53",
+    		    "\1\55\4\uffff\1\55",
     		    "",
     		    "",
     		    "",
@@ -1867,40 +1900,41 @@ extends SLexer(input, state) {
     		    "",
     		    "",
     		    "",
-    		    "\1\55",
-    		    "\1\56",
     		    "\1\57",
     		    "\1\60",
     		    "\1\61",
-    		    "",
-    		    "",
-    		    "",
     		    "\1\62",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\1\63",
+    		    "",
+    		    "",
     		    "",
     		    "",
     		    "\1\64",
-    		    "\1\65",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "",
+    		    "",
+    		    "\1\66",
     		    "\1\67",
-    		    "\1\70",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-    		    "",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "\1\71",
     		    "\1\72",
-    		    "\1\73",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
     		    "",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\1\74",
     		    "\1\75",
     		    "",
-    		    "\1\76",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
     		    "\1\77",
     		    "",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-    		    "\1\102",
+    		    "\1\100",
+    		    "\1\101",
+    		    "",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "\1\104",
     		    "",
     		    "",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
     		    ""
     		)
 
@@ -1919,7 +1953,7 @@ extends SLexer(input, state) {
     		    }
     		}
 
-        override def getDescription(): String = "1:1: Tokens : ( T__56 | T__57 | NU | TRUE | FALSE | RARROW | LET | IN | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR );"
+        override def getDescription(): String = "1:1: Tokens : ( T__58 | T__59 | NU | TRUE | FALSE | ZERO | RARROW | LET | IN | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR );"
         
     }
  

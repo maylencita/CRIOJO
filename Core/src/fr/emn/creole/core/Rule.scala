@@ -11,10 +11,18 @@ import fr.emn.creole.util.Logger
  * To change this template use File | Settings | File Templates.
  */
 
-class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) extends RelationObserver with Guard{
+object Indexator{
+  var index=0
+  def getIndex = {
+     index +=1
+     index
+  }
+}
+
+class Rule(val head:List[Atom], val body:List[Atom], val guard:Guard) extends RelationObserver{
 
   def this(head:List[Atom], body:List[Atom]){
-    this(head, body, List())
+    this(head, body, new Guard)
   }
 
   var linear = false;
@@ -22,7 +30,7 @@ class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) ext
   var scope:List[Variable] = List()
 
   var solution:Solution = _
-  var relations:List[Relation] = List() 
+//  var relations:List[Relation] = List() 
 
   def inactivate{
     active = false;
@@ -33,51 +41,68 @@ class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) ext
   }
 
   def setScope(newScope: List[Variable]){
-    this.scope = newScope
+    this.scope = newScope//.map(x => x+Indexator.getIndex)
   }
 
-  def execute{
-    Logger.log("============================================================================")
-    Logger.log("[Rule.activate] " + this)
+  def isAxiom:Boolean = head.isEmpty
+  
+  def execute:Boolean =  execute(List())
+
+  def execute (subs:List[Substitution]):Boolean = {
+//    Logger.log("============================================================================")
+    Logger.log("[Rule.execute] " + this)
+//    Logger.log("[Rule.execute] Substitutions: " + subs)
+    Logger.log("[Rule.execute] solution= " + solution)
     var matches = List[Atom]()
-    if (!{matches = evalHead; matches}.isEmpty) &&
-      (guards.isEmpty || guards.forall(_.eval(this.solution))) 
+    var result = false
 
-      applyReaction(matches)
+    if (this.isAxiom || !{matches= solution.findMatches(head,subs); matches}.isEmpty){
+      Logger.log("[Rule.execute] Found Matches: " + matches + " for rule " + this)
+      Logger.levelDown
+      val subs2 = subs.union(getSubstitutions(matches))
+      if (guard.empty || guard.eval(solution, subs2)){
+        Logger.levelUp
+        applyReaction(subs2)
+        result=true
+      }else
+        Logger.levelUp
+    }
+
+    //Activate atoms that were innactivated but not eliminated
+    solution.revert
+    result
   }
 
-  def evalHead:List[Atom] = head match{
-    case True ::_ => this.head
-    case _ => solution.findMatches(this.head)
+  private def evalHead(subs:List[Substitution]):List[Atom] =
+    head match{
+    case True ::_ => solution.foreach(a => if (a == True) a.inactivate ); this.head
+    case _ => solution.findMatches(this.head,subs)
   }
 
-  def applyReaction(matches:List[Atom]):Boolean = {
-    Logger.log("============================================================================")
-    Logger.log("[Rule.applyReaction] Found Matches: " + matches + " for rule " + this)
+  private def applyReaction(subs:List[Substitution]):Boolean = {
     var newSolution = solution.clone
-    var subs = getSubstitutions(this.head, this.scope, matches)
+//    Logger.log("============================================================================")
     Logger.log("[Rule.applyReaction] Substitutions: " + subs)
 
-    val newAtoms = this.body.map{
+    var newAtoms = this.body.map{
       a => val newA = a.applySubstitutions(subs)
-      if (newA != True && newA != False)
-        newA.relation = relations.find(r => r.name == newA.relName) match{
-          case Some(r) => r
-          case _ => null //TODO manage invalid relation error
-        }
       newA
     }
+    newAtoms = if(newAtoms.contains(False)) List() else newAtoms
+    
+    Logger.log("[Rule.applyReaction] newAtoms=" + newAtoms)
 
     newSolution.cleanup
     newSolution.addMolecule(newAtoms)
 
     Logger.log("[Rule.applyReaction] solution=" + solution)
-    Logger.log("[Rule.applyReaction] newSolution=" + newSolution)
+//    Logger.log("[Rule.applyReaction] newSolution=" + newSolution)
 
     if (newSolution != solution){
       solution.update(newSolution)
-      Logger.log("[Rule.applyReaction] applied!")
-      newAtoms.foreach(_.relation.notifyObservers)
+      Logger.log("[Rule.applyReaction] newSolution=" + solution)
+      Logger.log("[Rule.applyReaction] applied! "+ this)
+      newAtoms.foreach(a => a.relation.notifyObservers(a))
       true
     }else{
       solution.revert
@@ -85,7 +110,7 @@ class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) ext
     }
   }
 
-  def getSubstitutions(ruleAtoms:List[Atom], scope:List[Variable], solAtoms:List[Atom]):List[Substitution] = {
+  def getSubstitutions(solAtoms:List[Atom]):List[Substitution] = {
     def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
       case List() => acum
       case ra :: rest =>
@@ -95,20 +120,21 @@ class Rule(val head:List[Atom], val body:List[Atom], val guards:List[Guard]) ext
         }
     }
 
-    getSubsRec(ruleAtoms, solAtoms, scope.map(v => (v,v)))
+    getSubsRec(head, solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
   }
 
-  override def eval(solution:Solution):Boolean = {
-    this.solution = solution.clone
-    execute
-    this.solution.isTrue
+  override def receiveUpdate(atom:Atom){
+    Logger.log("============================================================================")
+    Logger.log("[Rule.receiveUpdate] " + this)
+    Logger.levelDown
+    execute(getSubstitutions(List(atom)))
+    Logger.levelUp
+    Logger.log("============================================================================")
   }
 
-  override def receiveUpdate{
-    if (active)
-      execute
-  }
-
-  override def toString = head.mkString("", "&" ,"") + "=>" + (if(!scope.isEmpty) "v"+scope.mkString("(",",",")")+"." else "") + body.mkString("", "&" ,"")
+  override def toString = head.mkString("", "," ,"") + "=>" +
+          (if(!scope.isEmpty) "v"+scope.mkString("(",",",")")+"." else "") +
+          (if(!guard.empty) "[" + guard + "]?" else "") +
+          body.mkString("", "," ,"")
 
 }

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/CREOLE.iml" filepath="$PROJECT_DIR$/CREOLE.iml" />
       <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/PiVot/PiVot.iml" filepath="$PROJECT_DIR$/PiVot/PiVot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WebApp/WebApp.iml" filepath="$PROJECT_DIR$/WebApp/WebApp.iml" />
     </modules>
   </component>
 </project>
