@@ -1,0 +1,78 @@
+digraph {
+
+	ordering=out;
+	ranksep=.4;
+	bgcolor="lightgrey"; node [shape=box, fixedsize=false, fontsize=12, fontname="Helvetica-bold", fontcolor="blue"
+		width=.25, height=.25, color="black", fillcolor="white", style="filled, solid, bold"];
+	edge [arrowsize=.5, color="black", style="bold"]
+
+  n0 [label="PROCESS"];
+  n1 [label="DECLARATION"];
+  n1 [label="DECLARATION"];
+  n2 [label="PUBLIC"];
+  n2 [label="PUBLIC"];
+  n3 [label="B"];
+  n4 [label="PRIVATE"];
+  n4 [label="PRIVATE"];
+  n5 [label="EMPTYLIST"];
+  n6 [label="SCRIPT"];
+  n6 [label="SCRIPT"];
+  n7 [label="RULE"];
+  n7 [label="RULE"];
+  n8 [label="GUARD"];
+  n8 [label="GUARD"];
+  n9 [label="RULE"];
+  n9 [label="RULE"];
+  n10 [label="HEAD"];
+  n10 [label="HEAD"];
+  n11 [label="ATOM"];
+  n11 [label="ATOM"];
+  n12 [label="B"];
+  n13 [label="VARS"];
+  n13 [label="VARS"];
+  n14 [label="x"];
+  n15 [label="BODY"];
+  n15 [label="BODY"];
+  n16 [label="false"];
+  n17 [label="HEAD"];
+  n17 [label="HEAD"];
+  n18 [label="true"];
+  n19 [label="BODY"];
+  n19 [label="BODY"];
+  n20 [label="ATOM"];
+  n20 [label="ATOM"];
+  n21 [label="B"];
+  n22 [label="VARS"];
+  n22 [label="VARS"];
+  n23 [label="x"];
+  n24 [label="new"];
+  n24 [label="new"];
+  n25 [label="x"];
+
+  n0 -> n1 // "PROCESS" -> "DECLARATION"
+  n1 -> n2 // "DECLARATION" -> "PUBLIC"
+  n2 -> n3 // "PUBLIC" -> "B"
+  n1 -> n4 // "DECLARATION" -> "PRIVATE"
+  n4 -> n5 // "PRIVATE" -> "EMPTYLIST"
+  n0 -> n6 // "PROCESS" -> "SCRIPT"
+  n6 -> n7 // "SCRIPT" -> "RULE"
+  n7 -> n8 // "RULE" -> "GUARD"
+  n8 -> n9 // "GUARD" -> "RULE"
+  n9 -> n10 // "RULE" -> "HEAD"
+  n10 -> n11 // "HEAD" -> "ATOM"
+  n11 -> n12 // "ATOM" -> "B"
+  n11 -> n13 // "ATOM" -> "VARS"
+  n13 -> n14 // "VARS" -> "x"
+  n9 -> n15 // "RULE" -> "BODY"
+  n15 -> n16 // "BODY" -> "false"
+  n7 -> n17 // "RULE" -> "HEAD"
+  n17 -> n18 // "HEAD" -> "true"
+  n7 -> n19 // "RULE" -> "BODY"
+  n19 -> n20 // "BODY" -> "ATOM"
+  n20 -> n21 // "ATOM" -> "B"
+  n20 -> n22 // "ATOM" -> "VARS"
+  n22 -> n23 // "VARS" -> "x"
+  n7 -> n24 // "RULE" -> "new"
+  n24 -> n25 // "new" -> "x"
+
+}

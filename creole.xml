@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="creole" default="all">
+  
+  
+  <property file="creole.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm.jar"/>
+    <pathelement location="${javac2.home}/asm-commons.jar"/>
+  </path>
+  <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+  <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value="-target 1.6"/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+    <include name="**/?*.stg,?"/>
+    <include name="**/*.crl"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
+  <path id="jdk.classpath.1.6">
+    <fileset dir="${jdk.home.1.6}">
+      <include name="../../1.6/Home/lib/deploy.jar"/>
+      <include name="../../1.6/Home/lib/dt.jar"/>
+      <include name="../../1.6/Home/lib/javaws.jar"/>
+      <include name="../../1.6/Home/lib/jce.jar"/>
+      <include name="../../1.6/Home/lib/management-agent.jar"/>
+      <include name="../../1.6/Home/lib/plugin.jar"/>
+      <include name="../../1.6/Home/lib/sa-jdi.jar"/>
+      <include name="../../1.6/Home/../Classes/alt-rt.jar"/>
+      <include name="../../1.6/Home/../Classes/charsets.jar"/>
+      <include name="../../1.6/Home/../Classes/classes.jar"/>
+      <include name="../../1.6/Home/../Classes/dt.jar"/>
+      <include name="../../1.6/Home/../Classes/jce.jar"/>
+      <include name="../../1.6/Home/../Classes/jconsole.jar"/>
+      <include name="../../1.6/Home/../Classes/jsse.jar"/>
+      <include name="../../1.6/Home/../Classes/laf.jar"/>
+      <include name="../../1.6/Home/../Classes/management-agent.jar"/>
+      <include name="../../1.6/Home/../Classes/ui.jar"/>
+      <include name="../../1.6/Home/lib/ext/apple_provider.jar"/>
+      <include name="../../1.6/Home/lib/ext/dnsns.jar"/>
+      <include name="../../1.6/Home/lib/ext/localedata.jar"/>
+      <include name="../../1.6/Home/lib/ext/sunjce_provider.jar"/>
+      <include name="../../1.6/Home/lib/ext/sunpkcs11.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.maven:_asm:asm:3.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/asm/asm/3.1/asm-3.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-framework:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-framework/1.8.3/grizzly-framework-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-http-servlet:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-http-servlet/1.8.3/grizzly-http-servlet-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-http-utils:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-http-utils/1.8.3/grizzly-http-utils-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-http:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-http/1.8.3/grizzly-http-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-portunif:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-portunif/1.8.3/grizzly-portunif-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-rcm:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-rcm/1.8.3/grizzly-rcm-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.grizzly:grizzly-servlet-webserver:1.8.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/grizzly/grizzly-servlet-webserver/1.8.3/grizzly-servlet-webserver-1.8.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.jersey:jersey-client:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-client/1.3/jersey-client-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.jersey:jersey-core:1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.0/jersey-core-1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.jersey:jersey-core:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.3/jersey-core-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.jersey:jersey-json:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-json/1.3/jersey-json-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.jersey:jersey-server:1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.0/jersey-server-1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.jersey:jersey-server:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.3/jersey-server-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.sun.xml.bind:jaxb-impl:2.1.12.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/sun/xml/bind/jaxb-impl/2.1.12/jaxb-impl-2.1.12.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.activation:activation:1.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/activation/activation/1.1/activation-1.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.servlet:servlet-api:2.5.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.ws.rs:jsr311-api:1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.0/jsr311-api-1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.xml.bind:jaxb-api:2.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.xml.stream:stax-api:1.0-2.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar"/>
+  </path>
+  
+  <path id="library.maven:_junit:junit:3.8.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/junit/junit/3.8.1/junit-3.8.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_junit:junit:3.8.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/junit/junit/3.8.2/junit-3.8.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.codehaus.jackson:jackson-core-asl:1.1.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.1.1/jackson-core-asl-1.1.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.codehaus.jettison:jettison:1.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/codehaus/jettison/jettison/1.1/jettison-1.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish.api:dtds:resources:9.0.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/api/dtds/9.0.2/dtds-9.0.2-resources.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish.api:schemas:resources:9.0.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/api/schemas/9.0.2/schemas-9.0.2-resources.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish.distributions:web-all:10.0-build-20080812.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/distributions/web-all/10.0-build-20080812/web-all-10.0-build-20080812.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish.embedded:gf-embedded-api:1.0-alpha-4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/embedded/gf-embedded-api/1.0-alpha-4/gf-embedded-api-1.0-alpha-4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.scala-lang:scala-library:2.8.0.rc1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/scala-lang/scala-library/2.8.0.RC1/scala-library-2.8.0.RC1.jar"/>
+  </path>
+  
+  <path id="library.maven:_stax:stax-api:1.0.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
+  </path>
+  
+  <path id="library.scala-2.8.0.beta1.classpath">
+    <pathelement location="/Applications/scala-2.8.0.RC1/lib/scala-compiler.jar"/>
+    <pathelement location="/Applications/scala-2.8.0.RC1/lib/scala-library.jar"/>
+  </path>
+  
+  
+  <!-- Global Libraries -->
+  
+  <path id="library.antlr.classpath">
+    <pathelement location="/Applications/ANTLR/antlr-3.2.jar"/>
+  </path>
+  
+  <path id="library.scala_2.8.classpath">
+    <pathelement location="/Users/mayleen/IntelliJ_WS/scala-compiler.jar"/>
+    <pathelement location="/Users/mayleen/IntelliJ_WS/scala-library.jar"/>
+  </path>
+  
+  <!-- Custom Compiler Taskdefs -->
+  <property name="scalac.task.sdk" value="library.scala-2.8.0.beta1.classpath"/>
+  <taskdef name="scalac" classname="scala.tools.ant.Scalac" classpathref="${scalac.task.sdk}"/>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module ANTLR_Scala -->
+  
+  <dirname property="module.antlr_scala.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.antlr_scala" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.antlr_scala" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.antlr_scala" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.antlr_scala" value="${compiler.args}"/>
+  
+  <property name="antlr_scala.output.dir" value="${module.antlr_scala.basedir}/out/production/ANTLR_Scala"/>
+  <property name="antlr_scala.testoutput.dir" value="${module.antlr_scala.basedir}/out/test/ANTLR_Scala"/>
+  
+  <path id="antlr_scala.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="antlr_scala.module.classpath">
+    <path refid="${module.jdk.classpath.antlr_scala}"/>
+    <path refid="library.scala_2.8.classpath"/>
+    <path refid="library.antlr.classpath"/>
+  </path>
+  
+  <path id="antlr_scala.runtime.module.classpath">
+    <pathelement location="${antlr_scala.output.dir}"/>
+    <pathelement location="${antlr_scala.testoutput.dir}"/>
+    <path refid="library.scala_2.8.classpath"/>
+    <path refid="library.antlr.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.antlr_scala">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.antlr_scala">
+    <patternset refid="excluded.from.module.antlr_scala"/>
+  </patternset>
+  
+  <path id="antlr_scala.module.sourcepath">
+    <dirset dir="${module.antlr_scala.basedir}/ANTLR_Scala">
+      <include name="src"/>
+      <include name="resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.antlr_scala" depends="compile.module.antlr_scala.production,compile.module.antlr_scala.tests" description="Compile module ANTLR_Scala"/>
+  
+  <target name="compile.module.antlr_scala.production" description="Compile module ANTLR_Scala; production classes">
+    <mkdir dir="${antlr_scala.output.dir}"/>
+    <javac2 destdir="${antlr_scala.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.antlr_scala}/javac">
+      <compilerarg line="${compiler.args.antlr_scala}"/>
+      <bootclasspath refid="antlr_scala.module.bootclasspath"/>
+      <classpath refid="antlr_scala.module.classpath"/>
+      <src refid="antlr_scala.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.antlr_scala"/>
+    </javac2>
+    
+    <copy todir="${antlr_scala.output.dir}">
+      <fileset dir="${module.antlr_scala.basedir}/ANTLR_Scala/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.antlr_scala.basedir}/ANTLR_Scala/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.antlr_scala.tests" depends="compile.module.antlr_scala.production" description="compile module ANTLR_Scala; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.antlr_scala" description="cleanup module">
+    <delete dir="${antlr_scala.output.dir}"/>
+    <delete dir="${antlr_scala.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module C-Services -->
+  
+  <dirname property="module.c-services.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.c-services" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.c-services" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.c-services" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.c-services" value="${compiler.args}"/>
+  
+  <property name="c-services.output.dir" value="${module.c-services.basedir}/C-Services/target/classes"/>
+  <property name="c-services.testoutput.dir" value="${module.c-services.basedir}/C-Services/target/test-classes"/>
+  
+  <path id="c-services.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="c-services.module.classpath">
+    <path refid="${module.jdk.classpath.c-services}"/>
+    <path refid="library.scala_2.8.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-server:1.0.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-core:1.0.classpath"/>
+    <path refid="library.maven:_javax.ws.rs:jsr311-api:1.0.classpath"/>
+    <path refid="library.maven:_asm:asm:3.1.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-servlet-webserver:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-http:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-framework:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-http-utils:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-rcm:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-portunif:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-http-servlet:1.8.3.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.scala-lang:scala-library:2.8.0.rc1.classpath"/>
+    <path refid="library.maven:_junit:junit:3.8.1.classpath"/>
+  </path>
+  
+  <path id="c-services.runtime.module.classpath">
+    <pathelement location="${c-services.output.dir}"/>
+    <pathelement location="${c-services.testoutput.dir}"/>
+    <path refid="library.scala_2.8.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-server:1.0.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-core:1.0.classpath"/>
+    <path refid="library.maven:_javax.ws.rs:jsr311-api:1.0.classpath"/>
+    <path refid="library.maven:_asm:asm:3.1.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-servlet-webserver:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-http:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-framework:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-http-utils:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-rcm:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-portunif:1.8.3.classpath"/>
+    <path refid="library.maven:_com.sun.grizzly:grizzly-http-servlet:1.8.3.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.scala-lang:scala-library:2.8.0.rc1.classpath"/>
+    <path refid="library.maven:_junit:junit:3.8.1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.c-services">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.c-services">
+    <patternset refid="excluded.from.module.c-services"/>
+  </patternset>
+  
+  <path id="c-services.module.sourcepath">
+    <dirset dir="${module.c-services.basedir}/C-Services">
+      <include name="src/main/scala"/>
+    </dirset>
+  </path>
+  
+  <path id="c-services.module.test.sourcepath">
+    <dirset dir="${module.c-services.basedir}/C-Services">
+      <include name="src/test"/>
+    </dirset>
+  </path>
+  
+<!--  
+  <target name="compile.module.c-services" depends="compile.module.c-services.production,compile.module.c-services.tests" description="Compile module C-Services"/>
+  
+  <target name="compile.module.c-services.production" description="Compile module C-Services; production classes">
+    <mkdir dir="${c-services.output.dir}"/>
+    <scalac destdir="${c-services.output.dir}">
+      <src refid="c-services.module.sourcepath"/>
+      <classpath refid="c-services.module.classpath"/>
+      <patternset refid="excluded.from.compilation.c-services"/>
+    </scalac>
+    <javac destdir="${c-services.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.c-services}/javac">
+      <compilerarg line="${compiler.args.c-services}"/>
+      <bootclasspath refid="c-services.module.bootclasspath"/>
+      <classpath>
+        <pathelement location="${c-services.output.dir}"/>
+        <path refid="c-services.module.classpath"/>
+      </classpath>
+      <src refid="c-services.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.c-services"/>
+    </javac>
+    <instrumentIdeaExtensions destdir="${c-services.output.dir}">
+      <compilerarg line="${compiler.args.c-services}"/>
+      <bootclasspath refid="c-services.module.bootclasspath"/>
+      <classpath refid="c-services.module.classpath"/>
+      <src refid="c-services.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.c-services"/>
+    </instrumentIdeaExtensions>
+    
+    <copy todir="${c-services.output.dir}">
+      <fileset dir="${module.c-services.basedir}/C-Services/src/main/scala">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+    <scalac destdir="${c-services.testoutput.dir}">
+      <src refid="c-services.module.test.sourcepath"/>
+      <classpath>
+        <path refid="c-services.module.classpath"/>
+        <pathelement location="${c-services.output.dir}"/>
+      </classpath>
+      <patternset refid="excluded.from.compilation.c-services"/>
+    </scalac>
+    <javac destdir="${c-services.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.c-services}/javac">
+      <compilerarg line="${compiler.args.c-services}"/>
+      <bootclasspath refid="c-services.module.bootclasspath"/>
+      <classpath>
+        <pathelement location="${c-services.testoutput.dir}"/>
+        <path refid="c-services.module.classpath"/>
+        <pathelement location="${c-services.output.dir}"/>
+      </classpath>
+      <src refid="c-services.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.c-services"/>
+    </javac>
+  </target>
+  
+  <target name="compile.module.c-services.tests" depends="compile.module.c-services.production" description="compile module C-Services; test classes" unless="skip.tests">
+    <mkdir dir="${c-services.testoutput.dir}"/>
+    <instrumentIdeaExtensions destdir="${c-services.testoutput.dir}">
+      <compilerarg line="${compiler.args.c-services}"/>
+      <classpath refid="c-services.module.classpath"/>
+      <classpath>
+        <path refid="c-services.module.classpath"/>
+        <pathelement location="${c-services.output.dir}"/>
+      </classpath>
+      <src refid="c-services.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.c-services"/>
+    </instrumentIdeaExtensions>
+    
+    <copy todir="${c-services.testoutput.dir}">
+      <fileset dir="${module.c-services.basedir}/C-Services/src/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.c-services" description="cleanup module">
+    <delete dir="${c-services.output.dir}"/>
+    <delete dir="${c-services.testoutput.dir}"/>
+  </target>
+-->
+  
+  <!-- Module Core -->
+  
+  <dirname property="module.core.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.core" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.core" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.core" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.core" value="${compiler.args}"/>
+  
+  <property name="core.output.dir" value="${module.core.basedir}/out/production/Core"/>
+  <property name="core.testoutput.dir" value="${module.core.basedir}/out/test/Core"/>
+  
+  <path id="core.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="core.module.classpath">
+    <path refid="${module.jdk.classpath.core}"/>
+    <path refid="library.scala-2.8.0.beta1.classpath"/>
+  </path>
+  
+  <path id="core.runtime.module.classpath">
+    <pathelement location="${core.output.dir}"/>
+    <pathelement location="${core.testoutput.dir}"/>
+    <path refid="library.scala-2.8.0.beta1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.core">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.core">
+    <patternset refid="excluded.from.module.core"/>
+  </patternset>
+  
+  <path id="core.module.sourcepath">
+    <dirset dir="${module.core.basedir}/Core">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.core" depends="compile.module.core.production,compile.module.core.tests" description="Compile module Core"/>
+  
+  <target name="compile.module.core.production" description="Compile module Core; production classes">
+    <mkdir dir="${core.output.dir}"/>
+    <scalac destdir="${core.output.dir}">
+      <src refid="core.module.sourcepath"/>
+      <classpath refid="core.module.classpath"/>
+      <patternset refid="excluded.from.compilation.core"/>
+    </scalac>
+    <javac destdir="${core.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.core}/javac">
+      <compilerarg line="${compiler.args.core}"/>
+      <bootclasspath refid="core.module.bootclasspath"/>
+      <classpath>
+        <pathelement location="${core.output.dir}"/>
+        <path refid="core.module.classpath"/>
+      </classpath>
+      <src refid="core.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.core"/>
+    </javac>
+    <instrumentIdeaExtensions destdir="${core.output.dir}">
+      <compilerarg line="${compiler.args.core}"/>
+      <bootclasspath refid="core.module.bootclasspath"/>
+      <classpath refid="core.module.classpath"/>
+      <src refid="core.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.core"/>
+    </instrumentIdeaExtensions>
+    
+    <copy todir="${core.output.dir}">
+      <fileset dir="${module.core.basedir}/Core/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.core.tests" depends="compile.module.core.production" description="compile module Core; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.core" description="cleanup module">
+    <delete dir="${core.output.dir}"/>
+    <delete dir="${core.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module CREOLE -->
+  
+  <dirname property="module.creole.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.creole" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.creole" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.creole" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.creole" value="${compiler.args}"/>
+  
+  <property name="creole.output.dir" value="${module.creole.basedir}/out/production/CREOLE"/>
+  <property name="creole.testoutput.dir" value="${module.creole.basedir}/out/test/CREOLE"/>
+  
+  <path id="creole.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="creole.module.classpath">
+    <path refid="${module.jdk.classpath.creole}"/>
+    <path refid="library.scala-2.8.0.beta1.classpath"/>
+    <path refid="library.scala_2.8.classpath"/>
+  </path>
+  
+  <path id="creole.runtime.module.classpath">
+    <pathelement location="${creole.output.dir}"/>
+    <pathelement location="${creole.testoutput.dir}"/>
+    <path refid="library.scala-2.8.0.beta1.classpath"/>
+    <path refid="library.scala_2.8.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.creole">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.creole">
+    <patternset refid="excluded.from.module.creole"/>
+  </patternset>
+  
+  
+  <target name="compile.module.creole" depends="compile.module.creole.production,compile.module.creole.tests" description="Compile module CREOLE"/>
+  
+  <target name="compile.module.creole.production" description="Compile module CREOLE; production classes"/>
+  
+  <target name="compile.module.creole.tests" depends="compile.module.creole.production" description="compile module CREOLE; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.creole" description="cleanup module">
+    <delete dir="${creole.output.dir}"/>
+    <delete dir="${creole.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module Services -->
+  
+  <dirname property="module.services.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.services" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.services" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.services" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.services" value="${compiler.args}"/>
+  
+  <property name="services.output.dir" value="${module.services.basedir}/Services/target/classes"/>
+  <property name="services.testoutput.dir" value="${module.services.basedir}/Services/target/test-classes"/>
+  
+  <path id="services.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="services.module.classpath">
+    <path refid="${module.jdk.classpath.services}"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-server:1.3.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-core:1.3.classpath"/>
+    <path refid="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath"/>
+    <path refid="library.maven:_asm:asm:3.1.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-json:1.3.classpath"/>
+    <path refid="library.maven:_org.codehaus.jettison:jettison:1.1.classpath"/>
+    <path refid="library.maven:_stax:stax-api:1.0.1.classpath"/>
+    <path refid="library.maven:_com.sun.xml.bind:jaxb-impl:2.1.12.classpath"/>
+    <path refid="library.maven:_javax.xml.bind:jaxb-api:2.1.classpath"/>
+    <path refid="library.maven:_javax.xml.stream:stax-api:1.0-2.classpath"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.1.1.classpath"/>
+    <path refid="library.maven:_junit:junit:3.8.2.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-client:1.3.classpath"/>
+    <path refid="library.maven:_org.glassfish.distributions:web-all:10.0-build-20080812.classpath"/>
+    <path refid="library.maven:_org.glassfish.embedded:gf-embedded-api:1.0-alpha-4.classpath"/>
+    <path refid="library.maven:_org.glassfish.api:dtds:resources:9.0.2.classpath"/>
+    <path refid="library.maven:_org.glassfish.api:schemas:resources:9.0.2.classpath"/>
+    <path refid="library.maven:_org.scala-lang:scala-library:2.8.0.rc1.classpath"/>
+  </path>
+  
+  <path id="services.runtime.module.classpath">
+    <pathelement location="${services.output.dir}"/>
+    <pathelement location="${services.testoutput.dir}"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-server:1.3.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-core:1.3.classpath"/>
+    <path refid="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath"/>
+    <path refid="library.maven:_asm:asm:3.1.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-json:1.3.classpath"/>
+    <path refid="library.maven:_org.codehaus.jettison:jettison:1.1.classpath"/>
+    <path refid="library.maven:_stax:stax-api:1.0.1.classpath"/>
+    <path refid="library.maven:_com.sun.xml.bind:jaxb-impl:2.1.12.classpath"/>
+    <path refid="library.maven:_javax.xml.bind:jaxb-api:2.1.classpath"/>
+    <path refid="library.maven:_javax.xml.stream:stax-api:1.0-2.classpath"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.1.1.classpath"/>
+    <path refid="library.maven:_junit:junit:3.8.2.classpath"/>
+    <path refid="library.maven:_com.sun.jersey:jersey-client:1.3.classpath"/>
+    <path refid="library.maven:_org.glassfish.distributions:web-all:10.0-build-20080812.classpath"/>
+    <path refid="library.maven:_org.glassfish.embedded:gf-embedded-api:1.0-alpha-4.classpath"/>
+    <path refid="library.maven:_org.glassfish.api:dtds:resources:9.0.2.classpath"/>
+    <path refid="library.maven:_org.glassfish.api:schemas:resources:9.0.2.classpath"/>
+    <path refid="library.maven:_org.scala-lang:scala-library:2.8.0.rc1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.services">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.services">
+    <patternset refid="excluded.from.module.services"/>
+  </patternset>
+  
+  <path id="services.module.sourcepath">
+    <dirset dir="${module.services.basedir}/Services">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+      <include name="src/main/scala"/>
+    </dirset>
+  </path>
+  
+<!--
+  <target name="compile.module.services" depends="compile.module.services.production,compile.module.services.tests" description="Compile module Services"/>
+  
+  <target name="compile.module.services.production" description="Compile module Services; production classes">
+    <mkdir dir="${services.output.dir}"/>
+    <scalac destdir="${services.output.dir}">
+      <src refid="services.module.sourcepath"/>
+      <classpath refid="services.module.classpath"/>
+      <patternset refid="excluded.from.compilation.services"/>
+    </scalac>
+    <javac destdir="${services.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.services}/javac">
+      <compilerarg line="${compiler.args.services}"/>
+      <bootclasspath refid="services.module.bootclasspath"/>
+      <classpath>
+        <pathelement location="${services.output.dir}"/>
+        <path refid="services.module.classpath"/>
+      </classpath>
+      <src refid="services.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.services"/>
+    </javac>
+    <instrumentIdeaExtensions destdir="${services.output.dir}">
+      <compilerarg line="${compiler.args.services}"/>
+      <bootclasspath refid="services.module.bootclasspath"/>
+      <classpath refid="services.module.classpath"/>
+      <src refid="services.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.services"/>
+    </instrumentIdeaExtensions>
+    
+    <copy todir="${services.output.dir}">
+      <fileset dir="${module.services.basedir}/Services/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.services.basedir}/Services/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.services.basedir}/Services/src/main/scala">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.services.tests" depends="compile.module.services.production" description="compile module Services; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.services" description="cleanup module">
+    <delete dir="${services.output.dir}"/>
+    <delete dir="${services.testoutput.dir}"/>
+  </target>
+-->
+  
+  <!-- Module PiVot -->
+  
+  <dirname property="module.pivot.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.pivot" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.pivot" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.pivot" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.pivot" value="${compiler.args}"/>
+  
+  <property name="pivot.output.dir" value="${module.pivot.basedir}/out/production/PiVot"/>
+  <property name="pivot.testoutput.dir" value="${module.pivot.basedir}/out/test/PiVot"/>
+  
+  <path id="pivot.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="pivot.module.classpath">
+    <path refid="${module.jdk.classpath.pivot}"/>
+    <path refid="library.scala-2.8.0.beta1.classpath"/>
+    <path refid="library.antlr.classpath"/>
+    <pathelement location="${antlr_scala.output.dir}"/>
+    <pathelement location="${antlr_scala.testoutput.dir}"/>
+    <pathelement location="${core.output.dir}"/>
+    <pathelement location="${core.testoutput.dir}"/>
+  </path>
+  
+  <path id="pivot.runtime.module.classpath">
+    <pathelement location="${pivot.output.dir}"/>
+    <pathelement location="${pivot.testoutput.dir}"/>
+    <path refid="library.scala-2.8.0.beta1.classpath"/>
+    <path refid="library.antlr.classpath"/>
+    <path refid="antlr_scala.runtime.module.classpath"/>
+    <path refid="core.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.pivot">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.pivot">
+    <patternset refid="excluded.from.module.pivot"/>
+  </patternset>
+  
+  <path id="pivot.module.sourcepath">
+    <dirset dir="${module.pivot.basedir}/PiVot">
+      <include name="src"/>
+      <include name="generated"/>
+    </dirset>
+  </path>
+  
+  <path id="pivot.module.test.sourcepath">
+    <dirset dir="${module.pivot.basedir}/PiVot">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.pivot" depends="compile.module.pivot.production,compile.module.pivot.tests" description="Compile module PiVot"/>
+  
+  <target name="compile.module.pivot.production" depends="compile.module.antlr_scala,compile.module.core" description="Compile module PiVot; production classes">
+    <mkdir dir="${pivot.output.dir}"/>
+    <scalac destdir="${pivot.output.dir}">
+      <src refid="pivot.module.sourcepath"/>
+      <classpath refid="pivot.module.classpath"/>
+      <patternset refid="excluded.from.compilation.pivot"/>
+    </scalac>
+    <javac destdir="${pivot.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.pivot}/javac">
+      <compilerarg line="${compiler.args.pivot}"/>
+      <bootclasspath refid="pivot.module.bootclasspath"/>
+      <classpath>
+        <pathelement location="${pivot.output.dir}"/>
+        <path refid="pivot.module.classpath"/>
+      </classpath>
+      <src refid="pivot.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.pivot"/>
+    </javac>
+    <instrumentIdeaExtensions destdir="${pivot.output.dir}">
+      <compilerarg line="${compiler.args.pivot}"/>
+      <bootclasspath refid="pivot.module.bootclasspath"/>
+      <classpath refid="pivot.module.classpath"/>
+      <src refid="pivot.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.pivot"/>
+    </instrumentIdeaExtensions>
+    
+    <copy todir="${pivot.output.dir}">
+      <fileset dir="${module.pivot.basedir}/PiVot/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.pivot.basedir}/PiVot/generated">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+    <scalac destdir="${pivot.testoutput.dir}">
+      <src refid="pivot.module.test.sourcepath"/>
+      <classpath>
+        <path refid="pivot.module.classpath"/>
+        <pathelement location="${pivot.output.dir}"/>
+      </classpath>
+      <patternset refid="excluded.from.compilation.pivot"/>
+    </scalac>
+    <javac destdir="${pivot.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.pivot}/javac">
+      <compilerarg line="${compiler.args.pivot}"/>
+      <bootclasspath refid="pivot.module.bootclasspath"/>
+      <classpath>
+        <pathelement location="${pivot.testoutput.dir}"/>
+        <path refid="pivot.module.classpath"/>
+        <pathelement location="${pivot.output.dir}"/>
+      </classpath>
+      <src refid="pivot.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.pivot"/>
+    </javac>
+  </target>
+  
+  <target name="compile.module.pivot.tests" depends="compile.module.pivot.production" description="compile module PiVot; test classes" unless="skip.tests">
+    <mkdir dir="${pivot.testoutput.dir}"/>
+    <instrumentIdeaExtensions destdir="${pivot.testoutput.dir}">
+      <compilerarg line="${compiler.args.pivot}"/>
+      <classpath refid="pivot.module.classpath"/>
+      <classpath>
+        <path refid="pivot.module.classpath"/>
+        <pathelement location="${pivot.output.dir}"/>
+      </classpath>
+      <src refid="pivot.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.pivot"/>
+    </instrumentIdeaExtensions>
+    
+    <copy todir="${pivot.testoutput.dir}">
+      <fileset dir="${module.pivot.basedir}/PiVot/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.pivot" description="cleanup module">
+    <delete dir="${pivot.output.dir}"/>
+    <delete dir="${pivot.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.antlr_scala, clean.module.core, clean.module.creole, clean.module.pivot" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.antlr_scala, compile.module.core, compile.module.creole, compile.module.pivot" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>

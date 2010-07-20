@@ -1,0 +1,33 @@
+(public: PhotoCloning,CountsIn,CountsOut; private:FPhoto,Response,Session,Photo,Result, Between,Suc)
+/*
+//The query
+(!T => new(x,d1,d2) CountsIn(x,d1,d2,CountsOut),Session(x)
+//!T => new(x,d1,d2) CountsIn(x,"01-01-2009","31-12-2009",CountsOut),Session(x)
+|
+Session(x),CountsOut(x,n) => Result(n)
+)
+;
+//Artificial A-VM
+(CountsIn(x,from,to,K) => new(y) Response(x,y,from,to,K,0), PhotoCloning(Photo,y)
+;
+Response(x,y,from,to,K,n),Photo(y,id,date) => new(m)Suc(m,n),Response(x,y,from,to,K,m)
+//Between(from,date,to),Response(x,y,from,to,K,n),Photo(y,id,date) => new(m)Suc(m,n),Between(from,date,to),Response(x,y,from,to,K,m)
+;
+Response(x,y,from,to,K,n) => K(x,n)
+)
+;
+//Artificial F-VM
+//(!T => Between("01-01-2009","01/02/2009","31-12-2009"),Between("01-01-2009","30/03/2009","31-12-2009")
+//|
+PhotoCloning(K,y) => K(y,1,"01/02/2009"),K(y,2,"30/03/2009"),K(y,3,"01/04/2010")
+*/
+
+CountsIn(x,from,to,K) => new(y,a,b,c,null) Response(x,y,from,to,0,K),Photo(x,a),Photo(x,b),Photo(x,c),Photo(x,null),Null(null)
+|
+Response(x,y,from,to,n,K),Photo(x,id) => [true,Null(id) => false]? new(m) Suc(n,m),Response(x,y,from,to,m,K),K(x,id)
+|
+!T => new(x,d1,d2) CountsIn(x,d1,d2,Result)
+
+
+
+

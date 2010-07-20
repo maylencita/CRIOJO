@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.glassfish.distributions:web-all:10.0-build-20080812">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/distributions/web-all/10.0-build-20080812/web-all-10.0-build-20080812.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/distributions/web-all/10.0-build-20080812/web-all-10.0-build-20080812-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/distributions/web-all/10.0-build-20080812/web-all-10.0-build-20080812-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

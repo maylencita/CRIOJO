@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.glassfish.api:schemas:resources:9.0.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/api/schemas/9.0.2/schemas-9.0.2-resources.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/api/schemas/9.0.2/schemas-9.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/api/schemas/9.0.2/schemas-9.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

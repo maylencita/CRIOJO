@@ -1,0 +1,5 @@
+(public:PhotoCloning; private:_)
+
+//!T => new(b) PhotoCloning(Photo,b)
+//|
+PhotoCloning(K,y) => K(y,1,"01/02/2009"),K(y,2,"30/03/2009"),K(y,3,"01/04/2010")
