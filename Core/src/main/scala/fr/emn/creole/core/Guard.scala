@@ -34,7 +34,7 @@ class Guard (rules:List[Rule]){
   private def getRelation(atom:Atom):Relation = {
     relations.find(_.name == atom.relName) match{
       case Some(rel) => rel
-      case _ => val rel = new Relation(atom.relName,false)
+      case _ => val rel = new LocalRelation(atom.relName,false)
         relations.add(rel)
         rel
     }
@@ -49,7 +49,7 @@ class Guard (rules:List[Rule]){
     val solution = sol.clone
     solution.revert
     if (!solution.contains(True))
-      solution.add(True)
+      solution.addAtom(True)
 
     rules.foreach(r => r.solution = solution)
     Logger.levelDown

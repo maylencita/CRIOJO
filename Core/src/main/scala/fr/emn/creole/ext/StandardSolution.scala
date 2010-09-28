@@ -1,5 +1,6 @@
-package fr.emn.creole.core
+package fr.emn.creole.ext
 
+import fr.emn.creole.core._
 import Creole.Substitution
 import fr.emn.creole.util.Logger
 
@@ -13,6 +14,7 @@ import fr.emn.creole.util.Logger
 
 class StandardSolution extends Solution{
   private val SUC = "Suc"
+  private val NULL = "null"
 
   override def findMatches(conjunction:List[Atom], substitutions:List[Substitution]):List[Atom] = {
     super.findMatches(conjunction,substitutions)
@@ -29,34 +31,44 @@ class StandardSolution extends Solution{
 //      }
 //  }
 
-  override def addAtom(atom:Atom):Boolean =
+  override def addAtom(atom:Atom) =
     atom match{
     case Atom(SUC, x::y::Nil) =>
       val newAtom:Atom = find{
-//        a => a.hasVariable(x)
         case IntAtom(n, v) => x == v
         case _ => false
       } match {
         case Some(c:IntAtom) => remove(c); new IntAtom(c.number+1 ,y)
         case _ => atom
       }
-      super.add(newAtom) 
-    case _ => super.add(atom)
+      super.addAtom(newAtom)
+    case _ => super.addAtom(atom)
   }
 
-  private def getValue(x:Variable):Variable={
+  def getValue(x:Variable):ValueVariable[_]={
       find{
-        case IntAtom(n,v) => x == v
+        case ta:TypedAtom[_] => ta.variable == x
         case _ => false
       } match{
-        case Some(c:IntAtom) => new Variable(c.number.toString)
-        case _ => x
+        case Some(c:IntAtom) => new Value[Int](c.number)
+        case Some(c:StringAtom) => new Value[String](c.str.replace("\"",""))
+        case Some(c:NullAtom) => Null
+        case _ => NoValue
       }
   }
 
+  def getPrintVariable(v:Variable):Variable = getValue(v) match{
+    case value:Value[_] => value
+    case NoValue => v
+  }
+
+  def prettyPrint = {
+      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getPrintVariable(_)))).mkString("<",",",">")
+  }
+  
   override def clone:Solution = {
     val sol = new StandardSolution()
-    foreach(a => sol.add(a.clone))
+    foreach(a => sol.addAtom(a.clone))
     sol
   }
 
@@ -76,9 +88,10 @@ class StandardSolution extends Solution{
 ////          v
 //      }
 
-      filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getValue(_)))).mkString("<",",",">")
+      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getPrintVariable(_)))).mkString("<",",",">")
     }
 
   }
+
 
 }

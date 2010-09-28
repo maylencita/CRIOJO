@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
+    <facet type="scala" name="Scala">
+      <configuration>
+        <option name="compilerLibraryLevel" value="Project" />
+        <option name="compilerLibraryName" value="Maven: org.scala-lang:scala-compiler-bundle:2.8.0.RC1" />
+        <option name="vmOptions" value="" />
+      </configuration>
+    </facet>
     <facet type="Scala" name="Scala">
       <configuration>
         <option name="takeFromSettings" value="true" />
@@ -30,8 +37,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="scala-2.8.0.Beta1" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.scala-lang:scala-library:2.8.0.RC1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.8.0.RC1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
   </component>
 </module>
 

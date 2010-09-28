@@ -8,30 +8,71 @@ package fr.emn.creole.util
  * To change this template use File | Settings | File Templates.
  */
 
+//object LogLevel extends Enumeration{
+//  val DEBUG, ERROR, INFO, WARNING = Value
+//}
+
 object Logger {
-  val on = true
-  var level = 0
 
-//  def log(text:String){
-//    println(text)
-//  }
+//  import LogLevel._
+  val ERROR = 3
+  val WARNING = 2
+  val INFO = 1
+  val DEBUG = 0
 
-  def log(text:String){
-    if (on){
+  var on = true
+  var indent = 0
+  var logLevel = DEBUG
+
+  private def log(level:Int, message:String){
+    if (level >= logLevel){
       var prefix = ""
-      for(i<- 0 until level){
+      for(i<- 0 until indent){
         prefix += "   "
       }
-      println(prefix + text)
+      println(prefix + message)
     }
   }
 
+  def log(level:Int, klass:Class[_],method:String,message:String){
+    log(level, "["+klass+"."+method+"] "+message)
+  }
+
+  def log(text:String){
+    log(DEBUG, text)
+  }
+
+  def log(klass:Class[_],method:String,message:String){
+    log(DEBUG, klass, method, message)
+  }
+
+  def info(klass:Class[_],method:String,message:String){
+    log(INFO, klass, method, message)
+  }
+
+  def error(klass:Class[_],method:String,message:String){
+    log(ERROR, klass, method, message)
+  }
+
+  def debug(klass:Class[_],method:String,message:String){
+    log(DEBUG, klass, method, message)
+  }
+
+
   def levelDown{
-    level+=1
+    indent+=1
   }
 
   def levelUp{
-    level-=1
+    indent-=1
+  }
+
+  def disableLog{
+    on = false
+  }
+
+  def enableLog{
+    on = true
   }
 
 }

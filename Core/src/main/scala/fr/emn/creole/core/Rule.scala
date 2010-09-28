@@ -93,15 +93,16 @@ class Rule(val head:List[Atom], val body:List[Atom], val guard:Guard) extends Re
     Logger.log("[Rule.applyReaction] newAtoms=" + newAtoms)
 
     newSolution.cleanup
-    newSolution.addMolecule(newAtoms)
+    newSolution.addMolecule(newAtoms.filter(a=>a.relation.isInstanceOf[LocalRelation]))
+    Logger.log("[Rule.applyReaction] solution = " + solution)
+    Logger.log("[Rule.applyReaction] newSolution (after cleanup) = " + newSolution)
 
-    Logger.log("[Rule.applyReaction] solution=" + solution)
-//    Logger.log("[Rule.applyReaction] newSolution=" + newSolution)
+//    Logger.log("[Rule.applyReaction] solution=" + solution)
 
     if (newSolution != solution){
       solution.update(newSolution)
-      Logger.log("[Rule.applyReaction] applied! "+ this)
-      Logger.log("[Rule.applyReaction] newSolution=" + solution)
+//      Logger.log("[Rule.applyReaction] applied! "+ this)
+      Logger.log("[Rule.applyReaction] applied! newSolution=" + solution)
       newAtoms.foreach(a => a.relation.notifyObservers(a))
       true
     }else{
@@ -129,6 +130,7 @@ class Rule(val head:List[Atom], val body:List[Atom], val guard:Guard) extends Re
     Logger.levelDown
     execute(getSubstitutions(List(atom)))
     Logger.levelUp
+    Logger.log(this.getClass, "receiveUpdate", "Final solution: " + solution)
     Logger.log("============================================================================")
   }
 

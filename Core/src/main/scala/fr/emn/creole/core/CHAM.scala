@@ -7,10 +7,11 @@ package fr.emn.creole.core
  * Time: 11:15:43 AM
  * To change this template use File | Settings | File Templates.
  */
+import fr.emn.creole.util._
 
-trait CHAM {
+trait CHAM[S <: Solution] {
   var rules:List[Rule] = List()
-  var solution:Solution = new Solution() //Set())
+  var solution:S = _ //olution = new Solution() //Set())
   var relations:List[Relation] = List()
 
   def addRule(rule:Rule){
@@ -29,7 +30,7 @@ trait CHAM {
       a.vars.foreach{
         case rv: RelVariable => rv.relation = relations.find(_.name == rv.name) match{
           case Some(r) => r
-          case _ => println("Undefined relation variable " + rv.name); null //TODO Handle this
+          case _ => Logger.log(this.getClass, "addRule", "Undefined relation variable " + rv.name); null //TODO Handle this
         }
         case _ => //skip
       }
@@ -43,9 +44,9 @@ trait CHAM {
     relations.find(_.name == relName) match {
       case Some(r) => r
       case _ => if (relName.startsWith("$")){
-                  new Relation(relName,false)
+                  new LocalRelation(relName,false)
                 }else{
-                  println("Undefined relation " + relName)
+                  Logger.log(this.getClass, "findRelation","Undefined relation " + relName)
                   null
                 }
     }

@@ -10,6 +10,15 @@ import Creole.Substitution
  * To change this template use File | Settings | File Templates.
  */
 
+object Atom{
+  def apply(rn:String, lst:Variable*):Atom = new Atom(rn, lst.toList)
+  def apply(rel:Relation, lst:Variable*):Atom = {
+    val a = new Atom(rel.name, lst.toList)
+    a.relation = rel
+    a
+  }
+}
+
 case class Atom (val relName:String, val vars: List[Variable]) {
 
   var active:Boolean = true
@@ -44,13 +53,17 @@ case class Atom (val relName:String, val vars: List[Variable]) {
         case Some(nv) => nv._2
         case _ =>
           variable match{
-            case rv:RelVariable => if (rv.relation != null) rv else Undef()
-            case _ => Undef()
+            case rv:RelVariable => if (rv.relation != null) rv else Undef
+            case _ =>
+              if (variable.name.startsWith("$"))
+                variable
+              else
+                Undef
           }
       }
     }
 
-    val newVars = this.vars.map {v => if (!v.name.startsWith("$")) replace(v) else v}
+    val newVars = this.vars.map {v => replace(v)}
 
     val atom = new Atom(nuRel.name, newVars)
     atom.relation = nuRel
@@ -89,35 +102,8 @@ case class Atom (val relName:String, val vars: List[Variable]) {
   }
 }
 
-class IntAtom(num:Int, intVar:Variable) extends Atom("$int_"+num, List(intVar)){
-  def number:Int = this.num
-  def variable:Variable = this.intVar
-
-  override def clone:Atom = {
-    val a = new IntAtom(number,variable)
-    a.active = this.active
-    a.relation = this.relation
-    a
-  }
-
-  override def applySubstitutions(subs:List[Substitution]):Atom = {
-    def replace(variable:Variable):Variable = {
-      subs.find(s => s._1.name == variable.name) match{
-        case Some(nv) => nv._2
-        case _ => Undef()
-      }
-    }
-
-    this
-  }
-}
-object IntAtom{
-  def apply(n:Int, v:Variable):IntAtom= new IntAtom(n,v)
-  def unapply(a:IntAtom):Option[(Int,Variable)] = Option((a.number, a.variable))
-}
-
 object True extends Atom ("true", List()){
-  relation = new Relation("True", false)(false)
+  relation = new LocalRelation("True", false)(false)
   override def isTrue:Boolean = true
   override def isFalse:Boolean = false
 
@@ -131,7 +117,7 @@ object True extends Atom ("true", List()){
 }
 
 object False extends Atom ("false", List()){
-  relation = new Relation("False", false)(false)
+  relation = new LocalRelation("False", false)(false)
   override def isTrue:Boolean = false
   override def isFalse:Boolean = true
 

@@ -10,22 +10,14 @@ import fr.emn.creole.util.Logger
  * To change this template use File | Settings | File Templates.
  */
 
-class Relation(val name:String, val public:Boolean)(implicit multirelation:Boolean = true){
-  var observers:List[RelationObserver] = List()
-  var url:String = _
+trait Relation{
 
-  def isMultiRel = this.multirelation
+  def name:String
+  def public:Boolean
+  def isMultiRel:Boolean
+  def addObserver(observer:RelationObserver)
+  def notifyObservers(a: Atom)
 
-  def addObserver(observer:RelationObserver){
-    observers :+= observer
-  }
-  def notifyObservers(a: Atom){
-    observers.foreach{o =>Logger.log("[Relation.notifyObservers]"+ o + " notified by " + a); o.receiveUpdate(a)}    
-  }
-
-  override def equals(that:Any) = that match{
-    case r:Relation => !this.multirelation && this.name == r.name
-    case _ => false
-  }
-
+  override def toString = name
 }
+
