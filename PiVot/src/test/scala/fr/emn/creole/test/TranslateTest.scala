@@ -43,20 +43,21 @@ object TranslateTest extends Application{
     println("tree': " + translatedTree.toStringTree)
 
     // GENERATE AND DRAW DOT AST
-//    val gen = new DOTTreeGenerator()
-//    val st = gen.toDOT(translatedTree);
-////    val st = gen.toDOT(tree);
-//    val bout = new BufferedWriter(new FileWriter("Test.dot"));
-//    bout.write(st.toString());
-//    bout.close();
-//    val rt = Runtime.getRuntime();
-//    val pr = rt
-//        .exec("/Applications/Graphviz.app/Contents/MacOS/Graphviz Test.dot");
+    val gen = new DOTTreeGenerator()
+    val st = gen.toDOT(translatedTree);
+//    val st = gen.toDOT(tree);
+    val bout = new BufferedWriter(new FileWriter("Test.dot"));
+    bout.write(st.toString());
+    bout.close();
+    val rt = Runtime.getRuntime();
+    val pr = rt
+        .exec("/Applications/Graphviz.app/Contents/MacOS/Graphviz Test.dot");
 
     //Execute Program
-    val interp = new Interpreter(tokenz)
-    interp.runScript(translatedTree)
+//    val interp = new Interpreter(tokenz)
+//    interp.runScript(translatedTree)
   //		println(interp.runScript(programTree))
   }
 
 }
+

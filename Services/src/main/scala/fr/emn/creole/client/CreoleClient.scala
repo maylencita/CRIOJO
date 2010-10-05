@@ -10,7 +10,7 @@ package fr.emn.creole.client
 
 import fr.emn.creole.core.Atom
 import fr.emn.creole.model._
-import fr.emn.creole.util.JSONUtil
+import fr.emn.creole.util._
 
 import java.net.URI
 import javax.ws.rs.core.MediaType
@@ -19,12 +19,13 @@ import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.config.DefaultClientConfig
 import sjson.json._
 
-class CreoleClient {
+object CreoleClient {
+
+  val myclient:Client = Client.create(new DefaultClientConfig)
 
   def exportAtom(atom:Atom, url:URI){
 //    val config = new DefaultClientConfig
 //    val client = Client.create(config)
-    val myclient:Client = Client.create(new DefaultClientConfig)
     val myservice = myclient.resource(url).path(atom.relName)
 
     val content = JSONUtil.serialize(new VarList(atom))
@@ -33,10 +34,10 @@ class CreoleClient {
       myservice.entity(content.getBytes, MediaType.APPLICATION_JSON_TYPE).
               put(classOf[String])
     }catch{
-      case e => println("Error: " + e)
+      case e => Logger.log(this.getClass, "exportAtom","Error: " + e)
     }
 
-    println("Response: " + resp)
+    Logger.log(this.getClass, "exportAtom","Response: " + resp)
   }
 
 }

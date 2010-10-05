@@ -1,0 +1,5 @@
+(public:Photo; private:Ok,Session)
+
+!T => new(x) PhotoCloning(Photo,x),Session(x)
+|
+Session(x),Photo(x,id,date) => Ok(id,date)

@@ -11,5 +11,5 @@ package fr.emn.creole.ext
 import fr.emn.creole.core._
 import fr.emn.creole.util.Logger._
 
-trait Number extends CHAM[StandardSolution]{
+trait Number extends CHAM{ //[StandardSolution]{
 }

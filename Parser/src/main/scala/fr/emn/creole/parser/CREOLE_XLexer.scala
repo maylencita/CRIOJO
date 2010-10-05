@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g 2010-07-11 13:36:57
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g 2010-10-01 12:34:32
 
 package fr.emn.creole.parser;
 
@@ -25,71 +25,75 @@ extends SLexer(input, state) {
 		// direct delegates
 
 
-    	val EXPONENT:Int = 53
-    	val LT:Int = 41
-    	val LBRACK:Int = 30
-    	val EQ_OP:Int = 40
-    	val POINT:Int = 47
+    	val NULL_ATOM:Int = 20
+    	val EXPONENT:Int = 57
+    	val LT:Int = 45
+    	val LBRACK:Int = 33
+    	val EQ_OP:Int = 44
+    	val T__62:Int = 62
+    	val T__63:Int = 63
+    	val POINT:Int = 51
     	val HEAD:Int = 8
-    	val LTEQ:Int = 42
-    	val OCTAL_ESC:Int = 56
-    	val CHAR:Int = 52
+    	val LTEQ:Int = 46
+    	val OCTAL_ESC:Int = 60
+    	val CHAR:Int = 56
     	val MULTI:Int = 10
     	val ATOM:Int = 5
+    	val T__61:Int = 61
     	val EOF:Int = -1
     	val DECLARATION:Int = 11
-    	val LPAREN:Int = 19
+    	val LPAREN:Int = 21
+    	val ARROBAS:Int = 28
     	val INT_ATOM:Int = 18
-    	val RPAREN:Int = 22
-    	val T__57:Int = 57
-    	val T__58:Int = 58
-    	val ESC_SEQ:Int = 51
-    	val SLASH:Int = 48
-    	val COMMA:Int = 23
-    	val T__59:Int = 59
-    	val TILDE:Int = 26
-    	val PLUS:Int = 43
+    	val RPAREN:Int = 24
+    	val ESC_SEQ:Int = 55
+    	val SLASH:Int = 52
+    	val COMMA:Int = 25
+    	val TILDE:Int = 29
+    	val PLUS:Int = 47
     	val BODY:Int = 9
-    	val UNDEF:Int = 24
-    	val COMMENT:Int = 49
-    	val IMARK:Int = 32
-    	val RBRACK:Int = 31
+    	val UNDEF:Int = 26
+    	val COMMENT:Int = 53
+    	val IMARK:Int = 35
+    	val RBRACK:Int = 34
     	val SCRIPT:Int = 4
     	val RULE:Int = 7
-    	val NU:Int = 34
-    	val R_ID:Int = 25
+    	val NU:Int = 37
+    	val R_ID:Int = 27
     	val PRIVATE:Int = 14
     	val VARS:Int = 6
-    	val UNICODE_ESC:Int = 55
-    	val RARROW:Int = 29
-    	val HEX_DIGIT:Int = 54
-    	val V_ID:Int = 37
-    	val BANG:Int = 28
-    	val INT:Int = 38
-    	val MINUS:Int = 44
-    	val TRUE:Int = 35
-    	val SEMI:Int = 21
+    	val UNICODE_ESC:Int = 59
+    	val RARROW:Int = 32
+    	val NULL:Int = 40
+    	val STR_ATOM:Int = 19
+    	val V_ID:Int = 41
+    	val HEX_DIGIT:Int = 58
+    	val BANG:Int = 31
+    	val INT:Int = 42
+    	val MINUS:Int = 48
+    	val TRUE:Int = 38
+    	val SEMI:Int = 23
     	val EMPTY:Int = 17
-    	val ABS:Int = 33
-    	val COLON:Int = 20
-    	val LCURL:Int = 45
-    	val WS:Int = 50
-    	val RCURL:Int = 46
+    	val ABS:Int = 36
+    	val COLON:Int = 22
+    	val LCURL:Int = 49
+    	val WS:Int = 54
+    	val RCURL:Int = 50
     	val EMPTYLIST:Int = 12
     	val GUARD:Int = 16
     	val PROCESS:Int = 15
-    	val FALSE:Int = 36
+    	val FALSE:Int = 39
     	val PUBLIC:Int = 13
-    	val BAR:Int = 27
-    	val STRING:Int = 39
+    	val BAR:Int = 30
+    	val STRING:Int = 43
 
     override def getGrammarFileName = "src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g"
 
-    // $ANTLR start "T__57"
+    // $ANTLR start "T__61"
     @throws(classOf[RecognitionException])
-     final def mT__57() /*throws RecognitionException*/ {
+     final def mT__61() /*throws RecognitionException*/ {
         try {
-            var _type = T__57;
+            var _type = T__61;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
             // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:13:7: ( 'public' )
             // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:13:9: 'public'
@@ -105,13 +109,13 @@ extends SLexer(input, state) {
         finally {
         }
     }
-    // $ANTLR end "T__57"
+    // $ANTLR end "T__61"
 
-    // $ANTLR start "T__58"
+    // $ANTLR start "T__62"
     @throws(classOf[RecognitionException])
-     final def mT__58() /*throws RecognitionException*/ {
+     final def mT__62() /*throws RecognitionException*/ {
         try {
-            var _type = T__58;
+            var _type = T__62;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
             // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:14:7: ( 'private' )
             // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:14:9: 'private'
@@ -127,13 +131,13 @@ extends SLexer(input, state) {
         finally {
         }
     }
-    // $ANTLR end "T__58"
+    // $ANTLR end "T__62"
 
-    // $ANTLR start "T__59"
+    // $ANTLR start "T__63"
     @throws(classOf[RecognitionException])
-     final def mT__59() /*throws RecognitionException*/ {
+     final def mT__63() /*throws RecognitionException*/ {
         try {
-            var _type = T__59;
+            var _type = T__63;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
             // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:15:7: ( 'T' )
             // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:15:9: 'T'
@@ -148,7 +152,7 @@ extends SLexer(input, state) {
         finally {
         }
     }
-    // $ANTLR end "T__59"
+    // $ANTLR end "T__63"
 
     // $ANTLR start "NU"
     @throws(classOf[RecognitionException])
@@ -156,8 +160,8 @@ extends SLexer(input, state) {
         try {
             var _type = NU;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:150:5: ( 'new' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:150:9: 'new'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:155:5: ( 'new' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:155:9: 'new'
             {
             smatch("new"); 
 
@@ -178,8 +182,8 @@ extends SLexer(input, state) {
         try {
             var _type = TRUE;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:153:5: ( 'true' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:153:9: 'true'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:158:5: ( 'true' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:158:9: 'true'
             {
             smatch("true"); 
 
@@ -200,8 +204,8 @@ extends SLexer(input, state) {
         try {
             var _type = FALSE;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:156:5: ( 'false' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:156:9: 'false'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:161:5: ( 'false' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:161:9: 'false'
             {
             smatch("false"); 
 
@@ -216,14 +220,57 @@ extends SLexer(input, state) {
     }
     // $ANTLR end "FALSE"
 
+    // $ANTLR start "NULL"
+    @throws(classOf[RecognitionException])
+     final def mNULL() /*throws RecognitionException*/ {
+        try {
+            var _type = NULL;
+            var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:164:5: ( 'null' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:164:9: 'null'
+            {
+            smatch("null"); 
+
+
+            }
+
+            state.setType (_type)
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "NULL"
+
+    // $ANTLR start "ARROBAS"
+    @throws(classOf[RecognitionException])
+     final def mARROBAS() /*throws RecognitionException*/ {
+        try {
+            var _type = ARROBAS;
+            var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:167:2: ( '@' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:167:4: '@'
+            {
+            smatch('@'); 
+
+            }
+
+            state.setType (_type)
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ARROBAS"
+
     // $ANTLR start "ABS"
     @throws(classOf[RecognitionException])
      final def mABS() /*throws RecognitionException*/ {
         try {
             var _type = ABS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:164:5: ( 'Abs' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:164:9: 'Abs'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:175:5: ( 'Abs' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:175:9: 'Abs'
             {
             smatch("Abs"); 
 
@@ -244,8 +291,8 @@ extends SLexer(input, state) {
         try {
             var _type = RARROW;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:178:2: ( '=>' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:178:4: '=>'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:186:2: ( '=>' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:186:4: '=>'
             {
             smatch("=>"); 
 
@@ -266,8 +313,8 @@ extends SLexer(input, state) {
         try {
             var _type = EQ_OP;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:201:2: ( '==' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:201:4: '=='
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:209:2: ( '==' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:209:4: '=='
             {
             smatch("=="); 
 
@@ -288,8 +335,8 @@ extends SLexer(input, state) {
         try {
             var _type = LT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:204:2: ( '<' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:204:4: '<'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:212:2: ( '<' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:212:4: '<'
             {
             smatch('<'); 
 
@@ -309,8 +356,8 @@ extends SLexer(input, state) {
         try {
             var _type = LTEQ;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:207:2: ( '=<' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:207:4: '=<'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:215:2: ( '=<' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:215:4: '=<'
             {
             smatch("=<"); 
 
@@ -331,8 +378,8 @@ extends SLexer(input, state) {
         try {
             var _type = PLUS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:210:2: ( '+' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:210:4: '+'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:218:2: ( '+' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:218:4: '+'
             {
             smatch('+'); 
 
@@ -352,8 +399,8 @@ extends SLexer(input, state) {
         try {
             var _type = MINUS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:213:2: ( '-' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:213:4: '-'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:221:2: ( '-' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:221:4: '-'
             {
             smatch('-'); 
 
@@ -373,8 +420,8 @@ extends SLexer(input, state) {
         try {
             var _type = LPAREN;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:215:9: ( '(' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:215:11: '('
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:223:9: ( '(' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:223:11: '('
             {
             smatch('('); 
 
@@ -394,8 +441,8 @@ extends SLexer(input, state) {
         try {
             var _type = RPAREN;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:218:8: ( ')' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:218:10: ')'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:226:8: ( ')' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:226:10: ')'
             {
             smatch(')'); 
 
@@ -415,8 +462,8 @@ extends SLexer(input, state) {
         try {
             var _type = LCURL;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:221:7: ( '{' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:221:9: '{'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:229:7: ( '{' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:229:9: '{'
             {
             smatch('{'); 
 
@@ -436,8 +483,8 @@ extends SLexer(input, state) {
         try {
             var _type = RCURL;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:224:7: ( '}' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:224:9: '}'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:232:7: ( '}' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:232:9: '}'
             {
             smatch('}'); 
 
@@ -457,8 +504,8 @@ extends SLexer(input, state) {
         try {
             var _type = RBRACK;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:228:2: ( ']' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:228:4: ']'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:236:2: ( ']' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:236:4: ']'
             {
             smatch(']'); 
 
@@ -478,8 +525,8 @@ extends SLexer(input, state) {
         try {
             var _type = LBRACK;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:231:2: ( '[' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:231:4: '['
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:239:2: ( '[' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:239:4: '['
             {
             smatch('['); 
 
@@ -499,8 +546,8 @@ extends SLexer(input, state) {
         try {
             var _type = COMMA;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:234:7: ( ',' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:234:9: ','
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:242:7: ( ',' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:242:9: ','
             {
             smatch(','); 
 
@@ -520,8 +567,8 @@ extends SLexer(input, state) {
         try {
             var _type = POINT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:237:7: ( '.' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:237:9: '.'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:245:7: ( '.' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:245:9: '.'
             {
             smatch('.'); 
 
@@ -541,8 +588,8 @@ extends SLexer(input, state) {
         try {
             var _type = SEMI;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:240:6: ( ';' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:240:8: ';'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:248:6: ( ';' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:248:8: ';'
             {
             smatch(';'); 
 
@@ -562,8 +609,8 @@ extends SLexer(input, state) {
         try {
             var _type = COLON;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:242:7: ( ':' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:242:9: ':'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:250:7: ( ':' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:250:9: ':'
             {
             smatch(':'); 
 
@@ -583,8 +630,8 @@ extends SLexer(input, state) {
         try {
             var _type = SLASH;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:244:7: ( '/' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:244:10: '/'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:252:7: ( '/' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:252:10: '/'
             {
             smatch('/'); 
 
@@ -604,8 +651,8 @@ extends SLexer(input, state) {
         try {
             var _type = BAR;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:246:6: ( '|' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:246:9: '|'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:254:6: ( '|' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:254:9: '|'
             {
             smatch('|'); 
 
@@ -625,8 +672,8 @@ extends SLexer(input, state) {
         try {
             var _type = BANG;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:249:2: ( '!' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:249:6: '!'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:257:2: ( '!' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:257:6: '!'
             {
             smatch('!'); 
 
@@ -646,8 +693,8 @@ extends SLexer(input, state) {
         try {
             var _type = TILDE;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:252:5: ( '~' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:252:9: '~'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:260:5: ( '~' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:260:9: '~'
             {
             smatch('~'); 
 
@@ -667,8 +714,8 @@ extends SLexer(input, state) {
         try {
             var _type = UNDEF;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:255:5: ( '_' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:255:9: '_'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:5: ( '_' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:9: '_'
             {
             smatch('_'); 
 
@@ -688,8 +735,8 @@ extends SLexer(input, state) {
         try {
             var _type = IMARK;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:258:5: ( '?' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:258:9: '?'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:266:5: ( '?' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:266:9: '?'
             {
             smatch('?'); 
 
@@ -709,17 +756,17 @@ extends SLexer(input, state) {
         try {
             var _type = R_ID;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:261:5: ( ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:261:9: ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:5: ( ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:9: ( 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:261:9: ( 'A' .. 'Z' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:261:10: 'A' .. 'Z'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:9: ( 'A' .. 'Z' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:10: 'A' .. 'Z'
             {
             matchRange('A','Z'); 
 
             }
 
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:261:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             //loop1:
             var guard = true
             while(guard) {
@@ -768,17 +815,17 @@ extends SLexer(input, state) {
         try {
             var _type = V_ID;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:7: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:9: ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:271:7: ( ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:271:9: ( 'a' .. 'z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:9: ( 'a' .. 'z' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:10: 'a' .. 'z'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:271:9: ( 'a' .. 'z' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:271:10: 'a' .. 'z'
             {
             matchRange('a','z'); 
 
             }
 
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:263:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:271:19: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             //loop2:
             var guard = true
             while(guard) {
@@ -827,10 +874,10 @@ extends SLexer(input, state) {
         try {
             var _type = INT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:5: ( ( '0' .. '9' )+ )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:7: ( '0' .. '9' )+
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:277:5: ( ( '0' .. '9' )+ )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:277:7: ( '0' .. '9' )+
             {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:7: ( '0' .. '9' )+
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:277:7: ( '0' .. '9' )+
             var cnt3=0;
             //loop3:
             var guard = true
@@ -845,7 +892,7 @@ extends SLexer(input, state) {
 
                 alt3 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:269:7: '0' .. '9'
+            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:277:7: '0' .. '9'
             		    {
             		    matchRange('0','9'); 
 
@@ -880,7 +927,7 @@ extends SLexer(input, state) {
         try {
             var _type = COMMENT;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:279:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:287:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
             var alt7=2;
             var LA7_0 = input.LA(1);
 
@@ -908,11 +955,11 @@ extends SLexer(input, state) {
             }
             alt7 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:279:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:287:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
                     {
                     smatch("//"); 
 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:279:14: (~ ( '\\n' | '\\r' ) )*
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:287:14: (~ ( '\\n' | '\\r' ) )*
                     //loop4:
                     var guard = true
                     while(guard) {
@@ -926,7 +973,7 @@ extends SLexer(input, state) {
 
                         alt4 match{
                     		case 1 =>
-                    		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:279:14: ~ ( '\\n' | '\\r' )
+                    		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:287:14: ~ ( '\\n' | '\\r' )
                     		    {
                     		    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
                     		        input.consume();
@@ -944,7 +991,7 @@ extends SLexer(input, state) {
                         }
                     } //while (true);
 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:279:28: ( '\\r' )?
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:287:28: ( '\\r' )?
                     var alt5=2;
                     var LA5_0 = input.LA(1);
 
@@ -953,7 +1000,7 @@ extends SLexer(input, state) {
                     }
                     alt5 match{
                         case 1 =>
-                            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:279:28: '\\r'
+                            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:287:28: '\\r'
                             {
                             smatch('\r'); 
 
@@ -965,11 +1012,11 @@ extends SLexer(input, state) {
                     _channel=HIDDEN;
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:280:9: '/*' ( options {greedy=false; } : . )* '*/'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:288:9: '/*' ( options {greedy=false; } : . )* '*/'
                     {
                     smatch("/*"); 
 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:280:14: ( options {greedy=false; } : . )*
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:288:14: ( options {greedy=false; } : . )*
                     //loop6:
                     var guard = true
                     while(guard) {
@@ -995,7 +1042,7 @@ extends SLexer(input, state) {
 
                         alt6 match{
                     		case 1 =>
-                    		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:280:42: .
+                    		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:288:42: .
                     		    {
                     		    matchAny(); 
 
@@ -1026,8 +1073,8 @@ extends SLexer(input, state) {
         try {
             var _type = WS;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:283:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:283:9: ( ' ' | '\\t' | '\\r' | '\\n' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:9: ( ' ' | '\\t' | '\\r' | '\\n' )
             {
             if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
                 input.consume();
@@ -1056,11 +1103,11 @@ extends SLexer(input, state) {
         try {
             var _type = STRING;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:299:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:299:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
             {
             smatch('\"'); 
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:299:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
             //loop8:
             var guard = true
             while(guard) {
@@ -1077,12 +1124,12 @@ extends SLexer(input, state) {
 
                 alt8 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:14: ESC_SEQ
+            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:299:14: ESC_SEQ
             		    {
             		    mESC_SEQ(); 
 
             		    }case 2 =>
-            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:291:24: ~ ( '\\\\' | '\"' )
+            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:299:24: ~ ( '\\\\' | '\"' )
             		    {
             		    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             		        input.consume();
@@ -1118,11 +1165,11 @@ extends SLexer(input, state) {
         try {
             var _type = CHAR;
             var _channel = BaseRecognizer.DEFAULT_TOKEN_CHANNEL;
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:294:5: ( '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\'' )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:294:8: '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\''
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:302:5: ( '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\'' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:302:8: '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\''
             {
             smatch('\''); 
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:294:13: ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:302:13: ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) )
             var alt9=2;
             var LA9_0 = input.LA(1);
 
@@ -1140,12 +1187,12 @@ extends SLexer(input, state) {
             }
             alt9 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:294:15: ESC_SEQ
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:302:15: ESC_SEQ
                     {
                     mESC_SEQ(); 
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:294:25: ~ ( '\\'' | '\\\\' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:302:25: ~ ( '\\'' | '\\\\' )
                     {
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -1177,8 +1224,8 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mEXPONENT() /*throws RecognitionException*/ {
         try {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:298:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:298:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:306:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:306:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -1189,7 +1236,7 @@ extends SLexer(input, state) {
                 recover(mse);
                 throw mse;}
 
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:298:22: ( '+' | '-' )?
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:306:22: ( '+' | '-' )?
             var alt10=2;
             var LA10_0 = input.LA(1);
 
@@ -1214,7 +1261,7 @@ extends SLexer(input, state) {
                 case _ => //Do nothing
             }
 
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:298:33: ( '0' .. '9' )+
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:306:33: ( '0' .. '9' )+
             var cnt11=0;
             //loop11:
             var guard = true
@@ -1229,7 +1276,7 @@ extends SLexer(input, state) {
 
                 alt11 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:298:34: '0' .. '9'
+            		    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:306:34: '0' .. '9'
             		    {
             		    matchRange('0','9'); 
 
@@ -1260,8 +1307,8 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mHEX_DIGIT() /*throws RecognitionException*/ {
         try {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:301:11: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:301:13: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:309:11: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:309:13: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
                 input.consume();
@@ -1285,7 +1332,7 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mESC_SEQ() /*throws RecognitionException*/ {
         try {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:305:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UNICODE_ESC | OCTAL_ESC )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UNICODE_ESC | OCTAL_ESC )
             var alt12=3;
             var LA12_0 = input.LA(1);
 
@@ -1325,7 +1372,7 @@ extends SLexer(input, state) {
             }
             alt12 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:305:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
                     {
                     smatch('\\'); 
                     if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1339,12 +1386,12 @@ extends SLexer(input, state) {
 
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:306:9: UNICODE_ESC
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:314:9: UNICODE_ESC
                     {
                     mUNICODE_ESC(); 
 
                     }case 3 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:307:9: OCTAL_ESC
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:315:9: OCTAL_ESC
                     {
                     mOCTAL_ESC(); 
 
@@ -1361,7 +1408,7 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mOCTAL_ESC() /*throws RecognitionException*/ {
         try {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
             var alt13=3;
             var LA13_0 = input.LA(1);
 
@@ -1407,25 +1454,25 @@ extends SLexer(input, state) {
             }
             alt13 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     smatch('\\'); 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:14: ( '0' .. '3' )
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:15: '0' .. '3'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:14: ( '0' .. '3' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:15: '0' .. '3'
                     {
                     matchRange('0','3'); 
 
                     }
 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:25: ( '0' .. '7' )
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:26: '0' .. '7'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:25: ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:26: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
                     }
 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:36: ( '0' .. '7' )
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:312:37: '0' .. '7'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:36: ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:320:37: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -1433,18 +1480,18 @@ extends SLexer(input, state) {
 
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:321:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     smatch('\\'); 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:14: ( '0' .. '7' )
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:15: '0' .. '7'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:321:14: ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:321:15: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
                     }
 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:25: ( '0' .. '7' )
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:313:26: '0' .. '7'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:321:25: ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:321:26: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -1452,11 +1499,11 @@ extends SLexer(input, state) {
 
 
                     }case 3 =>
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:314:9: '\\\\' ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:322:9: '\\\\' ( '0' .. '7' )
                     {
                     smatch('\\'); 
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:314:14: ( '0' .. '7' )
-                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:314:15: '0' .. '7'
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:322:14: ( '0' .. '7' )
+                    // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:322:15: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -1476,8 +1523,8 @@ extends SLexer(input, state) {
     @throws(classOf[RecognitionException])
      final def mUNICODE_ESC() /*throws RecognitionException*/ {
         try {
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:319:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
-            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:319:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:327:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
+            // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:327:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
             {
             smatch('\\'); 
             smatch('u'); 
@@ -1496,24 +1543,24 @@ extends SLexer(input, state) {
 
     @throws(classOf[RecognitionException])
      def mTokens() /*throws RecognitionException */{
-        // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:8: ( T__57 | T__58 | T__59 | NU | TRUE | FALSE | ABS | RARROW | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR )
-        var alt14=36;
+        // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:8: ( T__61 | T__62 | T__63 | NU | TRUE | FALSE | NULL | ARROBAS | ABS | RARROW | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR )
+        var alt14=38;
         alt14 = dfa14.predict(input);
         alt14 match{
             case 1 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:10: T__57
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:10: T__61
                 {
-                mT__57(); 
+                mT__61(); 
 
                 }case 2 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:16: T__58
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:16: T__62
                 {
-                mT__58(); 
+                mT__62(); 
 
                 }case 3 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:22: T__59
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:22: T__63
                 {
-                mT__59(); 
+                mT__63(); 
 
                 }case 4 =>
                 // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:28: NU
@@ -1531,152 +1578,162 @@ extends SLexer(input, state) {
                 mFALSE(); 
 
                 }case 7 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:42: ABS
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:42: NULL
+                {
+                mNULL(); 
+
+                }case 8 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:47: ARROBAS
+                {
+                mARROBAS(); 
+
+                }case 9 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:55: ABS
                 {
                 mABS(); 
 
-                }case 8 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:46: RARROW
+                }case 10 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:59: RARROW
                 {
                 mRARROW(); 
 
-                }case 9 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:53: EQ_OP
+                }case 11 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:66: EQ_OP
                 {
                 mEQ_OP(); 
 
-                }case 10 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:59: LT
+                }case 12 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:72: LT
                 {
                 mLT(); 
 
-                }case 11 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:62: LTEQ
+                }case 13 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:75: LTEQ
                 {
                 mLTEQ(); 
 
-                }case 12 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:67: PLUS
+                }case 14 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:80: PLUS
                 {
                 mPLUS(); 
 
-                }case 13 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:72: MINUS
+                }case 15 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:85: MINUS
                 {
                 mMINUS(); 
 
-                }case 14 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:78: LPAREN
+                }case 16 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:91: LPAREN
                 {
                 mLPAREN(); 
 
-                }case 15 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:85: RPAREN
+                }case 17 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:98: RPAREN
                 {
                 mRPAREN(); 
 
-                }case 16 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:92: LCURL
+                }case 18 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:105: LCURL
                 {
                 mLCURL(); 
 
-                }case 17 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:98: RCURL
+                }case 19 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:111: RCURL
                 {
                 mRCURL(); 
 
-                }case 18 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:104: RBRACK
+                }case 20 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:117: RBRACK
                 {
                 mRBRACK(); 
 
-                }case 19 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:111: LBRACK
+                }case 21 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:124: LBRACK
                 {
                 mLBRACK(); 
 
-                }case 20 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:118: COMMA
+                }case 22 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:131: COMMA
                 {
                 mCOMMA(); 
 
-                }case 21 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:124: POINT
+                }case 23 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:137: POINT
                 {
                 mPOINT(); 
 
-                }case 22 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:130: SEMI
+                }case 24 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:143: SEMI
                 {
                 mSEMI(); 
 
-                }case 23 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:135: COLON
+                }case 25 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:148: COLON
                 {
                 mCOLON(); 
 
-                }case 24 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:141: SLASH
+                }case 26 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:154: SLASH
                 {
                 mSLASH(); 
 
-                }case 25 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:147: BAR
+                }case 27 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:160: BAR
                 {
                 mBAR(); 
 
-                }case 26 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:151: BANG
+                }case 28 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:164: BANG
                 {
                 mBANG(); 
 
-                }case 27 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:156: TILDE
+                }case 29 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:169: TILDE
                 {
                 mTILDE(); 
 
-                }case 28 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:162: UNDEF
+                }case 30 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:175: UNDEF
                 {
                 mUNDEF(); 
 
-                }case 29 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:168: IMARK
+                }case 31 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:181: IMARK
                 {
                 mIMARK(); 
 
-                }case 30 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:174: R_ID
+                }case 32 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:187: R_ID
                 {
                 mR_ID(); 
 
-                }case 31 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:179: V_ID
+                }case 33 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:192: V_ID
                 {
                 mV_ID(); 
 
-                }case 32 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:184: INT
+                }case 34 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:197: INT
                 {
                 mINT(); 
 
-                }case 33 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:188: COMMENT
+                }case 35 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:201: COMMENT
                 {
                 mCOMMENT(); 
 
-                }case 34 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:196: WS
+                }case 36 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:209: WS
                 {
                 mWS(); 
 
-                }case 35 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:199: STRING
+                }case 37 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:212: STRING
                 {
                 mSTRING(); 
 
-                }case 36 =>
-                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:206: CHAR
+                }case 38 =>
+                // src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g:1:219: CHAR
                 {
                 mCHAR(); 
 
@@ -1690,41 +1747,45 @@ extends SLexer(input, state) {
     protected val /*DFA14*/ dfa14 = new DFA14(this)
     /*
     final val DFA14_eotS =
-        "\1\uffff\1\34\1\43\3\34\1\33\16\uffff\1\54\13\uffff\2\34\1\uffff"+
-        "\3\34\1\33\5\uffff\2\34\1\65\2\34\1\70\2\34\1\uffff\1\73\1\34\1"+
-        "\uffff\2\34\1\uffff\1\77\1\100\1\34\2\uffff\1\102\1\uffff";
+        "\1\uffff\1\35\1\44\3\35\1\uffff\1\34\16\uffff\1\56\13\uffff\2\35"+
+        "\1\uffff\4\35\1\34\5\uffff\2\35\1\70\3\35\1\74\2\35\1\uffff\1\77"+
+        "\1\100\1\35\1\uffff\2\35\2\uffff\1\104\1\105\1\35\2\uffff\1\107"+
+        "\1\uffff";
     final val DFA14_eofS =
-        "\103\uffff";
+        "\110\uffff";
     final val DFA14_minS =
-        "\1\11\1\162\1\60\1\145\1\162\1\141\1\142\1\74\15\uffff\1\52\13\uffff"+
-        "\1\142\1\151\1\uffff\1\167\1\165\1\154\1\163\5\uffff\1\154\1\166"+
-        "\1\60\1\145\1\163\1\60\1\151\1\141\1\uffff\1\60\1\145\1\uffff\1"+
-        "\143\1\164\1\uffff\2\60\1\145\2\uffff\1\60\1\uffff";
+        "\1\11\1\162\1\60\1\145\1\162\1\141\1\uffff\1\142\1\74\15\uffff\1"+
+        "\52\13\uffff\1\142\1\151\1\uffff\1\167\1\154\1\165\1\154\1\163\5"+
+        "\uffff\1\154\1\166\1\60\1\154\1\145\1\163\1\60\1\151\1\141\1\uffff"+
+        "\2\60\1\145\1\uffff\1\143\1\164\2\uffff\2\60\1\145\2\uffff\1\60"+
+        "\1\uffff";
     final val DFA14_maxS =
-        "\1\176\1\165\1\172\1\145\1\162\1\141\1\142\1\76\15\uffff\1\57\13"+
-        "\uffff\1\142\1\151\1\uffff\1\167\1\165\1\154\1\163\5\uffff\1\154"+
-        "\1\166\1\172\1\145\1\163\1\172\1\151\1\141\1\uffff\1\172\1\145\1"+
-        "\uffff\1\143\1\164\1\uffff\2\172\1\145\2\uffff\1\172\1\uffff";
+        "\1\176\1\165\1\172\1\165\1\162\1\141\1\uffff\1\142\1\76\15\uffff"+
+        "\1\57\13\uffff\1\142\1\151\1\uffff\1\167\1\154\1\165\1\154\1\163"+
+        "\5\uffff\1\154\1\166\1\172\1\154\1\145\1\163\1\172\1\151\1\141\1"+
+        "\uffff\2\172\1\145\1\uffff\1\143\1\164\2\uffff\2\172\1\145\2\uffff"+
+        "\1\172\1\uffff";
     final val DFA14_acceptS =
-        "\10\uffff\1\12\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1\25"+
-        "\1\26\1\27\1\uffff\1\31\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\42"+
-        "\1\43\1\44\2\uffff\1\3\4\uffff\1\10\1\11\1\13\1\41\1\30\10\uffff"+
-        "\1\4\2\uffff\1\7\2\uffff\1\5\3\uffff\1\6\1\1\1\uffff\1\2";
+        "\6\uffff\1\10\2\uffff\1\14\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1"+
+        "\25\1\26\1\27\1\30\1\31\1\uffff\1\33\1\34\1\35\1\36\1\37\1\40\1"+
+        "\41\1\42\1\44\1\45\1\46\2\uffff\1\3\5\uffff\1\12\1\13\1\15\1\43"+
+        "\1\32\11\uffff\1\4\3\uffff\1\11\2\uffff\1\7\1\5\3\uffff\1\6\1\1"+
+        "\1\uffff\1\2";
     val DFA14_specialS =
-        "\103\uffff}>";
+        "\110\uffff}>";
     final val DFA14_transitionS = Array[String](
-        "\2\36\2\uffff\1\36\22\uffff\1\36\1\27\1\37\4\uffff\1\40\1\13\1\14"+
-        "\1\uffff\1\11\1\21\1\12\1\22\1\25\12\35\1\24\1\23\1\10\1\7\1\uffff"+
-        "\1\32\1\uffff\1\6\22\33\1\2\6\33\1\20\1\uffff\1\17\1\uffff\1\31"+
-        "\1\uffff\5\34\1\5\7\34\1\3\1\34\1\1\3\34\1\4\6\34\1\15\1\26\1\16"+
-        "\1\30",
-        "\1\42\2\uffff\1\41",
-        "\12\33\7\uffff\32\33\4\uffff\1\33\1\uffff\32\33",
-        "\1\44",
-        "\1\45",
-        "\1\46",
+        "\2\37\2\uffff\1\37\22\uffff\1\37\1\30\1\40\4\uffff\1\41\1\14\1\15"+
+        "\1\uffff\1\12\1\22\1\13\1\23\1\26\12\36\1\25\1\24\1\11\1\10\1\uffff"+
+        "\1\33\1\6\1\7\22\34\1\2\6\34\1\21\1\uffff\1\20\1\uffff\1\32\1\uffff"+
+        "\5\35\1\5\7\35\1\3\1\35\1\1\3\35\1\4\6\35\1\16\1\27\1\17\1\31",
+        "\1\43\2\uffff\1\42",
+        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\1\45\17\uffff\1\46",
         "\1\47",
-        "\1\52\1\51\1\50",
+        "\1\50",
+        "",
+        "\1\51",
+        "\1\54\1\53\1\52",
         "",
         "",
         "",
@@ -1738,7 +1799,7 @@ extends SLexer(input, state) {
         "",
         "",
         "",
-        "\1\53\4\uffff\1\53",
+        "\1\55\4\uffff\1\55",
         "",
         "",
         "",
@@ -1749,40 +1810,44 @@ extends SLexer(input, state) {
         "",
         "",
         "",
-        "",
-        "\1\55",
-        "\1\56",
         "",
         "\1\57",
         "\1\60",
+        "",
         "\1\61",
         "\1\62",
-        "",
-        "",
-        "",
-        "",
-        "",
         "\1\63",
         "\1\64",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\1\65",
+        "",
+        "",
+        "",
+        "",
+        "",
         "\1\66",
         "\1\67",
-        "\12\33\7\uffff\32\33\4\uffff\1\33\1\uffff\32\33",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
         "\1\71",
         "\1\72",
-        "",
+        "\1\73",
         "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-        "\1\74",
-        "",
         "\1\75",
         "\1\76",
         "",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
         "\1\101",
         "",
+        "\1\102",
+        "\1\103",
         "",
-        "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+        "",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+        "\1\106",
+        "",
+        "",
+        "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
         ""
     )
 
@@ -1802,41 +1867,46 @@ extends SLexer(input, state) {
     */
     class DFA14(recognizer:BaseRecognizer ) extends DFA {
     		final val DFA14_eotS =
-    		    "\1\uffff\1\34\1\43\3\34\1\33\16\uffff\1\54\13\uffff\2\34\1\uffff"+
-        "\3\34\1\33\5\uffff\2\34\1\65\2\34\1\70\2\34\1\uffff\1\73\1\34\1"+
-        "\uffff\2\34\1\uffff\1\77\1\100\1\34\2\uffff\1\102\1\uffff";
+    		    "\1\uffff\1\35\1\44\3\35\1\uffff\1\34\16\uffff\1\56\13\uffff\2"+
+        "\35\1\uffff\4\35\1\34\5\uffff\2\35\1\70\3\35\1\74\2\35\1\uffff\1"+
+        "\77\1\100\1\35\1\uffff\2\35\2\uffff\1\104\1\105\1\35\2\uffff\1\107"+
+        "\1\uffff";
     		final val DFA14_eofS =
-    		    "\103\uffff";
+    		    "\110\uffff";
     		final val DFA14_minS =
-    		    "\1\11\1\162\1\60\1\145\1\162\1\141\1\142\1\74\15\uffff\1\52\13"+
-        "\uffff\1\142\1\151\1\uffff\1\167\1\165\1\154\1\163\5\uffff\1\154"+
-        "\1\166\1\60\1\145\1\163\1\60\1\151\1\141\1\uffff\1\60\1\145\1\uffff"+
-        "\1\143\1\164\1\uffff\2\60\1\145\2\uffff\1\60\1\uffff";
+    		    "\1\11\1\162\1\60\1\145\1\162\1\141\1\uffff\1\142\1\74\15\uffff"+
+        "\1\52\13\uffff\1\142\1\151\1\uffff\1\167\1\154\1\165\1\154\1\163"+
+        "\5\uffff\1\154\1\166\1\60\1\154\1\145\1\163\1\60\1\151\1\141\1\uffff"+
+        "\2\60\1\145\1\uffff\1\143\1\164\2\uffff\2\60\1\145\2\uffff\1\60"+
+        "\1\uffff";
     		final val DFA14_maxS =
-    		    "\1\176\1\165\1\172\1\145\1\162\1\141\1\142\1\76\15\uffff\1\57"+
-        "\13\uffff\1\142\1\151\1\uffff\1\167\1\165\1\154\1\163\5\uffff\1"+
-        "\154\1\166\1\172\1\145\1\163\1\172\1\151\1\141\1\uffff\1\172\1\145"+
-        "\1\uffff\1\143\1\164\1\uffff\2\172\1\145\2\uffff\1\172\1\uffff";
+    		    "\1\176\1\165\1\172\1\165\1\162\1\141\1\uffff\1\142\1\76\15\uffff"+
+        "\1\57\13\uffff\1\142\1\151\1\uffff\1\167\1\154\1\165\1\154\1\163"+
+        "\5\uffff\1\154\1\166\1\172\1\154\1\145\1\163\1\172\1\151\1\141\1"+
+        "\uffff\2\172\1\145\1\uffff\1\143\1\164\2\uffff\2\172\1\145\2\uffff"+
+        "\1\172\1\uffff";
     		final val DFA14_acceptS =
-    		    "\10\uffff\1\12\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\23\1\24\1"+
-        "\25\1\26\1\27\1\uffff\1\31\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1"+
-        "\42\1\43\1\44\2\uffff\1\3\4\uffff\1\10\1\11\1\13\1\41\1\30\10\uffff"+
-        "\1\4\2\uffff\1\7\2\uffff\1\5\3\uffff\1\6\1\1\1\uffff\1\2";
+    		    "\6\uffff\1\10\2\uffff\1\14\1\16\1\17\1\20\1\21\1\22\1\23\1\24"+
+        "\1\25\1\26\1\27\1\30\1\31\1\uffff\1\33\1\34\1\35\1\36\1\37\1\40"+
+        "\1\41\1\42\1\44\1\45\1\46\2\uffff\1\3\5\uffff\1\12\1\13\1\15\1\43"+
+        "\1\32\11\uffff\1\4\3\uffff\1\11\2\uffff\1\7\1\5\3\uffff\1\6\1\1"+
+        "\1\uffff\1\2";
     		val DFA14_specialS =
-    		    "\103\uffff}>";
+    		    "\110\uffff}>";
     		final val DFA14_transitionS = Array[String](
-    		    "\2\36\2\uffff\1\36\22\uffff\1\36\1\27\1\37\4\uffff\1\40\1\13\1"+
-    		    "\14\1\uffff\1\11\1\21\1\12\1\22\1\25\12\35\1\24\1\23\1\10\1\7"+
-    		    "\1\uffff\1\32\1\uffff\1\6\22\33\1\2\6\33\1\20\1\uffff\1\17\1\uffff"+
-    		    "\1\31\1\uffff\5\34\1\5\7\34\1\3\1\34\1\1\3\34\1\4\6\34\1\15\1"+
-    		    "\26\1\16\1\30",
-    		    "\1\42\2\uffff\1\41",
-    		    "\12\33\7\uffff\32\33\4\uffff\1\33\1\uffff\32\33",
-    		    "\1\44",
-    		    "\1\45",
-    		    "\1\46",
+    		    "\2\37\2\uffff\1\37\22\uffff\1\37\1\30\1\40\4\uffff\1\41\1\14\1"+
+    		    "\15\1\uffff\1\12\1\22\1\13\1\23\1\26\12\36\1\25\1\24\1\11\1\10"+
+    		    "\1\uffff\1\33\1\6\1\7\22\34\1\2\6\34\1\21\1\uffff\1\20\1\uffff"+
+    		    "\1\32\1\uffff\5\35\1\5\7\35\1\3\1\35\1\1\3\35\1\4\6\35\1\16\1"+
+    		    "\27\1\17\1\31",
+    		    "\1\43\2\uffff\1\42",
+    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\1\45\17\uffff\1\46",
     		    "\1\47",
-    		    "\1\52\1\51\1\50",
+    		    "\1\50",
+    		    "",
+    		    "\1\51",
+    		    "\1\54\1\53\1\52",
     		    "",
     		    "",
     		    "",
@@ -1850,7 +1920,7 @@ extends SLexer(input, state) {
     		    "",
     		    "",
     		    "",
-    		    "\1\53\4\uffff\1\53",
+    		    "\1\55\4\uffff\1\55",
     		    "",
     		    "",
     		    "",
@@ -1861,40 +1931,44 @@ extends SLexer(input, state) {
     		    "",
     		    "",
     		    "",
-    		    "",
-    		    "\1\55",
-    		    "\1\56",
     		    "",
     		    "\1\57",
     		    "\1\60",
+    		    "",
     		    "\1\61",
     		    "\1\62",
-    		    "",
-    		    "",
-    		    "",
-    		    "",
-    		    "",
     		    "\1\63",
     		    "\1\64",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\1\65",
+    		    "",
+    		    "",
+    		    "",
+    		    "",
+    		    "",
     		    "\1\66",
     		    "\1\67",
-    		    "\12\33\7\uffff\32\33\4\uffff\1\33\1\uffff\32\33",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
     		    "\1\71",
     		    "\1\72",
-    		    "",
+    		    "\1\73",
     		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-    		    "\1\74",
-    		    "",
     		    "\1\75",
     		    "\1\76",
     		    "",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
     		    "\1\101",
     		    "",
+    		    "\1\102",
+    		    "\1\103",
     		    "",
-    		    "\12\34\7\uffff\32\34\4\uffff\1\34\1\uffff\32\34",
+    		    "",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
+    		    "\1\106",
+    		    "",
+    		    "",
+    		    "\12\35\7\uffff\32\35\4\uffff\1\35\1\uffff\32\35",
     		    ""
     		)
 
@@ -1913,7 +1987,7 @@ extends SLexer(input, state) {
     		    }
     		}
 
-        override def getDescription(): String = "1:1: Tokens : ( T__57 | T__58 | T__59 | NU | TRUE | FALSE | ABS | RARROW | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR );"
+        override def getDescription(): String = "1:1: Tokens : ( T__61 | T__62 | T__63 | NU | TRUE | FALSE | NULL | ARROBAS | ABS | RARROW | EQ_OP | LT | LTEQ | PLUS | MINUS | LPAREN | RPAREN | LCURL | RCURL | RBRACK | LBRACK | COMMA | POINT | SEMI | COLON | SLASH | BAR | BANG | TILDE | UNDEF | IMARK | R_ID | V_ID | INT | COMMENT | WS | STRING | CHAR );"
         
     }
  

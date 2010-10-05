@@ -9,5 +9,19 @@ package fr.emn.creole.core
  */
 
 object Creole{
-  type Substitution = Pair[Variable, Variable]  
+  var id = 0
+  type Substitution = Pair[Variable, Variable]
+
+  def newId = {
+    id += 1
+    id
+  }
+}
+
+object Indexator{
+  var index=0
+  def getIndex = {
+     index +=1
+     index
+  }
 }

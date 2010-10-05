@@ -37,27 +37,27 @@ object TransferTest{
 class TransferTest extends TestCase("transfer"){
 
   def testTransfer{
-    val threadSelector =  LocalServer.startServer()
+//    val threadSelector =  LocalServer.startServer()
 
-    val a = new Atom("PhotoCloning", new Variable("X") :: new Variable("y") :: Nil)
-
-    val config = new DefaultClientConfig
-    val client = Client.create(config)
-    val service = client.resource("http://localhost:9998/PhotoCloning")
-
-    val vlst = """{"vlst":[{"name":"X","relation":{"name":"X","url":"http://localhost:9999"}},{"name":"a","relation":"null"}]}"""
-    
-    val resp = try{
-      service.entity(vlst.getBytes, MediaType.APPLICATION_JSON_TYPE).
-              put(classOf[String])
-    }catch{
-      case e => println("Error: " + e)
-    }
-
-    println("Response: " + resp)
-    threadSelector.stopEndpoint();
-
-    assertTrue(true)
+//    val a = new Atom("PhotoCloning", new Variable("X") :: new Variable("y") :: Nil)
+//
+//    val config = new DefaultClientConfig
+//    val client = Client.create(config)
+//    val service = client.resource("http://localhost:9998/PhotoCloning")
+//
+//    val vlst = """{"vlst":[{"name":"X","relation":{"name":"X","url":"http://localhost:9999"}},{"name":"a","relation":"null"}]}"""
+//
+//    val resp = try{
+//      service.entity(vlst.getBytes, MediaType.APPLICATION_JSON_TYPE).
+//              put(classOf[String])
+//    }catch{
+//      case e => println("Error: " + e)
+//    }
+//
+//    println("Response: " + resp)
+//    threadSelector.stopEndpoint();
+//
+//    assertTrue(true)
   }
 }
 

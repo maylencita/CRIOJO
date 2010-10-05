@@ -13,6 +13,17 @@
           <module name="Core" />
           <module name="PiVot" />
           <module name="Parser" />
+          <module name="ActorsTesting" />
+        </modules>
+      </facet-type>
+      <facet-type id="scala">
+        <modules>
+          <module name="CRIOJO_Server" />
+          <module name="LiftREST" />
+          <module name="PiVot" />
+          <module name="Core" />
+          <module name="Services" />
+          <module name="Parser" />
         </modules>
       </facet-type>
     </autodetection-disabled>
@@ -77,10 +88,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/WebApp/pom.xml" />
-        <option value="$PROJECT_DIR$/Services/pom.xml" />
         <option value="$PROJECT_DIR$/C_Services/pom.xml" />
         <option value="$PROJECT_DIR$/C-Services/pom.xml" />
-        <option value="$PROJECT_DIR$/Services/pom.xml" />
         <option value="$PROJECT_DIR$/ANTLR_Scala/pom.xml" />
         <option value="$PROJECT_DIR$/Core/pom.xml" />
         <option value="$PROJECT_DIR$/PiVot/pom.xml" />
@@ -88,6 +97,8 @@
         <option value="$PROJECT_DIR$/Something/pom.xml" />
         <option value="$PROJECT_DIR$/untitled/pom.xml" />
         <option value="$PROJECT_DIR$/untitled1/pom.xml" />
+        <option value="$PROJECT_DIR$/ActorsTesting/pom.xml" />
+        <option value="$PROJECT_DIR$/CRIOJO_Server/pom.xml" />
       </list>
     </option>
   </component>

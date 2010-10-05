@@ -13,10 +13,14 @@ import fr.emn.creole.util.Logger
  */
 
 import fr.emn.creole.util.Logger._
+import java.net.URI
 
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
-class VirtualMachine extends StandardCHAM with Eq with Number
+abstract class VirtualMachine extends CHAM with ValueVM with Eq //with Number
 {
+  //Initialize Print
+  val print = Print
+
 //  this.solution = new StandardSolution()
   
 //  var rules:List[Rule] = List()
@@ -28,10 +32,10 @@ class VirtualMachine extends StandardCHAM with Eq with Number
   //TODO Replication & multi-relations  NO
   //TODO Error when new variables not declared
 
-  override def introduceAtom(atom:Atom)= atom match{
-    case Atom(EQ, vlst) if (vlst.size == 2) => addEquivalence(vlst(0),vlst(1))
-    case _ => processValues(atom) foreach{super.introduceAtom(_)}
-  }
+//  override def introduceAtom(atom:Atom)= atom match{
+//    case Atom(EQ, vlst) if (vlst.size == 2) => addEquivalence(vlst(0),vlst(1))
+//    case _ => processValues(atom) foreach{super.introduceAtom(_)}
+//  }
 
   def execute{
     var continue = true
@@ -39,7 +43,17 @@ class VirtualMachine extends StandardCHAM with Eq with Number
       while (rules.exists(r => r.isAxiom && r.execute)){}
   }
 
+  def newRemoteRelation(remoteName:String,url:String):RemoteRelation
+
   override def toString:String = {
     rules.mkString("","\n","")
   }
+
+  object Print extends Rel("Print"){
+    override def notifyObservers(a:Atom)= a match{
+      case Atom("Print", vars) => println(a.relName +"(" + a.vars.mkString("",",","") + ")")
+      case _ => super.notifyObservers(a)
+    }
+  }
+
 }

@@ -33,7 +33,7 @@ object Main extends Application{
       }
   }
 
-  def getBaseURI() = UriBuilder.fromUri("http://localhost/").port(getPort(9998)).build()
+  def getBaseURI() = UriBuilder.fromUri("http://localhost/VM2/").port(getPort(9998)).build()
 
 
   def startServer():SelectorThread={

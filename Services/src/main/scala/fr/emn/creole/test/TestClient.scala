@@ -10,6 +10,7 @@ package fr.emn.creole.test
 //import fr.emn.creole.core._
 import fr.emn.creole.model._
 import fr.emn.creole.util._
+import fr.emn.creole.virtualmachine._
 
 import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.client.Client
@@ -24,36 +25,51 @@ object TestClient{
   def main(args:Array[String]){
     val threadSelector =  LocalServer.startServer()
 
-//    val a = new Atom("PhotoCloning", new Variable("X") :: new Variable("y") :: Nil)
+//    val client = Client.create(new DefaultClientConfig)
+//    val service = client.resource("http://localhost:9998/VM2/relation/X")
+//
+//    val resp = try{
+//      service.get(classOf[String])
+//    }catch{
+//      case e => println("Error: " + e)
+//      "Error"
+//    }
+//    println("Test response: " + resp)
+//
+//    processScript()
 
-    val config = new DefaultClientConfig
-    val client = Client.create(config)
-    val service = client.resource("http://localhost:9998/PhotoCloning")
-
-    val atom1 = VarList(WebVariable("X", WebRelation("X","http://localhost:9999")):: new WebVariable("a", null)::Nil)
-    val vlst = JSONUtil.serialize(atom1)
-
-//    val vlst = """{"vlst":[{"name":"X","relation":{"name":"X","url":""" + LocalServer.BASE_URI +
-//      """}},{"name":"a","relation":"null"}]}"""
-
-    println(vlst)
-    val resp = try{
-      service.entity(vlst.getBytes, MediaType.APPLICATION_JSON_TYPE).
-              put(classOf[String])
-    }catch{
-      case e => println("Error: " + e)
-    }
-
-    println("Response: " + resp)
+    System.in.read();
     threadSelector.stopEndpoint();
   }
 
+  def processScript(){
+    try{
+      val script = "(public:Photo; private:Session) !T => new(x) PhotoCloning(Photo,x),Session(x)"
+      val server = "http://localhost:8080/VM/relation"
+      val relName = "PhotoCloning"
+
+      VirtualMachineService.reset
+
+      if (server != "" && relName != ""){
+        val remoteRelation = new RemoteRelation(relName, UriBuilder.fromUri(server).build())
+        VirtualMachineService.machine.addRelation(remoteRelation)
+      }
+
+      VirtualMachineService.runScript(script)
+      Logger.log(this.getClass, "runScript","solution: " + VirtualMachineService.getSolution)
+
+    }catch{
+      case e =>
+        e.printStackTrace
+        "Could not process script: " + e
+    }
+  }
 }
 
 object LocalServer{
   val BASE_URI:URI = getBaseURI()
 
-  def getBaseURI() = UriBuilder.fromUri("http://localhost/").port(9999).build()
+  def getBaseURI() = UriBuilder.fromUri("http://localhost/VM2/").port(9998).build()
 
   def startServer():SelectorThread={
       val initParams = new HashMap[String, String]()
@@ -63,6 +79,10 @@ object LocalServer{
 
       println("Starting grizzly...")
       val threadSelector = GrizzlyWebContainerFactory.create(BASE_URI, initParams)
+      println(String.format("Jersey app started with WADL available at "
+              + "%sapplication.wadl\nTry out %shelloworld\nHit enter to stop it...",
+              BASE_URI, BASE_URI));
+
       threadSelector
   }
 }

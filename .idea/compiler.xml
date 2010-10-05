@@ -18,7 +18,7 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
       <entry name="?*.stg,?" />
-      <entry name="*.crl" />
+      <entry name="*.crj" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>

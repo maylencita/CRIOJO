@@ -13,21 +13,19 @@ import fr.emn.creole.virtualmachine._
 import fr.emn.creole.model._
 import fr.emn.creole.util._
 
+import java.net.URI
 import javax.ws.rs._
 import javax.ws.rs.core._
 
 //@Path("/PhotoCloning")
 @Path("/{atomName}")
 class RelationResource{
+
   @PUT
   @Produces (Array("text/plain"))
   def receivePhotoCloning(@PathParam("atomName") aName:String, @Context headers:HttpHeaders, in: Array[Byte]):String = {
     val varList = JSONUtil.deserialize[VarList](in).asInstanceOf[VarList]
-    println("in: " + new String(in))
-    println("varList: " + varList)
-
-//    val varlist = new VarList(new WebVariable("X")::new WebVariable("a")::Nil)
-//    println("webvar: " + JSONUtil.serializeAsJSON(varlist))
+    Logger.log(this.getClass, "receiveAtom","in: " + new String(in))
 
     VirtualMachineService.addAtom(new Atom(aName, varList.getVarList))
     VirtualMachineService.getSolution
@@ -35,8 +33,11 @@ class RelationResource{
 
   @GET
   @Produces (Array("text/plain"))
-  def printAtom(@PathParam("atomName") aName:String):String = {
-    aName + "()"
+  def printAtom(@Context uriInfo : UriInfo, @PathParam("atomName") aName:String):String = {
+//    VirtualMachineService.getRelation(aName)
+//    //aName + "()"
+//    uriInfo.getBaseUri().resolve("..").resolve("relation").toString
+    VirtualMachineService.getSolution
   }
 
 }

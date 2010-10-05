@@ -31,7 +31,7 @@ object SjsonTests {
 class SjsonTests extends TestCase("sjson"){// extends Application{
 
     def testVar{
-      val v = new WebVariable("X", null)
+      val v = new WebVariable("X", null, null, null)
       println("Variable: " + v)
 
       val after = JSONUtil.serialize(v)
@@ -44,7 +44,7 @@ class SjsonTests extends TestCase("sjson"){// extends Application{
     }
 
     def testVarList = {
-      val atom1 = VarList(List(WebVariable("X", WebRelation("X","http://localhost:9999")), new WebVariable("a", null)))
+      val atom1 = VarList(List(WebVariable("X", null, null, WebRelation("X","http://localhost:9999")), new WebVariable("a", null, null, null)))
 
       val a = JSONUtil.serialize(atom1)
 

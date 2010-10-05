@@ -8,6 +8,7 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val HEAD: Token = "HEAD"
   val LTEQ: Token = "LTEQ"
   val ATOM: Token = "ATOM"
+  val ID: Token = "ID"
   val R_ID: Token = "R_ID"
   val V_ID: Token = "V_ID"
   val IN: Token = "IN"
@@ -26,6 +27,7 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val LET: Token = "LET"
   val STRING: Token = "STRING"
   val SEMI:Token = "SEMI"
+  val ARROBAS: Token = "ARROBAS"
 
   val MULTI:Token = "MULTI"
   val DECLARATION:Token = "DECLARATION"
@@ -40,6 +42,9 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val ABS:Token = "ABS"
 
   val INT_ATOM:Token = "INT_ATOM"
+  val STR_ATOM:Token = "STR_ATOM"
+  val NULL_ATOM:Token = "NULL_ATOM"
+  val NULL:Token = "NULL"
 
   private[this] def getToken(tokName: String): Token ={
 		if (tokNames != null)

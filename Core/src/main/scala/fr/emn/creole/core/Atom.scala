@@ -31,7 +31,7 @@ case class Atom (val relName:String, val vars: List[Variable]) {
 
   def inactivate{
     active = false
-  }
+  }  
 
   def applySubstitutions(subs:List[Substitution]):Atom = {
     var nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
@@ -103,7 +103,7 @@ case class Atom (val relName:String, val vars: List[Variable]) {
 }
 
 object True extends Atom ("true", List()){
-  relation = new LocalRelation("True", false)(false)
+  relation = new LocalRelation("True", false, false)
   override def isTrue:Boolean = true
   override def isFalse:Boolean = false
 
@@ -117,7 +117,7 @@ object True extends Atom ("true", List()){
 }
 
 object False extends Atom ("false", List()){
-  relation = new LocalRelation("False", false)(false)
+  relation = new LocalRelation("False", false, false)
   override def isTrue:Boolean = false
   override def isFalse:Boolean = true
 
