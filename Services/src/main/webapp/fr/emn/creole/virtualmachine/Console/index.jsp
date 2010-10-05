@@ -11,9 +11,10 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 
 <p>Write your script here:</p>
 <form name="scriptForm" action="" method="POST">
-    <textarea rows="40" cols="100" name="script">
-        ${it.script}
-    </textarea>
+    Use Remote Relation: <input type="text" name="remote_relation"> At
+    <input type="text" name="remote_vm">     
+    <br>
+    <textarea rows="40" cols="100" name="script">${it.script}</textarea>
     </br>
     <input type="submit" name="button" value="Execute" />
 </form>

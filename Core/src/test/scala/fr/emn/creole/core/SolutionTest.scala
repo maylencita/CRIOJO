@@ -7,8 +7,9 @@ package fr.emn.creole.core
  * Time: 11:08:23 PM
  * To change this template use File | Settings | File Templates.
  */
-import junit.framework._;
-import Assert._;
+
+import org.junit._
+import Assert._
 
 //object SolutionTest{
 //  def suite: Test = {
@@ -21,13 +22,14 @@ import Assert._;
 //  }
 //}
 
-class SolutionTest extends TestCase("solution"){
+class SolutionTest {
 
   val Solution = new Solution()
   val r = new LocalRelation("R")
   val a = Atom(r, Variable("x1"))
   val a2 = Atom(r, Variable("x1"))
 
+  @Test
   def testAdd2Times{
     Solution.addAtom(a)
     Solution.addAtom(a)
@@ -35,6 +37,7 @@ class SolutionTest extends TestCase("solution"){
     assertTrue("<R(x1)>" == Solution.toString)
   }
 
+  @Test
   def testMultiRel{
     Solution.addAtom(a)
     Solution.addAtom(a2)
@@ -43,6 +46,7 @@ class SolutionTest extends TestCase("solution"){
     assertTrue("<R(x1),R(x1)>" == Solution.toString)
   }
 
+  @Test
   def testCleanup{
     Solution.addAtom(a)
     a.active = false
@@ -51,6 +55,7 @@ class SolutionTest extends TestCase("solution"){
     assertTrue("<>" == Solution.toString)
   }
 
+  @Test
   def testRevert{
     Solution.addAtom(a)
     a.active = false
@@ -59,6 +64,7 @@ class SolutionTest extends TestCase("solution"){
     assertTrue("<R(x1)>" == Solution.toString)
   }
 
+  @Test
   def testClone{
     Solution.addAtom(a)
     Solution.addAtom(a2)
@@ -73,6 +79,7 @@ class SolutionTest extends TestCase("solution"){
     assertFalse(Solution.toString == sol2.toString)
   }
 
+  @Test
   def testEquals{
     val b = Atom(r, Variable("y1"))
     val sol1 = new Solution(Set(a,b))
@@ -89,6 +96,7 @@ class SolutionTest extends TestCase("solution"){
     assertFalse(sol1 == sol2)
   }
 
+  @Test
   def testUpdate{
     Solution.addAtom(a); Solution.addAtom(a2)
 
@@ -106,11 +114,4 @@ class SolutionTest extends TestCase("solution"){
     assertTrue("<R(x1),R(y1)>" == Solution.toString)
   }
 
-  //===================================
-//  val solution = new Solution()
-//  val a = Atom(r, Variable("x1"))
-//  solution.addAtom(a)
-//  solution.addAtom(a)
-//
-//  println("solution: " + solution)
 }

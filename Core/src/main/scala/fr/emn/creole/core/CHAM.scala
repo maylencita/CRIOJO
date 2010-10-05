@@ -7,60 +7,62 @@ package fr.emn.creole.core
  * Time: 11:15:43 AM
  * To change this template use File | Settings | File Templates.
  */
-import fr.emn.creole.util._
 
-trait CHAM[S <: Solution] {
+import Creole._
+
+abstract class CHAM extends AbstractMachine{
+
+  val solution = new Solution
   var rules:List[Rule] = List()
-  var solution:S = _ //olution = new Solution() //Set())
   var relations:List[Relation] = List()
-
-  def addRule(rule:Rule){
-    rule.solution = this.solution
-//    rule.relations = this.relations
-
-    if (!rule.isAxiom)
-      rule.head.foreach{
-        a => a.relation = findRelation(a.relName) match {
-          case r:Relation => r.addObserver(rule); r
-          case null => null
-        }
-      }
-
-    rule.body.foreach{a =>  a.relation = findRelation(a.relName);
-      a.vars.foreach{
-        case rv: RelVariable => rv.relation = relations.find(_.name == rv.name) match{
-          case Some(r) => r
-          case _ => Logger.log(this.getClass, "addRule", "Undefined relation variable " + rv.name); null //TODO Handle this
-        }
-        case _ => //skip
-      }
-    }
-
-    rules :+= rule
-//    rule.execute    
-  }
-
-  private def findRelation(relName:String):Relation = {
-    relations.find(_.name == relName) match {
-      case Some(r) => r
-      case _ => if (relName.startsWith("$")){
-                  new LocalRelation(relName,false)
-                }else{
-                  Logger.log(this.getClass, "findRelation","Undefined relation " + relName)
-                  null
-                }
-    }
-  }
-
-  def addRelation(relation:Relation){
-    relations :+= relation
-  }
 
   def introduceAtom(atom:Atom){
     solution.addAtom(atom)
     findRelation(atom.relName) match{
-      case r:Relation => atom.relation = r; r.notifyObservers(atom)
+      case r:Relation =>
+        atom.relation = r
+        r.notifyObservers(atom)
       case _ => //skip
     }
   }
+
+  def addRelation(relation:Relation) = relations :+= relation
+
+  def addRule(rule:Rule) = rules :+= rule
+
+  def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
+
+  implicit def atomToConjunction(a:Atom):Conjunction = new &:(a, Empty)
+
+  abstract class Conjunction{
+    def empty:Boolean
+    def head:Atom
+    def tail:Conjunction
+
+    def &: (a:Atom) = new &: (a, this)
+
+    def toList:List[Atom] = head :: tail.toList
+
+    def ==> (c2:Conjunction):Rule = newRule(this.toList, c2.toList)
+
+    def ==> (g:Guard, c2:Conjunction):Rule = newRule(this.toList, c2.toList,g)  
+
+    override def toString = head + (if (tail.empty) "" else  " & " + tail)
+  }
+
+  case object Empty extends Conjunction{
+    def empty = true
+    def head = throw new NoSuchElementException("head of empty conjunction")
+    def tail = throw new NoSuchElementException("tail of empty conjunction")
+
+    override def toList = List()
+    override def toString = ""
+  }
+
+  final case class &: (hd:Atom, tl:Conjunction) extends Conjunction{
+    def head = hd
+    def tail = tl
+    def empty = false
+  }
+
 }

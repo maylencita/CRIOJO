@@ -21,6 +21,8 @@ tokens{
     EMPTY;
 
     INT_ATOM;
+    STR_ATOM;
+    NULL_ATOM;
 }
 
 @lexer::header {
@@ -58,6 +60,7 @@ rlist
 
 rdeclaration
     :   R_ID
+    |   R_ID ARROBAS url -> ^(ARROBAS R_ID url)
     |   TILDE R_ID -> ^(MULTI R_ID)
     ;
 
@@ -135,13 +138,15 @@ relation
     ;
 
 variable
-    :   V_ID | R_ID
+    :   NULL | V_ID | R_ID
     ;
 
 constant
 	:	INT
 	|	STRING
 	;
+
+url : STRING;
 
 /***************************************************************************************
 	TOKENS
@@ -155,6 +160,12 @@ TRUE
 FALSE
     :   'false'
     ;
+NULL
+    :   'null'
+    ;
+ARROBAS
+	:	'@'
+	;
 /*
 ZERO
     :   '0'
@@ -169,9 +180,6 @@ PACKAGE
 	;
 SOLVER
 	:	'solver'
-	;
-ARROBAS
-	:	'@'
 	;
 */
 RARROW
@@ -262,10 +270,10 @@ R_ID
     ;
 V_ID  :	('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
-/*
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
-    ;
-*/
+
+//ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+//    ;
+
 INT :	'0'..'9'+
     ;
 /*

@@ -14,37 +14,80 @@ import fr.emn.creole.util.Logger._
 import org.junit._
 import Assert._
 
-import collection.mutable.HashSet
+import java.net.URI
 
-//class TypeTests extends TestCase("types"){
 class TypeTests{
-  val machine = new VirtualMachine
+
   val x = Variable("x")
   val y = Variable("y")
   val z = Variable("z")
+  val w = Variable("w")
   val a = Variable("a")
   val b = Variable("b")
   val c = Variable("c")
+  val d = Variable("d")
 
-  import machine._
+  val EQQ = "Eq"
 
   @Test
   def testEq{
+    logLevel = DEBUG
+    val machine = new LocalVM
 
-    introduceAtom(Atom(EQ, a, b))
-    introduceAtom(Atom(EQ, x, y))
+    log("relations: " + machine.relations)
+    log("rules: " + machine.rules)
+
+    machine.introduceAtom(Atom(EQQ, a, b))
+    machine.introduceAtom(Atom(EQQ, c, d))
+
+    log("solution: " + machine.solution)
 
 //    info(this.getClass, "testEq", "eqClasses= " + eqClasses)
-    assertTrue{"Missing elements from eqClasses: " + eqClasses
-      eqClasses.exists(ec => ec.contains(a) && ec.contains(b)) &&
-      eqClasses.exists(ec => ec.contains(x) && ec.contains(y))
+    assertTrue("Missing elements from eqClasses: " + machine.eqClasses,
+      machine.eqClasses.exists(ec => ec.contains(a) && ec.contains(b)) &&
+      machine.eqClasses.exists(ec => ec.contains(c) && ec.contains(d))
+    )
+
+    machine.introduceAtom(Atom(EQQ, b, c))
+//    info(this.getClass, "testEq", "eqClasses= " + eqClasses)
+    assertTrue("Wrong eqClasses: " + machine.eqClasses,
+      machine.eqClasses.exists(ec => ec.contains(a) && ec.contains(b) &&
+        ec.contains(c) && ec.contains(d))
+    )
+  }
+
+  @Test
+  def testAskEq{
+    val machine = new CHAM with Eq{
+      val R = Rel("R")
+
+      val r2 = (R("x","y") &: R("z","w") &: EQ("y","z")) ==> R("x","w")
+    }
+    log("Relations: " + machine.relations)
+    log("Solution: " + machine.solution)
+    log("Rules: " + machine.rules)
+
+    val R = "R"
+
+    machine.introduceAtom(Atom(R, a, b))
+    machine.introduceAtom(Atom(R, b, c))
+
+    val atom = Atom(R, a,c)
+    assertTrue("Expected value in solution: " + atom + ". Actual solution: " + machine.solution,
+      machine.solution.exists(at => at.relName == atom.relName && at.vars == atom.vars)  
+    )
+  }
+
+  @Test
+  def testPrint{
+    logLevel = INFO
+    val machine = new VirtualMachine{
+      val T = Rel("T")
+      val r = T("x") ==> Print("x")
+
+      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
     }
 
-    introduceAtom(Atom(EQ, b, y))
-//    info(this.getClass, "testEq", "eqClasses= " + eqClasses)
-    assertTrue{"Wrong eqClasses: " + eqClasses
-      eqClasses.exists(ec => ec.contains(a) && ec.contains(b) &&
-        ec.contains(x) && ec.contains(y))
-    }
+    machine.introduceAtom(Atom("T", Value("Mayleen")))
   }
 }

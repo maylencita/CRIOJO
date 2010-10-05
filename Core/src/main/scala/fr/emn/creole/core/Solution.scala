@@ -9,6 +9,9 @@ import Creole.Substitution
  * Time: 4:27:10 PM
  * To change this template use File | Settings | File Templates.
  */
+object Solution{
+  def apply(atoms:Atom*) = new Solution(atoms.toSet) 
+}
 
 class Solution(var elems:Set[Atom]){
   def this()= this(Set[Atom]())
@@ -32,6 +35,8 @@ class Solution(var elems:Set[Atom]){
   def foreach(f: (Atom) => Unit) {elems.foreach(f)}
 
   def remove(a:Atom) { elems -= a}
+
+  def exists(f: (Atom)=>Boolean) = elems.exists(f)
 
   def clear{
     elems = Set[Atom]()
@@ -79,11 +84,13 @@ class Solution(var elems:Set[Atom]){
     findMatchesRec(conjunction, substitutions, List())
   }
 
-  protected def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = {
+  def copy:Solution = new Solution(elems.map(a => a.clone))
+
+  protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
-      filter(_.relName == relation.relName).toList
+      filter(_.relName == atom.relName).toList
     }else{
-      val test = relation.applySubstitutions(subs)
+      val test = atom.applySubstitutions(subs)
       filter(a => a.active && a.matches(test)).toList
     }
   }

@@ -10,7 +10,7 @@ package fr.emn.creole.util
 
 import org.antlr.runtime._
 
-import fr.emn.creole.core._
+import fr.emn.creole.ext._
 import fr.emn.creole.parser._
 import fr.emn.creole.parser.tree._
 import fr.emn.creole.interpreter._
@@ -33,23 +33,23 @@ object ScriptLoader{
     val adaptor = new CHRTreeAdaptor
 
     val tokens = new CommonTokenStream(lex)
-      println("tokens: " + tokens.getTokens)
+//    Logger.log(this.getClass,"load", "tokens: " + tokens.getTokens)
 
     val g = new CREOLE_XParser(tokens);
     g.setTreeAdaptor(adaptor)
     val tree = g.start().getTree().asInstanceOf[^];
 
-    println("tree: " + tree.toStringTree)
+//    Logger.log(this.getClass, "load", "tree: " + tree.toStringTree)
     val tokenz = g.getCHRTreeTokens
 
     //Translate Program
     val translatr = new Translator(tokenz)
     val translatedTree = translatr.translate(tree)
 
-    println("tree': " + translatedTree.toStringTree)
+//    Logger.log(this.getClass, "load", "tree': " + translatedTree.toStringTree)
 
     //Interpret Program
-    val interp = new Interpreter(machine, g.getCHRTreeTokens)
-    interp.runScript(tree)
+    val interp = new Interpreter(machine, tokenz)
+    interp.runScript(translatedTree)
   }
 }

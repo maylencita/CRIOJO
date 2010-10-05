@@ -1,0 +1,5 @@
+(public:PhotoCloning; private:Photo)
+PhotoCloning(x,y) => Photo(x,y)
+
+(public:_; private:Session)
+!T => new(x) PhotoCloning(x,"bla bla bla"),Session(x)

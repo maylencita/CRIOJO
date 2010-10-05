@@ -9,6 +9,7 @@ package fr.emn.creole.interpreter
  */
 import fr.emn.creole.parser.tree._
 import fr.emn.creole.core._
+import fr.emn.creole.util.Logger
 
 import org.antlr.runtime.Token
 
@@ -30,7 +31,7 @@ class Translator(tokens:CHRTreeTokens){
       case ^(SCRIPT, _) => ^(SCRIPT, processScript(tree))
 //      case ^(BANG, s) => tree
       case ^(RULE, r) => processRule(r)
-      case _ => println("Gna! not a valid script!"); null
+      case _ => Logger.log(this.getClass, "process","Gna! not a valid script!"); null
   }
 
   def processScript(s: ^):List[^] = s match{
@@ -159,18 +160,17 @@ class Translator(tokens:CHRTreeTokens){
     alst.flatMap{
       case ^(ATOM, name :: ^(VARS, vars) :: _) =>
         val newVarList = vars.zip(vars.map(v => processVariable(v)) )//.filter(_ != null)
-          ^(ATOM, name.dupNode.asInstanceOf[^] ::
-            ^(VARS, newVarList.map{
-              case (v, null) => v.dupNode.asInstanceOf[^]
-              case (_, v) => v
-              }) :: Nil) ::
-          newVarList.map{p => p match{
-            case (v, null) => null
-//            case (^(INT, _), v) => newAtom(INT_ATOM, "$int_"+p._1.getText, v)
-            case (^(INT, _), v) => newAtom(INT_ATOM, p._1.getText, v)
-            case (^(STRING, _), v) => newAtom(ATOM, "$str_"+p._1.getText, v)
-            case _ => null
-          }}.filter(_ != null)
+        ^(ATOM, name.dupNode.asInstanceOf[^] ::
+          ^(VARS, newVarList.map{
+            case (v, null) => v.dupNode.asInstanceOf[^]
+            case (_, v) => v
+            }) :: Nil) ::
+          newVarList.foldLeft(List[^]()){
+            case (lst, (n @ ^(INT, _), v)) => lst :+ newAtom(INT_ATOM, n.getText, v)
+            case (lst, (s @ ^(STRING, _), v)) => lst :+ newAtom(STR_ATOM, s.getText, v)
+            case (lst, (^(NULL, _), v)) => lst :+ newAtom(NULL_ATOM, "Null", v)
+            case (lst, _) => lst
+          }
       case ^(ATOM, name :: Nil) => ^(ATOM, name.dupNode.asInstanceOf[^] :: Nil) :: Nil
       case x => x :: Nil
     }
@@ -181,10 +181,9 @@ class Translator(tokens:CHRTreeTokens){
   }
 
   def processVariable(variable: ^): ^ = variable match{
-//    case ^(V_ID, _) => null
-//    case ^(R_ID, _) => null
     case ^(INT, _) => variableGenerator(V_ID.getType)
     case ^(STRING, _) => variableGenerator(V_ID.getType)
+    case ^(NULL, _) => variableGenerator(V_ID.getType)
     case _ => variable
   }
 

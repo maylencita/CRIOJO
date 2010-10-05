@@ -7,6 +7,8 @@ package fr.emn.creole.virtualmachine
  * Time: 11:00:07 AM
  * To change this template use File | Settings | File Templates.
  */
+import fr.emn.creole.util._
+import fr.emn.creole.model._
 
 import scala.reflect.BeanProperty
 
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.ws.rs._
+import javax.ws.rs.core._
 import com.sun.jersey.api.representation.Form
 
 @Path("/")
@@ -27,16 +30,33 @@ class Console{
 
   @POST
   @Consumes(Array("application/x-www-form-urlencoded"))
-  def runScript(/*@QueryParam("script")*/ formData: Form): Console ={
+  @Produces (Array("text/plain"))
+  def runScript(@Context uriInfo : UriInfo, /*@QueryParam("script")*/ formData: Form): String ={
     if (formData == null){
-      println("Received Empty Script")
-      this
+      Logger.log(this.getClass, "runScript","Received Empty Script")
+      ""
     }else{
-      this.script = formData.getFirst("script")
-//      println("script: " + script)
-//      VirtualMachineService.runScript(script)
-//      VirtualMachineService.getSolution
-      this
+      try{
+        this.script = formData.getFirst("script")
+
+        VirtualMachineService.reset
+        VirtualMachineService.url = uriInfo.getBaseUri().resolve("..")        
+        val server = formData.getFirst("remote_vm")
+        val relName = formData.getFirst("remote_relation")
+
+        if (server != "" && relName != ""){
+          val remoteRelation = new RemoteRelation(relName, UriBuilder.fromUri(server).build())
+          VirtualMachineService.machine.addRelation(remoteRelation)
+        }
+
+        Logger.log(this.getClass, "runScript","script: " + script)
+        VirtualMachineService.runScript(script)
+        VirtualMachineService.getSolution
+      }catch{
+        case e =>
+          e.printStackTrace
+          "Could not process script: " + e
+      }
     }
   }
 }

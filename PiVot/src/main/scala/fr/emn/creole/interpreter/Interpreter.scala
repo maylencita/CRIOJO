@@ -3,8 +3,10 @@ package fr.emn.creole.interpreter
 
 import fr.emn.creole.parser.tree._
 
-import fr.emn.creole.core._
-import fr.emn.creole.util.Logger
+import fr.emn.creole._, core._ , ext._
+import fr.emn.creole.ext._
+import fr.emn.creole.util._
+import Logger._
 
 import scala.collection.mutable.HashMap
 
@@ -15,7 +17,7 @@ import org.antlr.runtime.Token;
 class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
 
   def this(tokens:CHRTreeTokens)={
-    this (new VirtualMachine(), tokens)
+    this (new LocalVM, tokens)
   }
 
 	import tokens._
@@ -25,8 +27,8 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
   def runScript(tree: ^){
     process(tree)
     Logger.log("[Interpreter.runScript] script: \n" + machine)
-    machine.execute
-    println("finished with solution: " + machine.solution)
+//    machine.execute
+//    Logger.log(this.getClass, "runScript","finished with solution: " + machine.solution)
   }
 
   def process(t: ^){
@@ -36,17 +38,19 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
       case ^(BAR, s1::s2::Nil) => process(s1) ; process(s2)   
       case ^(SEMI, s1::s2::Nil) => process(s1) ; process(s2)
       case ^(BANG, s) => process(s.head)
-      case ^(RULE, r) => machine.addRule(processRule(r))
-      case _ => println("Gna! not a valid script!")
+      case ^(RULE, r) => processRule(r,machine)
+      case _ => Logger.log(this.getClass, "process","Gna! not a valid script!")
     }
   }
 
   def processDeclaration(d: ^){
+    import fr.emn.creole.ext._
     def processRelList(public:Boolean, lst: List[^]){
       lst match{
         case List() => //skip
-        case ^(R_ID, _) :: res => machine.addRelation(new Relation(lst.head.getText, public)); processRelList(public,res)
-        case ^(MULTI, rid) :: res => machine.addRelation(new Relation(rid.head.getText, public)); processRelList(public,res)
+        case (h @ ^(R_ID, _)) :: res => machine.addRelation(new LocalRelation(h.getText, public)); processRelList(public,res)
+        case ^(ARROBAS, rid :: url :: _) :: res => machine.newRemoteRelation(rid.getText, url.getText.replaceAll("\"","")); processRelList(public,res) 
+        case ^(MULTI, rid :: _) :: res => machine.addRelation(new LocalRelation(rid.getText, public)); processRelList(public,res)
         case ^(EMPTYLIST, _) :: _ => //SKIP
         case _ =>
       }
@@ -58,12 +62,12 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
     }
   }
 
-  def processRule(r: ^):Rule = r match{
-    case ^(RULE, rdef) => processRule(rdef)
+  def processRule(r: ^, mv:CHAM=machine):Rule = r match{
+    case ^(RULE, rdef) => processRule(rdef,mv)
     case _ => null
   }
 
-  def processRule(r: List[^]):Rule ={
+  def processRule(r: List[^], mv:CHAM):Rule ={
     var head:List[Atom] = List()
     var body:List[Atom] = List()
     var scope:List[Variable] = List()
@@ -76,9 +80,12 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
         case ^(HEAD, alst) :: res => head = processHead(alst) ; processRuleIter(res)
         case ^(BODY, alst) :: res => body = alst.map(a => processAtom(a)) ; processRuleIter(res)
         case ^(NU, vlst) :: res => scope = vlst.map(v => processVar(v)) ; processRuleIter(res)
-        case ^(GUARD, glst) :: res => guard = new Guard(glst.map(g => processRule(g))) ; processRuleIter(res)
+        case ^(GUARD, glst) :: res =>
+          //(glst.map(g => processRule(g))) ;
+          glst.map(g=>processRule(g,guard))
+          processRuleIter(res)
         case Nil => //finished
-        case _ => println("invalid rule"); null  //TODO manage invalid rule error
+        case _ => Logger.log(this.getClass, "processRuleIter","invalid rule"); null  //TODO manage invalid rule error
       }
     }
 
@@ -93,18 +100,22 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
       case ^(ATOM, name :: ^(VARS, vlist) :: Nil) => new Atom(name.getText, vlist.map(v => processVar(v)))
       case ^(ATOM, name :: Nil) => new Atom(name.getText, List())
       case ^(INT_ATOM, name :: ^(VARS, vlist) :: Nil) =>
-        val nm:String = name.getText
-        new IntAtom(nm.toInt, processVar(vlist(0)))
-      case _ => println("invalid atom"); null  //TODO manage invalid atom error
+        new IntAtom(name.getText.toInt, processVar(vlist(0)))
+      case ^(STR_ATOM, name :: ^(VARS, vlist) :: Nil) =>
+        new StringAtom(name.getText.replaceAll("\"",""), processVar(vlist(0)))
+      case ^(NULL_ATOM, name :: ^(VARS, vlist) :: Nil) =>
+        new NullAtom(processVar(vlist(0)))
+      case _ => Logger.log(this.getClass, "processAtom","invalid atom"); null  //TODO manage invalid atom error
     }
 
     def processVar(variable: ^): Variable = variable match{
       case ^(V_ID, _) => new Variable(variable.getText)
       case ^(R_ID, _) => new RelVariable(variable.getText)
-      case _ => println("invalid var"); null //TODO manage invalid variable error
+      case _ => Logger.log(this.getClass, "processVar","invalid var " + variable); null //TODO manage invalid variable error
     }
 
-    val rule = new Rule(head,body,guard)
+//    val rule = new Rule(head,body,guard)
+    val rule = mv.newRule(head,body,guard)
     if (!scope.isEmpty)
       rule.setScope(scope)
 

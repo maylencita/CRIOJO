@@ -10,9 +10,13 @@ package fr.emn.creole.model
 
 import fr.emn.creole.core._
 
+import fr.emn.creole.virtualmachine.VirtualMachineService
+
 import scala.reflect.BeanInfo
 import scala.collection.mutable.LinkedList
 import sjson.json._
+
+import java.net.URI
 import javax.ws.rs.core.UriBuilder
 
 trait DomainClass{
@@ -20,16 +24,36 @@ trait DomainClass{
 }
 
 @BeanInfo
-case class WebVariable(name:String,@JSONTypeHint(classOf[WebRelation]) relation:WebRelation) extends DomainClass{
-  private def this() = this(null,null)
+case class WebVariable(name:String, typ:String, value:String, @JSONTypeHint(classOf[WebRelation]) relation:WebRelation) extends DomainClass{
+  private def this() = this(null,null,null,null)
 
-  def this(variable:Variable) = {
-    this(variable.name, null)
-  }
+  def this(variable:Variable) =
+    this(variable.name,
+      variable match{
+        case vv:ValueVariable[Int] => "Int"
+        case vv:ValueVariable[String] => "String"
+        case _ => null
+      },
+      variable match{
+        case vv:ValueVariable[_] => vv.value.toString
+        case _ => null
+      },
+      variable match{
+        case rv: RelVariable => new WebRelation(rv.name, VirtualMachineService.url.resolve("relation").toString)
+        case _ => null
+      })
+
 
   def getVariable:Variable={
     if (relation == null)
-      new Variable(name)
+      if (value == null || value == "null")
+        new Variable(name)
+      else
+        typ match{
+          case "Int" => ValueVariable[Int](value.toInt)
+          case "String" => ValueVariable[String](value)
+          case _ => ValueVariable[Any](value)
+        }
     else{
       val rv = RelVariable(name)
       rv.relation = relation.getRelation
@@ -49,7 +73,7 @@ case class WebRelation(name:String,url:String) extends DomainClass{
   private def this() = this(null, null)
 
   def getRelation:Relation = {
-    new RemoteRelation(name, UriBuilder.fromUri(url).build())
+    new RemoteRelation(name, new URI(url))
   }
 }
 

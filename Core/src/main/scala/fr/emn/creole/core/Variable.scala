@@ -35,7 +35,7 @@ class Variable (n: String){
 }
 
 case class RelVariable(n:String) extends Variable(n){
-  var relation:Relation = _
+  var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 }
 
 trait ValueVariable[+T]
@@ -53,6 +53,7 @@ case class Value[+T](value:T) extends Variable(if (value == null) "_" else value
   }
 }
 
+//TODO Why not extends ValueVariable[Nothing]? 
 object Null extends Value[Any](null){
   override def toString = "null"
 }
