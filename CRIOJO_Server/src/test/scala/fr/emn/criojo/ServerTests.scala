@@ -9,9 +9,9 @@ package fr.emn.criojo
  */
 
 import virtualmachine._
-import fr.emn.creole.loader.ScriptLoader._
-import fr.emn.creole.util.Logger._
-import fr.emn.creole.core._
+import fr.emn.criojo.loader.ScriptLoader._
+import fr.emn.criojo.util.Logger._
+import fr.emn.criojo.core._
 
 import org.junit._
 import Assert._

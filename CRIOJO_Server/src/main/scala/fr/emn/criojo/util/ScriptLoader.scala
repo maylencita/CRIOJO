@@ -10,10 +10,10 @@ package fr.emn.criojo.util
 
 import org.antlr.runtime._
 
-import fr.emn.creole.ext._
-import fr.emn.creole.parser._
-import fr.emn.creole.parser.tree._
-import fr.emn.creole.interpreter._
+import fr.emn.criojo.ext._
+import fr.emn.criojo.parser._
+import fr.emn.criojo.parser.tree._
+import fr.emn.criojo.interpreter._
 
 import java.net.URL
 

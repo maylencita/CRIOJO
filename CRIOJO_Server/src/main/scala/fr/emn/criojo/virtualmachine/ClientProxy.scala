@@ -9,8 +9,8 @@ package fr.emn.criojo.virtualmachine
  */
 
 import fr.emn.criojo.model._
-import fr.emn.creole.core._
-import fr.emn.creole.util._
+import fr.emn.criojo.core._
+import fr.emn.criojo.util._
 
 import scala.actors.Actor._
 import scala.actors.TIMEOUT

@@ -8,7 +8,7 @@ package fr.emn.criojo.util
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.util.Logger
+//import fr.emn.criojo.util.Logger
 
 import fr.emn.criojo.virtualmachine._
 import javax.ws.rs._

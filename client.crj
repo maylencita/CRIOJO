@@ -1,0 +1,10 @@
+(public:Tok;
+private:
+    Login@"http://localhost:8080/vm/P-VM",
+    Session)
+
+!T => new(x) Login(x,Tok,"maylelacouture@gmail.com", "dr2g9n21r"), Session(x)
+|
+Tok(x,t) => Print(t) 
+
+

@@ -8,11 +8,11 @@ package fr.emn.criojo.virtualmachine
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.core._
-import fr.emn.creole.ext._
-import fr.emn.creole.loader.ScriptLoader
+import fr.emn.criojo.core._
+import fr.emn.criojo.ext._
+import fr.emn.criojo.loader.ScriptLoader
 
-import fr.emn.creole.util.Logger._
+import fr.emn.criojo.util.Logger._
 
 import java.net.URI
 
@@ -57,7 +57,7 @@ object VirtualMachineService extends ConnectedVM(VirtualMachineConfigurator.url)
    * Initializes the virtual machine
    */
   def loadScript(){
-    val scriptUrl = this.getClass.getClassLoader.getResource("fr/emn/criojo/virtualmachine/vm.crj")//"fr/emn/creole/test/naive_execution_test.crl")
+    val scriptUrl = this.getClass.getClassLoader.getResource("fr/emn/criojo/virtualmachine/vm.crj")//"fr/emn/criojo/test/naive_execution_test.crl")
     info(this.getClass, "loadScript", "url: " + scriptUrl)
     if (scriptUrl != null){
 //      ScriptLoader.load(machine, scriptUrl)

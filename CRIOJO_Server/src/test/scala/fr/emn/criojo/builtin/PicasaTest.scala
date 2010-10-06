@@ -8,9 +8,9 @@ package fr.emn.criojo.builtin
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.core._
-import fr.emn.creole.ext.RemoteRelation
-import fr.emn.creole.util.Logger._
+import fr.emn.criojo.core._
+import fr.emn.criojo.ext.RemoteRelation
+import fr.emn.criojo.util.Logger._
 
 import com.google.gdata.client._
 import com.google.gdata.client.photos._

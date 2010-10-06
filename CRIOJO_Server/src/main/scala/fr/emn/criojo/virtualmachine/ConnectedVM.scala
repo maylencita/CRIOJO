@@ -7,9 +7,9 @@ package fr.emn.criojo.virtualmachine
  * Time: 2:48:32 PM
  * To change this template use File | Settings | File Templates.
  */
-import fr.emn.creole.core._
-import fr.emn.creole.ext.{VirtualMachine,RemoteRelation}
-import fr.emn.creole.util.Logger._
+import fr.emn.criojo.core._
+import fr.emn.criojo.ext.{VirtualMachine,RemoteRelation}
+import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.util._
 import fr.emn.criojo.model._
 

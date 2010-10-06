@@ -8,7 +8,7 @@ package fr.emn.criojo.model
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.core._
+import fr.emn.criojo.core._
 
 import fr.emn.criojo.virtualmachine._
 

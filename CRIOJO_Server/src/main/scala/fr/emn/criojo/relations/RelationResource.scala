@@ -8,8 +8,8 @@ package fr.emn.criojo.relations
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.core._
-import fr.emn.creole.util.Logger
+import fr.emn.criojo.core._
+import fr.emn.criojo.util.Logger
 
 import fr.emn.criojo.virtualmachine._
 import fr.emn.criojo.model._

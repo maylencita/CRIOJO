@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="creole" default="all">
+<project name="criojo" default="all">
   
   
   <property file="creole.properties"/>
@@ -577,29 +577,29 @@
   
   <!-- Module CREOLE -->
   
-  <dirname property="module.creole.basedir" file="${ant.file}"/>
+  <dirname property="module.criojo.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.creole" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.creole" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.creole" value="${project.jdk.classpath}"/>
+  <property name="module.jdk.home.criojo" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.criojo" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.criojo" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.creole" value="${compiler.args}"/>
+  <property name="compiler.args.criojo" value="${compiler.args}"/>
   
-  <property name="creole.output.dir" value="${module.creole.basedir}/out/production/CREOLE"/>
-  <property name="creole.testoutput.dir" value="${module.creole.basedir}/out/test/CREOLE"/>
+  <property name="criojo.output.dir" value="${module.creole.basedir}/out/production/CREOLE"/>
+  <property name="criojo.testoutput.dir" value="${module.creole.basedir}/out/test/CREOLE"/>
   
-  <path id="creole.module.bootclasspath">
+  <path id="criojo.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
   
-  <path id="creole.module.classpath">
+  <path id="criojo.module.classpath">
     <path refid="${module.jdk.classpath.creole}"/>
     <path refid="library.scala-2.8.0.beta1.classpath"/>
     <path refid="library.scala_2.8.classpath"/>
   </path>
   
-  <path id="creole.runtime.module.classpath">
+  <path id="criojo.runtime.module.classpath">
     <pathelement location="${creole.output.dir}"/>
     <pathelement location="${creole.testoutput.dir}"/>
     <path refid="library.scala-2.8.0.beta1.classpath"/>
@@ -607,22 +607,22 @@
   </path>
   
   
-  <patternset id="excluded.from.module.creole">
+  <patternset id="excluded.from.module.criojo">
     <patternset refid="ignored.files"/>
   </patternset>
   
-  <patternset id="excluded.from.compilation.creole">
+  <patternset id="excluded.from.compilation.criojo">
     <patternset refid="excluded.from.module.creole"/>
   </patternset>
   
   
-  <target name="compile.module.creole" depends="compile.module.creole.production,compile.module.creole.tests" description="Compile module CREOLE"/>
+  <target name="compile.module.criojo" depends="compile.module.creole.production,compile.module.creole.tests" description="Compile module CREOLE"/>
   
-  <target name="compile.module.creole.production" description="Compile module CREOLE; production classes"/>
+  <target name="compile.module.criojo.production" description="Compile module CREOLE; production classes"/>
   
-  <target name="compile.module.creole.tests" depends="compile.module.creole.production" description="compile module CREOLE; test classes" unless="skip.tests"/>
+  <target name="compile.module.criojo.tests" depends="compile.module.creole.production" description="compile module CREOLE; test classes" unless="skip.tests"/>
   
-  <target name="clean.module.creole" description="cleanup module">
+  <target name="clean.module.criojo" description="cleanup module">
     <delete dir="${creole.output.dir}"/>
     <delete dir="${creole.testoutput.dir}"/>
   </target>

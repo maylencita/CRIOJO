@@ -8,8 +8,8 @@ package fr.emn.criojo.builtin
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole._, core._, ext._
-import fr.emn.creole.util.Logger._
+import fr.emn.criojo._, core._, ext._
+import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.virtualmachine.ConnectedVM
 import fr.emn.criojo.client._
 

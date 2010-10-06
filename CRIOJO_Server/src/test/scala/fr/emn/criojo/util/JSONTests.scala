@@ -9,9 +9,9 @@ package fr.emn.criojo.util
  */
 
 import fr.emn.criojo.model._
-import fr.emn.creole.core._
-import fr.emn.creole.ext._
-import fr.emn.creole.util.Logger._
+import fr.emn.criojo.core._
+import fr.emn.criojo.ext._
+import fr.emn.criojo.util.Logger._
 
 import junit.framework._;
 import Assert._;

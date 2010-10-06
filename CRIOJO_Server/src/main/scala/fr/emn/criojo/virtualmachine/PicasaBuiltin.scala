@@ -10,7 +10,7 @@ package fr.emn.criojo.virtualmachine
 
 import fr.emn.criojo.builtin.{PicasaVM, PicasaParams}
 import fr.emn.criojo.util._
-import fr.emn.creole.util.Logger
+import fr.emn.criojo.util.Logger
 
 import javax.ws.rs._
 import javax.ws.rs.core._

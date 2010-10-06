@@ -8,7 +8,7 @@ package fr.emn.criojo.virtualmachine
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.core._
+import fr.emn.criojo.core._
 
 object ScriptTest extends Application{
   val scriptUrl = this.getClass.getClassLoader.getResource("fr/emn/criojo/virtualmachine/script.crj")
