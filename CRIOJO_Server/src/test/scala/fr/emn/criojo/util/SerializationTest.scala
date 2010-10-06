@@ -9,7 +9,7 @@ package fr.emn.criojo.util
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.creole.core._
+import fr.emn.criojo.core._
 import fr.emn.criojo.model._
 import fr.emn.criojo.util._
 

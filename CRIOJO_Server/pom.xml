@@ -1,6 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+       <groupId>fr.emn.criojo</groupId>
+        <artifactId>CRIOJO</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    
   <modelVersion>4.0.0</modelVersion>
-  <groupId>CRIOJO_Server</groupId>
+  <groupId>fr.emn.criojo</groupId>
   <artifactId>CRIOJO_Server</artifactId>
   <version>1.0</version>
     <packaging>war</packaging>    
@@ -58,17 +64,17 @@
       <!--<scope>test</scope>-->
     <!--</dependency>-->
       <dependency>
-          <groupId>fr.emn.creole</groupId>
+          <groupId>fr.emn.criojo</groupId>
           <artifactId>creole-parser</artifactId>
           <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
-          <groupId>fr.emn.creole</groupId>
-          <artifactId>creole-core</artifactId>
+          <groupId>fr.emn.criojo</groupId>
+          <artifactId>criojo-core</artifactId>
           <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
-          <groupId>fr.emn.creole</groupId>
+          <groupId>fr.emn.criojo</groupId>
           <artifactId>creole-pivot</artifactId>
           <version>1.0-SNAPSHOT</version>
       </dependency>
