@@ -43,7 +43,7 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
   val Session = Rel("Session")
 
   //Some used variables
-  val (session,tok,user,pwd) = ("session","Tok","user","pwd")
+  val session,tok,user,pwd = Var //("session","Tok","user","pwd")
 
   Login(session,tok,user,pwd) ==> HandleLogin(session,tok,user,pwd)
 

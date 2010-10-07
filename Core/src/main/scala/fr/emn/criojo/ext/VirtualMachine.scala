@@ -16,26 +16,15 @@ import fr.emn.criojo.util.Logger._
 import java.net.URI
 
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
-abstract class VirtualMachine extends CHAM with ValueVM with Eq //with Number
+abstract class VirtualMachine extends CHAM with Eq with ValueVM  
 {
   //Initialize Print
   val print = Print
-
-//  this.solution = new StandardSolution()
-  
-//  var rules:List[Rule] = List()
-//  var solution:Solution = new Solution() //Set())
-//  var relations:List[Relation] = List()
 
   //TODO Document
   //TODO Add URL to variables
   //TODO Replication & multi-relations  NO
   //TODO Error when new variables not declared
-
-//  override def introduceAtom(atom:Atom)= atom match{
-//    case Atom(EQ, vlst) if (vlst.size == 2) => addEquivalence(vlst(0),vlst(1))
-//    case _ => processValues(atom) foreach{super.introduceAtom(_)}
-//  }
 
   def execute{
     var continue = true

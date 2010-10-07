@@ -12,6 +12,8 @@ import Creole._
 import fr.emn.criojo.util.Logger
 
 trait AbstractMachine{
+  protected var index = 0
+
   def solution:Solution
   def rules:List[Rule]
   def relations:List[Relation]
@@ -40,9 +42,6 @@ trait AbstractMachine{
     var headVars = List[RelVariable]()
     val rule = new CHAMRule(head, body, guard)
 
-//    if (!rule.guard.empty)
-//      rule.guard.addRelations(this.relations)
-
     if (!rule.isAxiom)
       rule.head.foreach{
         case a:rule.HeadAtom =>
@@ -51,9 +50,13 @@ trait AbstractMachine{
               a.relation = r
               r.addObserver(a)
             case _ =>
+              //TODO Improve this. AbstractMachine should not be aware of values
               if (!a.relName.startsWith("$")){
                 Logger.log(Logger.WARNING, this.getClass, "findRelation","Undefined relation " + a.relName)
                 a.relation = new LocalRelation("Undefined")
+              }else{
+                //TODO
+                a.relation = findRelation(a.relName)
               }
           }
           a.vars.foreach{
@@ -83,20 +86,34 @@ trait AbstractMachine{
 
   def newRule(head:List[Atom], body:List[Atom]):Rule = newRule(head, body, new Guard)
 
-  def Relation(name:String):Rel = {
-    val r = new Rel(name)
-//    addRelation(r)
-    r
+  def Var:Variable = {
+    index += 1
+    new Variable("x"+index)
   }
 
   case class Rel(n:String) extends LocalRelation(n){
     addRelation(this)
 
-    def apply(vars:String*):Atom = new Atom(name, vars.toList.map(v => Variable(v)))
+    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
 
     override def equals(that:Any):Boolean = that match{
       case r:Relation => this.name == r.name
       case _ => false
+    }
+  }
+
+  object NativeRelation{
+    def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
+  }
+  /*abstract*/ class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
+    addRelation(this)
+//    def onApply(a:Atom)
+
+    override def notifyObservers(a:Atom)= a match{
+      case Atom(this.name, _) =>
+        Logger.log("[Relation("+name+").notifyObservers] notified by " + a)
+        f(a) //onApply(a)
+      case _ => super.notifyObservers(a)
     }
   }
 

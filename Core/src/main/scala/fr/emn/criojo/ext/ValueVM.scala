@@ -12,9 +12,15 @@ import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger._
 import Creole._
 
-trait ValueVM extends AbstractMachine{ //[Solution]{
+trait ValueVM extends CHAM{ //[Solution]{
+  this:Eq =>
+  
   val Nul = Rel("Null")
   val Suc = Rel("Suc")
+  val IntRel = Rel("$Int")
+  private val n,x,y = Var
+
+  (IntRel(n,x) &: IntRel(n,y)) ==> EQ(x,y)
 
   def getValue(x:Variable):ValueVariable[_]={
       solution.find{
@@ -56,7 +62,5 @@ trait ValueVM extends AbstractMachine{ //[Solution]{
   def prettyPrint = {
       solution.elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getPrintVariable(_)))).mkString("<",",",">")
   }
-
-//  def findMatches(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
 
 }
