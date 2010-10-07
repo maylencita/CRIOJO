@@ -18,11 +18,11 @@ class ChamTests{
   val machine:CHAM = new CHAM{
 //    val solution = new Solution
 //    Conjunction.configMachine(this)
-    val (x,y,z) = ("x","y","z")
+    val x,y,z = Var //("x","y","z")
     val R = Rel("R")
     val S = Rel("S")
 
-    val r1:Rule = (R("x","y") &: R("y","z")) ==> R("x","z")
+    val r1:Rule = (R(x,y) &: R(y,z)) ==> R(x,z)
     val r2 = S(x,y) ==> R(x,y)
   }
 
@@ -73,7 +73,7 @@ class ChamTests{
   @Test
   def testGuard{
     val m2 = new CHAM{
-      val (x,y1,y2,z) = ("x","y1","y2","z")
+      val x,y1,y2,z = Var //("x","y1","y2","z")
       val R = Rel("R")
       val S = Rel("S")
 

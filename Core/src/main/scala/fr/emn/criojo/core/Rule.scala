@@ -81,7 +81,7 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
         }
     }
 
-    getSubsRec(head, solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
+    getSubsRec(head.filter(_.active), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
   }
 
   //TODO Rewrite

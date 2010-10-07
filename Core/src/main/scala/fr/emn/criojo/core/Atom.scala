@@ -33,6 +33,8 @@ case class Atom (val relName:String, val vars: List[Variable]) {
     active = false
   }  
 
+  def apply(n:Int):Variable = vars(n) 
+
   def applySubstitutions(subs:List[Substitution]):Atom = {
     var nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
       case Some(sub) => sub match{

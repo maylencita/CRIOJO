@@ -36,7 +36,7 @@ case class StringAtom(sval:String, strVar:Variable) extends TypedAtom("$str_"+sv
   }
 }
 
-case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$int_"+num, num, intVar){
+case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int_"+num, num, intVar){
   def number:Int = this.num
 
   override def clone:Atom = {
