@@ -105,14 +105,12 @@ trait AbstractMachine{
   object NativeRelation{
     def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
   }
-  /*abstract*/ class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
-    addRelation(this)
-//    def onApply(a:Atom)
-
+  class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
     override def notifyObservers(a:Atom)= a match{
       case Atom(this.name, _) =>
         Logger.log("[Relation("+name+").notifyObservers] notified by " + a)
-        f(a) //onApply(a)
+        f(a)
+        a.inactivate
       case _ => super.notifyObservers(a)
     }
   }

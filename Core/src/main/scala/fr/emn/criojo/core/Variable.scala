@@ -32,8 +32,17 @@ class Variable (n: String){
     case _ => false
   }
   override def toString = name
+
+  def toInt:Int = toString.toInt
 }
 
+object RelVariable{
+  def apply(r:Relation):RelVariable = {
+    val rv = new RelVariable(r.name)
+    rv.relation = r
+    rv
+  }
+}
 case class RelVariable(n:String) extends Variable(n){
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 }
