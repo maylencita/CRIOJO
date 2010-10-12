@@ -47,7 +47,7 @@ class PivotTests{//} extends TestCase("types"){
 
   @Test(timeout=1000)
   def testRun{
-    logLevel = DEBUG
+//    logLevel = DEBUG
     val script =
     "(public:_; private:R)" +
             "!T => new(x) R(x)"
@@ -61,17 +61,24 @@ class PivotTests{//} extends TestCase("types"){
 
   @Test(timeout=1000)
   def testInt{
-
+    logLevel = DEBUG       
     load(machine,
-      "(public:_; private:R)" +
-            "!T => R(123)"
+      """(public:_; private:R)
+            !T => R(123) |
+            !T => R(123) 
+      """
     )
     machine.execute
 
-    info(this.getClass, "testInt", "rules: " + machine)
-    info(this.getClass, "testInt", "solution: " + machine.prettyPrint)
+//    info(this.getClass, "testInt", "rules: " + machine)
+//    info(this.getClass, "testInt", "solution: " + machine.solution /*.prettyPrint*/)
+//    info(this.getClass, "testInt", "intEqClasses: " + machine.intEqClasses)
 
-    assertFalse(machine.solution.findMatches(List(IntAtom(123, Undef)),List()).isEmpty)
+//    assertFalse(machine.solution.findMatches(List(IntAtom(123, Undef)),List()).isEmpty)
+    machine.intEqClasses.get(123) match{
+      case Some(ec) if (ec.size == 2) => assertTrue(true)
+      case _ => fail("Value 123 not found in intEqClasses: " + machine.intEqClasses)
+    }
   }
 
   @Test(timeout=1000)
@@ -82,7 +89,7 @@ class PivotTests{//} extends TestCase("types"){
     )
     machine.execute
 
-    info(this.getClass, "testString", "solution: " + machine.prettyPrint)
+    info(this.getClass, "testString", "solution: " + machine.solution /*prettyPrint*/)
 
     assertFalse(machine.solution.findMatches(List(StringAtom("Hola mundo", Undef)), List()).isEmpty)
   }

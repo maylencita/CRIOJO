@@ -12,6 +12,10 @@ import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger._
 import Creole._
 
+trait ValueVM{
+  def getValue[T](x:Variable):ValueVariable[T]
+}
+/*
 trait ValueVM extends CHAM{ //[Solution]{
   this:Eq =>
   
@@ -64,3 +68,4 @@ trait ValueVM extends CHAM{ //[Solution]{
   }
 
 }
+*/

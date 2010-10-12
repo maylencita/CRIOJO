@@ -11,7 +11,9 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 import fr.emn.criojo.core.Creole._
 
-abstract class TypedAtom[T](relName:String, value:T, val variable:Variable) extends Atom(relName, List(variable)){
+abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
+        extends Atom(relName, Variable(value.toString)::variable::Nil){ 
+        //extends Atom(relName, List(variable)){
   def unapply(ta:TypedAtom[_]) = ta match{
     case StringAtom(sval, strVar) => Option((sval, strVar))
     case IntAtom(num, intVar) => Option((num, intVar))
@@ -20,7 +22,9 @@ abstract class TypedAtom[T](relName:String, value:T, val variable:Variable) exte
   }
 }
 
-case class StringAtom(sval:String, strVar:Variable) extends TypedAtom("$str_"+sval, sval, strVar){
+case class StringAtom(sval:String, strVar:Variable) extends
+TypedAtom("$Str_", sval, strVar){  
+//TypedAtom("$str_"+sval, sval, strVar){
 
   def str:String = this.sval
 
@@ -36,7 +40,7 @@ case class StringAtom(sval:String, strVar:Variable) extends TypedAtom("$str_"+sv
   }
 }
 
-case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int_"+num, num, intVar){
+case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int", num, intVar){ //TypedAtom("$Int_"+num, num, intVar){
   def number:Int = this.num
 
   override def clone:Atom = {

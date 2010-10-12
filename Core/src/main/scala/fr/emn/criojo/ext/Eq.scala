@@ -14,30 +14,32 @@ import Creole._
 import collection.mutable.HashSet
 
 trait Eq extends CHAM{
-//  this:ValueVM =>
-  
+
   type EqClass = HashSet[Variable]
   var eqClasses = List[EqClass]()
 
+  /**********************************************************************
+  * VM definition:
+  */
+  //--Public:
   val EQ = Rel("Eq")
-  val EqAsk = Rel("Eq?")
-  val Eclass = NativeRelation("EqClass"){
-    a => if (a.vars.size == 2){
-      addEquivalence(a(0),a(1))
-      a.inactivate
-    }
-  }
-
-  private val x,y,z = Var
+  val EQ_ask = Rel("Eq_ask")
+  //--Private:
+  private val Eclass = NativeRelation("EqClass"){ a => if (a.vars.size == 2) addEquivalence(a(0),a(1)) }
+  private val EqAsk = NativeRelation("$EqAsk"){ a => askEq(a) }
+  private val s,x,y,z = Var; private val K = RelVariable("K")
   
-  //Eq rules
-  val r1 = EQ(x,y) ==> Eclass(y,x)
+  EQ(x,y) ==> Eclass(y,x)
+  EQ_ask(s,x,y,K) ==> EqAsk(s,x,y,K)
+  /***********************************************************************/
 
-  def addEquivalence(x:Variable, y:Variable) =
+  // Native
+  private def addEquivalence(x:Variable, y:Variable) =
     (eqClasses.find(_.contains(x)),eqClasses.find(_.contains(y))) match{
     case (Some(e1),Some(e2)) if e1 != e2 =>
-      //Found two equivalent EqClasses			
-      eqClasses = eqClasses.filterNot(e => e == e1 || e == e2) :+ e1.union(e2)
+      //Found two equivalent EqClasses
+      merge(e1,e2)
+//      eqClasses = eqClasses.filterNot(e => e == e1 || e == e2) :+ e1.union(e2)
     case (Some(e1),Some(e2)) => //They are already here, do nothing
     case (Some(e), None) =>	e.add(y)
     case (None, Some(e)) =>	e.add(x)
@@ -46,13 +48,30 @@ trait Eq extends CHAM{
       eqClasses :+= HashSet(x,y)
   }
 
+  protected def merge(ec1:EqClass, ec2:EqClass):EqClass = {
+    val merged = ec1.union(ec2)
+    eqClasses = eqClasses.filterNot(e => e == ec1 || e == ec2) :+ merged
+    merged
+  }
+
+  private def askEq(a:Atom) = a match{
+    case Atom("$EqAsk", i::v1::v2::k::_) =>
+      if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
+        introduceAtom(Atom(k.toString, i,v1,v2))
+    case _ => //Nothing
+  }
+
   def askEquivalence(x:Variable, y:Variable):Boolean = {
-    x == y || eqClasses.exists(ec => ec.contains(x) && ec.contains(y)) // || TODO Ask for value
+    x == y ||
+//    eqClasses.exists(p => p._2.contains(x) && p._2.contains(y))
+    eqClasses.exists(ec => ec.contains(x) && ec.contains(y)) // || TODO Ask for value
 
   }
 
+  
+
+/*
   override def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = {
-    println("Overrided query in Eq with " + conj + " and " + subs)
     if (conj.exists(_.relName == "Eq")){
       val conj2 = conj.filterNot(_.relName == "Eq")
       val eqAtoms = conj.filter(_.relName == "Eq")
@@ -72,7 +91,7 @@ trait Eq extends CHAM{
       super.query(conj,subs)
     }
   }
-
+*/
   def getSubstitutions(hatom:Atom, solAtoms:List[Atom]):List[Substitution] = {
     def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
       case List() => acum
@@ -85,14 +104,6 @@ trait Eq extends CHAM{
     getSubsRec(List(hatom), solAtoms, List())
   }
 
-//  object Eclass extends Rel("EqClass"){
-//    override def notifyObservers(a:Atom)= a match{
-//      case Atom("EqClass", x::y::_) =>
-//        log("[Relation("+name+").notifyObservers] notified by " + a)
-//        addEquivalence(x,y)
-//      case _ => super.notifyObservers(a)
-//    }
-//  }
 }
 
 

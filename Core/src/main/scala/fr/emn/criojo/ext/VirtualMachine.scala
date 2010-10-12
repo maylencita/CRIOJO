@@ -15,8 +15,11 @@ import fr.emn.criojo.util.Logger
 import fr.emn.criojo.util.Logger._
 import java.net.URI
 
+/**
+ * Extended CHAM with support for constant values, pretty-print, etc.
+ */
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
-abstract class VirtualMachine extends CHAM with Eq with ValueVM  
+abstract class VirtualMachine extends CHAM with IntVM with StringVM/*with Eq with ValueVM*/
 {
   //Initialize Print
   val print = Print
@@ -34,6 +37,8 @@ abstract class VirtualMachine extends CHAM with Eq with ValueVM
 
   def newRemoteRelation(remoteName:String,url:String):RemoteRelation
 
+  def prettyPrint:String = solution.toString
+  
   override def toString:String = {
     rules.mkString("","\n","")
   }
