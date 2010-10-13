@@ -12,7 +12,7 @@ import fr.emn.criojo.core._
 import fr.emn.criojo.core.Creole._
 
 abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
-        extends Atom(relName, Variable(value.toString)::variable::Nil){ 
+        extends Atom(relName, (if (value != null) List(Variable(value.toString),variable) else List(variable))){ 
         //extends Atom(relName, List(variable)){
   def unapply(ta:TypedAtom[_]) = ta match{
     case StringAtom(sval, strVar) => Option((sval, strVar))
@@ -23,7 +23,7 @@ abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
 }
 
 case class StringAtom(sval:String, strVar:Variable) extends
-TypedAtom("$Str_", sval, strVar){  
+TypedAtom("$Str", sval, strVar){  
 //TypedAtom("$str_"+sval, sval, strVar){
 
   def str:String = this.sval

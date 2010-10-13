@@ -8,7 +8,6 @@ package fr.emn.criojo.interpreter
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.parser.tree._
-import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger
 
 import org.antlr.runtime.Token
@@ -29,7 +28,6 @@ class Translator(tokens:CHRTreeTokens){
         val newScript = ^(SCRIPT, processScript(script))
         ^(PROCESS, declaration :: newScript :: Nil)
       case ^(SCRIPT, _) => ^(SCRIPT, processScript(tree))
-//      case ^(BANG, s) => tree
       case ^(RULE, r) => processRule(r)
       case _ => Logger.log(this.getClass, "process","Gna! not a valid script!"); null
   }
@@ -119,7 +117,7 @@ class Translator(tokens:CHRTreeTokens){
 
     def processGuard(lst: List[^]): List[^] = lst match{
       case ^(ABS, alst) :: _ => ^(GUARD, processAbs(processAtoms(alst)) :: Nil) :: Nil
-      case _ => lst
+      case _ => ^(GUARD, lst) :: Nil //lst
     }
 
     def processRulePart(rp: ^): ^ = rp match{
@@ -159,18 +157,18 @@ class Translator(tokens:CHRTreeTokens){
   def processAtoms(alst:List[^]):List[^] = {
     alst.flatMap{
       case ^(ATOM, name :: ^(VARS, vars) :: _) =>
-        val newVarList = vars.zip(vars.map(v => processVariable(v)) )//.filter(_ != null)
+        val newVarList = vars.zip(vars.map(v => processVariable(v)) )
+        newVarList.foldLeft(List[^]()){
+          case (lst, (n @ ^(INT, _), v)) => newAtom(INT_ATOM, n.getText, v) +: lst
+          case (lst, (s @ ^(STRING, _), v)) => newAtom(STR_ATOM, s.getText, v) +: lst
+          case (lst, (^(NULL, _), v)) => newAtom(NULL_ATOM, "Null", v) +: lst
+          case (lst, _) => lst
+        } :+
         ^(ATOM, name.dupNode.asInstanceOf[^] ::
           ^(VARS, newVarList.map{
             case (v, null) => v.dupNode.asInstanceOf[^]
             case (_, v) => v
-            }) :: Nil) ::
-          newVarList.foldLeft(List[^]()){
-            case (lst, (n @ ^(INT, _), v)) => lst :+ newAtom(INT_ATOM, n.getText, v)
-            case (lst, (s @ ^(STRING, _), v)) => lst :+ newAtom(STR_ATOM, s.getText, v)
-            case (lst, (^(NULL, _), v)) => lst :+ newAtom(NULL_ATOM, "Null", v)
-            case (lst, _) => lst
-          }
+            }) :: Nil)
       case ^(ATOM, name :: Nil) => ^(ATOM, name.dupNode.asInstanceOf[^] :: Nil) :: Nil
       case x => x :: Nil
     }
@@ -187,36 +185,16 @@ class Translator(tokens:CHRTreeTokens){
     case _ => variable
   }
 
-//  def processVariable(variable: ^): ^ = variable match{
-//    case ^(V_ID, _) => null
-//    case ^(R_ID, _) => null
-//    case ^(INT, _) =>
-//      val intVar = variableGenerator(V_ID.getType)
-//      ^(ATOM, ^(new CHRToken(R_ID.getType, "$int_"+variable.getText), Nil) :: ^(VARS, intVar::Nil) :: Nil )
-//    case ^(STRING, _) =>
-//      val strVar = variableGenerator(V_ID.getType)
-//      ^(ATOM, ^(new CHRToken(R_ID.getType, "$str_"+variable.getText), Nil) :: ^(VARS, strVar::Nil) :: Nil )
-//    case _ => println("invalid var"); null //TODO manage invalid variable error
-//  }
-
   def processAtom(name:String, vars:List[^]):List[^] = {
     def processAtomIter(vlst:List[^], acum:List[^]):List[^] = vlst match{
       case List() => acum
       case ^(INT, _) :: res =>
         val intVar = variableGenerator(V_ID.getType)
         ^(ATOM, ^(new CHRToken(R_ID.getType, "int_"+vars.head), Nil) :: ^(VARS, intVar::Nil) :: Nil ) :: Nil
-//        ^(ATOM, name :: ^(VARS, intVar :: Nil) :: Nil) :: res
       case _ => vlst
     }
     processAtomIter(vars,List())
   }
-
-//  def processVars(vlst:List[^], acum:List[^]):List[^] = vlst match {
-//    case List() => acum
-//    case ^(INT, _) :: res => processVars(res, ^() :: acum)
-//    case ^(STRING, _) :: res => res
-//    case h :: res => processVars(res, h :: acum)
-//  }
 
   private def variableGenerator(vtype:Int): ^ = {
     variableIndex += 1

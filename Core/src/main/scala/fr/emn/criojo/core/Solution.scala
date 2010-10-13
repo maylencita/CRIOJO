@@ -38,6 +38,8 @@ class Solution(var elems:Set[Atom]){
 
   def exists(f: (Atom)=>Boolean) = elems.exists(f)
 
+  def map[B](f: (Atom)=> B) = elems.map(f)
+
   def clear{
     elems = Set[Atom]()
   }
@@ -107,109 +109,3 @@ class Solution(var elems:Set[Atom]){
   }
 
 }
-
-/*
-class Solution extends HashSet[Atom]
-{
-
-  def findMatches(conjunction:List[Atom], substitutions:List[Substitution]):List[Atom] = {
-    def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
-      case List() => acum
-      case h :: rest =>
-        val matches = findMatches(h, subs)
-        if (matches.isEmpty)
-          List()
-        else{
-          var results = List[Atom]()
-          var i = matches.iterator
-          while (i.hasNext && results.isEmpty){
-            val m = i.next
-            m.active = false
-            results = findMatchesRec(rest, subs.union(h.vars.zip(m.vars)), acum :+ m)
-            m.active = results.isEmpty
-          }
-          results
-        }
-    }
-
-    findMatchesRec(conjunction, substitutions, List())
-  }
-
-  protected def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = {
-    if (subs.isEmpty){
-      filter(_.relName == relation.relName).toList
-    }else{
-      val test = relation.applySubstitutions(subs)
-      filter(a => a.active && a.matches(test)).toList
-    }
-  }
-
-  def addMolecule(molecule:List[Atom]){
-    molecule.foreach(this.addAtom(_))
-  }
-
-  def addAtom(atom:Atom):Boolean ={
-    this.add(atom)
-  }
-
-  //Removes inactive atoms
-  def cleanup{
-    retain(_.active)
-  }
-
-  //Puts everything back to normal
-  def revert{
-    foreach(_.active = true)
-  }
-
-  def update(newsol: Solution){
-    if (newsol.contains(False) || newsol.isEmpty){
-      clear
-    }else{
-//      cleanup
-      for(a <- this.toList){
-        if(!a.active)
-          this -= a
-      }
-       newsol.foreach(add(_))
-    }
-  }
-
-  def isTrue:Boolean = !this.exists(_.isFalse) && this.exists(_.isTrue)
-
-  override def equals(that:Any):Boolean = that match{
-    case thatSol:Solution => thatSol.size == size &&
-      (thatSol filterNot (this contains)).isEmpty 
-    case _ => false
-  }
-
-  override def clone:Solution = new Solution ++= this
-//  override def clone:Solution = {
-//    val Solution = new Solution()
-////    foreach(a => Solution.add(a.clone))
-//    foreach(Solution.add(_))
-//    Solution
-//  }
-
-//  override def containsEntry(elem: Atom): Boolean = {
-////    var h = index(elemHashCode(elem))
-////	    var entry = table(h)
-////	    while (null != entry && entry != elem) {
-////	      h = (h + 1) % table.length
-////	      entry = table(h)
-////	    }
-////	    null != entry
-//    val i = iterator
-//    var entry:Atom = null
-//    while(i.hasNext && entry != elem){
-//      entry = i.next
-//    }
-//    entry == elem
-//  }
-
-  override def toString = {
-       mkString("<",",",">")
-  }
-
-}
-*/

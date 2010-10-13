@@ -10,12 +10,9 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 import Creole._
 
-import collection.mutable.{HashMap, HashSet}
+trait IntVM extends CHAM with Eq{
 
-trait IntVM extends CHAM
-        with Eq{
-
-  val intEqClasses = HashMap[Int, EqClass]()
+  val intEqClasses = new TypedEqClasses[Int](eqClasses)
 
   /**********************************************************************
   * VM definition:
@@ -37,25 +34,11 @@ trait IntVM extends CHAM
   Int_ask(n,s,x,K) ==> AskInt(n,s,x,K)
   /***********************************************************************/
 
+  def getIntValue(x:Variable):Option[Int]= intEqClasses getValue x
+
   //Native functions
   private def add(a:Atom)= a match{
-    case Atom("$NewInt", i::v::_) =>
-      val k = i.name.toInt
-      intEqClasses.get(k) match{
-        case Some(iec) =>
-          eqClasses.find(_.contains(v)) match{
-            case Some(ec) if(iec != ec)=> intEqClasses update (k, merge(iec,ec)) 
-            case _ => iec.add(v)
-          }
-        case _ =>
-          eqClasses.find(_.contains(v)) match{
-            case Some(ec) => intEqClasses.put(k, ec)
-            case _ =>
-              val newEC = HashSet(v)
-              eqClasses :+= newEC
-              intEqClasses.put(k, newEC)
-          }
-      }
+    case Atom("$NewInt", i::v::_) => intEqClasses add (i.name.toInt,v)
     case _ => //Nothing, wrong format
   }
 
