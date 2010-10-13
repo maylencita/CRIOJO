@@ -12,6 +12,7 @@ import fr.emn.criojo.util.Logger
  * To change this template use File | Settings | File Templates.
  */
 
+@Deprecated
 class StandardSolution extends Solution{
   private val SUC = "Suc"
   private val NULL = "null"

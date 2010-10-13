@@ -10,11 +10,9 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 import Creole._
 
-import collection.mutable.{HashMap, HashSet}
-
 trait StringVM extends CHAM with Eq{
 
-  val strEqClasses = HashMap[String, EqClass]()
+  val strEqClasses = new TypedEqClasses[String](eqClasses)
 
   /**********************************************************************
   * VM definition:
@@ -35,25 +33,11 @@ trait StringVM extends CHAM with Eq{
   Str_ask(str,s,x,K) ==> AskStr(str,s,x,K)
   /***********************************************************************/
 
+  def getStrValue(x:Variable):Option[String]= strEqClasses getValue x
+  
   //Native
   private def add(a:Atom) = a match{
-    case Atom("$NewStr", i::v::_) =>
-      val k = i.name
-      strEqClasses.get(k) match{
-        case Some(iec) =>
-          eqClasses.find(_.contains(v)) match{
-            case Some(ec) if(iec != ec)=> strEqClasses update (k, merge(iec,ec))
-            case _ => iec.add(v)
-          }
-        case _ =>
-          eqClasses.find(_.contains(v)) match{
-            case Some(ec) => strEqClasses.put(k, ec)
-            case _ =>
-              val newEC = HashSet(v)
-              eqClasses :+= newEC
-              strEqClasses.put(k, newEC)
-          }
-      }
+    case Atom("$NewStr", i::v::_) => strEqClasses add (i.name,v)
     case _ => //Nothing, wrong variables
   }
 

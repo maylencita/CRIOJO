@@ -67,7 +67,7 @@ case class Atom (val relName:String, val vars: List[Variable]) {
 
     val newVars = this.vars.map {v => replace(v)}
 
-    val atom = new Atom(nuRel.name, newVars)
+    val atom = new Atom(/*nuRel.name*/ nuRelName, newVars)
     atom.relation = nuRel
     atom
   }

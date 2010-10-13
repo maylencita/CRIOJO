@@ -39,21 +39,50 @@ abstract class CHAM extends AbstractMachine{
     def head:Atom
     def tail:Conjunction
 
+    def scope:List[Variable]
+
     def &: (a:Atom) = new &: (a, this)
 
     def toList:List[Atom] = head :: tail.toList
 
-    def ==> (c2:Conjunction):Rule = newRule(this.toList, c2.toList)
+    def ==> (c2:Conjunction):Rule = {
+      val r = newRule(this.toList, c2.toList)
+      r.setScope(c2.scope)
+      r
+    }
 
-    def ==> (g:Guard, c2:Conjunction):Rule = newRule(this.toList, c2.toList,g)  
+    def ==> (g:Guard, c2:Conjunction):Rule = {
+      val r = newRule(this.toList, c2.toList,g)
+      r.setScope(c2.scope)
+      r
+    }
 
     override def toString = head + (if (tail.empty) "" else  " & " + tail)
+  }
+
+  case class Nu(varLst:Variable*) extends Conjunction{
+    val scope = varLst.toList
+    var empty = true
+    var h:Atom = null
+    var t:Conjunction = Empty
+
+    def head = if (h == null) throw new NoSuchElementException("head of empty conjunction") else h
+    def tail = if (t == Empty) throw new NoSuchElementException("tail of empty conjunction") else t
+
+    def apply(conj:Conjunction):Conjunction = {
+      this.empty = conj.empty
+      this.h = conj.head
+      this.t = conj.tail
+
+      this
+    }
   }
 
   case object Empty extends Conjunction{
     def empty = true
     def head = throw new NoSuchElementException("head of empty conjunction")
     def tail = throw new NoSuchElementException("tail of empty conjunction")
+    def scope = List()
 
     override def toList = List()
     override def toString = ""
@@ -63,6 +92,7 @@ abstract class CHAM extends AbstractMachine{
     def head = hd
     def tail = tl
     def empty = false
+    def scope = List()
   }
 
 }

@@ -118,16 +118,6 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
 
   }
 
-//  override def receiveUpdate(atom:Atom){
-//    Logger.log("============================================================================")
-//    Logger.log("[Rule.receiveUpdate] " + this)
-//    Logger.levelDown
-//    execute(getSubstitutions(List(atom)))
-//    Logger.levelUp
-////    Logger.log(this.getClass, "receiveUpdate", "Final solution: " + solution)
-//    Logger.log("============================================================================")
-//  }
-
   override def equals(that:Any) = {
     def eq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.vars == a2.vars
     def eq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => eq2(a1,a2)))

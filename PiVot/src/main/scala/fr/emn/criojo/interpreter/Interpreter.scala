@@ -85,7 +85,7 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
           glst.map(g=>processRule(g,guard))
           processRuleIter(res)
         case Nil => //finished
-        case _ => Logger.log(this.getClass, "processRuleIter","invalid rule"); null  //TODO manage invalid rule error
+        case _ => Logger.log(Logger.WARNING, this.getClass, "processRuleIter","invalid rule part: " + lst)//; null  //TODO manage invalid rule error
       }
     }
 

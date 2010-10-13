@@ -70,7 +70,7 @@ class TypeTests{
 
   @Test
   def testStr{
-    logLevel = DEBUG
+//    logLevel = DEBUG
     val machine = new CHAM with StringVM{
       val s,x,y = Var
       val S = Rel("S"); val MyStr = Rel("MyStr")
@@ -181,14 +181,21 @@ class TypeTests{
   @Test
   def testPrint{
 //    logLevel = INFO
-//    val machine = new VirtualMachine{
-//      val x = Var
-//      val T = Rel("T")
-//      val r = T(x) ==> Print(x)
-//
-//      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
-//    }
-//
-//    machine.introduceAtom(Atom("T", Value("Mayleen")))
+    val machine = new VirtualMachine{
+      val x = Var; val y = Variable("$y")
+      val T = Rel("T")
+      T(x) ==> (StringAtom("x=",y) &: Print(y,x))
+
+      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
+    }
+    info(this.getClass, "testPrint", "rules: " + machine.rules.mkString("","\n",""))
+
+    machine.introduceAtom(Atom("T", Variable("SomeVariable")))
+    machine.introduceAtom(Atom("T", Value("Mayleen")))
+    machine.introduceAtom(Atom("T", Value(24)))
+    
+    info(this.getClass, "testPrint", "solution: " + machine.solution)
+    info(this.getClass, "testPrint", "intEqClasses: " + machine.intEqClasses)
+    info(this.getClass, "testPrint", "strEqClasses:" + machine.strEqClasses)
   }
 }
