@@ -21,6 +21,9 @@ class PivotTests{//} extends TestCase("types"){
 
   import ScriptLoader._
 
+  val a = Variable("a"); val b = Variable("b"); val c = Variable("c")
+  val x = Variable("x"); val y = Variable("y"); val z = Variable("z"); val w = Variable("w")
+
   val machine = new LocalVM
 
   @Test(timeout=1000)
@@ -75,23 +78,31 @@ class PivotTests{//} extends TestCase("types"){
     }
   }
 
-  @Test
+  @Test(timeout=1000)
   def testNull{
 //    logLevel = DEBUG
     load(machine,
-      "(public:_; private:S)" +
-              "!T => S(null)"
+      """
+      (public:_; private:S,Eqq)
+        !S(x,y),S(y2,z) => new(s)Eq_ask(s,y,y2,Eqq),S(x,y),S(y2,z)
+        | S(x,y),S(y2,z),Eqq(s,y,y2) => S(x,z)
+      """
     )
     info(this.getClass, "testNull", "relations: " + machine)
-    machine.execute
-    
+
+    machine.introduceAtom(Atom("Null", w))
+    machine.introduceAtom(Atom("Null", y))
+    machine.introduceAtom(Atom("S", y, c))
+    machine.introduceAtom(Atom("S", a, w))
+
     info(this.getClass, "testNull", "solution: " + machine.prettyPrint)
     info(this.getClass, "testNull", "nullVars: " + machine.nullVars)
+    info(this.getClass, "testNull", "eqClasses: " + machine.eqClasses)
 
-    assertEquals("<S(null)>",machine.prettyPrint)
+    assertEquals("<S(a,c)>",machine.prettyPrint)
   }
 
-  @Test//(timeout=1000)
+  @Test(timeout=1000)
   def testPrint{
 //    logLevel = DEBUG
 
@@ -146,8 +157,6 @@ class PivotTests{//} extends TestCase("types"){
 
   @Test
   def testEqGuard{
-    val a = Variable("a"); val b = Variable("b"); val c = Variable("c")
-    val w = Variable("x"); val y = Variable("y"); val z = Variable("z")
     load(machine,
       """
       (public:_; private:S)
