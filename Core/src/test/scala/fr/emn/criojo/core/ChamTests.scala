@@ -15,6 +15,8 @@ import Assert._
 class ChamTests{
   import Creole._
 
+  logLevel = INFO
+  
   val machine:CHAM = new CHAM{
 //    val solution = new Solution
 //    Conjunction.configMachine(this)
@@ -70,18 +72,51 @@ class ChamTests{
     assertTrue(machine.solution.exists(a => a.relName == a3.relName && a.vars == a3.vars))
   }
 
-  @Test
+  @Test(timeout=1000)
   def testGuard{
+//    logLevel = DEBUG
+    val a = Variable("a")
+    val b = Variable("b")
+    val c = Variable("c")
+    val d = Variable("d")
+
     val m2 = new CHAM{
-      val x,y1,y2,z = Var //("x","y1","y2","z")
+      val x,y,z = Var
+      val R = Rel("R")
+      val X1 = Rel("X1")
+
+      R(x,y) ==> new Guard{(T() &: X1()) ==> F()} ?: (R(x,y) &: R(x,y) &: X1())
+    }
+    info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
+
+    val atom = Atom("R", a, b) 
+    m2.introduceAtom(atom)
+
+    assertEquals(2, m2.query(List(atom,atom), List()).size)
+    assertTrue("Expected: <R(a,b),R(a,b)>. Actual: " + m2.solution,
+      m2.query(List(atom,atom), List()).size == 2)
+  }
+
+  @Test(timeout=1000)
+  def testNu{
+    val a = Variable("a")
+    val b = Variable("b")
+
+    val vm = new CHAM{
+      val x,y,z,w = Var
       val R = Rel("R")
       val S = Rel("S")
 
-      val r1 = (R(x,y1) &: R(y2,z)) ==> (?((True &: R(x,z)) ==> False), R(x,z)) 
+      (R(x,y) &: S()) ==> Nu(z)(R(x,z))
     }
-    log ("m2: " + m2.rules)
-  }
-  object ? {
-    def apply(rules:Rule*):Guard = new Guard(rules.toList)
+    info (this.getClass, "testNu", "vm: " + vm.rules.mkString("","\n",""))
+
+    val atom = Atom("R", a, b)
+    vm.introduceAtom(Atom("S"))
+    vm.introduceAtom(atom)
+
+    assertTrue("Expected: <R(a,_)>. Actual: " + vm.solution,
+      vm.query(List(Atom("R", a, Undef)), List()).size == 1)
+
   }
 }

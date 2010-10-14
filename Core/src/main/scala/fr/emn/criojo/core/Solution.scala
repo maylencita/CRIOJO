@@ -45,7 +45,7 @@ class Solution(var elems:Set[Atom]){
   }
 
   def cleanup{
-    elems = elems.filter(_.active)  
+    elems = elems.filter(_.active)
   }
 
   def revert{

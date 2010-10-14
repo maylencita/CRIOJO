@@ -89,7 +89,11 @@ case class Atom (val relName:String, val vars: List[Variable]) {
       toString.hashCode
 
   override def equals(that: Any):Boolean = that match{
-    case a:Atom => this.relation == a.relation && this.vars.zip(a.vars).forall(p => p._1 == p._2)
+    case a:Atom =>
+      if (relation != null && relation.isMultiRel)
+        super.equals(a)
+      else
+        this.relation == a.relation && this.vars.zip(a.vars).forall(p => p._1 == p._2)
     case _ => false
   }
 
@@ -104,7 +108,8 @@ case class Atom (val relName:String, val vars: List[Variable]) {
   }
 }
 
-object True extends Atom ("true", List()){
+//object True extends Atom ("true", List()){
+case class True extends Atom ("true", List()){ 
   relation = new LocalRelation("True", false, false)
   override def isTrue:Boolean = true
   override def isFalse:Boolean = false
@@ -112,10 +117,6 @@ object True extends Atom ("true", List()){
   override def applySubstitutions(subs:List[Substitution]) = this
   override def hashCode = "true".hashCode
   override def clone = this
-//  override def equals(that:Any) = that match{
-//    case True => true
-//    case _ => false
-//  }
 }
 
 object False extends Atom ("false", List()){

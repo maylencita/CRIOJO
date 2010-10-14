@@ -59,6 +59,9 @@ abstract class VirtualMachine extends CHAM with IntVM with StringVM
 
   private def addNull(a:Atom) = a match{
     case Atom("Null", v::_) =>
+      if (nullVars isEmpty){
+        eqClasses add nullVars
+      }
       nullVars add v
       a.inactivate
       solution.cleanup

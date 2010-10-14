@@ -61,6 +61,8 @@ class EqClassList{
     add(merged)
     merged
   }
+
+  override def toString = eqClasses.map(_.mkString("{",",","}")).mkString("[",",","]") 
 }
 
 trait Eq extends CHAM{
