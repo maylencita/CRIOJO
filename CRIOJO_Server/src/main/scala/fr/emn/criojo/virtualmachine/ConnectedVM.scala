@@ -12,6 +12,7 @@ import fr.emn.criojo.ext.{VirtualMachine,RemoteRelation}
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.util._
 import fr.emn.criojo.model._
+import Creole._
 
 //import fr.emn.criojo.model.RemoteRelationImpl
 
@@ -25,6 +26,25 @@ case class PublicRelation(override val name:String, url:URI) extends LocalRelati
 
 class ConnectedVM(val url:URI) extends VirtualMachine{
   assert(url != null)
+
+  def addAtom(a:Atom){
+    var nuAtoms = List[Atom]()
+    var nuVars = List[Variable]()
+    a.vars foreach{
+      case Value(v) =>
+        val nuVar = Variable("y@"+newId)
+        nuVars :+= nuVar
+        v match{
+          case n:Int => nuAtoms :+= Atom(IntRel.name, Variable(n.toString), nuVar)
+          case s:String => nuAtoms :+= Atom(StrRel.name, Variable(s), nuVar)
+        }
+      case v => nuVars :+= v
+    }
+    val a2=new Atom(a.relName, nuVars); a2.relation = a.relation
+    nuAtoms :+= a2
+
+    nuAtoms.foreach(introduceAtom(_))
+  }
 
   override def addRelation(relation:Relation) = {
     super.addRelation(

@@ -36,26 +36,35 @@ object PicasaParams{
 
 object PicasaVM extends ConnectedVM(PicasaParams.url){
 
-//  var url:URI = _
+  /**********************************************************************
+  * VM definition:
+  */
   val Login = Rel("Login")
-  val AlbumCloning = Rel("AlbumCloning")
   val Album = Rel("Album")
   val Session = Rel("Session")
+  val AlbumCloning = Rel("AlbumCloning")
+  //--Private:
+  private val HandleLogin = NativeRelation("$HandleLogin"){ a => handleLogin(a.vars)}
+  private val GenAlbum = NativeRelation("$GenAlbum"){ a =>  generateAlbums(a) }
+  private val Init = Rel("$Init")
 
   //Some used variables
-  val session,tok,user,pwd = Var //("session","Tok","user","pwd")
+  private val ps,n,m,tok,user,pwd,id = Var //("session","Tok","user","pwd")
+  private val Cont = RelVariable("Cont")
+  private val Eqq = RelVariable("Eqq")
 
-  Login(session,tok,user,pwd) ==> HandleLogin(session,tok,user,pwd)
+  rules(
+    Login(ps,tok,user,pwd) ==> HandleLogin(ps,tok,user,pwd),
+    AlbumCloning(ps,n,user,Cont) ==> {(T(ps) &: Init(ps)) ==> F} ?:
+          Nu(m)(Suc(n,m) &: GenAlbum(ps,user,Cont) &: Init(ps) &: AlbumCloning(ps,m,user,Cont)),
+    (AlbumCloning(ps,n,user,Cont) &: Album(ps,m,id)) ==> Cont(ps,id),
+    (AlbumCloning(ps,n,user,Cont) &: Init(ps)) ==> {(T(ps) &: Album(ps,m,id)) ==> F} ?: Cont(ps,Null)    
+  )
+  /***********************************************************************/
 
-  def addAtom(a:Atom){
-    introduceAtom(a)
-  }
-
-  override def introduceAtom(atom:Atom)= atom match{
-    case Atom("Login", vars) => handleLogin(vars)
-    case Atom("AlbumCloning", vars) => handleAlbum(vars)
-    case _ =>
-  }
+//  def addAtom(a:Atom){
+//    introduceAtom(a)
+//  }
 
   def handleLogin(vars:List[Variable]){
     if (vars.size == 4){
@@ -73,20 +82,16 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
     }
   }
 
-  def handleAlbum(vars:List[Variable]){
-      
+  def generateAlbums(a:Atom)= a match{
+    case Atom("$GenAlbum", s::u::cont::_) =>
+      PicasaClient.getAlbums(s, u.toString) foreach(addAtom(_)) //introduceAtom(_))
+    case _ => //Skip
   }
 
-  object HandleLogin extends Rel("HandleLogin"){
-    override def notifyObservers(a:Atom)= a match{
-      case Atom("HandleLogin", vars) =>
-        log("[Relation("+name+").notifyObservers] notified by " + a)
-        handleLogin(vars)
-      case _ => super.notifyObservers(a)
-    }
-  }
 
 }
+
+import scala.xml.{XML,Elem}
 
 object PicasaClient{
   val client = Client.create(new DefaultClientConfig)
@@ -109,6 +114,27 @@ object PicasaClient{
       case Some(x) => x
       case _ => ""
     }
+  }
+
+  def getAlbums(sesVar:Variable, user:String):List[Atom]={
+    var counter = 0
+    var lst = List[Atom]()
+    val service = client.resource("http://picasaweb.google.com/data/feed/api/user").
+      path(user)        
+
+    val resp:Elem = try{
+      XML.loadString(service.get(classOf[String]))
+    }catch{
+      case e => error(this.getClass, "getAlbumns", e.toString)
+      <response>Error</response>
+    }
+
+    for (entry <- (resp \\ "entry")){
+      val id = entry \\ "id"
+      lst :+= Atom("Album", sesVar, Value(counter), Variable(id.text))
+      counter += 1
+    }
+    lst
   }
 
   def getProperties(in:String):HashMap[String,String] = {

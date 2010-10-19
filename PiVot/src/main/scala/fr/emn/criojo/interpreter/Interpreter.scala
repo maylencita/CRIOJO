@@ -95,7 +95,7 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
     }
     
     def processAtom(atom: ^): Atom = atom match{
-      case ^(TRUE, _) => True()
+      case ^(TRUE, _) => Top()
       case ^(FALSE, _) => False
       case ^(ATOM, name :: ^(VARS, vlist) :: Nil) => new Atom(name.getText, vlist.map(v => processVar(v)))
       case ^(ATOM, name :: Nil) => new Atom(name.getText, List())

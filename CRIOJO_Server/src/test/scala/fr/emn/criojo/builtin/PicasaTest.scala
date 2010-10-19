@@ -9,6 +9,7 @@ package fr.emn.criojo.builtin
  */
 
 import fr.emn.criojo.core._
+import fr.emn.criojo.virtualmachine.ConnectedVM
 import fr.emn.criojo.ext.RemoteRelation
 import fr.emn.criojo.util.Logger._
 
@@ -26,6 +27,9 @@ import java.net.InetAddress
 
 class PicasaTest{
 
+  logLevel = INFO
+  PicasaParams.url = UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()
+
   @Test
   def testClientLogin{
     val auth = PicasaClient.login("maylelacouture@gmail.com","dr2g9n21r")
@@ -33,40 +37,60 @@ class PicasaTest{
   }
 
   @Test
+  def testClientAlbum{
+    print(PicasaClient.getAlbums(Variable("1"), "maylelacouture").mkString("","\n",""))
+  }
+
+  @Test
   def testLogin{
     var result = false
     val auth = PicasaClient.login("maylelacouture@gmail.com","dr2g9n21r")
 
+    val c_vm = new ConnectedVM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()){
+      val Tok = NativeRelation("Tok"){
+        case Atom("Tok", id::token::_) => result=true
+        case a => fail("Received wrong answer. Expected: " + auth + " .Actual: " + a)
+      }
+    }
+
+    val tok = new RelVariable("Tok"); tok.relation = c_vm.Tok
     val x = Variable("x")
     val user = Variable("maylelacouture@gmail.com")
     val pwd = Variable("dr2g9n21r")
-    val Tok = new Relation{
-      val name:String = "Tok"
-      val public:Boolean = true
-      val isMultiRel:Boolean = false
-      def addObserver(observer:RelationObserver){}
-      def notifyObservers(a: Atom){
-        info(this.getClass, "testLoging", "received: " + a)
-        a match{
-          case Atom("Tok", id::token::_) => result=true
-          case _ => fail("Received wrong answer. Expected: " + auth)
-        }
-      }
-    }
-    val tok = new RelVariable("Tok"); tok.relation = Tok
-
-    PicasaParams.url = UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()
-    PicasaVM.introduceAtom(Atom("Login", x::tok::user::pwd::Nil))
+    PicasaVM.introduceAtom(Atom("Login", x,tok,user,pwd))
 
     assertTrue(result)
   }
 
-//  import scala.actors.Actor
-//  import scala.actors.remote.RemoteActor
-//  import scala.actors.remote.RemoteActor._
-//  import scala.actors.remote.Node
-//
-//  class LocalServer(port:Int) extends Actor
+  @Test (timeout=5000)
+  def testAlbumCloning{
+//    logLevel = DEBUG
+    var result = false
+    var i = 0
+    val user = Variable("maylelacouture")
+    val s = Variable("1")
+
+    val c_vm = new ConnectedVM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()){
+      val PAlbum:Relation = NativeRelation("PAlbum"){
+        case Atom("PAlbum", ses::id::_) => result=true
+          if (id != Null){
+            println("Album: " + id)
+            i += 1
+            PicasaVM.addAtom(Atom("AlbumCloning", s,Value(i),user,RelVariable(PAlbum)))
+          }
+        case a => fail("Received wrong answer. Expected: PAlbum(...) .Actual: " + a)
+      }
+
+    }
+    val Al = RelVariable(c_vm.PAlbum)
+    println("PicasaVM: " + PicasaVM.relations + "\n" + PicasaVM)
+
+    PicasaVM.addAtom(Atom("AlbumCloning", s,Value(0),user,Al))
+
+//    info(this.getClass, "testAlbumCloning", "PicasaVM: " + PicasaVM.solution.elems.mkString("","\n",""))
+    info(this.getClass, "testAlbumCloning", "intValues: " + PicasaVM.intEqClasses)
+    assertTrue(result)
+  }
 }
 
 
