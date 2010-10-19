@@ -10,7 +10,7 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 import Creole._
 
-trait StringVM extends CHAM with Eq{
+trait StringVM extends CHAM with EqVM{
 
   val strEqClasses = new TypedEqClasses[String](eqClasses)
 
@@ -29,8 +29,10 @@ trait StringVM extends CHAM with Eq{
   private val AskStr = NativeRelation("$AskStr"){ a => ask(a) }
   private val str,s,x,y = Var; private val K = RelVariable("K")
 
-  StrRel(str,x) ==> NewStr(str,x)
-  Str_ask(str,s,x,K) ==> AskStr(str,s,x,K)
+  rules(
+    StrRel(str,x) ==> NewStr(str,x),
+    Str_ask(str,s,x,K) ==> AskStr(str,s,x,K)
+  )
   /***********************************************************************/
 
   def getStrValue(x:Variable):Option[String]= strEqClasses getValue x

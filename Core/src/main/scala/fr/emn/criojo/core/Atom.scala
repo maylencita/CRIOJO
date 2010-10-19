@@ -20,7 +20,6 @@ object Atom{
 }
 
 case class Atom (val relName:String, val vars: List[Variable]) {
-
   var active:Boolean = true
   var relation:Relation = _
 
@@ -36,7 +35,7 @@ case class Atom (val relName:String, val vars: List[Variable]) {
   def apply(n:Int):Variable = vars(n) 
 
   def applySubstitutions(subs:List[Substitution]):Atom = {
-    var nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
+    val nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
       case Some(sub) => sub match{
         case (_, rv:RelVariable) => rv.relation
         case _ => this.relation
@@ -44,7 +43,7 @@ case class Atom (val relName:String, val vars: List[Variable]) {
       case _ => this.relation
     }
 
-    var nuRelName:String = subs.find(s => s._1.name == this.relName) match{
+    val nuRelName:String = subs.find(s => s._1.name == this.relName) match{
       case Some(nv) => nv._2.name
       case _ => this.relName
     }
@@ -108,27 +107,3 @@ case class Atom (val relName:String, val vars: List[Variable]) {
   }
 }
 
-//object True extends Atom ("true", List()){
-case class True extends Atom ("true", List()){ 
-  relation = new LocalRelation("True", false, false)
-  override def isTrue:Boolean = true
-  override def isFalse:Boolean = false
-
-  override def applySubstitutions(subs:List[Substitution]) = this
-  override def hashCode = "true".hashCode
-  override def clone = this
-}
-
-object False extends Atom ("false", List()){
-  relation = new LocalRelation("False", false, false)
-  override def isTrue:Boolean = false
-  override def isFalse:Boolean = true
-
-  override def applySubstitutions(subs:List[Substitution]) = this
-  override def hashCode = "false".hashCode
-  override def clone = this
-//  override def equals(that:Any) = that match{
-//    case False => true
-//    case _ => false
-//  }
-}

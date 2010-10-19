@@ -8,9 +8,10 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
+import fr.emn.criojo.util.Logger._
 import Creole._
 
-trait IntVM extends CHAM with Eq{
+trait IntVM extends CHAM with EqVM{
 
   val intEqClasses = new TypedEqClasses[Int](eqClasses)
 
@@ -25,13 +26,16 @@ trait IntVM extends CHAM with Eq{
       new IntAtom_ask(vars.toList)
     }
   }
+  val Suc = NativeRelation("$Suc"){a => addSuc(a)}
   //--Private:
   private val NewInt = NativeRelation("$NewInt"){ a => add(a) }
   private val AskInt = NativeRelation("$AskInt"){ a => askInt(a) }
   private val s,n,x,y = Var; private val K = RelVariable("K")
 
-  IntRel(n,x) ==> NewInt(n,x)
-  Int_ask(n,s,x,K) ==> AskInt(n,s,x,K)
+  rules(
+    IntRel(n,x) ==> NewInt(n,x),
+    Int_ask(n,s,x,K) ==> AskInt(n,s,x,K)
+  )
   /***********************************************************************/
 
   def getIntValue(x:Variable):Option[Int]= intEqClasses getValue x
@@ -47,6 +51,15 @@ trait IntVM extends CHAM with Eq{
       intEqClasses.get(num.toInt) match{
         case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
         case _ => //Nothing or negative answer
+      }
+    case _ =>
+  }
+
+  private def addSuc(a:Atom) = a match{
+    case Atom("$Suc", v1::v2::_) =>
+      intEqClasses getValue v1 match{
+        case Some(k) => intEqClasses add (k+1, v2)
+        case _ => log(WARNING, this.getClass, "addSuc", "Variable " + v1 + " not found.") 
       }
     case _ =>
   }

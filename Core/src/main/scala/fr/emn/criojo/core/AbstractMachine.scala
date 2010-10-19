@@ -11,7 +11,7 @@ package fr.emn.criojo.core
 import Creole._
 import fr.emn.criojo.util.Logger
 
-trait AbstractMachine{
+trait AbstractMachine extends RuleFactory{
   protected var index = 0
 
   def solution:Solution
@@ -24,23 +24,18 @@ trait AbstractMachine{
 
   def introduceAtom(atom:Atom)
 
-  def findRelation(relName:String):Relation = {
-    relations.find(_.name == relName) match {
+  def findRelation(relName:String):Relation = relation(relName) match{
       case Some(r) => r
-      case _ => if (relName.startsWith("$")){
-                  new LocalRelation(relName,false)
-                }else{
-                  Logger.log(Logger.WARNING, this.getClass, "findRelation","Undefined relation " + relName)
-                  new LocalRelation("Undefined")
-                }
-    }
+      case _ =>
+        Logger.log(Logger.WARNING, this.getClass, "findRelation","Undefined relation " + relName)
+        new LocalRelation("Undefined")
   }
 
   def relation(relName:String):Option[Relation] = relations.find(_.name == relName)
 
   def newRule(head:List[Atom], body:List[Atom], guard:Guard):Rule={
     var headVars = List[RelVariable]()
-    val rule = new CHAMRule(head, body, guard)
+    val rule = createRule(head,body,guard)//new CHAMRule(head, body, guard)
 
     if (!rule.isAxiom)
       rule.head.foreach{
@@ -52,10 +47,9 @@ trait AbstractMachine{
             case _ =>
               //TODO Improve this. AbstractMachine should not be aware of values
               if (!a.relName.startsWith("$")){
-                Logger.log(Logger.WARNING, this.getClass, "findRelation","Undefined relation " + a.relName)
+                Logger.log(Logger.WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
                 a.relation = new LocalRelation("Undefined")
               }else{
-                //TODO
                 a.relation = findRelation(a.relName)
               }
           }
@@ -85,65 +79,5 @@ trait AbstractMachine{
   }
 
   def newRule(head:List[Atom], body:List[Atom]):Rule = newRule(head, body, new Guard)
-
-  def Var:Variable = {
-    index += 1
-    new Variable("x"+index)
-  }
-
-  case class Rel(n:String) extends LocalRelation(n){
-    addRelation(this)
-
-    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
-
-    override def equals(that:Any):Boolean = that match{
-      case r:Relation => this.name == r.name
-      case _ => false
-    }
-  }
-
-  object NativeRelation{
-    def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
-  }
-  class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
-    override def notifyObservers(a:Atom)= a match{
-      case Atom(this.name, _) =>
-        Logger.log("[Relation("+name+").notifyObservers] notified by " + a)
-        f(a)
-        a.inactivate
-      case _ => super.notifyObservers(a)
-    }
-  }
-
-  class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard) extends Rule{//(head, body, guard){
-    def this() = this(List(), List(), new Guard)
-
-    val head:List[HeadAtom] = h.map{h => new HeadAtom(h)}
-
-    def execute (subs:List[Substitution]):Boolean = {
-      Logger.log("[Rule.execute] {"+this+"} Substitutions: " + subs)
-      Logger.log("[Rule.execute] solution= " + solution)
-      var matches = List[Atom]()
-      var result = false
-
-      if (this.isAxiom ||
-              (head.size == 1 && head.filter(_.active).isEmpty) || 
-              !{matches= query(head.filter(_.active),subs); matches}.isEmpty){
-        Logger.log("[Rule.execute] Found Matches: " + matches + " for rule " + this)
-        Logger.levelDown
-        val subs2 = subs.union(getSubstitutions(matches))
-        if (guard.empty || guard.eval(solution, subs2)){
-          Logger.levelUp
-          applyReaction(solution, subs2)
-          result=true
-        }else
-          Logger.levelUp
-      }
-
-      //Activate atoms that were inactivated but not eliminated
-      solution.revert
-      result
-    }
-  }
 
 }
