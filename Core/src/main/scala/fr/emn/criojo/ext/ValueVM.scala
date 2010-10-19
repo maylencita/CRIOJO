@@ -17,7 +17,7 @@ trait ValueVM{
 }
 /*
 trait ValueVM extends CHAM{ //[Solution]{
-  this:Eq =>
+  this:EqVM =>
   
   val Nul = Rel("Null")
   val Suc = Rel("Suc")

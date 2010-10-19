@@ -41,7 +41,7 @@ case class WebVariable(name:String, typ:String, value:String, @JSONTypeHint(clas
       variable match{
         case rv: RelVariable =>
           new WebRelation(rv.name, rv.relation match{
-            case PublicRelation(name, url) => url.toString
+            case pr:PublicRelation => pr.url.toString
             case _ => ""
           })
         case _ => null

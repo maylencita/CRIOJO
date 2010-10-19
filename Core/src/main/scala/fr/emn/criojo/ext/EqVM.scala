@@ -13,10 +13,10 @@ import Creole._
 
 import collection.mutable.{HashSet,HashMap}
 
-object Eq{
+object EqVM{
   type EqClass = HashSet[Variable]
 }
-import Eq._
+import EqVM._
 
 class TypedEqClasses[T](eqClasses:EqClassList) extends HashMap[T, EqClass]{
 
@@ -65,7 +65,7 @@ class EqClassList{
   override def toString = eqClasses.map(_.mkString("{",",","}")).mkString("[",",","]") 
 }
 
-trait Eq extends CHAM{
+trait EqVM extends CHAM{
 
   var eqClasses = new EqClassList
 
@@ -76,12 +76,14 @@ trait Eq extends CHAM{
   val EQ = Rel("Eq")
   val EQ_ask = Rel("Eq_ask")
   //--Private:
-  private val Eclass = NativeRelation("EqClass"){ a => if (a.vars.size == 2) addEquivalence(a(0),a(1)) }
+  private val Eclass = NativeRelation("$EqClass"){ a => if (a.vars.size == 2) addEquivalence(a(0),a(1)) }
   private val EqAsk = NativeRelation("$EqAsk"){ a => askEq(a) }
   private val s,x,y,z = Var; private val K = RelVariable("K")
-  
-  EQ(x,y) ==> Eclass(y,x)
-  EQ_ask(s,x,y,K) ==> EqAsk(s,x,y,K)
+
+  rules(
+    EQ(x,y) ==> Eclass(y,x),
+    EQ_ask(s,x,y,K) ==> EqAsk(s,x,y,K)
+  )
   /***********************************************************************/
 
   // Native

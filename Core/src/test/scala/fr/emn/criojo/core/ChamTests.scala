@@ -18,15 +18,19 @@ class ChamTests{
   logLevel = INFO
   
   val machine:CHAM = new CHAM{
-//    val solution = new Solution
-//    Conjunction.configMachine(this)
-    val x,y,z = Var //("x","y","z")
+    val x = Variable("x")
+    val y = Variable("y")
+    val z = Variable("z")
     val R = Rel("R")
     val S = Rel("S")
 
-    val r1:Rule = (R(x,y) &: R(y,z)) ==> R(x,z)
-    val r2 = S(x,y) ==> R(x,y)
+    rules(
+      (R(x,y) &: R(y,z)) ==> R(x,z),
+      S(x,y) ==> R(x,y)
+    )
   }
+
+
 
   @Test
   def testRelations{
@@ -49,8 +53,14 @@ class ChamTests{
       val guard = new Guard(List())
       def execute (subs:List[Substitution]):Boolean = true
     }
-
+    val r2:Rule = new Rule{
+      val head = Atom("S",x,y)::Nil
+      val body = Atom("R",x,y)::Nil
+      val guard = new Guard
+      def execute (subs:List[Substitution]):Boolean = true
+    }
     assertTrue("Rule "+ r1 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
+    assertTrue("Rule "+ r2 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
   }
 
   @Test(timeout=1000)
@@ -85,7 +95,9 @@ class ChamTests{
       val R = Rel("R")
       val X1 = Rel("X1")
 
-      R(x,y) ==> new Guard{(T() &: X1()) ==> F()} ?: (R(x,y) &: R(x,y) &: X1())
+      rules(
+        R(x,y) ==> {(T &: X1()) ==> F} ?: (R(x,y) &: R(x,y) &: X1())
+      )
     }
     info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
 
@@ -97,26 +109,93 @@ class ChamTests{
       m2.query(List(atom,atom), List()).size == 2)
   }
 
-  @Test(timeout=1000)
+  @Test (timeout=1000)
+  def testGuardSubs{
+    logLevel = DEBUG
+    val a = Variable("a")
+    val b = Variable("b")
+    val c = Variable("c")
+    val d = Variable("d")
+
+    val m2 = new CHAM{
+      val s,x,y,z = Var
+      val R = Rel("R")
+      val X1 = Rel("X1")
+
+      rules(
+        R(s,x,y) ==> {(T(s) &: X1(s)) ==> F} ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
+      )
+    }
+    info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
+
+    val atom = Atom("R", Variable("1"), a, b)
+    val atom2 = Atom("R", Variable("2"), a, b)
+    m2.introduceAtom(atom)
+    m2.introduceAtom(atom2)
+    
+    assertTrue("Expected: <R(1,a,b),R(1,a,b),R(2,a,b),R(2,a,b)>. Actual: " + m2.solution,
+      m2.query(List(atom,atom,atom2,atom2), List()).size == 4)
+  }
+
+  @Test (timeout=1000)
   def testNu{
+    logLevel = DEBUG
+
+    var result = false
     val a = Variable("a")
     val b = Variable("b")
 
     val vm = new CHAM{
       val x,y,z,w = Var
-      val R = Rel("R")
       val S = Rel("S")
+      val R = NativeRelation("R"){
+        case Atom("R", a::v2::v3::_) if (v2 != Undef && v3 != Undef) => result = true
+        case at => fail("Expected: R(x1,x2,x3). Actual: " + at)
+      }
 
-      (R(x,y) &: S()) ==> Nu(z)(R(x,z))
+      rules{
+        S(x) ==> Nu(y,z)(R(x,y,z))
+      }
     }
     info (this.getClass, "testNu", "vm: " + vm.rules.mkString("","\n",""))
 
-    val atom = Atom("R", a, b)
-    vm.introduceAtom(Atom("S"))
-    vm.introduceAtom(atom)
+//    val atom = Atom("R", a, b)
+    vm.introduceAtom(Atom("S", a))
+//    vm.introduceAtom(atom)
 
-    assertTrue("Expected: <R(a,_)>. Actual: " + vm.solution,
-      vm.query(List(Atom("R", a, Undef)), List()).size == 1)
+    assertTrue("Expected: <R(x1,x2,x3)>. Actual: " + vm.solution, result)
 
   }
+
+  @Test
+  def testHORelation{
+    logLevel = DEBUG
+    
+    val a = Variable("a")
+    val b = Variable("b")
+    var result = false
+
+    val vm = new CHAM{
+      val x,y,z,w = Var
+      val Cont = RelVariable("Cont")
+
+      val R = Rel("R"); val S = Rel("S")
+      val Resp = NativeRelation("Resp"){
+        case Atom("Resp", a::b::_) => result = true
+        case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
+      }
+      val RespVar = RelVariable(Resp)
+
+      rules(
+        S(x,y) ==> R(x,y,RespVar),
+        R(x,y,Cont) ==> Cont(x,y)
+      )
+    }
+
+    val atom1 = Atom("S", a, b)
+    vm.introduceAtom(atom1)
+    assertTrue("Expected: <Resp(a,b)>. Actual: " + vm.solution, result)
+
+  }
+
 }

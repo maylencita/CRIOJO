@@ -24,7 +24,7 @@ class EqTests{
   val c = Variable("c")
   val d = Variable("d")
 
-  val EQQ = "Eq"
+  val EQQ = "EqVM"
 
   @Test
   def testEq{
@@ -52,11 +52,12 @@ class EqTests{
         ec.contains(c) && ec.contains(d))
     )
 */  }
+
 /*
   @Test
   def testAskEq{
     logLevel = INFO
-    val machine = new CHAM with Eq with IntVM  {
+    val machine = new CHAM with EqVM with IntVM  {
       val R = Rel("R") ; val S=Rel("S")
       val x,y,z,w = Var
 

@@ -9,8 +9,12 @@ package fr.emn.criojo.core
  */
 
 import Creole._
+import fr.emn.criojo.util.Logger._
 
-abstract class CHAM extends AbstractMachine{
+abstract class CHAM extends AbstractMachine {
+
+  val T = new Top(){def apply(vlst:Variable*):Atom = new Top(vlst.toList)} //Atom("true") //Rel("true")
+  val F = Atom("false") //Rel("false")
 
   val solution = new Solution
   var rules:List[Rule] = List()
@@ -34,73 +38,124 @@ abstract class CHAM extends AbstractMachine{
 
   implicit def atomToConjunction(a:Atom):Conjunction = new &:(a, Empty)
 
-  abstract class Conjunction{
-    def empty:Boolean
-    def head:Atom
-    def tail:Conjunction
+  def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule = new CHAMRule(h, b, g, scope)
 
-//    def scope:List[Variable]
-    var scope = List[Variable]()
-
-    def &: (a:Atom) = new &: (a, this)
-
-    def ?: (g:Guard): (Guard,Conjunction) = (g, this)
-
-    def #: (vlst : Variable*): Conjunction = {this.scope = vlst.toList; this}
-
-    def toList:List[Atom] = head :: tail.toList
-
-    def ==> (c2:Conjunction):Rule = {
-      val r = newRule(this.toList, c2.toList)
-      r.setScope(c2.scope)
-      r
-    }
-
-    def ==> (gc: (Guard, Conjunction)):Rule = {
-      val g = gc._1; val c2 = gc._2
-      val r = newRule(this.toList, c2.toList,g)
-      r.setScope(c2.scope)
-      r
-    }
-
-    override def toString = head + (if (tail.empty) "" else  " & " + tail)
+  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
+    val guard = new Guard
+    guard.initRules(ruleDefs)
+    guard
   }
 
-  case class Nu(varLst:Variable*){// extends Conjunction{
-    val scope = varLst.toList
-//    var empty = true
-//    var h:Atom = null
-//    var t:Conjunction = Empty
-//
-//    def head = if (h == null) throw new NoSuchElementException("head of empty conjunction") else h
-//    def tail = if (t == Empty) throw new NoSuchElementException("tail of empty conjunction") else t
+  def rules(ruleDefs:(RuleFactory => Rule)*) = initRules(ruleDefs.toList)
 
-    def apply(conj:Conjunction):Conjunction = {
-      conj.scope = this.scope
-      conj
-//      this.empty = conj.empty
-//      this.h = conj.head
-//      this.t = conj.tail
-//
-//      this
+  def initRules(ruleDefs:List[RuleFactory => Rule]){
+    ruleDefs.foreach{f =>
+      val r = f(this)
+      processBody(processHead(r),r)
+      addRule(r)
     }
   }
 
-  case object Empty extends Conjunction{
-    def empty = true
-    def head = throw new NoSuchElementException("head of empty conjunction")
-    def tail = throw new NoSuchElementException("tail of empty conjunction")
-    /*def*/ scope = List()
+  def processHead(rule:Rule):List[RelVariable]={
+    var headVars = List[RelVariable]()
 
-    override def toList = List()
-    override def toString = ""
+    if (!rule.isAxiom)
+      rule.head.foreach{
+        case a:rule.HeadAtom =>
+          relation(a.relName) match{
+            case Some(r) =>
+              a.relation = r
+              r.addObserver(a)
+            case _ =>
+                log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
+                a.relation = new LocalRelation("Undefined")
+          }
+          a.vars.foreach{
+            case rv:RelVariable => headVars :+= rv
+            case _ =>
+          }
+        case _ =>
+      }
+    headVars
   }
 
-  final case class &: (hd:Atom, tl:Conjunction) extends Conjunction{
-    def head = hd
-    def tail = tl
-    def empty = false
-    /*def*/ scope = List()
+  def processBody(headVars:List[RelVariable], rule:Rule){
+    rule.body.foreach{a =>
+      a.relation = headVars.find(hv => hv.name == a.relName) match{
+        case Some(hv) => hv.relation
+        case _=> findRelation(a.relName)
+      }
+      a.vars.foreach{
+        case rv: RelVariable if(!headVars.contains(rv)) =>
+          relation(rv.name) match{
+            case Some(r) => rv.relation = r
+            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);
+          }
+        case _ =>
+      }
+    }
   }
 
+  class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{//(head, body, guard){
+    def this() = this(List(), List(), new Guard, List())
+
+    scope = scp
+    val head:List[HeadAtom] = h.map{h => new HeadAtom(h)}
+
+    def execute (subs:List[Substitution]):Boolean = {
+      log("[Rule.execute] {"+this+"} Substitutions: " + subs)
+      log("[Rule.execute] solution= " + solution)
+      var matches = List[Atom]()
+      var result = false
+
+      if (this.isAxiom ||
+              (head.size == 1 && head.filter(_.active).isEmpty) ||
+              !{matches= query(head.filter(_.active),subs); matches}.isEmpty){
+        log("[Rule.execute] Found Matches: " + matches + " for rule " + this)
+        levelDown
+        val subs2 = subs.union(getSubstitutions(matches))
+        if (guard.empty || guard.eval(solution, subs2)){
+          levelUp
+          applyReaction(solution, subs2)
+          result=true
+        }else
+          levelUp
+      }
+
+      //Activate atoms that were inactivated but not eliminated
+      solution.revert
+      result
+    }
+  }
+
+  def Var:Variable = {
+    index += 1
+    new Variable("x"+index)
+  }
+
+  case class Rel(n:String) extends LocalRelation(n,true){
+    addRelation(this)
+
+    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
+
+    override def equals(that:Any):Boolean = that match{
+      case r:Relation => this.name == r.name
+      case _ => false
+    }
+  }
+
+  object NativeRelation{
+    def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
+  }
+  class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
+    override def notifyObservers(a:Atom)= a match{
+      case Atom(this.name, _) =>
+        log("[Relation("+name+").notifyObservers] notified by " + a)
+        f(a)
+        a.inactivate
+        solution.cleanup
+      case _ => super.notifyObservers(a)
+    }
+  }
+  
 }

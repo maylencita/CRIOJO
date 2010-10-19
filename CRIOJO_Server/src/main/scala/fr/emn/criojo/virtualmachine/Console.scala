@@ -37,16 +37,9 @@ class Console (@Context @scala.reflect.BeanProperty var uriInfo:UriInfo) extends
       try{
         this.script = formData.getFirst("script")
 
-//        val server = formData.getFirst("remote_vm")
-//        val relName = formData.getFirst("remote_relation")
-//
-//        if (server != "" && relName != ""){
-//          val remoteRelation = new RemoteRelationImpl(relName, UriBuilder.fromUri(server).build())
-//          VirtualMachineService.machine.addRelation(remoteRelation)
-//        }
-
         Logger.log(this.getClass, "runScript","script: " + script)
         VirtualMachineService.runScript(script)
+        VirtualMachineService.start
         VirtualMachineService.getSolution
       }catch{
         case e =>

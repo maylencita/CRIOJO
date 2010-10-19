@@ -58,6 +58,7 @@ class RelationResource(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo)
   @GET
   @Produces (Array("text/plain"))
   def getRelation():String = {
+    "Solution: \n" +
     VirtualMachineService.getSolution    
   }
 }

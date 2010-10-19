@@ -37,6 +37,8 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
   }
 
   def isAxiom:Boolean = head.isEmpty
+
+  def toList:List[Rule] = List(this)
   
   def execute:Boolean =  execute(List())
 

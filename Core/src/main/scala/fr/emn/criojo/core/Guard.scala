@@ -3,8 +3,6 @@ package fr.emn.criojo.core
 import Creole.Substitution
 import fr.emn.criojo.util.Logger
 
-import scala.collection.mutable.HashSet
-
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -17,10 +15,10 @@ class Guard (grules:List[Rule]) extends CHAM{
   def this(){
     this(List[Rule]())
   }
-//  val trueRel = Rel("true")
-//  val falseRel = Rel("false")
-  val T = Rel("true")
-  val F = Rel("false")
+  val TopRel = Rel("true")
+  val falseRel = Rel("false")
+
+  def empty = rules.isEmpty
 
   grules.foreach{ rule =>
     newRule(rule.head,rule.body,rule.guard)
@@ -36,33 +34,58 @@ class Guard (grules:List[Rule]) extends CHAM{
     }
   }
 
-  def empty = rules.isEmpty
-
   def addRelations (rlst:List[Relation]){
     for (r <- rlst if !relations.contains(r)){
       addRelation(r)  
     }
   }
 
-  def eval(sol:Solution, substitutions:List[Substitution]):Boolean ={
+  def eval(sol:Solution, subs:List[Substitution]):Boolean ={
     Logger.log("------------------------------------------------------")
     Logger.log("[Guard.eval] Begin")
-//    Logger.log("[Guard.eval] substitutions: " + substitutions)
+    Logger.log("[Guard.eval] substitutions: " + subs)
+
     solution.revert
     solution.update(sol.copy) //val solution = sol.clone
-    if (!solution.exists(_.relName == T.toString))
-      solution.addAtom(True())
-
-//    rules.foreach(r => r.solution = solution)
     Logger.levelDown
-    rules.foreach(r => r.execute(substitutions))
+    introduceAtom (rules.find(r=>r.head.exists(a=>a.relation == TopRel)) match{
+      case Some(r) => (r.head.find(a => a.relation == TopRel).get) applySubstitutions subs
+      case _ => Top()
+    })
     Logger.levelUp
       
     Logger.log("[Guard.eval] finished with solution: " + solution)
     Logger.log("------------------------------------------------------")
-    solution.isTrue
+    solution.exists(a => a.relation == TopRel)
   }
   
-  override def toString:String = rules.mkString("",";","")
+  override def toString:String = {
+    val nonPrint = List("Eq","Eq_ask","$Int","$AskInt","$Str","$AskStr")
+    rules.filterNot(r=>r.head.exists(a => nonPrint.contains(a.relName))).mkString("",";","")
+  }
 
+}
+
+object Top{
+  def apply():Top = new Top(List())
+}
+class Top(vlst:List[Variable]) extends Atom ("true", vlst){
+  def this() = this(List())
+  
+  relation = new LocalRelation("Top", false, false)
+  override def isTrue:Boolean = true
+  override def isFalse:Boolean = false
+
+  override def hashCode = "true".hashCode
+  override def clone = this
+}
+
+object False extends Atom ("false", List()){
+  relation = new LocalRelation("False", false, false)
+  override def isTrue:Boolean = false
+  override def isFalse:Boolean = true
+
+  override def applySubstitutions(subs:List[Substitution]) = this
+  override def hashCode = "false".hashCode
+  override def clone = this
 }

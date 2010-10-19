@@ -45,6 +45,12 @@ object RelVariable{
 }
 case class RelVariable(n:String) extends Variable(n){
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
+
+  def apply(vlst:Variable*):Atom = {
+    val at = new Atom(this.name, vlst.toList)
+    at.relation = this.relation
+    at
+  }
 }
 
 trait ValueVariable[+T]

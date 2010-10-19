@@ -30,9 +30,9 @@ object VirtualMachineService extends ConnectedVM(VirtualMachineConfigurator.url)
 //    this machine = new ConnectedVM()
 //  }
 
-  def addAtom(atom:Atom){
-    /*machine.*/introduceAtom(atom)
-  }
+//  def addAtom(atom:Atom){
+//    /*machine.*/introduceAtom(atom)
+//  }
 
 //  def getRelation(relName:String):List[Atom]={
 //
