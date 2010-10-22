@@ -13,7 +13,7 @@ import fr.emn.criojo.util.Logger
  */
 
 @Deprecated
-class StandardSolution extends Solution{
+class StandardSolution /*extends Solution{
   private val SUC = "Suc"
   private val NULL = "null"
 
@@ -96,3 +96,4 @@ class StandardSolution extends Solution{
 
 
 }
+*/

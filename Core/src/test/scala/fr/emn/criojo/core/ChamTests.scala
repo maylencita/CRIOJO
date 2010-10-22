@@ -12,12 +12,16 @@ import fr.emn.criojo.util.Logger._
 import org.junit._
 import Assert._
 
+class TestCham extends CHAM{
+  val solution = Solution()
+}
+
 class ChamTests{
   import Creole._
 
   logLevel = INFO
   
-  val machine:CHAM = new CHAM{
+  val machine:CHAM = new TestCham{
     val x = Variable("x")
     val y = Variable("y")
     val z = Variable("z")
@@ -90,7 +94,7 @@ class ChamTests{
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new CHAM{
+    val m2 = new TestCham{
       val x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
@@ -117,7 +121,7 @@ class ChamTests{
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new CHAM{
+    val m2 = new TestCham{
       val s,x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
@@ -145,7 +149,7 @@ class ChamTests{
     val a = Variable("a")
     val b = Variable("b")
 
-    val vm = new CHAM{
+    val vm = new TestCham{
       val x,y,z,w = Var
       val S = Rel("S")
       val R = NativeRelation("R"){
@@ -175,7 +179,7 @@ class ChamTests{
     val b = Variable("b")
     var result = false
 
-    val vm = new CHAM{
+    val vm = new TestCham{
       val x,y,z,w = Var
       val Cont = RelVariable("Cont")
 

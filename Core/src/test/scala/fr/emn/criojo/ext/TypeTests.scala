@@ -35,7 +35,7 @@ class TypeTests{
   @Test
   def testInt{
 //    logLevel = DEBUG
-    val machine = new CHAM with IntVM{
+    val machine = new TestCham with IntVM{
       val s,x,y = Var
       val S = Rel("S"); val Seis = Rel("Seis"); val Siete = Rel("Siete")
 
@@ -73,7 +73,7 @@ class TypeTests{
   @Test
   def testStr{
 //    logLevel = DEBUG
-    val machine = new CHAM with StringVM{
+    val machine = new TestCham with StringVM{
       val s,x,y = Var
       val S = Rel("S"); val MyStr = Rel("MyStr")
 
@@ -109,7 +109,7 @@ class TypeTests{
 //    logLevel = DEBUG
     var result = false
 
-    val machine = new CHAM with IntVM{
+    val machine = new TestCham with IntVM{
       val s,x,y = Var
       val S = Rel("S");
       val Iguales = NativeRelation("Iguales"){
@@ -142,7 +142,7 @@ class TypeTests{
 //    logLevel = DEBUG
     var result = false
 
-    val machine = new CHAM with StringVM{
+    val machine = new TestCham with StringVM{
       val s,x,y = Var
       val S = Rel("S");
       val Iguales = NativeRelation("Iguales"){
@@ -174,7 +174,7 @@ class TypeTests{
 
   @Test (timeout=1000)
   def mixedVMTest{
-    val vm = new CHAM with StringVM with IntVM{
+    val vm = new TestCham with StringVM with IntVM{
       val s,x,y,id,name,id2,name2 = Var
       val Alumni = Rel("Alumni"); val SameName = Rel("SameName"); val SameId = Rel("SameId")
 
@@ -197,7 +197,7 @@ class TypeTests{
   @Test
   def testPrint{
 //    logLevel = INFO
-    val machine = new VirtualMachine{
+    val machine = new LocalVM{
       val x = Var; val y = Variable("$y")
       val X = Rel("X")
 
@@ -205,7 +205,7 @@ class TypeTests{
         X(x) ==> (StringAtom("x=",y) &: Print(y,x))
       )
 
-      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
+//      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
     }
     info(this.getClass, "testPrint", "rules: " + machine.rules.mkString("","\n",""))
 

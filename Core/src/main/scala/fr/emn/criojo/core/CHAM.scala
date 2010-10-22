@@ -16,7 +16,7 @@ abstract class CHAM extends AbstractMachine {
   val T = new Top(){def apply(vlst:Variable*):Atom = new Top(vlst.toList)} //Atom("true") //Rel("true")
   val F = Atom("false") //Rel("false")
 
-  val solution = new Solution
+//  val solution = Solution() //new Solution
   var rules:List[Rule] = List()
   var relations:List[Relation] = List()
 
