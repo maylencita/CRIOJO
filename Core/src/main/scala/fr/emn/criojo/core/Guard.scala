@@ -15,6 +15,7 @@ class Guard (grules:List[Rule]) extends CHAM{
   def this(){
     this(List[Rule]())
   }
+  val solution = Solution()
   val TopRel = Rel("true")
   val falseRel = Rel("false")
 

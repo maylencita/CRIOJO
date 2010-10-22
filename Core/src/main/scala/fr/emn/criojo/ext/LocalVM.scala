@@ -8,9 +8,11 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 
-import java.net.URI
+import fr.emn.criojo.core.Solution
 
 class LocalVM extends VirtualMachine{
+  val solution = Solution()
+
   def newRemoteRelation(remoteName:String,url:String):RemoteRelation = {
     throw new IllegalAccessException("Local machine virtual.")
   }

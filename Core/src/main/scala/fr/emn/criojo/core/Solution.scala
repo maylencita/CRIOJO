@@ -10,15 +10,18 @@ import Creole.Substitution
  * To change this template use File | Settings | File Templates.
  */
 object Solution{
-  def apply(atoms:Atom*) = new Solution(atoms.toSet) 
+  def apply(atoms:Atom*) = new SolutionImpl(atoms.toSet)
+  def createDefault(atoms:Set[Atom]) = new SolutionImpl(atoms)
 }
 
-class Solution(var elems:Set[Atom]){
-  def this()= this(Set[Atom]())
+//class Solution(var elems:Set[Atom]){
+trait Solution{
+//  def this()= this(Set[Atom]())
+  def elems:Set[Atom]
 
-  def addAtom(atom:Atom){ elems += atom }
+  def addAtom(atom:Atom)//{ elems += atom }
 
-  def addMolecule(molecule:List[Atom]){ elems ++= molecule}
+  def addMolecule(molecule:List[Atom]){ molecule foreach (addAtom(_)) }
 
   def size = elems.size
 
@@ -34,31 +37,29 @@ class Solution(var elems:Set[Atom]){
 
   def foreach(f: (Atom) => Unit) {elems.foreach(f)}
 
-  def remove(a:Atom) { elems -= a}
+  def remove(a:Atom) //{ elems -= a}
 
   def exists(f: (Atom)=>Boolean) = elems.exists(f)
 
   def map[B](f: (Atom)=> B) = elems.map(f)
 
-  def clear{
-    elems = Set[Atom]()
-  }
+  def clear //{  elems = Set[Atom]() }
 
-  def cleanup{
+  def cleanup/*{
     elems = elems.filter(_.active)
-  }
+  }*/
 
   def revert{
     elems.foreach(_.active = true)
   }
 
-  def update(newsol: Solution){
+  def update(newsol: Solution)/*{
     if (newsol.contains(False) || newsol.isEmpty){
       clear
     }else{
       this.elems = newsol.elems
     }
-  }
+  }*/
 
   /**
    * Finds atoms matching a conjunction (set of atoms), after applying an initial set of substitutions
@@ -86,7 +87,7 @@ class Solution(var elems:Set[Atom]){
     findMatchesRec(conjunction, substitutions, List())
   }
 
-  def copy:Solution = new Solution(elems.map(a => a.clone))
+  def copy:Solution //= new Solution(elems.map(a => a.clone))
 
   protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
@@ -97,7 +98,7 @@ class Solution(var elems:Set[Atom]){
     }
   }
 
-  override def clone:Solution = new Solution(Set[Atom]() ++ this.elems)
+  override def clone:Solution = Solution.createDefault(Set[Atom]() ++ this.elems)//=new Solution(Set[Atom]() ++ this.elems)
 
   override def equals(that:Any)= that match{
     case thatS:Solution => this.size == thatS.size && (this.elems & thatS.elems).size == this.size
@@ -107,5 +108,25 @@ class Solution(var elems:Set[Atom]){
   override def toString = {
     elems.mkString("<",",",">")
   }
+}
+
+class SolutionImpl(var elems:Set[Atom]) extends Solution{
+  def this()= this(Set[Atom]())
+  def addAtom(atom:Atom){ elems += atom }
+  def remove(a:Atom) { elems -= a}
+  def clear {   elems = Set[Atom]()  }
+  def copy:Solution = new SolutionImpl(elems.map(a => a.clone))
+  def cleanup{
+    elems = elems.filter(_.active)
+  }
+  def update(newsol: Solution){
+    if (newsol.contains(False) || newsol.isEmpty){
+      clear
+    }else{
+      this.elems = newsol.elems
+    }
+  }
+
+  override def clone:Solution = new SolutionImpl(Set[Atom]() ++ this.elems)
 
 }
