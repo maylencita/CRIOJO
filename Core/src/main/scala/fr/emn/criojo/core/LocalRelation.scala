@@ -30,7 +30,11 @@ extends Relation{
   }
   
   def notifyObservers(a: Atom){
-    observers.foreach{o =>Logger.log("[Relation("+name+").notifyObservers]"+ o + " notified by " + a); o.receiveUpdate(a)}
+    observers.foreach{o =>
+      Logger.log("[Relation("+name+").notifyObservers]"+ o + " notified by " + a)
+      if (a.active)
+        o.receiveUpdate(a)
+    }
   }
 
   override def equals(that:Any) = that match{

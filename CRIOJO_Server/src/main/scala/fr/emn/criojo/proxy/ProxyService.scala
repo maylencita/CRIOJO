@@ -39,6 +39,13 @@ class ProxyService(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo){
     "OK"
   }
 
+  @GET
+  @Path("/admin")
+  @Produces(Array("text/plain"))
+  def admin:String = {
+    ProxyService.clients.mkString("","\n","")
+  }
+
 }
 
 object ProxyService{
@@ -60,7 +67,11 @@ object ProxyService{
   }
 
   def addMessage(clientId:Int, message:String){
-    clients.put(clientId, clients(clientId) :+ message)
+    clients.get(clientId) match{
+      case Some(msgLst) => clients.put(clientId, msgLst :+ message)
+      case _ => //Do Nothing
+    }
+//    clients.put(clientId, clients(clientId) :+ message)
   }
 
   def currentId = {

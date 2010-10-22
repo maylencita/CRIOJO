@@ -10,15 +10,16 @@ package fr.emn.criojo.virtualmachine
 
 import fr.emn.criojo.builtin.{PicasaVM, PicasaParams}
 import fr.emn.criojo.util._
-import fr.emn.criojo.util.Logger
+import fr.emn.criojo.util.Logger._
 
 import javax.ws.rs._
 import javax.ws.rs.core._
 
-@Path("/P-VM/{atomName}")
+@Path("/PVM/{atomName}")
 class PicasaBuiltin(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo){ //extends Configurator(uriInfo){
 
   PicasaParams.url = uriInfo.getBaseUri()
+  logLevel = DEBUG
   
   @POST
   @Produces (Array("text/plain"))
@@ -37,7 +38,8 @@ class PicasaBuiltin(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo){ /
   @GET
   @Produces (Array("text/plain"))
   def getRelation(): String = {
-    "This is Picasa's Built in Virtual Machine :" + "\n" + 
-            PicasaVM.relations + "\n" + PicasaVM.rules.mkString("","\n","")
+    "This is Picasa's Built in Virtual Machine : \n" + 
+            PicasaVM.relations + "\n" + PicasaVM.rules.mkString("","\n","")  + "\n" +
+            PicasaVM.prettyPrint
   }
 }

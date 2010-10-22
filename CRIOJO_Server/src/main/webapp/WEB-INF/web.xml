@@ -37,7 +37,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>RelationServlet</servlet-name>
-        <url-pattern>/relation/*</url-pattern>
+        <url-pattern>/vm/relation/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VMServlet</servlet-name>

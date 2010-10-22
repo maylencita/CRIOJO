@@ -12,12 +12,19 @@ import virtualmachine._
 import fr.emn.criojo.loader.ScriptLoader._
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.core._
+import fr.emn.criojo.util._
 
 import org.junit._
 import Assert._
 
 import javax.ws.rs.core._
 import java.net.InetAddress
+import java.net.URI
+
+import com.sun.jersey.api.client.Client
+import com.sun.jersey.api.client.config.DefaultClientConfig
+
+import actors._
 
 class ServerTests{
   logLevel = INFO
@@ -75,19 +82,42 @@ class ServerTests{
 
     vm.start
     Thread.sleep(10000)
-    assertFalse(vm.solution.findMatches(List(Atom("Print", List(Undef))), List()).isEmpty)
+//    assertFalse(vm.solution.findMatches(List(Atom("Print", List(Undef))), List()).isEmpty)
+  }
+
+  @Test 
+  def testPicasaAlbum{
+    logLevel = DEBUG
+    val pvmhost = "http://localhost:8080/vm/PVM"
+//    val pvmhost = "http://criojo.appspot.com/vm/PVM"
+    var result = false
+    val vm2 = new CriojoClient(uri){
+      val ACloning = Required("AlbumCloning",pvmhost)
+      val Session = Rel("Session")
+      val PAlbum = Provided("PAlbum")
+
+      val Ok = NativeRelation("Ok"){
+        case Atom("Ok", s::id::_) =>
+          info(this.getClass, "testPicasaAlbum", "Received: " + id)
+          result = true
+        case failatom => fail("Unexpected atom: " + failatom)
+      }
+      val s,id = Var
+
+      rules(
+        PAlbum(s,id) ==> Ok(s,id)
+      )
+    }
+    vm2.start
+
+    val palbum = RelVariable("PAlbum"); palbum.relation = vm2.PAlbum
+    vm2.addAtom(Atom("AlbumCloning",Variable("1"),Value("maylelacouture"),palbum))
+
+    Thread.sleep(30000)
+    assertTrue(result)
   }
 
 }
-
-import fr.emn.criojo.util._
-
-import java.net.URI
-
-import com.sun.jersey.api.client.Client
-import com.sun.jersey.api.client.config.DefaultClientConfig
-
-import actors._
 
 object CriojoClient{
   val myclient:Client = Client.create(new DefaultClientConfig)

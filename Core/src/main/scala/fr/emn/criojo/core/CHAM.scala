@@ -133,7 +133,7 @@ abstract class CHAM extends AbstractMachine {
     new Variable("x"+index)
   }
 
-  case class Rel(n:String) extends LocalRelation(n){
+  case class Rel(n:String) extends LocalRelation(n,true){
     addRelation(this)
 
     def apply(vars:Variable*):Atom = new Atom(name, vars.toList)

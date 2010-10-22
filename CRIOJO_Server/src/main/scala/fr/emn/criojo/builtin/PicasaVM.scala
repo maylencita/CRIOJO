@@ -55,10 +55,11 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
 
   rules(
     Login(ps,tok,user,pwd) ==> HandleLogin(ps,tok,user,pwd),
-    AlbumCloning(ps,n,user,Cont) ==> {(T(ps) &: Init(ps)) ==> F} ?:
-          Nu(m)(Suc(n,m) &: GenAlbum(ps,user,Cont) &: Init(ps) &: AlbumCloning(ps,m,user,Cont)),
-    (AlbumCloning(ps,n,user,Cont) &: Album(ps,m,id)) ==> Cont(ps,id),
-    (AlbumCloning(ps,n,user,Cont) &: Init(ps)) ==> {(T(ps) &: Album(ps,m,id)) ==> F} ?: Cont(ps,Null)    
+    AlbumCloning(ps,user,Cont) ==> {(T(ps) &: Init(ps)) ==> F} ?:
+          (GenAlbum(ps,user,Cont) &: Init(ps) &: AlbumCloning(ps,user,Cont)),
+    (AlbumCloning(ps,user,Cont) &: Album(ps,id)) ==> Cont(ps,id),
+    (AlbumCloning(ps,user,Cont) &: Init(ps)) ==>
+            {(T(ps) &: Album(ps,id)) ==> F} ?: Nu(id)(Cont(ps,id) &: NullRel(id))
   )
   /***********************************************************************/
 
@@ -84,7 +85,10 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
 
   def generateAlbums(a:Atom)= a match{
     case Atom("$GenAlbum", s::u::cont::_) =>
-      PicasaClient.getAlbums(s, u.toString) foreach(addAtom(_)) //introduceAtom(_))
+      getValue(u) match {
+        case Value(v:String) => PicasaClient.getAlbums(s, v) foreach(solution.addAtom(_))
+        case _ => log(WARNING, this.getClass, "generateAlbums", "User not found: " + u)
+      }
     case _ => //Skip
   }
 
@@ -117,7 +121,6 @@ object PicasaClient{
   }
 
   def getAlbums(sesVar:Variable, user:String):List[Atom]={
-    var counter = 0
     var lst = List[Atom]()
     val service = client.resource("http://picasaweb.google.com/data/feed/api/user").
       path(user)        
@@ -131,8 +134,7 @@ object PicasaClient{
 
     for (entry <- (resp \\ "entry")){
       val id = entry \\ "id"
-      lst :+= Atom("Album", sesVar, Value(counter), Variable(id.text))
-      counter += 1
+      lst :+= Atom("Album", sesVar, Variable(id.text))
     }
     lst
   }
