@@ -29,13 +29,13 @@ class SolutionTest {
   val a = Atom(r, Variable("x1"))
   val a2 = Atom(r, Variable("x1"))
 
-  @Test
-  def testAdd2Times{
-    solution.addAtom(a)
-    solution.addAtom(a)
-
-    assertTrue("<R(x1)>" == solution.toString)
-  }
+//  @Test
+//  def testAdd2Times{
+//    solution.addAtom(a)
+//    solution.addAtom(a)
+//
+//    assertTrue("<R(x1)>" == solution.toString)
+//  }
 
   @Test
   def testMultiRel{
@@ -49,7 +49,7 @@ class SolutionTest {
   @Test
   def testCleanup{
     solution.addAtom(a)
-    a.active = false
+    a.setActive(false)
     solution.cleanup
 
     assertTrue("<>" == solution.toString)
@@ -58,7 +58,7 @@ class SolutionTest {
   @Test
   def testRevert{
     solution.addAtom(a)
-    a.active = false
+    a.setActive(false)
     solution.revert
 
     assertTrue("<R(x1)>" == solution.toString)
@@ -82,8 +82,8 @@ class SolutionTest {
   @Test
   def testEquals{
     val b = Atom(r, Variable("y1"))
-    val sol1 = /*new*/ Solution.createDefault(Set(a,b))
-    val sol2 = /*new*/ Solution.createDefault(Set(a,b))
+    val sol1 = /*new*/ Solution.createDefault(List(a,b))
+    val sol2 = /*new*/ Solution.createDefault(List(a,b))
 
     println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
 
@@ -102,7 +102,7 @@ class SolutionTest {
 
     val sol2 = solution.clone
 
-    a.active = false
+    a.setActive(false)
     sol2.addAtom(Atom(r, Variable("y1")))
     sol2.cleanup
 

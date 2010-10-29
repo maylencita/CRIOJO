@@ -17,22 +17,24 @@ trait StringVM extends CHAM with EqVM{
   /**********************************************************************
   * VM definition:
   */
-  val StrRel = Rel("$Str")
-  val Str_ask = new Rel("$Str_ask"){
-    override def apply(vars:Variable*):Atom= {
-      assert(vars.size == 4)
-      new StrAtom_ask(vars.toList)
-    }
-  }
+  val StrRel = NativeRelation("$Str"){a => strEqClasses add (a(0).name,a(1))}
+//  val Str_ask = new Rel("$Str_ask"){
+//    override def apply(vars:Variable*):Atom= {
+//      assert(vars.size == 4)
+//      new StrAtom_ask(vars.toList)
+//    }
+//  }
+  val Str_ask = NativeRelation("$Str_ask"){a => ask(a) }
+
   //--Private:
   private val NewStr = NativeRelation("$NewStr"){ a => add(a) }
   private val AskStr = NativeRelation("$AskStr"){ a => ask(a) }
   private val str,s,x,y = Var; private val K = RelVariable("K")
 
-  rules(
-    StrRel(str,x) ==> NewStr(str,x),
-    Str_ask(str,s,x,K) ==> AskStr(str,s,x,K)
-  )
+//  rules(
+//    StrRel(str,x) ==> NewStr(str,x),
+//    Str_ask(str,s,x,K) ==> AskStr(str,s,x,K)
+//  )
   /***********************************************************************/
 
   def getStrValue(x:Variable):Option[String]= strEqClasses getValue x
@@ -44,7 +46,7 @@ trait StringVM extends CHAM with EqVM{
   }
 
   private def ask(a:Atom) = a match{
-    case Atom("$AskStr", sval::session::vr::k::_) =>
+    case Atom(_, sval::session::vr::k::_) =>
       strEqClasses.get(sval.name) match{
         case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
         case _ => //Nothing or negative answer

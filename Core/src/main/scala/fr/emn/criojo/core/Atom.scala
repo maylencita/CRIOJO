@@ -10,6 +10,7 @@ import Creole.Substitution
  * To change this template use File | Settings | File Templates.
  */
 
+@serializable
 object Atom{
   def apply(rn:String, lst:Variable*):Atom = new Atom(rn, lst.toList)
   def apply(rel:Relation, lst:Variable*):Atom = {
@@ -20,7 +21,8 @@ object Atom{
 }
 
 case class Atom (val relName:String, val vars: List[Variable]) {
-  var active:Boolean = true
+  protected var active:Boolean = true
+  @transient
   var relation:Relation = _
 
   def isTrue:Boolean = false
@@ -28,10 +30,14 @@ case class Atom (val relName:String, val vars: List[Variable]) {
 
   def arity = vars.size
 
+  @deprecated ("Use: Solution.inactivate")
   def inactivate{
     active = false
   }  
 
+  def setActive(active:Boolean) { this.active = active }
+  def isActive:Boolean = this.active
+  
   def apply(n:Int):Variable = vars(n) 
 
   def applySubstitutions(subs:List[Substitution]):Atom = {
@@ -92,12 +98,14 @@ case class Atom (val relName:String, val vars: List[Variable]) {
       if (relation != null && relation.isMultiRel)
         super.equals(a)
       else
-        this.relation == a.relation && this.vars.zip(a.vars).forall(p => p._1 == p._2)
+        this.relName == a.relName && this.vars.zip(a.vars).forall(p => p._1 == p._2)
     case _ => false
   }
 
   override def toString =
-    (if (active) "" else "!") + relName + (if (vars.isEmpty) "" else vars.mkString("(",",",")"))
+    (if (active) "" else "!") +
+            (if (relation != null) relation else relName) +
+            (if (vars.isEmpty) "" else vars.mkString("(",",",")"))
 
   override def clone:Atom = {
     val a = new Atom(relName,vars)

@@ -72,13 +72,13 @@ class TypeTests{
 
   @Test
   def testStr{
-//    logLevel = DEBUG
+    logLevel = DEBUG
     val machine = new TestCham with StringVM{
       val s,x,y = Var
       val S = Rel("S"); val MyStr = Rel("MyStr")
 
       rules{
-        S(s,x) ==> Str_ask("Mayleen",s,x,MyStr)
+        S(y,s,x) ==> Str_ask(y,s,x,MyStr)
       }
     }
 
@@ -90,8 +90,8 @@ class TypeTests{
       case _ => fail("Missing value \"Mayleen\" ->a. Actual eqClass: " +  machine.strEqClasses)
     }
 
-    machine.introduceAtom(Atom("S", c, a))
-    machine.introduceAtom(Atom("S", c, b))
+    machine.introduceAtom(Atom("S", "Mayleen",c, a))
+    machine.introduceAtom(Atom("S", "Mayleen",c, b))
 
     val a7 = Atom("MyStr", a)
 

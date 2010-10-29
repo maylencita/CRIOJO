@@ -20,12 +20,15 @@ import collection.mutable.HashSet
 trait ExtendedCHAM extends CHAM with IntVM with StringVM{
 
   val nullVars:EqClass = HashSet[Variable]()
+  val f = new RelVariable("false")
+  val t = new RelVariable("true")
 
   /**********************************************************************
   * VM definition:
   */
   val Print = NativeRelation("Print")(printAtom(_) )
   val NullRel = NativeRelation("Null")( addNull(_) )
+  val Null_ask = NativeRelation("Null_ask")(askNull(_))
   /***********************************************************************/
 
   def getValue(x:Variable):ValueVariable[_]={
@@ -57,9 +60,19 @@ trait ExtendedCHAM extends CHAM with IntVM with StringVM{
         eqClasses add nullVars
       }
       nullVars add v
-      a.inactivate
+//      a.inactivate
+      solution.inactivate(a)
       solution.cleanup
     case _ => //Nothing
+  }
+
+  private def askNull(a:Atom) = a match{
+    case Atom(_, v::kplus::kminus::_) =>
+      if (nullVars contains (v))
+        solution.addAtom(Atom(kplus.name, v))
+      else
+        solution.addAtom(Atom(kminus.name, v))
+    case _ =>
   }
 
   override def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
@@ -68,10 +81,17 @@ trait ExtendedCHAM extends CHAM with IntVM with StringVM{
     guard
   }
 
+  def Abs(atom:Atom) = (new Top(atom.vars) &: atom) ==> F
+
+  def NotNul(variable:Variable) = T(variable) ==> Null_ask(variable, f,t)
+
+  def Nul(variable:Variable) = T(variable) ==> Null_ask(variable, t,f)
+
 }
 
 class ExtendedGuard (outherVM: ExtendedCHAM) extends Guard with ExtendedCHAM{
   eqClasses = outherVM.eqClasses
   override val intEqClasses = outherVM.intEqClasses
   override val strEqClasses = outherVM.strEqClasses
+  override val nullVars = outherVM.nullVars
 }

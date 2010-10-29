@@ -12,6 +12,7 @@ object Variable{
   def apply(n: String):Variable = new Variable(n)  
 }
 
+@serializable
 class Variable (n: String){
 
   def name:String = this.n
@@ -43,7 +44,9 @@ object RelVariable{
     rv
   }
 }
+@serializable
 case class RelVariable(n:String) extends Variable(n){
+  @transient
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 
   def apply(vlst:Variable*):Atom = {
@@ -51,10 +54,13 @@ case class RelVariable(n:String) extends Variable(n){
     at.relation = this.relation
     at
   }
+
+  override def toString = if (relation == null) this.name else relation.toString
 }
 
 trait ValueVariable[+T]
 
+@serializable
 case class Value[+T](value:T) extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
 
   override def equals(that: Any) = that match{
