@@ -62,7 +62,7 @@ class PicasaTest{
     assertTrue(result)
   }
 
-  @Test (timeout=5000)
+  @Test //(timeout=1000)
   def testAlbumCloning{
     logLevel = DEBUG
     var result = false
@@ -72,12 +72,16 @@ class PicasaTest{
 
     val c_vm = new ConnectedVM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()){
       val PAlbum:Relation = NativeRelation("PAlbum"){
-        case Atom("PAlbum", ses::id::_) => result=true
-//          if (id != Null){
-//            println("Album: " + id)
-//            i += 1
-//            PicasaVM.addAtom(Atom("AlbumCloning", s,Value(i),Value(user),RelVariable(PAlbum)))
-//          }
+        case Atom("PAlbum", ses::id::_) =>
+          if (PicasaVM.getValue(id) != Null){
+            println("Album: " + id)
+            i += 1
+            PicasaVM.loadSolution
+            PicasaVM.addAtom(Atom("AlbumCloning", s,Value(user),RelVariable(PAlbum)))
+          }else{
+            result=(i > 0)
+            println("Total albums: " + i)            
+          }
         case a => fail("Received wrong answer. Expected: PAlbum(...) .Actual: " + a)
       }
 
@@ -85,11 +89,13 @@ class PicasaTest{
     val Al = RelVariable(c_vm.PAlbum)
     println("PicasaVM: " + PicasaVM.relations + "\n" + PicasaVM)
 
+    PicasaVM.loadSolution
+    PicasaVM.addRelation(c_vm.PAlbum)
     PicasaVM.addAtom(Atom("AlbumCloning", s,Value(user),Al))
 
 //    info(this.getClass, "testAlbumCloning", "PicasaVM: " + PicasaVM.solution.elems.mkString("","\n",""))
     info(this.getClass, "testAlbumCloning", "intValues: " + PicasaVM.intEqClasses)
-    assertTrue(result)
+    assertTrue("PicasaVM did not return an answer.", result)
   }
 }
 

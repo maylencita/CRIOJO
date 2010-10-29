@@ -85,33 +85,38 @@ class ServerTests{
 //    assertFalse(vm.solution.findMatches(List(Atom("Print", List(Undef))), List()).isEmpty)
   }
 
-  @Test 
+  @Test //(timeout=35000)
   def testPicasaAlbum{
     logLevel = DEBUG
-    val pvmhost = "http://localhost:8080/vm/PVM"
-//    val pvmhost = "http://criojo.appspot.com/vm/PVM"
+//    val pvmhost = "http://localhost:8080/vm/PVM"
+    val pvmhost = "http://criojo.appspot.com/vm/PVM"
     var result = false
     val vm2 = new CriojoClient(uri){
       val ACloning = Required("AlbumCloning",pvmhost)
       val Session = Rel("Session")
+      val Start = Rel("Start")
+      val Count = Rel("Count")
       val PAlbum = Provided("PAlbum")
 
       val Ok = NativeRelation("Ok"){
-        case Atom("Ok", s::id::_) =>
-          info(this.getClass, "testPicasaAlbum", "Received: " + id)
+        case Atom("Ok", s::num::_) =>
+          info(this.getClass, "testPicasaAlbum", "Received: " + getValue(num) + " albums.")
           result = true
         case failatom => fail("Unexpected atom: " + failatom)
       }
-      val s,id = Var
+      val s,id,u,n,m = Var
+      val palbum = RelVariable("PAlbum")
 
       rules(
-        PAlbum(s,id) ==> Ok(s,id)
+        Start(n,u) ==> Nu(s)(ACloning(s,u,palbum) &: Count(s,n,u)),
+        (PAlbum(s,id) &: Count(s,n,u) ) ==> {NotNul(id)} ?: Nu(m)(ACloning(s,u,palbum) &: Suc(n,m) &: Count(s,m,u)),
+        (PAlbum(s,id) &: Count(s,n,u) ) ==> {Nul(id)} ?: Ok(s,n)
       )
     }
     vm2.start
 
     val palbum = RelVariable("PAlbum"); palbum.relation = vm2.PAlbum
-    vm2.addAtom(Atom("AlbumCloning",Variable("1"),Value("maylelacouture"),palbum))
+    vm2.addAtom(Atom("Start",Value(0),Value("maylelacouture")))
 
     Thread.sleep(30000)
     assertTrue(result)
@@ -121,8 +126,8 @@ class ServerTests{
 
 object CriojoClient{
   val myclient:Client = Client.create(new DefaultClientConfig)
-//  val PROXY_URL = "http://criojo.appspot.com/proxy"
-  val PROXY_URL = "http://localhost:8080/proxy"
+  val PROXY_URL = "http://criojo.appspot.com/proxy"
+//  val PROXY_URL = "http://localhost:8080/proxy"
 
   @throws(classOf[Exception])
   def registerClient:URI = {
@@ -163,7 +168,8 @@ class CriojoClient(url:URI) extends ConnectedVM(url) with Actor{
 
     if (resp != "[]"){
       for (a <- Json2Criojo(this).parseList(resp)){
-        introduceAtom(a)
+        debug(this.getClass,"getMessages", "Received atom: " + a)
+        addAtom(a)
       }
     }
     resp

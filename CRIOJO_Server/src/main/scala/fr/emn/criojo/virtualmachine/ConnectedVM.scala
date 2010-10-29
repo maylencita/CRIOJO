@@ -30,6 +30,23 @@ trait PublicRelation extends Relation{
 class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
  assert(vmUrl != null)
 
+  val solution = try{
+    CachedSolution(vmUrl.toString)
+  } catch{
+    case e:UnavailableChacheException =>
+//      new SerializedSolution()
+      Solution()
+    case e => log("Unespected error: " + e)
+      Solution()
+  }
+
+  def loadSolution{
+    solution match{
+      case s:CachedSolution => s.load
+      case _ => //Skip
+    }
+  }
+
   def addAtom(a:Atom){
     var nuAtoms = List[Atom]()
     var nuVars = List[Variable]()
@@ -40,13 +57,15 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
         v match{
           case n:Int => nuAtoms :+= Atom(IntRel.name, Variable(n.toString), nuVar)
           case s:String => nuAtoms :+= Atom(StrRel.name, Variable(s), nuVar)
+          case null => nuAtoms :+= Atom(NullRel.name, nuVar )
         }
       case v => nuVars :+= v
     }
     val a2=new Atom(a.relName, nuVars); a2.relation = a.relation
-    nuAtoms :+= a2
+//    nuAtoms :+= a2
 
     nuAtoms.foreach(introduceAtom(_))
+    introduceAtom(a2)
   }
 
 //  override def addRelation(relation:Relation) = {
@@ -70,6 +89,7 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
   implicit def intToVariable(num:Int):Variable = Value(num)
   implicit def strToVariable(str:String):Variable = Value(str)
 
+  @serializable
   class RemoteRelationImpl(val name:String,val url:URI) extends RemoteRelation{
     val myclient:Client = Client.create(new DefaultClientConfig)
 
@@ -101,6 +121,8 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
         case e => log(this.getClass, "exportAtom","Error: " + e)
       }
     }
+
+    override def toString = name + "@" + url
   }
 
   case class Required(n:String,u:String) extends RemoteRelationImpl(n,UriBuilder.fromUri(u).build()){
@@ -109,3 +131,4 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
   }
 
 }
+

@@ -27,6 +27,7 @@ class PicasaBuiltin(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo){ /
     Json2Criojo(PicasaVM).parseAtom(new String(in)) match{
       case Some(atom) =>
         Logger.log(this.getClass, "receiveAtom", "in: " + atom)
+        PicasaVM.loadSolution
         PicasaVM.addAtom(atom)
         "OK"
       case None =>
@@ -38,6 +39,7 @@ class PicasaBuiltin(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo){ /
   @GET
   @Produces (Array("text/plain"))
   def getRelation(): String = {
+    PicasaVM.loadSolution
     "This is Picasa's Built in Virtual Machine : \n" + 
             PicasaVM.relations + "\n" + PicasaVM.rules.mkString("","\n","")  + "\n" +
             PicasaVM.prettyPrint
