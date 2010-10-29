@@ -79,7 +79,8 @@ case class Json2Criojo(machine:ConnectedVM){
       val relName = rel("name").asInstanceOf[String]
       val relAddress = rel("url").asInstanceOf[String]
 
-      new machine.RemoteRelationImpl(relName, new URI(relAddress))
+//      new machine.RemoteRelationImpl(relName, new URI(relAddress))
+      machine.newRemoteRelation(relName,relAddress)
     }else
       null
   }

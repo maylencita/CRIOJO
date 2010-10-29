@@ -44,6 +44,8 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
 
   def execute (subs:List[Substitution]):Boolean
 
+  def notifyRelationObservers(atom:Atom)
+
   protected def applyReaction(solution:Solution, subs:List[Substitution]):Boolean = {
     var newSolution = solution.clone
     Logger.log("[Rule.applyReaction] Substitutions: " + subs)
@@ -65,7 +67,8 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
       solution.update(newSolution)
 
       Logger.log("[Rule.applyReaction] applied! newSolution=" + solution)
-      newAtoms.foreach(a => a.relation.notifyObservers(a))
+//      newAtoms.foreach(a => a.relation.notifyObservers(a))
+      newAtoms.foreach(a => notifyRelationObservers(a))
       true
     }else{
       solution.revert
@@ -83,7 +86,7 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
         }
     }
 
-    getSubsRec(head.filter(_.active), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
+    getSubsRec(head.filter(_.isActive), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
   }
 
   //TODO Rewrite
@@ -105,12 +108,12 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
 
     override def receiveUpdate(atom:Atom){
       this.active = false
-      atom.active = false
+      atom.setActive(false)
       
       Logger.log("============================================================================")
       Logger.log(this.getClass,"receiveUpdate","this: " + this)
       Logger.levelDown
-      execute(getSubstitutions(this, List(atom)))
+      atom.setActive(!execute(getSubstitutions(this, List(atom))))
       Logger.levelUp
 //    Logger.log(this.getClass, "receiveUpdate", "Final solution: " + solution)
       Logger.log("============================================================================")

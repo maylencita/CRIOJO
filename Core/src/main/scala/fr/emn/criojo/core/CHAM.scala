@@ -13,7 +13,7 @@ import fr.emn.criojo.util.Logger._
 
 abstract class CHAM extends AbstractMachine {
 
-  val T = new Top(){def apply(vlst:Variable*):Atom = new Top(vlst.toList)} //Atom("true") //Rel("true")
+  val T = new Top(){ def apply(vlst:Variable*):Atom = new Top(vlst.toList) } //Atom("true") //Rel("true")
   val F = Atom("false") //Rel("false")
 
 //  val solution = Solution() //new Solution
@@ -102,6 +102,18 @@ abstract class CHAM extends AbstractMachine {
     scope = scp
     val head:List[HeadAtom] = h.map{h => new HeadAtom(h)}
 
+    def notifyRelationObservers(atom:Atom){
+      if (atom.relation != null)
+        atom.relation.notifyObservers(atom)
+      else
+        relation(atom.relName) match{
+          case Some(relation) =>
+            relation.notifyObservers(atom)
+  //          if (relation.isInstanceOf[RemoteRelation])
+          case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relName)
+        }
+    }
+
     def execute (subs:List[Substitution]):Boolean = {
       log("[Rule.execute] {"+this+"} Substitutions: " + subs)
       log("[Rule.execute] solution= " + solution)
@@ -109,8 +121,8 @@ abstract class CHAM extends AbstractMachine {
       var result = false
 
       if (this.isAxiom ||
-              (head.size == 1 && head.filter(_.active).isEmpty) ||
-              !{matches= query(head.filter(_.active),subs); matches}.isEmpty){
+              (head.size == 1 && head.filter(_.isActive).isEmpty) ||
+              !{matches= query(head.filter(_.isActive),subs); matches}.isEmpty){
         log("[Rule.execute] Found Matches: " + matches + " for rule " + this)
         levelDown
         val subs2 = subs.union(getSubstitutions(matches))
@@ -133,6 +145,7 @@ abstract class CHAM extends AbstractMachine {
     new Variable("x"+index)
   }
 
+  @serializable
   case class Rel(n:String) extends LocalRelation(n,true){
     addRelation(this)
 
@@ -147,12 +160,14 @@ abstract class CHAM extends AbstractMachine {
   object NativeRelation{
     def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
   }
+  @serializable
   class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
     override def notifyObservers(a:Atom)= a match{
       case Atom(this.name, _) =>
         log("[Relation("+name+").notifyObservers] notified by " + a)
         f(a)
-        a.inactivate
+//        a.inactivate
+        solution.inactivate(a)
         solution.cleanup
       case _ => super.notifyObservers(a)
     }

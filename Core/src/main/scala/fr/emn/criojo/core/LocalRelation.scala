@@ -14,6 +14,7 @@ object LocalRelation{
   def apply(name:String):Relation = new LocalRelation(name, false)  
 }
 
+@serializable
 class LocalRelation(val name:String, val public:Boolean, val isMultiRel:Boolean=true)//(implicit multirelation:Boolean = true)
 extends Relation{
   def this(n:String)={
@@ -32,7 +33,7 @@ extends Relation{
   def notifyObservers(a: Atom){
     observers.foreach{o =>
       Logger.log("[Relation("+name+").notifyObservers]"+ o + " notified by " + a)
-      if (a.active)
+      if (a.isActive)
         o.receiveUpdate(a)
     }
   }

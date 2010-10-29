@@ -23,9 +23,10 @@ class RelationResource(@Context @scala.reflect.BeanProperty var uriInfo:UriInfo)
 
   if (!VirtualMachineService.started){
     VirtualMachineService.runScript("""
-     (public:Ping; private:_)
-     Ping(x,K) => K(x)
+     (public:Ping; private:S)
+     Ping(x,K) => K(x) | !T => new(x)S(x)
             """)
+    VirtualMachineService.start 
   }
 
   @POST

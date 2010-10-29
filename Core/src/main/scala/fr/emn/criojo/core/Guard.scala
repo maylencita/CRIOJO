@@ -57,7 +57,7 @@ class Guard (grules:List[Rule]) extends CHAM{
       
     Logger.log("[Guard.eval] finished with solution: " + solution)
     Logger.log("------------------------------------------------------")
-    solution.exists(a => a.relation == TopRel)
+    solution.exists(a => a.relName == TopRel.name)
   }
   
   override def toString:String = {

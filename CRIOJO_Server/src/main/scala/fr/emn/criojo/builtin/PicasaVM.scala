@@ -59,7 +59,7 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
           (GenAlbum(ps,user,Cont) &: Init(ps) &: AlbumCloning(ps,user,Cont)),
     (AlbumCloning(ps,user,Cont) &: Album(ps,id)) ==> Cont(ps,id),
     (AlbumCloning(ps,user,Cont) &: Init(ps)) ==>
-            {(T(ps) &: Album(ps,id)) ==> F} ?: Nu(id)(Cont(ps,id) &: NullRel(id))
+            {(T(ps) &: Album(ps,id)) ==> F} ?: Nu(id)( NullRel(id) &: Cont(ps,id) )
   )
   /***********************************************************************/
 
@@ -86,7 +86,10 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
   def generateAlbums(a:Atom)= a match{
     case Atom("$GenAlbum", s::u::cont::_) =>
       getValue(u) match {
-        case Value(v:String) => PicasaClient.getAlbums(s, v) foreach(solution.addAtom(_))
+        case Value(v:String) =>
+          val albums = List(Atom("Album", s, Variable("album1")),Atom("Album", s, Variable("album2")))//PicasaClient.getAlbums(s, v)
+          albums.foreach(solution.addAtom(_))
+          debug(this.getClass,"generateAlbums", "Generated "+albums.size+" albums.")
         case _ => log(WARNING, this.getClass, "generateAlbums", "User not found: " + u)
       }
     case _ => //Skip

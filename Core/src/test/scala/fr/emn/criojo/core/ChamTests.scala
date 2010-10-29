@@ -56,12 +56,14 @@ class ChamTests{
       val body = List(Atom("R",x,z))
       val guard = new Guard(List())
       def execute (subs:List[Substitution]):Boolean = true
+      def notifyRelationObservers(a:Atom){}
     }
     val r2:Rule = new Rule{
       val head = Atom("S",x,y)::Nil
       val body = Atom("R",x,y)::Nil
       val guard = new Guard
       def execute (subs:List[Substitution]):Boolean = true
+      def notifyRelationObservers(a:Atom){}
     }
     assertTrue("Rule "+ r1 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
     assertTrue("Rule "+ r2 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))

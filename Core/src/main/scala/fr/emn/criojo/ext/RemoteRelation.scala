@@ -11,6 +11,7 @@ import fr.emn.criojo.core._
 
 import java.net.URI;
 
+@serializable
 abstract class RemoteRelation extends Relation{
   def name:String
   def url:URI
