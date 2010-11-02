@@ -22,7 +22,7 @@ object Logger {
 
   var on = true
   var indent = 0
-  var logLevel = DEBUG
+  var logLevel = INFO
 
   private def log(level:Int, message:String){
     if (level >= logLevel){
