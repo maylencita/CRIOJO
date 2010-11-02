@@ -73,17 +73,10 @@ trait EqVM extends CHAM{
   * VM definition:
   */
   //--Public:
-  val EQ = Rel("Eq")
-  val EQ_ask = Rel("Eq_ask")
+  val EQ = NativeRelation("Eq"){ a => if (a.vars.size == 2) addEquivalence(a(0),a(1)) }
+  val EQ_ask = NativeRelation("Eq_ask"){ a => askEq(a) }
   //--Private:
-  private val Eclass = NativeRelation("$EqClass"){ a => if (a.vars.size == 2) addEquivalence(a(0),a(1)) }
-  private val EqAsk = NativeRelation("$EqAsk"){ a => askEq(a) }
   private val s,x,y,z = Var; private val K = RelVariable("K")
-
-  rules(
-    EQ(x,y) ==> Eclass(y,x),
-    EQ_ask(s,x,y,K) ==> EqAsk(s,x,y,K)
-  )
   /***********************************************************************/
 
   // Native
@@ -101,7 +94,7 @@ trait EqVM extends CHAM{
   }
 
   private def askEq(a:Atom) = a match{
-    case Atom("$EqAsk", i::v1::v2::k::_) =>
+    case Atom(_, i::v1::v2::k::_) =>
       if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
         introduceAtom(Atom(k.toString, i,v1,v2))
     case _ => //Nothing
@@ -109,7 +102,7 @@ trait EqVM extends CHAM{
 
   def askEquivalence(x:Variable, y:Variable):Boolean = {
     x == y ||
-    eqClasses.exists(ec => ec.contains(x) && ec.contains(y)) // || TODO Ask for value
+    eqClasses.exists(ec => ec.contains(x) && ec.contains(y))
   }
 
   def getSubstitutions(hatom:Atom, solAtoms:List[Atom]):List[Substitution] = {

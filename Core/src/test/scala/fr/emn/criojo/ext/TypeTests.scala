@@ -36,11 +36,11 @@ class TypeTests{
   def testInt{
 //    logLevel = DEBUG
     val machine = new TestCham with IntVM{
-      val s,x,y = Var
+      val s,x,y,n = Var
       val S = Rel("S"); val Seis = Rel("Seis"); val Siete = Rel("Siete")
 
       rules(
-        S(s,x) ==> Int_ask(7,s,x,Siete)
+        S(n,s,x) ==> Int_ask(n,s,x,Siete)
       )
     }
 
@@ -52,8 +52,8 @@ class TypeTests{
       case _ => fail("Missing value 7->a. Actual eqClass: " +  machine.intEqClasses)
     }
 
-    machine.introduceAtom(Atom("S", c, a))
-    machine.introduceAtom(Atom("S", c, b))
+    machine.introduceAtom(Atom("S", 7, c, a))
+    machine.introduceAtom(Atom("S", 7, c, b))
 
     val a7 = Atom("Siete", a)
     val a6 = Atom("Seis", b)

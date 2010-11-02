@@ -19,35 +19,25 @@ trait IntVM extends CHAM with EqVM{
   * VM definition:
   */
   //--Public:
-  val IntRel = Rel("$Int")
-  val Int_ask = new Rel("$Int_ask"){
-    override def apply(vars:Variable*):Atom= {
-      assert(vars.size == 4)
-      new IntAtom_ask(vars.toList)
-    }
-  }
+  val IntRel = NativeRelation("$Int"){ a => add(a) }
+  val Int_ask = NativeRelation("$Int_ask"){ a => askInt(a) }
   val Suc = NativeRelation("$Suc"){a => addSuc(a)}
   //--Private:
-  private val NewInt = NativeRelation("$NewInt"){ a => add(a) }
   private val AskInt = NativeRelation("$AskInt"){ a => askInt(a) }
   private val s,n,x,y = Var; private val K = RelVariable("K")
 
-  rules(
-    IntRel(n,x) ==> NewInt(n,x),
-    Int_ask(n,s,x,K) ==> AskInt(n,s,x,K)
-  )
   /***********************************************************************/
 
   def getIntValue(x:Variable):Option[Int]= intEqClasses getValue x
 
   //Native functions
   private def add(a:Atom)= a match{
-    case Atom("$NewInt", i::v::_) => intEqClasses add (i.name.toInt,v)
+    case Atom(_, i::v::_) => intEqClasses add (i.toInt,v)
     case _ => //Nothing, wrong format
   }
 
   private def askInt(a:Atom)= a match{
-    case IntAtom_ask(num,session,vr,k) =>
+    case Atom(_, num::session::vr::k::_) =>
       intEqClasses.get(num.toInt) match{
         case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
         case _ => //Nothing or negative answer
@@ -64,16 +54,4 @@ trait IntVM extends CHAM with EqVM{
     case _ =>
   }
 
-  //Special atom type to handle filtering
-  case class IntAtom_ask(num:Variable, session:Variable, variable:Variable, k:Variable)
-          extends Atom(AskInt.name, List(Variable(num.toString),session,variable,k)){
-    def this(vlst:List[Variable])={
-      this(vlst(0),vlst(1),vlst(2),vlst(3)) 
-    }
-
-    this.relation = AskInt
-    override def applySubstitutions(subs:List[Substitution])={
-      new IntAtom_ask(super.applySubstitutions(subs :+ (num,num)).vars)
-    }
-  }
 }
