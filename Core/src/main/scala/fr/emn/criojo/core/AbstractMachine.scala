@@ -27,8 +27,12 @@ trait AbstractMachine extends RuleFactory{
   def findRelation(relName:String):Relation = relation(relName) match{
       case Some(r) => r
       case _ =>
-        Logger.log(Logger.WARNING, this.getClass, "findRelation","Undefined relation " + relName)
-        new LocalRelation("Undefined")
+        if(relName startsWith ("$"))
+          new LocalRelation(relName)
+        else{
+          Logger.log(Logger.WARNING, this.getClass, "findRelation","Undefined relation " + relName)
+          new LocalRelation("Undefined")          
+        }
   }
 
   def relation(relName:String):Option[Relation] = relations.find(_.name == relName)

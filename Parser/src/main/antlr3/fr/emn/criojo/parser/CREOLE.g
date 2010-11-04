@@ -14,6 +14,7 @@ tokens{
     DECLARATION;
     EMPTYLIST;
     PUBLIC;
+    REQUIRED;
     PRIVATE;
     PROCESS;
 
@@ -47,8 +48,8 @@ process
     ;
 
 declaration
-    :   LPAREN 'public' COLON rlist SEMI 'private' COLON rlist RPAREN ->
-            ^(DECLARATION ^(PUBLIC rlist) ^(PRIVATE rlist))
+    :   LPAREN 'provided' COLON rlist SEMI 'local' COLON rlist SEMI 'required' COLON rlist RPAREN ->
+            ^(DECLARATION ^(PUBLIC rlist) ^(PRIVATE rlist) ^(REQUIRED rlist) )
     ;
 
 rlist

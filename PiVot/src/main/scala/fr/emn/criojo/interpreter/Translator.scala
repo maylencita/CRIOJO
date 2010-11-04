@@ -41,16 +41,17 @@ class Translator(tokens:CHRTreeTokens){
     case _ => List()
   }
 
+  def newTokenAtom = {
+    val x = "$X" + getVariableIndex
+    addDeclaration(x)
+    ^(ATOM, ^(new CHRToken(R_ID.getType, x), Nil)::Nil)
+  }
+
   def processBang(rlst: List[^]):List[^] = {
-    def atok = {
-      val x = "$X" + getVariableIndex
-      addDeclaration(x)
-      ^(ATOM, ^(new CHRToken(R_ID.getType, x), Nil)::Nil)
-    }
 
     rlst.map{
       case ^(RULE, rdef) =>
-        val token = atok
+        val token = newTokenAtom
         var hasGuard = false
         ^(RULE, rdef.map{
           case ^(GUARD, glst) => hasGuard=true; ^(GUARD, processAbs(token::Nil)::glst)
@@ -117,6 +118,7 @@ class Translator(tokens:CHRTreeTokens){
 
     def processGuard(lst: List[^]): List[^] = lst match{
       case ^(ABS, alst) :: _ => ^(GUARD, processAbs(processAtoms(alst)) :: Nil) :: Nil
+      case ^(EQ, v1::v2::_) :: _  => ^(GUARD, processEq(v1,v2)) :: Nil
       case _ => ^(GUARD, lst) :: Nil //lst
     }
 
@@ -127,6 +129,17 @@ class Translator(tokens:CHRTreeTokens){
     }
     ^(RULE, processRuleIter(r, List()))
 
+  }
+
+  def processEq(v1: ^ , v2: ^):List[^] = {
+    val s = ^(new CHRToken(V_ID.getType,"s"), Nil )
+    val t = ^(new CHRToken(R_ID.getType,"true"), Nil )
+    val nu = ^(NU, s::Nil)
+    val x = newTokenAtom
+    val guard = ^(GUARD, processAbs(x::Nil)::Nil)
+
+    ^(RULE, ^(HEAD, ^(TRUE, v1::v2::Nil)::Nil) :: nu :: guard :: 
+            ^(BODY, x :: newAtom("Eq_ask", s::v1::v2::t::Nil) :: Nil) :: Nil) :: Nil
   }
 
   def processAbs(a: ^): ^ = processAbs(List(a))
@@ -176,6 +189,10 @@ class Translator(tokens:CHRTreeTokens){
 
   def newAtom(tok:Token, name:String, varNode: ^): ^ = {
     ^(tok, ^(new CHRToken(R_ID.getType, name), Nil) :: ^(VARS, varNode::Nil) :: Nil )
+  }
+
+  def newAtom(name:String, vars: List[^]): ^ = {
+    ^(ATOM, ^(new CHRToken(R_ID.getType, name), Nil) :: ^(VARS, vars) :: Nil )
   }
 
   def processVariable(variable: ^): ^ = variable match{

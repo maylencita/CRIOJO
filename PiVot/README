@@ -7,4 +7,4 @@ NOTE: To re-generate parsers execute (with ANTLR_Scala on the classpath): org.an
  - generated -> The generated CREOLE Parser
  - test -> Test code and scripts.
 NOTE: To run a script execute fr.emn.criojo.test.InterpreterTest with the path of the script, for example:
-  fr/emn/creole/test/guards.crl
+  fr/emn/creole/test/guards.crj

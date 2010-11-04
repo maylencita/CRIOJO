@@ -20,14 +20,14 @@ import Assert._
 
 class  InterpreterTests{
 
-  val args:Array[String] = Array("fr/emn/criojo/interpreter/naive_execution_test.crl")
+  val args:Array[String] = Array("fr/emn/criojo/interpreter/naive_execution_test.crj")
 
   @Test(timeout=1000)
   def testParser{
     //My own TreeAdaptor
     val adaptor = new CHRTreeAdaptor
 
-    val url = this.getClass.getClassLoader.getResource("fr/emn/criojo/test/grammar_test.crl")
+    val url = this.getClass.getClassLoader.getResource("fr/emn/criojo/interpreter/grammar_test.crj")
     println("url: " + url)
 
     val lex = new CREOLELexer(new ANTLRFileStream(url.getFile))
@@ -42,15 +42,15 @@ class  InterpreterTests{
     println("tree: " + tree.toStringTree)
 
     // GENERATE DOT AST
-    val gen = new DOTTreeGenerator()
-    val st = gen.toDOT(tree);
-    val bout = new BufferedWriter(new FileWriter("QueryTest.dot"));
-    bout.write(st.toString());
-    bout.close();
-
-    val rt = Runtime.getRuntime();
-    val pr = rt
-        .exec("/Applications/Graphviz.app/Contents/MacOS/Graphviz QueryTest.dot");
+//    val gen = new DOTTreeGenerator()
+//    val st = gen.toDOT(tree);
+//    val bout = new BufferedWriter(new FileWriter("QueryTest.dot"));
+//    bout.write(st.toString());
+//    bout.close();
+//
+//    val rt = Runtime.getRuntime();
+//    val pr = rt
+//        .exec("/Applications/Graphviz.app/Contents/MacOS/Graphviz QueryTest.dot");
 
     assertTrue(true)
   }
@@ -109,20 +109,19 @@ class  InterpreterTests{
     println("tree': " + translatedTree.toStringTree)
 
     // GENERATE AND DRAW DOT AST
-    val gen = new DOTTreeGenerator()
-    val st = gen.toDOT(translatedTree);
-//    val st = gen.toDOT(tree);
-    val bout = new BufferedWriter(new FileWriter("Test.dot"));
-    bout.write(st.toString());
-    bout.close();
-    val rt = Runtime.getRuntime();
-    val pr = rt
-        .exec("/Applications/Graphviz.app/Contents/MacOS/Graphviz Test.dot");
+//    val gen = new DOTTreeGenerator()
+//    val st = gen.toDOT(translatedTree);
+//    val bout = new BufferedWriter(new FileWriter("Test.dot"));
+//    bout.write(st.toString());
+//    bout.close();
+//    val rt = Runtime.getRuntime();
+//    val pr = rt
+//        .exec("/Applications/Graphviz.app/Contents/MacOS/Graphviz Test.dot");
 
     //Execute script
-//    val interp = new Interpreter(tokenz)
-//    interp.runScript(translatedTree)
-  //		println(interp.runScript(programTree))
+    val interp = new Interpreter(tokenz)
+    interp.runScript(translatedTree)
+//  		println(interp.runScript(programTree))
 
     assertTrue(true)
   }
