@@ -30,13 +30,14 @@ class PivotTests{//} extends TestCase("types"){
   def testRun{
 //    logLevel = DEBUG
     val script =
-    "(public:_; private:R)" +
-            "!T => new(x) R(x)"
+    "(local:R)" +
+         "!T => new(x) R(x)"
     load(machine,script)
+    info(this.getClass, "testRun","relations: " + machine.relations)
     info(this.getClass, "testRun", "rules: " + machine)
     machine.execute
 
-    log("Final solution: " + machine.solution)
+    info(this.getClass, "testRun","Final solution: " + machine.solution)
     assertEquals(2, machine.solution.size)
   }
 
@@ -44,7 +45,7 @@ class PivotTests{//} extends TestCase("types"){
   def testInt{
     logLevel = DEBUG       
     load(machine,
-      """(public:_; private:R)
+      """(local:R)
             !T => R(123) |
             !T => R(123) 
       """
@@ -64,7 +65,7 @@ class PivotTests{//} extends TestCase("types"){
   @Test(timeout=1000)
   def testString{
     load(machine,
-      "(public:_; private:S)" +
+      "(local:S)" +
               "!T => S(\"Hola mundo\")"
     )
     machine.execute
@@ -83,7 +84,7 @@ class PivotTests{//} extends TestCase("types"){
 //    logLevel = DEBUG
     load(machine,
       """
-      (public:_; private:S,Eqq)
+      (local:S,Eqq)
         !S(x,y),S(y2,z) => new(s)Eq_ask(s,y,y2,Eqq),S(x,y),S(y2,z)
         | S(x,y),S(y2,z),Eqq(s,y,y2) => S(x,z)
       """
@@ -111,7 +112,7 @@ class PivotTests{//} extends TestCase("types"){
     
     load(vm,
       """
-      (public:R; private:S)
+      (provided:R; local:S)
          !T => new(x) S(x), S("Hola") |
          S(x) => Print(x)
       """
@@ -129,11 +130,9 @@ class PivotTests{//} extends TestCase("types"){
   def testRemoteRelation{
     load(machine,
     """
-      (public:_;
-      private:
-        R,
-        S@"http://localhost:8080/VM")
-      !T => new(x) S(x)
+      (local: R;
+       required: S@"http://localhost:8080/VM")
+        !T => new(x) S(x)
     """)
     
   }
@@ -142,7 +141,7 @@ class PivotTests{//} extends TestCase("types"){
   def testGuards{
     load(machine,
       """
-      (public:_; private:S,X1)
+      (local:S,X1)
       T => [true,X1=>false]? new(x) S(x),X1
       """)
 
@@ -157,10 +156,13 @@ class PivotTests{//} extends TestCase("types"){
 
   @Test
   def testEqGuard{
+    logLevel = DEBUG
+
     load(machine,
       """
-      (public:_; private:S)
-        S(x,y), S(y2,z) => [true=>new(s)Eq_ask(s,y,y2,Eqq) Eqq(s,y,y2) => true]? S(x,z)
+      (local:S)
+//        S(x,y), S(y2,z) => [true(y,y2)=>new(s)Eq_ask(s,y,y2,Eqq) Eqq(s,y,y2) => true]? S(x,z)
+        S(x,y), S(y2,z) => [y = y2]? S(x,z)          
       """)
 
     machine.introduceAtom(Atom("S", a,b))
@@ -177,5 +179,18 @@ class PivotTests{//} extends TestCase("types"){
 
     assertTrue("Expected solution: <S(a,c),S(z,w)>. Found: " + machine.prettyPrint,
       machine.query(List(Atom("S", a,c),Atom("S",z,w)),List()).size == 2)
+  }
+
+  @Test (timeout=1000)
+  def testAbsGuard{
+    load(machine,
+      """
+      (local:R,X1)
+        T => Abs[X1]? new(x) R(x),X1
+      """)
+    machine.execute
+
+    info(this.getClass, "testRun","Final solution: " + machine.solution)
+    assertEquals(2, machine.solution.size)
   }
 }

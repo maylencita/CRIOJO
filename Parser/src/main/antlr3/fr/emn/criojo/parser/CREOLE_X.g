@@ -15,6 +15,7 @@ tokens{
     EMPTYLIST;
     PUBLIC;
     PRIVATE;
+    REQUIRED;
     PROCESS;
 
     GUARD;
@@ -23,6 +24,8 @@ tokens{
     INT_ATOM;
     STR_ATOM;
     NULL_ATOM;
+
+    EQ;
 }
 
 @lexer::header {
@@ -49,8 +52,23 @@ process
     ;
 
 declaration
-    :   LPAREN 'public' COLON rlist SEMI 'private' COLON rlist RPAREN ->
-            ^(DECLARATION ^(PUBLIC rlist) ^(PRIVATE rlist))
+    :   LPAREN decl (SEMI decl)* RPAREN -> ^(DECLARATION decl*)
+    ;
+
+decl
+    :   dec_prov | dec_req | dec_loc
+    ;
+
+dec_prov
+    :   'provided' COLON rlist -> ^(PUBLIC rlist)
+    ;
+
+dec_req
+    :   'required' COLON rlist -> ^(REQUIRED rlist)
+    ;
+
+dec_loc
+    :   'local' COLON rlist -> ^(PRIVATE rlist)
     ;
 
 rlist
@@ -82,22 +100,6 @@ simple_script
     |   LPAREN script RPAREN  -> script
     ;
 
-/*
-primitive
-    :   rule BAR primitive -> ^(BAR rule primitive)
-    |   rule
-    |   LPAREN script RPAREN  -> script
-    ;
-op
-    :   BAR
-    |   SEMI
-    ;
-bang
-    :   primitive
-    |   BANG primitive -> ^(BANG primitive)
-    ;
-*/
-
 rule
     :   conjunction RARROW guard? nu? conjunction  ->
             ^(RULE guard? ^(HEAD conjunction) ^(BODY conjunction) nu?)
@@ -106,6 +108,11 @@ rule
 guard
     :   LBRACK rule* RBRACK IMARK -> ^(GUARD rule*)
     |   ABS LBRACK conjunction RBRACK IMARK -> ^(GUARD ^(ABS conjunction))
+    |   LBRACK guardExpr RBRACK IMARK -> ^(GUARD guardExpr)
+    ;
+
+guardExpr
+    :   variable '=' variable -> ^(EQ variable variable)
     ;
 
 nu

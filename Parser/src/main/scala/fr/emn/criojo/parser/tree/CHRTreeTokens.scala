@@ -34,12 +34,14 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val EMPTYLIST:Token = "EMPTYLIST"
   val PUBLIC:Token = "PUBLIC"
   val PRIVATE:Token = "PRIVATE"
+  val REQUIRED:Token = "REQUIRED"
   val PROCESS:Token = "PROCESS"
 
   val GUARD:Token = "GUARD"
   val EMPTY:Token = "EMPTY"
 
   val ABS:Token = "ABS"
+  val EQ:Token = "EQ"
 
   val INT_ATOM:Token = "INT_ATOM"
   val STR_ATOM:Token = "STR_ATOM"

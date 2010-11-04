@@ -49,15 +49,36 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
       lst match{
         case List() => //skip
         case (h @ ^(R_ID, _)) :: res => machine.addRelation(new LocalRelation(h.getText, public)); processRelList(public,res)
-        case ^(ARROBAS, rid :: url :: _) :: res => machine.newRemoteRelation(rid.getText, url.getText.replaceAll("\"","")); processRelList(public,res) 
         case ^(MULTI, rid :: _) :: res => machine.addRelation(new LocalRelation(rid.getText, public)); processRelList(public,res)
         case ^(EMPTYLIST, _) :: _ => //SKIP
         case _ =>
       }
     }
 
+    def processRequired(lst: List[^]):Unit = lst match{
+      case List() => //skip
+      case ^(ARROBAS, rid :: url :: _) :: res =>
+        machine.addRelation(machine.newRemoteRelation(rid.getText, url.getText.replaceAll("\"","")))
+        processRequired(res)
+      case (h @ ^(R_ID, _)) :: res =>
+        machine.newRemoteRelation(h.getText, "")
+        processRequired(res)
+      case _ => 
+    }
+
+    def processDecl(lst: List[^]):Unit = lst match{
+      case ^(PUBLIC, pulst) :: rest => processRelList(true, pulst); processDecl(rest)
+      case ^(PRIVATE, prlst) :: rest => processRelList(false,prlst); processDecl(rest)
+      case ^(REQUIRED, rqlst) :: rest => processRequired(rqlst); processDecl(rest)
+      case _ =>
+    }
+
     d match{
-    case ^(DECLARATION, ^(PUBLIC, pulst) :: ^(PRIVATE, prlst) :: Nil) => processRelList(true, pulst); processRelList(false,prlst)
+//    case ^(DECLARATION, ^(PUBLIC, pulst) :: ^(PRIVATE, prlst) :: ^(REQUIRED, rqlst) :: Nil) =>
+      case ^(DECLARATION, decl) => processDecl(decl)
+//      processRelList(true, pulst)
+//      processRelList(false,prlst)
+//      processRequired(rqlst)
     case _ =>
     }
   }
@@ -71,7 +92,7 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
     var head:List[Atom] = List()
     var body:List[Atom] = List()
     var scope:List[Variable] = List()
-    var guard:Guard = new Guard
+    var guard = new ExtendedGuard(mv.asInstanceOf[ExtendedCHAM]) //new Guard
 
     processRuleIter(r)
 
@@ -95,7 +116,7 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
     }
     
     def processAtom(atom: ^): Atom = atom match{
-      case ^(TRUE, _) => Top()
+      case ^(TRUE, vlst) => new Top(vlst map (processVar(_)))
       case ^(FALSE, _) => False
       case ^(ATOM, name :: ^(VARS, vlist) :: Nil) => new Atom(name.getText, vlist.map(v => processVar(v)))
       case ^(ATOM, name :: Nil) => new Atom(name.getText, List())

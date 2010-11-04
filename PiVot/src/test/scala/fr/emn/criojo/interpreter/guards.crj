@@ -1,4 +1,4 @@
-(public:B,S; private:S2,X1,X2)
+(provided:B,S; local:S2,X1,X2; required:_)
 0 => new(a,b,c) B(c),S(b),S(a)
 
 //Absence: Abs(R)->  R,true => empty

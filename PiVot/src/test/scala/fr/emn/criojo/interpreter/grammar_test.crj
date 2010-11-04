@@ -1,4 +1,4 @@
-(public:B; private:_)
+(provided:B; local:_ ; required:_)
 true => [B(x) => false]? new(x) B(x)
 
 /*
