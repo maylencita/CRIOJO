@@ -94,6 +94,12 @@ trait EqVM extends CHAM{
   }
 
   private def askEq(a:Atom) = a match{
+    case Atom(_, i::v1::v2::kpls::kmin::_) =>
+      if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
+        introduceAtom(Atom(kpls.toString, i,v1,v2))
+      else
+        if(eqClasses.exists(_.contains(v1)) && eqClasses.exists(_.contains(v2)))
+          introduceAtom(Atom(kmin.toString, i,v1,v2))
     case Atom(_, i::v1::v2::k::_) =>
       if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
         introduceAtom(Atom(k.toString, i,v1,v2))
