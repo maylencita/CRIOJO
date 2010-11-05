@@ -17,6 +17,7 @@ abstract class VirtualMachine extends ExtendedCHAM
   }
 
   def newRemoteRelation(remoteName:String,url:String):RemoteRelation
+  def newLocalRelation(name:String,public:Boolean):LocalRelation
 
   override def toString:String = {
     val nonPrint = List("Eq","Eq_ask","$Int","$AskInt","$Str","$AskStr")

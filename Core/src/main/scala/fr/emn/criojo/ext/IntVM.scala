@@ -21,7 +21,7 @@ trait IntVM extends CHAM with EqVM{
   //--Public:
   val IntRel = NativeRelation("$Int"){ a => add(a) }
   val Int_ask = NativeRelation("$Int_ask"){ a => askInt(a) }
-  val Suc = NativeRelation("$Suc"){a => addSuc(a)}
+  val Suc = NativeRelation("Suc"){a => addSuc(a)}
   //--Private:
   private val AskInt = NativeRelation("$AskInt"){ a => askInt(a) }
   private val s,n,x,y = Var; private val K = RelVariable("K")
@@ -46,7 +46,7 @@ trait IntVM extends CHAM with EqVM{
   }
 
   private def addSuc(a:Atom) = a match{
-    case Atom("$Suc", v1::v2::_) =>
+    case Atom(_, v1::v2::_) =>
       intEqClasses getValue v1 match{
         case Some(k) => intEqClasses add (k+1, v2)
         case _ => log(WARNING, this.getClass, "addSuc", "Variable " + v1 + " not found.") 
