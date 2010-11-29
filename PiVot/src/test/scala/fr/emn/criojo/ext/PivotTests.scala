@@ -190,7 +190,45 @@ class PivotTests{//} extends TestCase("types"){
       """)
     machine.execute
 
-    info(this.getClass, "testRun","Final solution: " + machine.solution)
+    info(this.getClass, "testRun","Final solution: " + machine.prettyPrint)
     assertEquals(2, machine.solution.size)
+  }
+
+  @Test (timeout=1000)
+  def testNullGuard{
+    load(machine,
+      """
+      (local:R,Ok)
+        !T => new(s)R(s,1),R(s,2),R(s,null) |
+        R(s,n) => [Null(n)]? Ok(s)
+      """
+      )
+
+    machine.execute
+
+    info(this.getClass, "testNullGuard","machine: " + machine)
+    info(this.getClass, "testNullGuard","Final solution: " + machine.prettyPrint)
+    val queryResult = machine.query(List(Atom("R",x,y),Atom("R",x,z),Atom("Ok",x)),List())
+    assertTrue("Solution expected: <R(s,1),R(s,2),Ok(s)>. Actual: " + queryResult,
+      queryResult.size == 3)
+  }
+
+  @Test (timeout=1000)
+  def testNotGuard{
+    load(machine,
+      """
+      (local:R,Ok)
+        !T => new(s)R(s,1),R(s,2),R(s,null) |
+        R(s,n) => [Not(Null(n))]? Ok(n)
+      """
+      )
+
+    machine.execute
+
+    info(this.getClass, "testNotNullGuard","machine: " + machine)
+    info(this.getClass, "testNotNullGuard","Final solution: " + machine.prettyPrint)
+    val queryResult = machine.query(List(Atom("Ok",x),Atom("Ok",y),Atom("R",z,w)),List())
+    assertTrue("Solution expected: <Ok(1),Ok(2),R(s,null)>. Actual: " + queryResult,
+      queryResult.size == 3)
   }
 }

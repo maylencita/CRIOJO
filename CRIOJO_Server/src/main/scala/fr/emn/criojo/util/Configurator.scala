@@ -17,7 +17,7 @@ import javax.ws.rs.core._
 class Configurator(var URIInfo:UriInfo){
 
   if (VirtualMachineConfigurator.url == null)
-    VirtualMachineConfigurator.url = URIInfo.getBaseUri() //.resolve("relation")
+    VirtualMachineConfigurator.url = URIInfo.getBaseUri().resolve("relation")
 
   Logger.log(this.getClass, "init", "Virtual machine URL: " + VirtualMachineConfigurator.url)
 

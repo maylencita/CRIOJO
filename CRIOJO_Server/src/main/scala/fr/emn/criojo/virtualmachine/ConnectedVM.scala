@@ -30,7 +30,9 @@ trait PublicRelation extends Relation{
 class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
  assert(vmUrl != null)
 
+  val ROUTER = "http://criojo.appspot.com/router"
   val solution = try{
+    info(this.getClass,"init()","Cache Key: " + vmUrl.toString)
     CachedSolution(vmUrl.toString)
   } catch{
     case e:UnavailableChacheException =>
@@ -68,19 +70,15 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
     introduceAtom(a2)
   }
 
-//  override def addRelation(relation:Relation) = {
-//    super.addRelation(
-//      if (relation.public)
-//        new PublicRelation(relation.name, vmUrl)
-//      else
-//        relation
-//    )
-//  }
+  def newLocalRelation(name:String,public:Boolean):LocalRelation = {
+    Provided(name)
+  }
 
   def newRemoteRelation(remoteName:String,remoteUrl:String):RemoteRelation = {
-    val uri = UriBuilder.fromUri(remoteUrl).build()
+    val rUrl = if (remoteUrl == "") ROUTER else remoteUrl
+    val uri = UriBuilder.fromUri(rUrl).build()
     val r = new RemoteRelationImpl(remoteName,uri)
-    addRelation(r)
+    //addRelation(r)
     r
   }
 

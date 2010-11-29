@@ -42,7 +42,7 @@ object VirtualMachineService extends ConnectedVM(VirtualMachineConfigurator.url)
    * Initializes the virtual machine
    */
   def loadScript(){
-    val scriptUrl = this.getClass.getClassLoader.getResource("fr/emn/criojo/virtualmachine/vm.crj")//"fr/emn/criojo/test/naive_execution_test.crl")
+    val scriptUrl = this.getClass.getClassLoader.getResource("fr/emn/criojo/virtualmachine/vm.crj")//"fr/emn/criojo/test/naive_execution_test.crj")
     info(this.getClass, "loadScript", "url: " + scriptUrl)
     if (scriptUrl != null){
 //      ScriptLoader.load(machine, scriptUrl)

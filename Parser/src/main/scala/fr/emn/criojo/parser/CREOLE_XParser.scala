@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g 2010-11-03 11:29:43
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g 2010-11-04 15:22:43
 
 package fr.emn.criojo.parser;
 
@@ -24,16 +24,15 @@ import org.antlr.runtime.Token.{DOWN, UP}
  	}
  
     val tokenNames:Array[String] = Array[String] (
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "SCRIPT", "ATOM", "VARS", "RULE", "HEAD", "BODY", "MULTI", "DECLARATION", "EMPTYLIST", "PUBLIC", "PRIVATE", "REQUIRED", "PROCESS", "GUARD", "EMPTY", "INT_ATOM", "STR_ATOM", "NULL_ATOM", "EQ", "LPAREN", "SEMI", "RPAREN", "COLON", "COMMA", "UNDEF", "R_ID", "ARROBAS", "TILDE", "BAR", "BANG", "RARROW", "LBRACK", "RBRACK", "IMARK", "ABS", "NU", "TRUE", "FALSE", "NULL", "V_ID", "INT", "STRING", "EQ_OP", "LT", "LTEQ", "PLUS", "MINUS", "LCURL", "RCURL", "POINT", "SLASH", "COMMENT", "WS", "ESC_SEQ", "CHAR", "EXPONENT", "HEX_DIGIT", "UNICODE_ESC", "OCTAL_ESC", "'provided'", "'required'", "'local'", "'='", "'T'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "SCRIPT", "ATOM", "VARS", "RULE", "HEAD", "BODY", "MULTI", "DECLARATION", "EMPTYLIST", "PUBLIC", "PRIVATE", "REQUIRED", "PROCESS", "GUARD", "EMPTY", "INT_ATOM", "STR_ATOM", "NULL_ATOM", "LPAREN", "SEMI", "RPAREN", "COLON", "COMMA", "UNDEF", "R_ID", "ARROBAS", "TILDE", "BAR", "BANG", "RARROW", "LBRACK", "RBRACK", "IMARK", "ABS", "EQ", "NOT", "NU", "TRUE", "FALSE", "NULL", "V_ID", "INT", "STRING", "LT", "LTEQ", "PLUS", "MINUS", "LCURL", "RCURL", "POINT", "SLASH", "COMMENT", "WS", "ESC_SEQ", "CHAR", "EXPONENT", "HEX_DIGIT", "UNICODE_ESC", "OCTAL_ESC", "'provided'", "'required'", "'local'", "'Null'", "'T'"
     )
       val T__66:Int = 66;
       val NULL_ATOM:Int = 21;
       val EXPONENT:Int = 59;
       val LT:Int = 47;
       val T__67:Int = 67;
-      val EQ_OP:Int = 46;
       val T__64:Int = 64;
-      val LBRACK:Int = 35;
+      val LBRACK:Int = 34;
       val T__65:Int = 65;
       val T__63:Int = 63;
       val POINT:Int = 53;
@@ -42,55 +41,56 @@ import org.antlr.runtime.Token.{DOWN, UP}
       val LTEQ:Int = 48;
       val CHAR:Int = 58;
       val MULTI:Int = 10;
+      val NOT:Int = 39;
       val ATOM:Int = 5;
       val EOF:Int = -1;
       val DECLARATION:Int = 11;
-      val LPAREN:Int = 23;
-      val ARROBAS:Int = 30;
+      val LPAREN:Int = 22;
+      val ARROBAS:Int = 29;
       val INT_ATOM:Int = 19;
-      val RPAREN:Int = 25;
+      val RPAREN:Int = 24;
       val ESC_SEQ:Int = 57;
       val SLASH:Int = 54;
-      val COMMA:Int = 27;
-      val TILDE:Int = 31;
+      val COMMA:Int = 26;
+      val TILDE:Int = 30;
       val PLUS:Int = 49;
       val BODY:Int = 9;
-      val UNDEF:Int = 28;
-      val EQ:Int = 22;
+      val UNDEF:Int = 27;
+      val EQ:Int = 38;
       val COMMENT:Int = 55;
-      val IMARK:Int = 37;
-      val RBRACK:Int = 36;
+      val IMARK:Int = 36;
+      val RBRACK:Int = 35;
       val SCRIPT:Int = 4;
       val RULE:Int = 7;
-      val NU:Int = 39;
-      val R_ID:Int = 29;
+      val NU:Int = 40;
+      val R_ID:Int = 28;
       val PRIVATE:Int = 14;
       val VARS:Int = 6;
       val UNICODE_ESC:Int = 61;
-      val NULL:Int = 42;
-      val RARROW:Int = 34;
+      val NULL:Int = 43;
+      val RARROW:Int = 33;
       val HEX_DIGIT:Int = 60;
-      val V_ID:Int = 43;
+      val V_ID:Int = 44;
       val STR_ATOM:Int = 20;
-      val INT:Int = 44;
-      val BANG:Int = 33;
+      val INT:Int = 45;
+      val BANG:Int = 32;
       val MINUS:Int = 50;
       val REQUIRED:Int = 15;
-      val TRUE:Int = 40;
-      val SEMI:Int = 24;
+      val TRUE:Int = 41;
+      val SEMI:Int = 23;
       val EMPTY:Int = 18;
-      val COLON:Int = 26;
-      val ABS:Int = 38;
+      val COLON:Int = 25;
+      val ABS:Int = 37;
       val LCURL:Int = 51;
       val WS:Int = 56;
       val RCURL:Int = 52;
       val EMPTYLIST:Int = 12;
       val GUARD:Int = 17;
       val PROCESS:Int = 16;
-      val FALSE:Int = 41;
+      val FALSE:Int = 42;
       val PUBLIC:Int = 13;
-      val BAR:Int = 32;
-      val STRING:Int = 45;
+      val BAR:Int = 31;
+      val STRING:Int = 46;
 
     // delegates
     // delegators
@@ -117,7 +117,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "start" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:46:1: start : process ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:45:1: start : process ;
     @throws(classOf[RecognitionException])
      final def start():/*CREOLE_XParser.*/start_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -134,12 +134,12 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:47:5: ( process )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:47:9: process
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:46:5: ( process )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:46:9: process
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            pushFollow(FOLLOW_process_in_start200);
+            pushFollow(FOLLOW_process_in_start193);
             process1=process();
 
             state._fsp -= 1 
@@ -175,7 +175,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "process" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:50:1: process : declaration script -> ^( PROCESS declaration ^( SCRIPT script ) ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:49:1: process : declaration script -> ^( PROCESS declaration ^( SCRIPT script ) ) ;
     @throws(classOf[RecognitionException])
      final def process():/*CREOLE_XParser.*/process_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -195,16 +195,16 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_script:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule script");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:51:5: ( declaration script -> ^( PROCESS declaration ^( SCRIPT script ) ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:51:9: declaration script
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:50:5: ( declaration script -> ^( PROCESS declaration ^( SCRIPT script ) ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:50:9: declaration script
             {
-            pushFollow(FOLLOW_declaration_in_process219);
+            pushFollow(FOLLOW_declaration_in_process212);
             declaration2=declaration();
 
             state._fsp -= 1 
             if (state.failed) return retval;
             if ( state.backtracking==0 ) stream_declaration.add(declaration2.getTree());
-            pushFollow(FOLLOW_script_in_process221);
+            pushFollow(FOLLOW_script_in_process214);
             script3=script();
 
             state._fsp -= 1 
@@ -213,7 +213,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
 
             // AST REWRITE
-            // elements: declaration, script
+            // elements: script, declaration
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -224,15 +224,15 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 51:28: -> ^( PROCESS declaration ^( SCRIPT script ) )
+            // 50:28: -> ^( PROCESS declaration ^( SCRIPT script ) )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:51:31: ^( PROCESS declaration ^( SCRIPT script ) )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:50:31: ^( PROCESS declaration ^( SCRIPT script ) )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(PROCESS, "PROCESS").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
                 adaptor.addChild(root_1, stream_declaration.nextTree());
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:51:53: ^( SCRIPT script )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:50:53: ^( SCRIPT script )
                 {
                 var root_2:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_2 = adaptor.becomeRoot(adaptor.create(SCRIPT, "SCRIPT").asInstanceOf[CHRTree], root_2).asInstanceOf[CHRTree]
@@ -277,7 +277,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "declaration" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:1: declaration : LPAREN decl ( SEMI decl )* RPAREN -> ^( DECLARATION ( decl )* ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:53:1: declaration : LPAREN decl ( SEMI decl )* RPAREN -> ^( DECLARATION ( decl )* ) ;
     @throws(classOf[RecognitionException])
      final def declaration():/*CREOLE_XParser.*/declaration_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -305,19 +305,19 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_decl:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule decl");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:55:5: ( LPAREN decl ( SEMI decl )* RPAREN -> ^( DECLARATION ( decl )* ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:55:9: LPAREN decl ( SEMI decl )* RPAREN
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:5: ( LPAREN decl ( SEMI decl )* RPAREN -> ^( DECLARATION ( decl )* ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:9: LPAREN decl ( SEMI decl )* RPAREN
             {
-            LPAREN4=smatch(input,LPAREN,FOLLOW_LPAREN_in_declaration254).asInstanceOf[Token]; if (state.failed) return retval; 
+            LPAREN4=smatch(input,LPAREN,FOLLOW_LPAREN_in_declaration247).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN4);
 
-            pushFollow(FOLLOW_decl_in_declaration256);
+            pushFollow(FOLLOW_decl_in_declaration249);
             decl5=decl();
 
             state._fsp -= 1 
             if (state.failed) return retval;
             if ( state.backtracking==0 ) stream_decl.add(decl5.getTree());
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:55:21: ( SEMI decl )*
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:21: ( SEMI decl )*
             //loop1:
             var guard = true
             while(guard) {
@@ -331,12 +331,12 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                 alt1 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:55:22: SEMI decl
+            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:22: SEMI decl
             		    {
-            		    SEMI6=smatch(input,SEMI,FOLLOW_SEMI_in_declaration259).asInstanceOf[Token]; if (state.failed) return retval; 
+            		    SEMI6=smatch(input,SEMI,FOLLOW_SEMI_in_declaration252).asInstanceOf[Token]; if (state.failed) return retval; 
             		    if ( state.backtracking==0 ) stream_SEMI.add(SEMI6);
 
-            		    pushFollow(FOLLOW_decl_in_declaration261);
+            		    pushFollow(FOLLOW_decl_in_declaration254);
             		    decl7=decl();
 
             		    state._fsp -= 1 
@@ -349,7 +349,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                 }
             } //while (true);
 
-            RPAREN8=smatch(input,RPAREN,FOLLOW_RPAREN_in_declaration265).asInstanceOf[Token]; if (state.failed) return retval; 
+            RPAREN8=smatch(input,RPAREN,FOLLOW_RPAREN_in_declaration258).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN8);
 
 
@@ -366,14 +366,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 55:41: -> ^( DECLARATION ( decl )* )
+            // 54:41: -> ^( DECLARATION ( decl )* )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:55:44: ^( DECLARATION ( decl )* )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:44: ^( DECLARATION ( decl )* )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(DECLARATION, "DECLARATION").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:55:58: ( decl )*
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:54:58: ( decl )*
                 while ( stream_decl.hasNext() ) {
                     adaptor.addChild(root_1, stream_decl.nextTree());
 
@@ -415,7 +415,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "decl" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:58:1: decl : ( dec_prov | dec_req | dec_loc );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:57:1: decl : ( dec_prov | dec_req | dec_loc );
     @throws(classOf[RecognitionException])
      final def decl():/*CREOLE_XParser.*/decl_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -436,7 +436,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:59:5: ( dec_prov | dec_req | dec_loc )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:58:5: ( dec_prov | dec_req | dec_loc )
             var alt2=3;
             input.LA(1) match{
             	case 63 => alt2=1;    
@@ -453,11 +453,11 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
             alt2 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:59:9: dec_prov
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:58:9: dec_prov
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_dec_prov_in_decl293);
+                    pushFollow(FOLLOW_dec_prov_in_decl286);
                     dec_prov9=dec_prov();
 
                     state._fsp -= 1 
@@ -465,11 +465,11 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, dec_prov9.getTree());
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:59:20: dec_req
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:58:20: dec_req
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_dec_req_in_decl297);
+                    pushFollow(FOLLOW_dec_req_in_decl290);
                     dec_req10=dec_req();
 
                     state._fsp -= 1 
@@ -477,11 +477,11 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, dec_req10.getTree());
 
                     }case 3 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:59:30: dec_loc
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:58:30: dec_loc
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_dec_loc_in_decl301);
+                    pushFollow(FOLLOW_dec_loc_in_decl294);
                     dec_loc11=dec_loc();
 
                     state._fsp -= 1 
@@ -518,7 +518,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "dec_prov" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:62:1: dec_prov : 'provided' COLON rlist -> ^( PUBLIC rlist ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:61:1: dec_prov : 'provided' COLON rlist -> ^( PUBLIC rlist ) ;
     @throws(classOf[RecognitionException])
      final def dec_prov():/*CREOLE_XParser.*/dec_prov_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -541,16 +541,16 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_rlist:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule rlist");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:63:5: ( 'provided' COLON rlist -> ^( PUBLIC rlist ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:63:9: 'provided' COLON rlist
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:62:5: ( 'provided' COLON rlist -> ^( PUBLIC rlist ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:62:9: 'provided' COLON rlist
             {
-            string_literal12=smatch(input,63,FOLLOW_63_in_dec_prov320).asInstanceOf[Token]; if (state.failed) return retval; 
+            string_literal12=smatch(input,63,FOLLOW_63_in_dec_prov313).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_63.add(string_literal12);
 
-            COLON13=smatch(input,COLON,FOLLOW_COLON_in_dec_prov322).asInstanceOf[Token]; if (state.failed) return retval; 
+            COLON13=smatch(input,COLON,FOLLOW_COLON_in_dec_prov315).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_COLON.add(COLON13);
 
-            pushFollow(FOLLOW_rlist_in_dec_prov324);
+            pushFollow(FOLLOW_rlist_in_dec_prov317);
             rlist14=rlist();
 
             state._fsp -= 1 
@@ -570,9 +570,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 63:32: -> ^( PUBLIC rlist )
+            // 62:32: -> ^( PUBLIC rlist )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:63:35: ^( PUBLIC rlist )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:62:35: ^( PUBLIC rlist )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(PUBLIC, "PUBLIC").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
@@ -614,7 +614,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "dec_req" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:66:1: dec_req : 'required' COLON rlist -> ^( REQUIRED rlist ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:65:1: dec_req : 'required' COLON rlist -> ^( REQUIRED rlist ) ;
     @throws(classOf[RecognitionException])
      final def dec_req():/*CREOLE_XParser.*/dec_req_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -637,16 +637,16 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_rlist:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule rlist");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:67:5: ( 'required' COLON rlist -> ^( REQUIRED rlist ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:67:9: 'required' COLON rlist
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:66:5: ( 'required' COLON rlist -> ^( REQUIRED rlist ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:66:9: 'required' COLON rlist
             {
-            string_literal15=smatch(input,64,FOLLOW_64_in_dec_req351).asInstanceOf[Token]; if (state.failed) return retval; 
+            string_literal15=smatch(input,64,FOLLOW_64_in_dec_req344).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_64.add(string_literal15);
 
-            COLON16=smatch(input,COLON,FOLLOW_COLON_in_dec_req353).asInstanceOf[Token]; if (state.failed) return retval; 
+            COLON16=smatch(input,COLON,FOLLOW_COLON_in_dec_req346).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_COLON.add(COLON16);
 
-            pushFollow(FOLLOW_rlist_in_dec_req355);
+            pushFollow(FOLLOW_rlist_in_dec_req348);
             rlist17=rlist();
 
             state._fsp -= 1 
@@ -666,9 +666,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 67:32: -> ^( REQUIRED rlist )
+            // 66:32: -> ^( REQUIRED rlist )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:67:35: ^( REQUIRED rlist )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:66:35: ^( REQUIRED rlist )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(REQUIRED, "REQUIRED").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
@@ -710,7 +710,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "dec_loc" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:70:1: dec_loc : 'local' COLON rlist -> ^( PRIVATE rlist ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:69:1: dec_loc : 'local' COLON rlist -> ^( PRIVATE rlist ) ;
     @throws(classOf[RecognitionException])
      final def dec_loc():/*CREOLE_XParser.*/dec_loc_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -733,16 +733,16 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_rlist:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule rlist");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:71:5: ( 'local' COLON rlist -> ^( PRIVATE rlist ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:71:9: 'local' COLON rlist
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:70:5: ( 'local' COLON rlist -> ^( PRIVATE rlist ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:70:9: 'local' COLON rlist
             {
-            string_literal18=smatch(input,65,FOLLOW_65_in_dec_loc382).asInstanceOf[Token]; if (state.failed) return retval; 
+            string_literal18=smatch(input,65,FOLLOW_65_in_dec_loc375).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_65.add(string_literal18);
 
-            COLON19=smatch(input,COLON,FOLLOW_COLON_in_dec_loc384).asInstanceOf[Token]; if (state.failed) return retval; 
+            COLON19=smatch(input,COLON,FOLLOW_COLON_in_dec_loc377).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_COLON.add(COLON19);
 
-            pushFollow(FOLLOW_rlist_in_dec_loc386);
+            pushFollow(FOLLOW_rlist_in_dec_loc379);
             rlist20=rlist();
 
             state._fsp -= 1 
@@ -762,9 +762,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 71:29: -> ^( PRIVATE rlist )
+            // 70:29: -> ^( PRIVATE rlist )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:71:32: ^( PRIVATE rlist )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:70:32: ^( PRIVATE rlist )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(PRIVATE, "PRIVATE").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
@@ -806,7 +806,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "rlist" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:74:1: rlist : ( rdeclaration ( COMMA rdeclaration )* -> ( rdeclaration )* | UNDEF -> EMPTYLIST );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:73:1: rlist : ( rdeclaration ( COMMA rdeclaration )* -> ( rdeclaration )* | UNDEF -> EMPTYLIST );
     @throws(classOf[RecognitionException])
      final def rlist():/*CREOLE_XParser.*/rlist_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -831,7 +831,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_rdeclaration:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule rdeclaration");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:75:5: ( rdeclaration ( COMMA rdeclaration )* -> ( rdeclaration )* | UNDEF -> EMPTYLIST )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:74:5: ( rdeclaration ( COMMA rdeclaration )* -> ( rdeclaration )* | UNDEF -> EMPTYLIST )
             var alt4=2;
             var LA4_0 = input.LA(1);
 
@@ -850,15 +850,15 @@ import org.antlr.runtime.Token.{DOWN, UP}
             }
             alt4 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:75:9: rdeclaration ( COMMA rdeclaration )*
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:74:9: rdeclaration ( COMMA rdeclaration )*
                     {
-                    pushFollow(FOLLOW_rdeclaration_in_rlist413);
+                    pushFollow(FOLLOW_rdeclaration_in_rlist406);
                     rdeclaration21=rdeclaration();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) stream_rdeclaration.add(rdeclaration21.getTree());
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:75:22: ( COMMA rdeclaration )*
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:74:22: ( COMMA rdeclaration )*
                     //loop3:
                     var guard = true
                     while(guard) {
@@ -872,12 +872,12 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                         alt3 match{
                     		case 1 =>
-                    		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:75:23: COMMA rdeclaration
+                    		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:74:23: COMMA rdeclaration
                     		    {
-                    		    COMMA22=smatch(input,COMMA,FOLLOW_COMMA_in_rlist416).asInstanceOf[Token]; if (state.failed) return retval; 
+                    		    COMMA22=smatch(input,COMMA,FOLLOW_COMMA_in_rlist409).asInstanceOf[Token]; if (state.failed) return retval; 
                     		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA22);
 
-                    		    pushFollow(FOLLOW_rdeclaration_in_rlist418);
+                    		    pushFollow(FOLLOW_rdeclaration_in_rlist411);
                     		    rdeclaration23=rdeclaration();
 
                     		    state._fsp -= 1 
@@ -904,9 +904,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 75:44: -> ( rdeclaration )*
+                    // 74:44: -> ( rdeclaration )*
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:75:47: ( rdeclaration )*
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:74:47: ( rdeclaration )*
                         while ( stream_rdeclaration.hasNext() ) {
                             adaptor.addChild(root_0, stream_rdeclaration.nextTree());
 
@@ -917,9 +917,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                     retval.tree = root_0;}
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:76:9: UNDEF
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:75:9: UNDEF
                     {
-                    UNDEF24=smatch(input,UNDEF,FOLLOW_UNDEF_in_rlist435).asInstanceOf[Token]; if (state.failed) return retval; 
+                    UNDEF24=smatch(input,UNDEF,FOLLOW_UNDEF_in_rlist428).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_UNDEF.add(UNDEF24);
 
 
@@ -936,7 +936,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 76:15: -> EMPTYLIST
+                    // 75:15: -> EMPTYLIST
                     {
                         adaptor.addChild(root_0, adaptor.create(EMPTYLIST, "EMPTYLIST").asInstanceOf[CHRTree]);
 
@@ -973,7 +973,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "rdeclaration" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:79:1: rdeclaration : ( R_ID | R_ID ARROBAS url -> ^( ARROBAS R_ID url ) | TILDE R_ID -> ^( MULTI R_ID ) );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:78:1: rdeclaration : ( R_ID | R_ID ARROBAS url -> ^( ARROBAS R_ID url ) | TILDE R_ID -> ^( MULTI R_ID ) );
     @throws(classOf[RecognitionException])
      final def rdeclaration():/*CREOLE_XParser.*/rdeclaration_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1003,7 +1003,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_url:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule url");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:80:5: ( R_ID | R_ID ARROBAS url -> ^( ARROBAS R_ID url ) | TILDE R_ID -> ^( MULTI R_ID ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:79:5: ( R_ID | R_ID ARROBAS url -> ^( ARROBAS R_ID url ) | TILDE R_ID -> ^( MULTI R_ID ) )
             var alt5=3;
             var LA5_0 = input.LA(1);
 
@@ -1036,26 +1036,26 @@ import org.antlr.runtime.Token.{DOWN, UP}
             }
             alt5 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:80:9: R_ID
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:79:9: R_ID
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    R_ID25=smatch(input,R_ID,FOLLOW_R_ID_in_rdeclaration458).asInstanceOf[Token]; if (state.failed) return retval;
+                    R_ID25=smatch(input,R_ID,FOLLOW_R_ID_in_rdeclaration451).asInstanceOf[Token]; if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     R_ID25_tree = adaptor.create(R_ID25).asInstanceOf[CHRTree];
                     adaptor.addChild(root_0, R_ID25_tree);
                     }
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:81:9: R_ID ARROBAS url
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:80:9: R_ID ARROBAS url
                     {
-                    R_ID26=smatch(input,R_ID,FOLLOW_R_ID_in_rdeclaration468).asInstanceOf[Token]; if (state.failed) return retval; 
+                    R_ID26=smatch(input,R_ID,FOLLOW_R_ID_in_rdeclaration461).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_R_ID.add(R_ID26);
 
-                    ARROBAS27=smatch(input,ARROBAS,FOLLOW_ARROBAS_in_rdeclaration470).asInstanceOf[Token]; if (state.failed) return retval; 
+                    ARROBAS27=smatch(input,ARROBAS,FOLLOW_ARROBAS_in_rdeclaration463).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_ARROBAS.add(ARROBAS27);
 
-                    pushFollow(FOLLOW_url_in_rdeclaration472);
+                    pushFollow(FOLLOW_url_in_rdeclaration465);
                     url28=url();
 
                     state._fsp -= 1 
@@ -1064,7 +1064,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
 
                     // AST REWRITE
-                    // elements: R_ID, url, ARROBAS
+                    // elements: ARROBAS, url, R_ID
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -1075,9 +1075,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 81:26: -> ^( ARROBAS R_ID url )
+                    // 80:26: -> ^( ARROBAS R_ID url )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:81:29: ^( ARROBAS R_ID url )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:80:29: ^( ARROBAS R_ID url )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(stream_ARROBAS.nextNode(), root_1).asInstanceOf[CHRTree]
@@ -1092,12 +1092,12 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                     retval.tree = root_0;}
                     }case 3 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:82:9: TILDE R_ID
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:81:9: TILDE R_ID
                     {
-                    TILDE29=smatch(input,TILDE,FOLLOW_TILDE_in_rdeclaration492).asInstanceOf[Token]; if (state.failed) return retval; 
+                    TILDE29=smatch(input,TILDE,FOLLOW_TILDE_in_rdeclaration485).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_TILDE.add(TILDE29);
 
-                    R_ID30=smatch(input,R_ID,FOLLOW_R_ID_in_rdeclaration494).asInstanceOf[Token]; if (state.failed) return retval; 
+                    R_ID30=smatch(input,R_ID,FOLLOW_R_ID_in_rdeclaration487).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_R_ID.add(R_ID30);
 
 
@@ -1114,9 +1114,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 82:20: -> ^( MULTI R_ID )
+                    // 81:20: -> ^( MULTI R_ID )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:82:23: ^( MULTI R_ID )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:81:23: ^( MULTI R_ID )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(adaptor.create(MULTI, "MULTI").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
@@ -1159,7 +1159,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "script" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:85:1: script : parallel ( SEMI parallel )* ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:84:1: script : parallel ( SEMI parallel )* ;
     @throws(classOf[RecognitionException])
      final def script():/*CREOLE_XParser.*/script_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1180,18 +1180,18 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:86:5: ( parallel ( SEMI parallel )* )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:86:9: parallel ( SEMI parallel )*
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:85:5: ( parallel ( SEMI parallel )* )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:85:9: parallel ( SEMI parallel )*
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            pushFollow(FOLLOW_parallel_in_script521);
+            pushFollow(FOLLOW_parallel_in_script514);
             parallel31=parallel();
 
             state._fsp -= 1 
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, parallel31.getTree());
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:86:18: ( SEMI parallel )*
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:85:18: ( SEMI parallel )*
             //loop6:
             var guard = true
             while(guard) {
@@ -1205,14 +1205,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                 alt6 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:86:19: SEMI parallel
+            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:85:19: SEMI parallel
             		    {
-            		    SEMI32=smatch(input,SEMI,FOLLOW_SEMI_in_script524).asInstanceOf[Token]; if (state.failed) return retval;
+            		    SEMI32=smatch(input,SEMI,FOLLOW_SEMI_in_script517).asInstanceOf[Token]; if (state.failed) return retval;
             		    if ( state.backtracking==0 ) {
             		    SEMI32_tree = adaptor.create(SEMI32).asInstanceOf[CHRTree];
             		    root_0 = adaptor.becomeRoot(SEMI32_tree, root_0).asInstanceOf[CHRTree]
             		    }
-            		    pushFollow(FOLLOW_parallel_in_script527);
+            		    pushFollow(FOLLOW_parallel_in_script520);
             		    parallel33=parallel();
 
             		    state._fsp -= 1 
@@ -1255,7 +1255,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "parallel" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:89:1: parallel : bang ( BAR bang )* ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:88:1: parallel : bang ( BAR bang )* ;
     @throws(classOf[RecognitionException])
      final def parallel():/*CREOLE_XParser.*/parallel_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1276,18 +1276,18 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:90:5: ( bang ( BAR bang )* )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:90:9: bang ( BAR bang )*
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:89:5: ( bang ( BAR bang )* )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:89:9: bang ( BAR bang )*
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            pushFollow(FOLLOW_bang_in_parallel548);
+            pushFollow(FOLLOW_bang_in_parallel541);
             bang34=bang();
 
             state._fsp -= 1 
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, bang34.getTree());
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:90:14: ( BAR bang )*
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:89:14: ( BAR bang )*
             //loop7:
             var guard = true
             while(guard) {
@@ -1301,14 +1301,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                 alt7 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:90:15: BAR bang
+            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:89:15: BAR bang
             		    {
-            		    BAR35=smatch(input,BAR,FOLLOW_BAR_in_parallel551).asInstanceOf[Token]; if (state.failed) return retval;
+            		    BAR35=smatch(input,BAR,FOLLOW_BAR_in_parallel544).asInstanceOf[Token]; if (state.failed) return retval;
             		    if ( state.backtracking==0 ) {
             		    BAR35_tree = adaptor.create(BAR35).asInstanceOf[CHRTree];
             		    root_0 = adaptor.becomeRoot(BAR35_tree, root_0).asInstanceOf[CHRTree]
             		    }
-            		    pushFollow(FOLLOW_bang_in_parallel554);
+            		    pushFollow(FOLLOW_bang_in_parallel547);
             		    bang36=bang();
 
             		    state._fsp -= 1 
@@ -1351,7 +1351,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "bang" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:93:1: bang : ( simple_script | BANG simple_script -> ^( BANG simple_script ) );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:92:1: bang : ( simple_script | BANG simple_script -> ^( BANG simple_script ) );
     @throws(classOf[RecognitionException])
      final def bang():/*CREOLE_XParser.*/bang_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1373,7 +1373,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_simple_script:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule simple_script");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:94:5: ( simple_script | BANG simple_script -> ^( BANG simple_script ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:93:5: ( simple_script | BANG simple_script -> ^( BANG simple_script ) )
             var alt8=2;
             var LA8_0 = input.LA(1);
 
@@ -1392,11 +1392,11 @@ import org.antlr.runtime.Token.{DOWN, UP}
             }
             alt8 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:94:9: simple_script
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:93:9: simple_script
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_simple_script_in_bang575);
+                    pushFollow(FOLLOW_simple_script_in_bang568);
                     simple_script37=simple_script();
 
                     state._fsp -= 1 
@@ -1404,12 +1404,12 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, simple_script37.getTree());
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:95:9: BANG simple_script
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:94:9: BANG simple_script
                     {
-                    BANG38=smatch(input,BANG,FOLLOW_BANG_in_bang585).asInstanceOf[Token]; if (state.failed) return retval; 
+                    BANG38=smatch(input,BANG,FOLLOW_BANG_in_bang578).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_BANG.add(BANG38);
 
-                    pushFollow(FOLLOW_simple_script_in_bang587);
+                    pushFollow(FOLLOW_simple_script_in_bang580);
                     simple_script39=simple_script();
 
                     state._fsp -= 1 
@@ -1418,7 +1418,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
 
                     // AST REWRITE
-                    // elements: BANG, simple_script
+                    // elements: simple_script, BANG
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -1429,9 +1429,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 95:28: -> ^( BANG simple_script )
+                    // 94:28: -> ^( BANG simple_script )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:95:31: ^( BANG simple_script )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:94:31: ^( BANG simple_script )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(stream_BANG.nextNode(), root_1).asInstanceOf[CHRTree]
@@ -1474,7 +1474,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "simple_script" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:98:1: simple_script : ( rule | LPAREN script RPAREN -> script );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:97:1: simple_script : ( rule | LPAREN script RPAREN -> script );
     @throws(classOf[RecognitionException])
      final def simple_script():/*CREOLE_XParser.*/simple_script_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1499,7 +1499,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_script:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule script");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:99:5: ( rule | LPAREN script RPAREN -> script )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:98:5: ( rule | LPAREN script RPAREN -> script )
             var alt9=2;
             var LA9_0 = input.LA(1);
 
@@ -1518,11 +1518,11 @@ import org.antlr.runtime.Token.{DOWN, UP}
             }
             alt9 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:99:9: rule
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:98:9: rule
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_rule_in_simple_script615);
+                    pushFollow(FOLLOW_rule_in_simple_script608);
                     rule40=rule();
 
                     state._fsp -= 1 
@@ -1530,18 +1530,18 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, rule40.getTree());
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:100:9: LPAREN script RPAREN
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:99:9: LPAREN script RPAREN
                     {
-                    LPAREN41=smatch(input,LPAREN,FOLLOW_LPAREN_in_simple_script625).asInstanceOf[Token]; if (state.failed) return retval; 
+                    LPAREN41=smatch(input,LPAREN,FOLLOW_LPAREN_in_simple_script618).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN41);
 
-                    pushFollow(FOLLOW_script_in_simple_script627);
+                    pushFollow(FOLLOW_script_in_simple_script620);
                     script42=script();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) stream_script.add(script42.getTree());
-                    RPAREN43=smatch(input,RPAREN,FOLLOW_RPAREN_in_simple_script629).asInstanceOf[Token]; if (state.failed) return retval; 
+                    RPAREN43=smatch(input,RPAREN,FOLLOW_RPAREN_in_simple_script622).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN43);
 
 
@@ -1558,7 +1558,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 100:31: -> script
+                    // 99:31: -> script
                     {
                         adaptor.addChild(root_0, stream_script.nextTree());
 
@@ -1595,7 +1595,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "rule" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:103:1: rule : conjunction RARROW ( guard )? ( nu )? conjunction -> ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:102:1: rule : conjunction RARROW ( guard )? ( nu )? conjunction -> ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? ) ;
     @throws(classOf[RecognitionException])
      final def rule():/*CREOLE_XParser.*/rule_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1623,19 +1623,19 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_conjunction:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule conjunction");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:5: ( conjunction RARROW ( guard )? ( nu )? conjunction -> ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:9: conjunction RARROW ( guard )? ( nu )? conjunction
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:103:5: ( conjunction RARROW ( guard )? ( nu )? conjunction -> ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:103:9: conjunction RARROW ( guard )? ( nu )? conjunction
             {
-            pushFollow(FOLLOW_conjunction_in_rule653);
+            pushFollow(FOLLOW_conjunction_in_rule646);
             conjunction44=conjunction();
 
             state._fsp -= 1 
             if (state.failed) return retval;
             if ( state.backtracking==0 ) stream_conjunction.add(conjunction44.getTree());
-            RARROW45=smatch(input,RARROW,FOLLOW_RARROW_in_rule655).asInstanceOf[Token]; if (state.failed) return retval; 
+            RARROW45=smatch(input,RARROW,FOLLOW_RARROW_in_rule648).asInstanceOf[Token]; if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_RARROW.add(RARROW45);
 
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:28: ( guard )?
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:103:28: ( guard )?
             var alt10=2;
             var LA10_0 = input.LA(1);
 
@@ -1646,7 +1646,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                 case 1 =>
                     // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:0:0: guard
                     {
-                    pushFollow(FOLLOW_guard_in_rule657);
+                    pushFollow(FOLLOW_guard_in_rule650);
                     guard46=guard();
 
                     state._fsp -= 1 
@@ -1657,7 +1657,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                 case _ => //Do nothing
             }
 
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:35: ( nu )?
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:103:35: ( nu )?
             var alt11=2;
             var LA11_0 = input.LA(1);
 
@@ -1668,7 +1668,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                 case 1 =>
                     // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:0:0: nu
                     {
-                    pushFollow(FOLLOW_nu_in_rule660);
+                    pushFollow(FOLLOW_nu_in_rule653);
                     nu47=nu();
 
                     state._fsp -= 1 
@@ -1679,7 +1679,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                 case _ => //Do nothing
             }
 
-            pushFollow(FOLLOW_conjunction_in_rule663);
+            pushFollow(FOLLOW_conjunction_in_rule656);
             conjunction48=conjunction();
 
             state._fsp -= 1 
@@ -1688,7 +1688,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
 
             // AST REWRITE
-            // elements: conjunction, conjunction, nu, guard
+            // elements: guard, conjunction, nu, conjunction
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1699,20 +1699,20 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 104:52: -> ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? )
+            // 103:52: -> ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:105:13: ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:13: ^( RULE ( guard )? ^( HEAD conjunction ) ^( BODY conjunction ) ( nu )? )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(RULE, "RULE").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:105:20: ( guard )?
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:20: ( guard )?
                 if ( stream_guard.hasNext() ) {
                     adaptor.addChild(root_1, stream_guard.nextTree());
 
                 }
                 stream_guard.reset();
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:105:27: ^( HEAD conjunction )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:27: ^( HEAD conjunction )
                 {
                 var root_2:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_2 = adaptor.becomeRoot(adaptor.create(HEAD, "HEAD").asInstanceOf[CHRTree], root_2).asInstanceOf[CHRTree]
@@ -1721,7 +1721,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                 adaptor.addChild(root_1, root_2);
                 }
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:105:47: ^( BODY conjunction )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:47: ^( BODY conjunction )
                 {
                 var root_2:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_2 = adaptor.becomeRoot(adaptor.create(BODY, "BODY").asInstanceOf[CHRTree], root_2).asInstanceOf[CHRTree]
@@ -1730,7 +1730,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                 adaptor.addChild(root_1, root_2);
                 }
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:105:67: ( nu )?
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:104:67: ( nu )?
                 if ( stream_nu.hasNext() ) {
                     adaptor.addChild(root_1, stream_nu.nextTree());
 
@@ -1772,7 +1772,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "guard" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:108:1: guard : ( LBRACK ( rule )* RBRACK IMARK -> ^( GUARD ( rule )* ) | ABS LBRACK conjunction RBRACK IMARK -> ^( GUARD ^( ABS conjunction ) ) | LBRACK guardExpr RBRACK IMARK -> ^( GUARD guardExpr ) );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:107:1: guard : ( LBRACK ( rule )* RBRACK IMARK -> ^( GUARD ( rule )* ) | ABS LBRACK conjunction RBRACK IMARK -> ^( GUARD ^( ABS conjunction ) ) | LBRACK guardExpr RBRACK IMARK -> ^( GUARD guardExpr ) );
     @throws(classOf[RecognitionException])
      final def guard():/*CREOLE_XParser.*/guard_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -1819,33 +1819,35 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_guardExpr:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule guardExpr");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:5: ( LBRACK ( rule )* RBRACK IMARK -> ^( GUARD ( rule )* ) | ABS LBRACK conjunction RBRACK IMARK -> ^( GUARD ^( ABS conjunction ) ) | LBRACK guardExpr RBRACK IMARK -> ^( GUARD guardExpr ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:108:5: ( LBRACK ( rule )* RBRACK IMARK -> ^( GUARD ( rule )* ) | ABS LBRACK conjunction RBRACK IMARK -> ^( GUARD ^( ABS conjunction ) ) | LBRACK guardExpr RBRACK IMARK -> ^( GUARD guardExpr ) )
             var alt13=3;
             var LA13_0 = input.LA(1);
 
             if ( (LA13_0==LBRACK) ) {
                 input.LA(2) match{
-                	case R_ID => var LA13_3 = input.LA(3);
-
-                	if ( (LA13_3==LPAREN||LA13_3==COMMA||LA13_3==RARROW) ) {
-                	    alt13=1;
-                	}
-                	else if ( (LA13_3==66) ) {
-                	    alt13=3;
-                	}
-                	else {
-                	    if (state.backtracking>0) {state.failed=true; return retval;}
-                	    val nvae =
-                	        new NoViableAltException("", 13, 3, input);
-
-                	    throw nvae;
-                	}    
                 	case RBRACK => alt13=1;
                 	case TRUE => alt13=1;
                 	case FALSE => alt13=1;
                 	case 67 => alt13=1;    
+                	case R_ID => var LA13_4 = input.LA(3);
+
+                	if ( (LA13_4==EQ) ) {
+                	    alt13=3;
+                	}
+                	else if ( (LA13_4==LPAREN||LA13_4==COMMA||LA13_4==RARROW) ) {
+                	    alt13=1;
+                	}
+                	else {
+                	    if (state.backtracking>0) {state.failed=true; return retval;}
+                	    val nvae =
+                	        new NoViableAltException("", 13, 4, input);
+
+                	    throw nvae;
+                	}    
+                	case NOT => alt13=3;
                 	case NULL => alt13=3;
-                	case V_ID => alt13=3;    
+                	case V_ID => alt13=3;
+                	case 66 => alt13=3;    
                 	case _ =>
                 		    if (state.backtracking>0) {state.failed=true; return retval;}
                 		    val nvae =
@@ -1868,12 +1870,12 @@ import org.antlr.runtime.Token.{DOWN, UP}
             }
             alt13 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:9: LBRACK ( rule )* RBRACK IMARK
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:108:9: LBRACK ( rule )* RBRACK IMARK
                     {
-                    LBRACK49=smatch(input,LBRACK,FOLLOW_LBRACK_in_guard719).asInstanceOf[Token]; if (state.failed) return retval; 
+                    LBRACK49=smatch(input,LBRACK,FOLLOW_LBRACK_in_guard712).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_LBRACK.add(LBRACK49);
 
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:16: ( rule )*
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:108:16: ( rule )*
                     //loop12:
                     var guard = true
                     while(guard) {
@@ -1889,7 +1891,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     		case 1 =>
                     		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:0:0: rule
                     		    {
-                    		    pushFollow(FOLLOW_rule_in_guard721);
+                    		    pushFollow(FOLLOW_rule_in_guard714);
                     		    rule50=rule();
 
                     		    state._fsp -= 1 
@@ -1902,10 +1904,10 @@ import org.antlr.runtime.Token.{DOWN, UP}
                         }
                     } //while (true);
 
-                    RBRACK51=smatch(input,RBRACK,FOLLOW_RBRACK_in_guard724).asInstanceOf[Token]; if (state.failed) return retval; 
+                    RBRACK51=smatch(input,RBRACK,FOLLOW_RBRACK_in_guard717).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_RBRACK.add(RBRACK51);
 
-                    IMARK52=smatch(input,IMARK,FOLLOW_IMARK_in_guard726).asInstanceOf[Token]; if (state.failed) return retval; 
+                    IMARK52=smatch(input,IMARK,FOLLOW_IMARK_in_guard719).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_IMARK.add(IMARK52);
 
 
@@ -1922,14 +1924,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 109:35: -> ^( GUARD ( rule )* )
+                    // 108:35: -> ^( GUARD ( rule )* )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:38: ^( GUARD ( rule )* )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:108:38: ^( GUARD ( rule )* )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(adaptor.create(GUARD, "GUARD").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:46: ( rule )*
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:108:46: ( rule )*
                         while ( stream_rule.hasNext() ) {
                             adaptor.addChild(root_1, stream_rule.nextTree());
 
@@ -1943,24 +1945,24 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                     retval.tree = root_0;}
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:110:9: ABS LBRACK conjunction RBRACK IMARK
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:9: ABS LBRACK conjunction RBRACK IMARK
                     {
-                    ABS53=smatch(input,ABS,FOLLOW_ABS_in_guard745).asInstanceOf[Token]; if (state.failed) return retval; 
+                    ABS53=smatch(input,ABS,FOLLOW_ABS_in_guard738).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_ABS.add(ABS53);
 
-                    LBRACK54=smatch(input,LBRACK,FOLLOW_LBRACK_in_guard747).asInstanceOf[Token]; if (state.failed) return retval; 
+                    LBRACK54=smatch(input,LBRACK,FOLLOW_LBRACK_in_guard740).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_LBRACK.add(LBRACK54);
 
-                    pushFollow(FOLLOW_conjunction_in_guard749);
+                    pushFollow(FOLLOW_conjunction_in_guard742);
                     conjunction55=conjunction();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) stream_conjunction.add(conjunction55.getTree());
-                    RBRACK56=smatch(input,RBRACK,FOLLOW_RBRACK_in_guard751).asInstanceOf[Token]; if (state.failed) return retval; 
+                    RBRACK56=smatch(input,RBRACK,FOLLOW_RBRACK_in_guard744).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_RBRACK.add(RBRACK56);
 
-                    IMARK57=smatch(input,IMARK,FOLLOW_IMARK_in_guard753).asInstanceOf[Token]; if (state.failed) return retval; 
+                    IMARK57=smatch(input,IMARK,FOLLOW_IMARK_in_guard746).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_IMARK.add(IMARK57);
 
 
@@ -1977,14 +1979,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 110:45: -> ^( GUARD ^( ABS conjunction ) )
+                    // 109:45: -> ^( GUARD ^( ABS conjunction ) )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:110:48: ^( GUARD ^( ABS conjunction ) )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:48: ^( GUARD ^( ABS conjunction ) )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(adaptor.create(GUARD, "GUARD").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:110:56: ^( ABS conjunction )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:109:56: ^( ABS conjunction )
                         {
                         var root_2:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_2 = adaptor.becomeRoot(stream_ABS.nextNode(), root_2).asInstanceOf[CHRTree]
@@ -2001,21 +2003,21 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                     retval.tree = root_0;}
                     }case 3 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:111:9: LBRACK guardExpr RBRACK IMARK
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:110:9: LBRACK guardExpr RBRACK IMARK
                     {
-                    LBRACK58=smatch(input,LBRACK,FOLLOW_LBRACK_in_guard775).asInstanceOf[Token]; if (state.failed) return retval; 
+                    LBRACK58=smatch(input,LBRACK,FOLLOW_LBRACK_in_guard768).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_LBRACK.add(LBRACK58);
 
-                    pushFollow(FOLLOW_guardExpr_in_guard777);
+                    pushFollow(FOLLOW_guardExpr_in_guard770);
                     guardExpr59=guardExpr();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) stream_guardExpr.add(guardExpr59.getTree());
-                    RBRACK60=smatch(input,RBRACK,FOLLOW_RBRACK_in_guard779).asInstanceOf[Token]; if (state.failed) return retval; 
+                    RBRACK60=smatch(input,RBRACK,FOLLOW_RBRACK_in_guard772).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_RBRACK.add(RBRACK60);
 
-                    IMARK61=smatch(input,IMARK,FOLLOW_IMARK_in_guard781).asInstanceOf[Token]; if (state.failed) return retval; 
+                    IMARK61=smatch(input,IMARK,FOLLOW_IMARK_in_guard774).asInstanceOf[Token]; if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_IMARK.add(IMARK61);
 
 
@@ -2032,9 +2034,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 111:39: -> ^( GUARD guardExpr )
+                    // 110:39: -> ^( GUARD guardExpr )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:111:42: ^( GUARD guardExpr )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:110:42: ^( GUARD guardExpr )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(adaptor.create(GUARD, "GUARD").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
@@ -2077,7 +2079,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "guardExpr" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:114:1: guardExpr : variable '=' variable -> ^( EQ variable variable ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:113:1: guardExpr : ( variable EQ variable -> ^( EQ variable variable ) | 'Null' LPAREN variable RPAREN -> ^( NULL variable ) | NOT LPAREN guardExpr RPAREN -> ^( NOT guardExpr ) );
     @throws(classOf[RecognitionException])
      final def guardExpr():/*CREOLE_XParser.*/guardExpr_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2088,67 +2090,201 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var char_literal63: Token =null
+        var EQ63: Token =null
+        var string_literal65: Token =null
+        var LPAREN66: Token =null
+        var RPAREN68: Token =null
+        var NOT69: Token =null
+        var LPAREN70: Token =null
+        var RPAREN72: Token =null
         var variable62:/*CREOLE_XParser.*/variable_return = null
 
         var variable64:/*CREOLE_XParser.*/variable_return = null
 
+        var variable67:/*CREOLE_XParser.*/variable_return = null
 
-        var char_literal63_tree:CHRTree=null
+        var guardExpr71:/*CREOLE_XParser.*/guardExpr_return = null
+
+
+        var EQ63_tree:CHRTree=null
+        var string_literal65_tree:CHRTree=null
+        var LPAREN66_tree:CHRTree=null
+        var RPAREN68_tree:CHRTree=null
+        var NOT69_tree:CHRTree=null
+        var LPAREN70_tree:CHRTree=null
+        var RPAREN72_tree:CHRTree=null
         var stream_66:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token 66")
+        var stream_RPAREN:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token RPAREN")
+        var stream_NOT:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token NOT")
+        var stream_EQ:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token EQ")
+        var stream_LPAREN:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token LPAREN")
         var stream_variable:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule variable");
+        var stream_guardExpr:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule guardExpr");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:115:5: ( variable '=' variable -> ^( EQ variable variable ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:115:9: variable '=' variable
-            {
-            pushFollow(FOLLOW_variable_in_guardExpr808);
-            variable62=variable();
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:114:5: ( variable EQ variable -> ^( EQ variable variable ) | 'Null' LPAREN variable RPAREN -> ^( NULL variable ) | NOT LPAREN guardExpr RPAREN -> ^( NOT guardExpr ) )
+            var alt14=3;
+            input.LA(1) match{
+            	case R_ID => alt14=1;
+            	case NULL => alt14=1;
+            	case V_ID => alt14=1;    
+            	case 66 => alt14=2;    
+            	case NOT => alt14=3;    
+            	case _ =>
+            		    if (state.backtracking>0) {state.failed=true; return retval;}
+            		    val nvae =
+            		        new NoViableAltException("", 14, 0, input);
 
-            state._fsp -= 1 
-            if (state.failed) return retval;
-            if ( state.backtracking==0 ) stream_variable.add(variable62.getTree());
-            char_literal63=smatch(input,66,FOLLOW_66_in_guardExpr810).asInstanceOf[Token]; if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_66.add(char_literal63);
-
-            pushFollow(FOLLOW_variable_in_guardExpr812);
-            variable64=variable();
-
-            state._fsp -= 1 
-            if (state.failed) return retval;
-            if ( state.backtracking==0 ) stream_variable.add(variable64.getTree());
-
-
-            // AST REWRITE
-            // elements: variable, variable
-            // token labels: 
-            // rule labels: retval
-            // token list labels: 
-            // rule list labels: 
-            // wildcard labels: 
-            if ( state.backtracking==0 ) {
-            retval.tree = root_0;
-            var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
-
-            root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 115:31: -> ^( EQ variable variable )
-            {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:115:34: ^( EQ variable variable )
-                {
-                var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
-                root_1 = adaptor.becomeRoot(adaptor.create(EQ, "EQ").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
-
-                adaptor.addChild(root_1, stream_variable.nextTree());
-                adaptor.addChild(root_1, stream_variable.nextTree());
-
-                adaptor.addChild(root_0, root_1);
-                }
+            		    throw nvae;
 
             }
 
-            retval.tree = root_0;}
-            }
+            alt14 match{
+                case 1 =>
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:114:9: variable EQ variable
+                    {
+                    pushFollow(FOLLOW_variable_in_guardExpr801);
+                    variable62=variable();
 
+                    state._fsp -= 1 
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_variable.add(variable62.getTree());
+                    EQ63=smatch(input,EQ,FOLLOW_EQ_in_guardExpr803).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_EQ.add(EQ63);
+
+                    pushFollow(FOLLOW_variable_in_guardExpr805);
+                    variable64=variable();
+
+                    state._fsp -= 1 
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_variable.add(variable64.getTree());
+
+
+                    // AST REWRITE
+                    // elements: EQ, variable, variable
+                    // token labels: 
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    if ( state.backtracking==0 ) {
+                    retval.tree = root_0;
+                    var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
+
+                    root_0 = adaptor.nil().asInstanceOf[CHRTree];
+                    // 114:30: -> ^( EQ variable variable )
+                    {
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:114:33: ^( EQ variable variable )
+                        {
+                        var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
+                        root_1 = adaptor.becomeRoot(stream_EQ.nextNode(), root_1).asInstanceOf[CHRTree]
+
+                        adaptor.addChild(root_1, stream_variable.nextTree());
+                        adaptor.addChild(root_1, stream_variable.nextTree());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;}
+                    }case 2 =>
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:115:9: 'Null' LPAREN variable RPAREN
+                    {
+                    string_literal65=smatch(input,66,FOLLOW_66_in_guardExpr825).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_66.add(string_literal65);
+
+                    LPAREN66=smatch(input,LPAREN,FOLLOW_LPAREN_in_guardExpr827).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN66);
+
+                    pushFollow(FOLLOW_variable_in_guardExpr829);
+                    variable67=variable();
+
+                    state._fsp -= 1 
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_variable.add(variable67.getTree());
+                    RPAREN68=smatch(input,RPAREN,FOLLOW_RPAREN_in_guardExpr831).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN68);
+
+
+
+                    // AST REWRITE
+                    // elements: variable
+                    // token labels: 
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    if ( state.backtracking==0 ) {
+                    retval.tree = root_0;
+                    var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
+
+                    root_0 = adaptor.nil().asInstanceOf[CHRTree];
+                    // 115:39: -> ^( NULL variable )
+                    {
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:115:42: ^( NULL variable )
+                        {
+                        var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
+                        root_1 = adaptor.becomeRoot(adaptor.create(NULL, "NULL").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
+
+                        adaptor.addChild(root_1, stream_variable.nextTree());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;}
+                    }case 3 =>
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:116:9: NOT LPAREN guardExpr RPAREN
+                    {
+                    NOT69=smatch(input,NOT,FOLLOW_NOT_in_guardExpr849).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_NOT.add(NOT69);
+
+                    LPAREN70=smatch(input,LPAREN,FOLLOW_LPAREN_in_guardExpr851).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN70);
+
+                    pushFollow(FOLLOW_guardExpr_in_guardExpr853);
+                    guardExpr71=guardExpr();
+
+                    state._fsp -= 1 
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_guardExpr.add(guardExpr71.getTree());
+                    RPAREN72=smatch(input,RPAREN,FOLLOW_RPAREN_in_guardExpr855).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN72);
+
+
+
+                    // AST REWRITE
+                    // elements: guardExpr, NOT
+                    // token labels: 
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    if ( state.backtracking==0 ) {
+                    retval.tree = root_0;
+                    var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
+
+                    root_0 = adaptor.nil().asInstanceOf[CHRTree];
+                    // 116:37: -> ^( NOT guardExpr )
+                    {
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:116:40: ^( NOT guardExpr )
+                        {
+                        var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
+                        root_1 = adaptor.becomeRoot(stream_NOT.nextNode(), root_1).asInstanceOf[CHRTree]
+
+                        adaptor.addChild(root_1, stream_guardExpr.nextTree());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;}
+                    }
+                case _ => //Do nothing
+            }
             retval.stop = input.LT(-1);
 
             if ( state.backtracking==0 ) {
@@ -2176,7 +2312,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "nu" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:118:1: nu : NU LPAREN variable ( COMMA variable )* RPAREN -> ^( NU ( variable )* ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:1: nu : NU LPAREN variable ( COMMA variable )* RPAREN -> ^( NU ( variable )* ) ;
     @throws(classOf[RecognitionException])
      final def nu():/*CREOLE_XParser.*/nu_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2187,19 +2323,19 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var NU65: Token =null
-        var LPAREN66: Token =null
-        var COMMA68: Token =null
-        var RPAREN70: Token =null
-        var variable67:/*CREOLE_XParser.*/variable_return = null
+        var NU73: Token =null
+        var LPAREN74: Token =null
+        var COMMA76: Token =null
+        var RPAREN78: Token =null
+        var variable75:/*CREOLE_XParser.*/variable_return = null
 
-        var variable69:/*CREOLE_XParser.*/variable_return = null
+        var variable77:/*CREOLE_XParser.*/variable_return = null
 
 
-        var NU65_tree:CHRTree=null
-        var LPAREN66_tree:CHRTree=null
-        var COMMA68_tree:CHRTree=null
-        var RPAREN70_tree:CHRTree=null
+        var NU73_tree:CHRTree=null
+        var LPAREN74_tree:CHRTree=null
+        var COMMA76_tree:CHRTree=null
+        var RPAREN78_tree:CHRTree=null
         var stream_RPAREN:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token RPAREN")
         var stream_NU:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token NU")
         var stream_COMMA:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token COMMA")
@@ -2207,60 +2343,60 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var stream_variable:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule variable");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:5: ( NU LPAREN variable ( COMMA variable )* RPAREN -> ^( NU ( variable )* ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:9: NU LPAREN variable ( COMMA variable )* RPAREN
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:120:5: ( NU LPAREN variable ( COMMA variable )* RPAREN -> ^( NU ( variable )* ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:120:9: NU LPAREN variable ( COMMA variable )* RPAREN
             {
-            NU65=smatch(input,NU,FOLLOW_NU_in_nu841).asInstanceOf[Token]; if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_NU.add(NU65);
+            NU73=smatch(input,NU,FOLLOW_NU_in_nu884).asInstanceOf[Token]; if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_NU.add(NU73);
 
-            LPAREN66=smatch(input,LPAREN,FOLLOW_LPAREN_in_nu843).asInstanceOf[Token]; if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN66);
+            LPAREN74=smatch(input,LPAREN,FOLLOW_LPAREN_in_nu886).asInstanceOf[Token]; if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN74);
 
-            pushFollow(FOLLOW_variable_in_nu845);
-            variable67=variable();
+            pushFollow(FOLLOW_variable_in_nu888);
+            variable75=variable();
 
             state._fsp -= 1 
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) stream_variable.add(variable67.getTree());
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:28: ( COMMA variable )*
-            //loop14:
+            if ( state.backtracking==0 ) stream_variable.add(variable75.getTree());
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:120:28: ( COMMA variable )*
+            //loop15:
             var guard = true
             while(guard) {
-                var alt14=2;
-                var LA14_0 = input.LA(1);
+                var alt15=2;
+                var LA15_0 = input.LA(1);
 
-                if ( (LA14_0==COMMA) ) {
-                    alt14=1;
+                if ( (LA15_0==COMMA) ) {
+                    alt15=1;
                 }
 
 
-                alt14 match{
+                alt15 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:29: COMMA variable
+            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:120:29: COMMA variable
             		    {
-            		    COMMA68=smatch(input,COMMA,FOLLOW_COMMA_in_nu848).asInstanceOf[Token]; if (state.failed) return retval; 
-            		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA68);
+            		    COMMA76=smatch(input,COMMA,FOLLOW_COMMA_in_nu891).asInstanceOf[Token]; if (state.failed) return retval; 
+            		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA76);
 
-            		    pushFollow(FOLLOW_variable_in_nu850);
-            		    variable69=variable();
+            		    pushFollow(FOLLOW_variable_in_nu893);
+            		    variable77=variable();
 
             		    state._fsp -= 1 
             		    if (state.failed) return retval;
-            		    if ( state.backtracking==0 ) stream_variable.add(variable69.getTree());
+            		    if ( state.backtracking==0 ) stream_variable.add(variable77.getTree());
 
             		    }
             		case _ =>
-            		    guard = false //loop14;
+            		    guard = false //loop15;
                 }
             } //while (true);
 
-            RPAREN70=smatch(input,RPAREN,FOLLOW_RPAREN_in_nu854).asInstanceOf[Token]; if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN70);
+            RPAREN78=smatch(input,RPAREN,FOLLOW_RPAREN_in_nu897).asInstanceOf[Token]; if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN78);
 
 
 
             // AST REWRITE
-            // elements: NU, variable
+            // elements: variable, NU
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2271,14 +2407,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 119:53: -> ^( NU ( variable )* )
+            // 120:53: -> ^( NU ( variable )* )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:56: ^( NU ( variable )* )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:120:56: ^( NU ( variable )* )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(stream_NU.nextNode(), root_1).asInstanceOf[CHRTree]
 
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:119:61: ( variable )*
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:120:61: ( variable )*
                 while ( stream_variable.hasNext() ) {
                     adaptor.addChild(root_1, stream_variable.nextTree());
 
@@ -2320,7 +2456,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "conjunction" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:122:1: conjunction : ( 'T' -> EMPTY | atom ( COMMA atom )* -> ( atom )* );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:123:1: conjunction : ( 'T' -> EMPTY | atom ( COMMA atom )* -> ( atom )* );
     @throws(classOf[RecognitionException])
      final def conjunction():/*CREOLE_XParser.*/conjunction_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2331,43 +2467,43 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var char_literal71: Token =null
-        var COMMA73: Token =null
-        var atom72:/*CREOLE_XParser.*/atom_return = null
+        var char_literal79: Token =null
+        var COMMA81: Token =null
+        var atom80:/*CREOLE_XParser.*/atom_return = null
 
-        var atom74:/*CREOLE_XParser.*/atom_return = null
+        var atom82:/*CREOLE_XParser.*/atom_return = null
 
 
-        var char_literal71_tree:CHRTree=null
-        var COMMA73_tree:CHRTree=null
+        var char_literal79_tree:CHRTree=null
+        var COMMA81_tree:CHRTree=null
         var stream_67:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token 67")
         var stream_COMMA:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token COMMA")
         var stream_atom:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule atom");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:123:5: ( 'T' -> EMPTY | atom ( COMMA atom )* -> ( atom )* )
-            var alt16=2;
-            var LA16_0 = input.LA(1);
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:124:5: ( 'T' -> EMPTY | atom ( COMMA atom )* -> ( atom )* )
+            var alt17=2;
+            var LA17_0 = input.LA(1);
 
-            if ( (LA16_0==67) ) {
-                alt16=1;
+            if ( (LA17_0==67) ) {
+                alt17=1;
             }
-            else if ( (LA16_0==R_ID||(LA16_0>=TRUE && LA16_0<=FALSE)) ) {
-                alt16=2;
+            else if ( (LA17_0==R_ID||(LA17_0>=TRUE && LA17_0<=FALSE)) ) {
+                alt17=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 val nvae =
-                    new NoViableAltException("", 16, 0, input);
+                    new NoViableAltException("", 17, 0, input);
 
                 throw nvae;
             }
-            alt16 match{
+            alt17 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:123:9: 'T'
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:124:9: 'T'
                     {
-                    char_literal71=smatch(input,67,FOLLOW_67_in_conjunction882).asInstanceOf[Token]; if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_67.add(char_literal71);
+                    char_literal79=smatch(input,67,FOLLOW_67_in_conjunction925).asInstanceOf[Token]; if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_67.add(char_literal79);
 
 
 
@@ -2383,7 +2519,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 123:13: -> EMPTY
+                    // 124:13: -> EMPTY
                     {
                         adaptor.addChild(root_0, adaptor.create(EMPTY, "EMPTY").asInstanceOf[CHRTree]);
 
@@ -2391,43 +2527,43 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
                     retval.tree = root_0;}
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:124:9: atom ( COMMA atom )*
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:125:9: atom ( COMMA atom )*
                     {
-                    pushFollow(FOLLOW_atom_in_conjunction896);
-                    atom72=atom();
+                    pushFollow(FOLLOW_atom_in_conjunction939);
+                    atom80=atom();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_atom.add(atom72.getTree());
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:124:14: ( COMMA atom )*
-                    //loop15:
+                    if ( state.backtracking==0 ) stream_atom.add(atom80.getTree());
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:125:14: ( COMMA atom )*
+                    //loop16:
                     var guard = true
                     while(guard) {
-                        var alt15=2;
-                        var LA15_0 = input.LA(1);
+                        var alt16=2;
+                        var LA16_0 = input.LA(1);
 
-                        if ( (LA15_0==COMMA) ) {
-                            alt15=1;
+                        if ( (LA16_0==COMMA) ) {
+                            alt16=1;
                         }
 
 
-                        alt15 match{
+                        alt16 match{
                     		case 1 =>
-                    		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:124:15: COMMA atom
+                    		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:125:15: COMMA atom
                     		    {
-                    		    COMMA73=smatch(input,COMMA,FOLLOW_COMMA_in_conjunction899).asInstanceOf[Token]; if (state.failed) return retval; 
-                    		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA73);
+                    		    COMMA81=smatch(input,COMMA,FOLLOW_COMMA_in_conjunction942).asInstanceOf[Token]; if (state.failed) return retval; 
+                    		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA81);
 
-                    		    pushFollow(FOLLOW_atom_in_conjunction901);
-                    		    atom74=atom();
+                    		    pushFollow(FOLLOW_atom_in_conjunction944);
+                    		    atom82=atom();
 
                     		    state._fsp -= 1 
                     		    if (state.failed) return retval;
-                    		    if ( state.backtracking==0 ) stream_atom.add(atom74.getTree());
+                    		    if ( state.backtracking==0 ) stream_atom.add(atom82.getTree());
 
                     		    }
                     		case _ =>
-                    		    guard = false //loop15;
+                    		    guard = false //loop16;
                         }
                     } //while (true);
 
@@ -2445,9 +2581,9 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 124:28: -> ( atom )*
+                    // 125:28: -> ( atom )*
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:124:31: ( atom )*
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:125:31: ( atom )*
                         while ( stream_atom.hasNext() ) {
                             adaptor.addChild(root_0, stream_atom.nextTree());
 
@@ -2487,7 +2623,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "atom" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:127:1: atom : ( TRUE | FALSE | relation ( termlist )? -> ^( ATOM relation ( termlist )? ) );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:128:1: atom : ( TRUE | FALSE | relation ( termlist )? -> ^( ATOM relation ( termlist )? ) );
     @throws(classOf[RecognitionException])
      final def atom():/*CREOLE_XParser.*/atom_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2498,83 +2634,83 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var TRUE75: Token =null
-        var FALSE76: Token =null
-        var relation77:/*CREOLE_XParser.*/relation_return = null
+        var TRUE83: Token =null
+        var FALSE84: Token =null
+        var relation85:/*CREOLE_XParser.*/relation_return = null
 
-        var termlist78:/*CREOLE_XParser.*/termlist_return = null
+        var termlist86:/*CREOLE_XParser.*/termlist_return = null
 
 
-        var TRUE75_tree:CHRTree=null
-        var FALSE76_tree:CHRTree=null
+        var TRUE83_tree:CHRTree=null
+        var FALSE84_tree:CHRTree=null
         var stream_termlist:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule termlist");
         var stream_relation:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule relation");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:128:5: ( TRUE | FALSE | relation ( termlist )? -> ^( ATOM relation ( termlist )? ) )
-            var alt18=3;
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:129:5: ( TRUE | FALSE | relation ( termlist )? -> ^( ATOM relation ( termlist )? ) )
+            var alt19=3;
             input.LA(1) match{
-            	case TRUE => alt18=1;    
-            	case FALSE => alt18=2;    
-            	case R_ID => alt18=3;    
+            	case TRUE => alt19=1;    
+            	case FALSE => alt19=2;    
+            	case R_ID => alt19=3;    
             	case _ =>
             		    if (state.backtracking>0) {state.failed=true; return retval;}
             		    val nvae =
-            		        new NoViableAltException("", 18, 0, input);
+            		        new NoViableAltException("", 19, 0, input);
 
             		    throw nvae;
 
             }
 
-            alt18 match{
+            alt19 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:128:9: TRUE
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:129:9: TRUE
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    TRUE75=smatch(input,TRUE,FOLLOW_TRUE_in_atom927).asInstanceOf[Token]; if (state.failed) return retval;
+                    TRUE83=smatch(input,TRUE,FOLLOW_TRUE_in_atom970).asInstanceOf[Token]; if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    TRUE75_tree = adaptor.create(TRUE75).asInstanceOf[CHRTree];
-                    adaptor.addChild(root_0, TRUE75_tree);
+                    TRUE83_tree = adaptor.create(TRUE83).asInstanceOf[CHRTree];
+                    adaptor.addChild(root_0, TRUE83_tree);
                     }
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:129:9: FALSE
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:130:9: FALSE
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    FALSE76=smatch(input,FALSE,FOLLOW_FALSE_in_atom937).asInstanceOf[Token]; if (state.failed) return retval;
+                    FALSE84=smatch(input,FALSE,FOLLOW_FALSE_in_atom980).asInstanceOf[Token]; if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    FALSE76_tree = adaptor.create(FALSE76).asInstanceOf[CHRTree];
-                    adaptor.addChild(root_0, FALSE76_tree);
+                    FALSE84_tree = adaptor.create(FALSE84).asInstanceOf[CHRTree];
+                    adaptor.addChild(root_0, FALSE84_tree);
                     }
 
                     }case 3 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:130:9: relation ( termlist )?
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:131:9: relation ( termlist )?
                     {
-                    pushFollow(FOLLOW_relation_in_atom947);
-                    relation77=relation();
+                    pushFollow(FOLLOW_relation_in_atom990);
+                    relation85=relation();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_relation.add(relation77.getTree());
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:130:18: ( termlist )?
-                    var alt17=2;
-                    var LA17_0 = input.LA(1);
+                    if ( state.backtracking==0 ) stream_relation.add(relation85.getTree());
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:131:18: ( termlist )?
+                    var alt18=2;
+                    var LA18_0 = input.LA(1);
 
-                    if ( (LA17_0==LPAREN) ) {
-                        alt17=1;
+                    if ( (LA18_0==LPAREN) ) {
+                        alt18=1;
                     }
-                    alt17 match{
+                    alt18 match{
                         case 1 =>
                             // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:0:0: termlist
                             {
-                            pushFollow(FOLLOW_termlist_in_atom949);
-                            termlist78=termlist();
+                            pushFollow(FOLLOW_termlist_in_atom992);
+                            termlist86=termlist();
 
                             state._fsp -= 1 
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) stream_termlist.add(termlist78.getTree());
+                            if ( state.backtracking==0 ) stream_termlist.add(termlist86.getTree());
 
                             }
                         case _ => //Do nothing
@@ -2583,7 +2719,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
 
                     // AST REWRITE
-                    // elements: relation, termlist
+                    // elements: termlist, relation
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2594,15 +2730,15 @@ import org.antlr.runtime.Token.{DOWN, UP}
                     var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
                     root_0 = adaptor.nil().asInstanceOf[CHRTree];
-                    // 130:29: -> ^( ATOM relation ( termlist )? )
+                    // 131:29: -> ^( ATOM relation ( termlist )? )
                     {
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:131:13: ^( ATOM relation ( termlist )? )
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:132:13: ^( ATOM relation ( termlist )? )
                         {
                         var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                         root_1 = adaptor.becomeRoot(adaptor.create(ATOM, "ATOM").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
                         adaptor.addChild(root_1, stream_relation.nextTree());
-                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:131:29: ( termlist )?
+                        // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:132:29: ( termlist )?
                         if ( stream_termlist.hasNext() ) {
                             adaptor.addChild(root_1, stream_termlist.nextTree());
 
@@ -2645,7 +2781,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "termlist" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:134:1: termlist : LPAREN term ( COMMA term )* RPAREN -> ^( VARS ( term )* ) ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:1: termlist : LPAREN term ( COMMA term )* RPAREN -> ^( VARS ( term )* ) ;
     @throws(classOf[RecognitionException])
      final def termlist():/*CREOLE_XParser.*/termlist_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2656,69 +2792,69 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var LPAREN79: Token =null
-        var COMMA81: Token =null
-        var RPAREN83: Token =null
-        var term80:/*CREOLE_XParser.*/term_return = null
+        var LPAREN87: Token =null
+        var COMMA89: Token =null
+        var RPAREN91: Token =null
+        var term88:/*CREOLE_XParser.*/term_return = null
 
-        var term82:/*CREOLE_XParser.*/term_return = null
+        var term90:/*CREOLE_XParser.*/term_return = null
 
 
-        var LPAREN79_tree:CHRTree=null
-        var COMMA81_tree:CHRTree=null
-        var RPAREN83_tree:CHRTree=null
+        var LPAREN87_tree:CHRTree=null
+        var COMMA89_tree:CHRTree=null
+        var RPAREN91_tree:CHRTree=null
         var stream_RPAREN:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token RPAREN")
         var stream_COMMA:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token COMMA")
         var stream_LPAREN:RewriteRuleTokenStream =new RewriteRuleTokenStream(adaptor,"token LPAREN")
         var stream_term:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule term");
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:5: ( LPAREN term ( COMMA term )* RPAREN -> ^( VARS ( term )* ) )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:9: LPAREN term ( COMMA term )* RPAREN
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:136:5: ( LPAREN term ( COMMA term )* RPAREN -> ^( VARS ( term )* ) )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:136:9: LPAREN term ( COMMA term )* RPAREN
             {
-            LPAREN79=smatch(input,LPAREN,FOLLOW_LPAREN_in_termlist993).asInstanceOf[Token]; if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN79);
+            LPAREN87=smatch(input,LPAREN,FOLLOW_LPAREN_in_termlist1036).asInstanceOf[Token]; if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_LPAREN.add(LPAREN87);
 
-            pushFollow(FOLLOW_term_in_termlist995);
-            term80=term();
+            pushFollow(FOLLOW_term_in_termlist1038);
+            term88=term();
 
             state._fsp -= 1 
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) stream_term.add(term80.getTree());
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:21: ( COMMA term )*
-            //loop19:
+            if ( state.backtracking==0 ) stream_term.add(term88.getTree());
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:136:21: ( COMMA term )*
+            //loop20:
             var guard = true
             while(guard) {
-                var alt19=2;
-                var LA19_0 = input.LA(1);
+                var alt20=2;
+                var LA20_0 = input.LA(1);
 
-                if ( (LA19_0==COMMA) ) {
-                    alt19=1;
+                if ( (LA20_0==COMMA) ) {
+                    alt20=1;
                 }
 
 
-                alt19 match{
+                alt20 match{
             		case 1 =>
-            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:22: COMMA term
+            		    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:136:22: COMMA term
             		    {
-            		    COMMA81=smatch(input,COMMA,FOLLOW_COMMA_in_termlist998).asInstanceOf[Token]; if (state.failed) return retval; 
-            		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA81);
+            		    COMMA89=smatch(input,COMMA,FOLLOW_COMMA_in_termlist1041).asInstanceOf[Token]; if (state.failed) return retval; 
+            		    if ( state.backtracking==0 ) stream_COMMA.add(COMMA89);
 
-            		    pushFollow(FOLLOW_term_in_termlist1000);
-            		    term82=term();
+            		    pushFollow(FOLLOW_term_in_termlist1043);
+            		    term90=term();
 
             		    state._fsp -= 1 
             		    if (state.failed) return retval;
-            		    if ( state.backtracking==0 ) stream_term.add(term82.getTree());
+            		    if ( state.backtracking==0 ) stream_term.add(term90.getTree());
 
             		    }
             		case _ =>
-            		    guard = false //loop19;
+            		    guard = false //loop20;
                 }
             } //while (true);
 
-            RPAREN83=smatch(input,RPAREN,FOLLOW_RPAREN_in_termlist1004).asInstanceOf[Token]; if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN83);
+            RPAREN91=smatch(input,RPAREN,FOLLOW_RPAREN_in_termlist1047).asInstanceOf[Token]; if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_RPAREN.add(RPAREN91);
 
 
 
@@ -2734,14 +2870,14 @@ import org.antlr.runtime.Token.{DOWN, UP}
             var stream_retval:RewriteRuleSubtreeStream =new RewriteRuleSubtreeStream(adaptor,"rule retval",if(retval!=null){retval.tree}else{null})
 
             root_0 = adaptor.nil().asInstanceOf[CHRTree];
-            // 135:42: -> ^( VARS ( term )* )
+            // 136:42: -> ^( VARS ( term )* )
             {
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:47: ^( VARS ( term )* )
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:136:47: ^( VARS ( term )* )
                 {
                 var root_1:CHRTree = adaptor.nil().asInstanceOf[CHRTree]
                 root_1 = adaptor.becomeRoot(adaptor.create(VARS, "VARS").asInstanceOf[CHRTree], root_1).asInstanceOf[CHRTree]
 
-                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:135:54: ( term )*
+                // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:136:54: ( term )*
                 while ( stream_term.hasNext() ) {
                     adaptor.addChild(root_1, stream_term.nextTree());
 
@@ -2783,7 +2919,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "term" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:138:1: term : ( constant | variable );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:139:1: term : ( constant | variable );
     @throws(classOf[RecognitionException])
      final def term():/*CREOLE_XParser.*/term_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2794,55 +2930,55 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var constant84:/*CREOLE_XParser.*/constant_return = null
+        var constant92:/*CREOLE_XParser.*/constant_return = null
 
-        var variable85:/*CREOLE_XParser.*/variable_return = null
+        var variable93:/*CREOLE_XParser.*/variable_return = null
 
 
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:139:2: ( constant | variable )
-            var alt20=2;
-            var LA20_0 = input.LA(1);
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:140:2: ( constant | variable )
+            var alt21=2;
+            var LA21_0 = input.LA(1);
 
-            if ( ((LA20_0>=INT && LA20_0<=STRING)) ) {
-                alt20=1;
+            if ( ((LA21_0>=INT && LA21_0<=STRING)) ) {
+                alt21=1;
             }
-            else if ( (LA20_0==R_ID||(LA20_0>=NULL && LA20_0<=V_ID)) ) {
-                alt20=2;
+            else if ( (LA21_0==R_ID||(LA21_0>=NULL && LA21_0<=V_ID)) ) {
+                alt21=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 val nvae =
-                    new NoViableAltException("", 20, 0, input);
+                    new NoViableAltException("", 21, 0, input);
 
                 throw nvae;
             }
-            alt20 match{
+            alt21 match{
                 case 1 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:139:4: constant
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:140:4: constant
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_constant_in_term1029);
-                    constant84=constant();
+                    pushFollow(FOLLOW_constant_in_term1072);
+                    constant92=constant();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constant84.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constant92.getTree());
 
                     }case 2 =>
-                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:140:4: variable
+                    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:141:4: variable
                     {
                     root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-                    pushFollow(FOLLOW_variable_in_term1034);
-                    variable85=variable();
+                    pushFollow(FOLLOW_variable_in_term1077);
+                    variable93=variable();
 
                     state._fsp -= 1 
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variable85.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variable93.getTree());
 
                     }
                 case _ => //Do nothing
@@ -2874,7 +3010,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "relation" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:143:1: relation : R_ID ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:144:1: relation : R_ID ;
     @throws(classOf[RecognitionException])
      final def relation():/*CREOLE_XParser.*/relation_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2885,21 +3021,21 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var R_ID86: Token =null
+        var R_ID94: Token =null
 
-        var R_ID86_tree:CHRTree=null
+        var R_ID94_tree:CHRTree=null
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:144:5: ( R_ID )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:144:9: R_ID
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:145:5: ( R_ID )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:145:9: R_ID
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            R_ID86=smatch(input,R_ID,FOLLOW_R_ID_in_relation1050).asInstanceOf[Token]; if (state.failed) return retval;
+            R_ID94=smatch(input,R_ID,FOLLOW_R_ID_in_relation1093).asInstanceOf[Token]; if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            R_ID86_tree = adaptor.create(R_ID86).asInstanceOf[CHRTree];
-            adaptor.addChild(root_0, R_ID86_tree);
+            R_ID94_tree = adaptor.create(R_ID94).asInstanceOf[CHRTree];
+            adaptor.addChild(root_0, R_ID94_tree);
             }
 
             }
@@ -2931,7 +3067,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "variable" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:147:1: variable : ( NULL | V_ID | R_ID );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:148:1: variable : ( NULL | V_ID | R_ID );
     @throws(classOf[RecognitionException])
      final def variable():/*CREOLE_XParser.*/variable_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -2942,21 +3078,21 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var set87: Token =null
+        var set95: Token =null
 
-        var set87_tree:CHRTree=null
+        var set95_tree:CHRTree=null
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:148:5: ( NULL | V_ID | R_ID )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:149:5: ( NULL | V_ID | R_ID )
             // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            set87=input.LT(1).asInstanceOf[Token]
+            set95=input.LT(1).asInstanceOf[Token]
             if ( input.LA(1)==R_ID||(input.LA(1)>=NULL && input.LA(1)<=V_ID) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, adaptor.create(set87).asInstanceOf[CHRTree]);
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, adaptor.create(set95).asInstanceOf[CHRTree]);
                 state.errorRecovery=false;state.failed=false;
             }
             else {
@@ -2995,7 +3131,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "constant" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:151:1: constant : ( INT | STRING );
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:152:1: constant : ( INT | STRING );
     @throws(classOf[RecognitionException])
      final def constant():/*CREOLE_XParser.*/constant_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -3006,21 +3142,21 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var set88: Token =null
+        var set96: Token =null
 
-        var set88_tree:CHRTree=null
+        var set96_tree:CHRTree=null
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:152:2: ( INT | STRING )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:153:2: ( INT | STRING )
             // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            set88=input.LT(1).asInstanceOf[Token]
+            set96=input.LT(1).asInstanceOf[Token]
             if ( (input.LA(1)>=INT && input.LA(1)<=STRING) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, adaptor.create(set88).asInstanceOf[CHRTree]);
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, adaptor.create(set96).asInstanceOf[CHRTree]);
                 state.errorRecovery=false;state.failed=false;
             }
             else {
@@ -3059,7 +3195,7 @@ import org.antlr.runtime.Token.{DOWN, UP}
     };
 
     // $ANTLR start "url" rule(...)
-    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:156:1: url : STRING ;
+    // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:157:1: url : STRING ;
     @throws(classOf[RecognitionException])
      final def url():/*CREOLE_XParser.*/url_return = /*throws RecognitionException*/ {
         //ruleScopeSetUp
@@ -3070,21 +3206,21 @@ import org.antlr.runtime.Token.{DOWN, UP}
         var root_0:CHRTree = null
 
         //ruleLabelDefs
-        var STRING89: Token =null
+        var STRING97: Token =null
 
-        var STRING89_tree:CHRTree=null
+        var STRING97_tree:CHRTree=null
 
         //ruleDescriptor.actions.init
         try {
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:156:5: ( STRING )
-            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:156:7: STRING
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:157:5: ( STRING )
+            // src/main/antlr3/fr/emn/criojo/parser/CREOLE_X.g:157:7: STRING
             {
             root_0 = adaptor.nil().asInstanceOf[CHRTree]
 
-            STRING89=smatch(input,STRING,FOLLOW_STRING_in_url1106).asInstanceOf[Token]; if (state.failed) return retval;
+            STRING97=smatch(input,STRING,FOLLOW_STRING_in_url1149).asInstanceOf[Token]; if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            STRING89_tree = adaptor.create(STRING89).asInstanceOf[CHRTree];
-            adaptor.addChild(root_0, STRING89_tree);
+            STRING97_tree = adaptor.create(STRING97).asInstanceOf[CHRTree];
+            adaptor.addChild(root_0, STRING97_tree);
             }
 
             }
@@ -3115,183 +3251,199 @@ import org.antlr.runtime.Token.{DOWN, UP}
 
  
 
-      final val FOLLOW_process_in_start200:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_process_in_start193:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_declaration_in_process219:BitSet = new BitSet( Array[Long](0x0000030220800000L,0x0000000000000008L))
-      //new long[]{0x0000030220800000L,0x0000000000000008L});
-      final val FOLLOW_script_in_process221:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_declaration_in_process212:BitSet = new BitSet( Array[Long](0x0000060110400000L,0x0000000000000008L))
+      //new long[]{0x0000060110400000L,0x0000000000000008L});
+      final val FOLLOW_script_in_process214:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_LPAREN_in_declaration254:BitSet = new BitSet( Array[Long](0x8000000000000000L,0x0000000000000003L))
+      final val FOLLOW_LPAREN_in_declaration247:BitSet = new BitSet( Array[Long](0x8000000000000000L,0x0000000000000003L))
       //new long[]{0x8000000000000000L,0x0000000000000003L});
-      final val FOLLOW_decl_in_declaration256:BitSet = new BitSet( Array[Long](0x0000000003000000L))
-      //new long[]{0x0000000003000000L});
-      final val FOLLOW_SEMI_in_declaration259:BitSet = new BitSet( Array[Long](0x8000000000000000L,0x0000000000000003L))
+      final val FOLLOW_decl_in_declaration249:BitSet = new BitSet( Array[Long](0x0000000001800000L))
+      //new long[]{0x0000000001800000L});
+      final val FOLLOW_SEMI_in_declaration252:BitSet = new BitSet( Array[Long](0x8000000000000000L,0x0000000000000003L))
       //new long[]{0x8000000000000000L,0x0000000000000003L});
-      final val FOLLOW_decl_in_declaration261:BitSet = new BitSet( Array[Long](0x0000000003000000L))
-      //new long[]{0x0000000003000000L});
-      final val FOLLOW_RPAREN_in_declaration265:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_decl_in_declaration254:BitSet = new BitSet( Array[Long](0x0000000001800000L))
+      //new long[]{0x0000000001800000L});
+      final val FOLLOW_RPAREN_in_declaration258:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_dec_prov_in_decl293:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_dec_prov_in_decl286:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_dec_req_in_decl297:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_dec_req_in_decl290:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_dec_loc_in_decl301:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_dec_loc_in_decl294:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_63_in_dec_prov320:BitSet = new BitSet( Array[Long](0x0000000004000000L))
-      //new long[]{0x0000000004000000L});
-      final val FOLLOW_COLON_in_dec_prov322:BitSet = new BitSet( Array[Long](0x00000000B0000000L))
-      //new long[]{0x00000000B0000000L});
-      final val FOLLOW_rlist_in_dec_prov324:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_64_in_dec_req351:BitSet = new BitSet( Array[Long](0x0000000004000000L))
-      //new long[]{0x0000000004000000L});
-      final val FOLLOW_COLON_in_dec_req353:BitSet = new BitSet( Array[Long](0x00000000B0000000L))
-      //new long[]{0x00000000B0000000L});
-      final val FOLLOW_rlist_in_dec_req355:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_65_in_dec_loc382:BitSet = new BitSet( Array[Long](0x0000000004000000L))
-      //new long[]{0x0000000004000000L});
-      final val FOLLOW_COLON_in_dec_loc384:BitSet = new BitSet( Array[Long](0x00000000B0000000L))
-      //new long[]{0x00000000B0000000L});
-      final val FOLLOW_rlist_in_dec_loc386:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_rdeclaration_in_rlist413:BitSet = new BitSet( Array[Long](0x0000000008000002L))
-      //new long[]{0x0000000008000002L});
-      final val FOLLOW_COMMA_in_rlist416:BitSet = new BitSet( Array[Long](0x00000000A0000000L))
-      //new long[]{0x00000000A0000000L});
-      final val FOLLOW_rdeclaration_in_rlist418:BitSet = new BitSet( Array[Long](0x0000000008000002L))
-      //new long[]{0x0000000008000002L});
-      final val FOLLOW_UNDEF_in_rlist435:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_R_ID_in_rdeclaration458:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_R_ID_in_rdeclaration468:BitSet = new BitSet( Array[Long](0x0000000040000000L))
-      //new long[]{0x0000000040000000L});
-      final val FOLLOW_ARROBAS_in_rdeclaration470:BitSet = new BitSet( Array[Long](0x0000200000000000L))
-      //new long[]{0x0000200000000000L});
-      final val FOLLOW_url_in_rdeclaration472:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_TILDE_in_rdeclaration492:BitSet = new BitSet( Array[Long](0x0000000020000000L))
-      //new long[]{0x0000000020000000L});
-      final val FOLLOW_R_ID_in_rdeclaration494:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_parallel_in_script521:BitSet = new BitSet( Array[Long](0x0000000001000002L))
-      //new long[]{0x0000000001000002L});
-      final val FOLLOW_SEMI_in_script524:BitSet = new BitSet( Array[Long](0x0000030220800000L,0x0000000000000008L))
-      //new long[]{0x0000030220800000L,0x0000000000000008L});
-      final val FOLLOW_parallel_in_script527:BitSet = new BitSet( Array[Long](0x0000000001000002L))
-      //new long[]{0x0000000001000002L});
-      final val FOLLOW_bang_in_parallel548:BitSet = new BitSet( Array[Long](0x0000000100000002L))
-      //new long[]{0x0000000100000002L});
-      final val FOLLOW_BAR_in_parallel551:BitSet = new BitSet( Array[Long](0x0000030220800000L,0x0000000000000008L))
-      //new long[]{0x0000030220800000L,0x0000000000000008L});
-      final val FOLLOW_bang_in_parallel554:BitSet = new BitSet( Array[Long](0x0000000100000002L))
-      //new long[]{0x0000000100000002L});
-      final val FOLLOW_simple_script_in_bang575:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_BANG_in_bang585:BitSet = new BitSet( Array[Long](0x0000030020800000L,0x0000000000000008L))
-      //new long[]{0x0000030020800000L,0x0000000000000008L});
-      final val FOLLOW_simple_script_in_bang587:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_rule_in_simple_script615:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_LPAREN_in_simple_script625:BitSet = new BitSet( Array[Long](0x0000030220800000L,0x0000000000000008L))
-      //new long[]{0x0000030220800000L,0x0000000000000008L});
-      final val FOLLOW_script_in_simple_script627:BitSet = new BitSet( Array[Long](0x0000000002000000L))
+      final val FOLLOW_63_in_dec_prov313:BitSet = new BitSet( Array[Long](0x0000000002000000L))
       //new long[]{0x0000000002000000L});
-      final val FOLLOW_RPAREN_in_simple_script629:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_COLON_in_dec_prov315:BitSet = new BitSet( Array[Long](0x0000000058000000L))
+      //new long[]{0x0000000058000000L});
+      final val FOLLOW_rlist_in_dec_prov317:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_conjunction_in_rule653:BitSet = new BitSet( Array[Long](0x0000000400000000L))
-      //new long[]{0x0000000400000000L});
-      final val FOLLOW_RARROW_in_rule655:BitSet = new BitSet( Array[Long](0x000003C820000000L,0x0000000000000008L))
-      //new long[]{0x000003C820000000L,0x0000000000000008L});
-      final val FOLLOW_guard_in_rule657:BitSet = new BitSet( Array[Long](0x0000038020000000L,0x0000000000000008L))
-      //new long[]{0x0000038020000000L,0x0000000000000008L});
-      final val FOLLOW_nu_in_rule660:BitSet = new BitSet( Array[Long](0x0000030020000000L,0x0000000000000008L))
-      //new long[]{0x0000030020000000L,0x0000000000000008L});
-      final val FOLLOW_conjunction_in_rule663:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_64_in_dec_req344:BitSet = new BitSet( Array[Long](0x0000000002000000L))
+      //new long[]{0x0000000002000000L});
+      final val FOLLOW_COLON_in_dec_req346:BitSet = new BitSet( Array[Long](0x0000000058000000L))
+      //new long[]{0x0000000058000000L});
+      final val FOLLOW_rlist_in_dec_req348:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_LBRACK_in_guard719:BitSet = new BitSet( Array[Long](0x0000031020000000L,0x0000000000000008L))
-      //new long[]{0x0000031020000000L,0x0000000000000008L});
-      final val FOLLOW_rule_in_guard721:BitSet = new BitSet( Array[Long](0x0000031020000000L,0x0000000000000008L))
-      //new long[]{0x0000031020000000L,0x0000000000000008L});
-      final val FOLLOW_RBRACK_in_guard724:BitSet = new BitSet( Array[Long](0x0000002000000000L))
-      //new long[]{0x0000002000000000L});
-      final val FOLLOW_IMARK_in_guard726:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_65_in_dec_loc375:BitSet = new BitSet( Array[Long](0x0000000002000000L))
+      //new long[]{0x0000000002000000L});
+      final val FOLLOW_COLON_in_dec_loc377:BitSet = new BitSet( Array[Long](0x0000000058000000L))
+      //new long[]{0x0000000058000000L});
+      final val FOLLOW_rlist_in_dec_loc379:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_ABS_in_guard745:BitSet = new BitSet( Array[Long](0x0000000800000000L))
-      //new long[]{0x0000000800000000L});
-      final val FOLLOW_LBRACK_in_guard747:BitSet = new BitSet( Array[Long](0x0000030020000000L,0x0000000000000008L))
-      //new long[]{0x0000030020000000L,0x0000000000000008L});
-      final val FOLLOW_conjunction_in_guard749:BitSet = new BitSet( Array[Long](0x0000001000000000L))
-      //new long[]{0x0000001000000000L});
-      final val FOLLOW_RBRACK_in_guard751:BitSet = new BitSet( Array[Long](0x0000002000000000L))
-      //new long[]{0x0000002000000000L});
-      final val FOLLOW_IMARK_in_guard753:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_rdeclaration_in_rlist406:BitSet = new BitSet( Array[Long](0x0000000004000002L))
+      //new long[]{0x0000000004000002L});
+      final val FOLLOW_COMMA_in_rlist409:BitSet = new BitSet( Array[Long](0x0000000050000000L))
+      //new long[]{0x0000000050000000L});
+      final val FOLLOW_rdeclaration_in_rlist411:BitSet = new BitSet( Array[Long](0x0000000004000002L))
+      //new long[]{0x0000000004000002L});
+      final val FOLLOW_UNDEF_in_rlist428:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_LBRACK_in_guard775:BitSet = new BitSet( Array[Long](0x00000C0020000000L))
-      //new long[]{0x00000C0020000000L});
-      final val FOLLOW_guardExpr_in_guard777:BitSet = new BitSet( Array[Long](0x0000001000000000L))
-      //new long[]{0x0000001000000000L});
-      final val FOLLOW_RBRACK_in_guard779:BitSet = new BitSet( Array[Long](0x0000002000000000L))
-      //new long[]{0x0000002000000000L});
-      final val FOLLOW_IMARK_in_guard781:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_R_ID_in_rdeclaration451:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_variable_in_guardExpr808:BitSet = new BitSet( Array[Long](0x0000000000000000L,0x0000000000000004L))
-      //new long[]{0x0000000000000000L,0x0000000000000004L});
-      final val FOLLOW_66_in_guardExpr810:BitSet = new BitSet( Array[Long](0x00000C0020000000L))
-      //new long[]{0x00000C0020000000L});
-      final val FOLLOW_variable_in_guardExpr812:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_R_ID_in_rdeclaration461:BitSet = new BitSet( Array[Long](0x0000000020000000L))
+      //new long[]{0x0000000020000000L});
+      final val FOLLOW_ARROBAS_in_rdeclaration463:BitSet = new BitSet( Array[Long](0x0000400000000000L))
+      //new long[]{0x0000400000000000L});
+      final val FOLLOW_url_in_rdeclaration465:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_NU_in_nu841:BitSet = new BitSet( Array[Long](0x0000000000800000L))
-      //new long[]{0x0000000000800000L});
-      final val FOLLOW_LPAREN_in_nu843:BitSet = new BitSet( Array[Long](0x00000C0020000000L))
-      //new long[]{0x00000C0020000000L});
-      final val FOLLOW_variable_in_nu845:BitSet = new BitSet( Array[Long](0x000000000A000000L))
-      //new long[]{0x000000000A000000L});
-      final val FOLLOW_COMMA_in_nu848:BitSet = new BitSet( Array[Long](0x00000C0020000000L))
-      //new long[]{0x00000C0020000000L});
-      final val FOLLOW_variable_in_nu850:BitSet = new BitSet( Array[Long](0x000000000A000000L))
-      //new long[]{0x000000000A000000L});
-      final val FOLLOW_RPAREN_in_nu854:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_TILDE_in_rdeclaration485:BitSet = new BitSet( Array[Long](0x0000000010000000L))
+      //new long[]{0x0000000010000000L});
+      final val FOLLOW_R_ID_in_rdeclaration487:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_67_in_conjunction882:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_atom_in_conjunction896:BitSet = new BitSet( Array[Long](0x0000000008000002L))
-      //new long[]{0x0000000008000002L});
-      final val FOLLOW_COMMA_in_conjunction899:BitSet = new BitSet( Array[Long](0x0000030020000000L,0x0000000000000008L))
-      //new long[]{0x0000030020000000L,0x0000000000000008L});
-      final val FOLLOW_atom_in_conjunction901:BitSet = new BitSet( Array[Long](0x0000000008000002L))
-      //new long[]{0x0000000008000002L});
-      final val FOLLOW_TRUE_in_atom927:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_FALSE_in_atom937:BitSet = new BitSet( Array[Long](0x0000000000000002L))
-      //new long[]{0x0000000000000002L});
-      final val FOLLOW_relation_in_atom947:BitSet = new BitSet( Array[Long](0x0000000000800002L))
+      final val FOLLOW_parallel_in_script514:BitSet = new BitSet( Array[Long](0x0000000000800002L))
       //new long[]{0x0000000000800002L});
-      final val FOLLOW_termlist_in_atom949:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_SEMI_in_script517:BitSet = new BitSet( Array[Long](0x0000060110400000L,0x0000000000000008L))
+      //new long[]{0x0000060110400000L,0x0000000000000008L});
+      final val FOLLOW_parallel_in_script520:BitSet = new BitSet( Array[Long](0x0000000000800002L))
+      //new long[]{0x0000000000800002L});
+      final val FOLLOW_bang_in_parallel541:BitSet = new BitSet( Array[Long](0x0000000080000002L))
+      //new long[]{0x0000000080000002L});
+      final val FOLLOW_BAR_in_parallel544:BitSet = new BitSet( Array[Long](0x0000060110400000L,0x0000000000000008L))
+      //new long[]{0x0000060110400000L,0x0000000000000008L});
+      final val FOLLOW_bang_in_parallel547:BitSet = new BitSet( Array[Long](0x0000000080000002L))
+      //new long[]{0x0000000080000002L});
+      final val FOLLOW_simple_script_in_bang568:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_LPAREN_in_termlist993:BitSet = new BitSet( Array[Long](0x00003C0020000000L))
-      //new long[]{0x00003C0020000000L});
-      final val FOLLOW_term_in_termlist995:BitSet = new BitSet( Array[Long](0x000000000A000000L))
-      //new long[]{0x000000000A000000L});
-      final val FOLLOW_COMMA_in_termlist998:BitSet = new BitSet( Array[Long](0x00003C0020000000L))
-      //new long[]{0x00003C0020000000L});
-      final val FOLLOW_term_in_termlist1000:BitSet = new BitSet( Array[Long](0x000000000A000000L))
-      //new long[]{0x000000000A000000L});
-      final val FOLLOW_RPAREN_in_termlist1004:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_BANG_in_bang578:BitSet = new BitSet( Array[Long](0x0000060010400000L,0x0000000000000008L))
+      //new long[]{0x0000060010400000L,0x0000000000000008L});
+      final val FOLLOW_simple_script_in_bang580:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_constant_in_term1029:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_rule_in_simple_script608:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_variable_in_term1034:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_LPAREN_in_simple_script618:BitSet = new BitSet( Array[Long](0x0000060110400000L,0x0000000000000008L))
+      //new long[]{0x0000060110400000L,0x0000000000000008L});
+      final val FOLLOW_script_in_simple_script620:BitSet = new BitSet( Array[Long](0x0000000001000000L))
+      //new long[]{0x0000000001000000L});
+      final val FOLLOW_RPAREN_in_simple_script622:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_R_ID_in_relation1050:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_conjunction_in_rule646:BitSet = new BitSet( Array[Long](0x0000000200000000L))
+      //new long[]{0x0000000200000000L});
+      final val FOLLOW_RARROW_in_rule648:BitSet = new BitSet( Array[Long](0x0000072410000000L,0x0000000000000008L))
+      //new long[]{0x0000072410000000L,0x0000000000000008L});
+      final val FOLLOW_guard_in_rule650:BitSet = new BitSet( Array[Long](0x0000070010000000L,0x0000000000000008L))
+      //new long[]{0x0000070010000000L,0x0000000000000008L});
+      final val FOLLOW_nu_in_rule653:BitSet = new BitSet( Array[Long](0x0000060010000000L,0x0000000000000008L))
+      //new long[]{0x0000060010000000L,0x0000000000000008L});
+      final val FOLLOW_conjunction_in_rule656:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_LBRACK_in_guard712:BitSet = new BitSet( Array[Long](0x0000060810000000L,0x0000000000000008L))
+      //new long[]{0x0000060810000000L,0x0000000000000008L});
+      final val FOLLOW_rule_in_guard714:BitSet = new BitSet( Array[Long](0x0000060810000000L,0x0000000000000008L))
+      //new long[]{0x0000060810000000L,0x0000000000000008L});
+      final val FOLLOW_RBRACK_in_guard717:BitSet = new BitSet( Array[Long](0x0000001000000000L))
+      //new long[]{0x0000001000000000L});
+      final val FOLLOW_IMARK_in_guard719:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_ABS_in_guard738:BitSet = new BitSet( Array[Long](0x0000000400000000L))
+      //new long[]{0x0000000400000000L});
+      final val FOLLOW_LBRACK_in_guard740:BitSet = new BitSet( Array[Long](0x0000060010000000L,0x0000000000000008L))
+      //new long[]{0x0000060010000000L,0x0000000000000008L});
+      final val FOLLOW_conjunction_in_guard742:BitSet = new BitSet( Array[Long](0x0000000800000000L))
+      //new long[]{0x0000000800000000L});
+      final val FOLLOW_RBRACK_in_guard744:BitSet = new BitSet( Array[Long](0x0000001000000000L))
+      //new long[]{0x0000001000000000L});
+      final val FOLLOW_IMARK_in_guard746:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_LBRACK_in_guard768:BitSet = new BitSet( Array[Long](0x0000188010000000L,0x0000000000000004L))
+      //new long[]{0x0000188010000000L,0x0000000000000004L});
+      final val FOLLOW_guardExpr_in_guard770:BitSet = new BitSet( Array[Long](0x0000000800000000L))
+      //new long[]{0x0000000800000000L});
+      final val FOLLOW_RBRACK_in_guard772:BitSet = new BitSet( Array[Long](0x0000001000000000L))
+      //new long[]{0x0000001000000000L});
+      final val FOLLOW_IMARK_in_guard774:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_variable_in_guardExpr801:BitSet = new BitSet( Array[Long](0x0000004000000000L))
+      //new long[]{0x0000004000000000L});
+      final val FOLLOW_EQ_in_guardExpr803:BitSet = new BitSet( Array[Long](0x0000180010000000L))
+      //new long[]{0x0000180010000000L});
+      final val FOLLOW_variable_in_guardExpr805:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_66_in_guardExpr825:BitSet = new BitSet( Array[Long](0x0000000000400000L))
+      //new long[]{0x0000000000400000L});
+      final val FOLLOW_LPAREN_in_guardExpr827:BitSet = new BitSet( Array[Long](0x0000180010000000L))
+      //new long[]{0x0000180010000000L});
+      final val FOLLOW_variable_in_guardExpr829:BitSet = new BitSet( Array[Long](0x0000000001000000L))
+      //new long[]{0x0000000001000000L});
+      final val FOLLOW_RPAREN_in_guardExpr831:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_NOT_in_guardExpr849:BitSet = new BitSet( Array[Long](0x0000000000400000L))
+      //new long[]{0x0000000000400000L});
+      final val FOLLOW_LPAREN_in_guardExpr851:BitSet = new BitSet( Array[Long](0x0000188010000000L,0x0000000000000004L))
+      //new long[]{0x0000188010000000L,0x0000000000000004L});
+      final val FOLLOW_guardExpr_in_guardExpr853:BitSet = new BitSet( Array[Long](0x0000000001000000L))
+      //new long[]{0x0000000001000000L});
+      final val FOLLOW_RPAREN_in_guardExpr855:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_NU_in_nu884:BitSet = new BitSet( Array[Long](0x0000000000400000L))
+      //new long[]{0x0000000000400000L});
+      final val FOLLOW_LPAREN_in_nu886:BitSet = new BitSet( Array[Long](0x0000180010000000L))
+      //new long[]{0x0000180010000000L});
+      final val FOLLOW_variable_in_nu888:BitSet = new BitSet( Array[Long](0x0000000005000000L))
+      //new long[]{0x0000000005000000L});
+      final val FOLLOW_COMMA_in_nu891:BitSet = new BitSet( Array[Long](0x0000180010000000L))
+      //new long[]{0x0000180010000000L});
+      final val FOLLOW_variable_in_nu893:BitSet = new BitSet( Array[Long](0x0000000005000000L))
+      //new long[]{0x0000000005000000L});
+      final val FOLLOW_RPAREN_in_nu897:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_67_in_conjunction925:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_atom_in_conjunction939:BitSet = new BitSet( Array[Long](0x0000000004000002L))
+      //new long[]{0x0000000004000002L});
+      final val FOLLOW_COMMA_in_conjunction942:BitSet = new BitSet( Array[Long](0x0000060010000000L,0x0000000000000008L))
+      //new long[]{0x0000060010000000L,0x0000000000000008L});
+      final val FOLLOW_atom_in_conjunction944:BitSet = new BitSet( Array[Long](0x0000000004000002L))
+      //new long[]{0x0000000004000002L});
+      final val FOLLOW_TRUE_in_atom970:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_FALSE_in_atom980:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_relation_in_atom990:BitSet = new BitSet( Array[Long](0x0000000000400002L))
+      //new long[]{0x0000000000400002L});
+      final val FOLLOW_termlist_in_atom992:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_LPAREN_in_termlist1036:BitSet = new BitSet( Array[Long](0x0000780010000000L))
+      //new long[]{0x0000780010000000L});
+      final val FOLLOW_term_in_termlist1038:BitSet = new BitSet( Array[Long](0x0000000005000000L))
+      //new long[]{0x0000000005000000L});
+      final val FOLLOW_COMMA_in_termlist1041:BitSet = new BitSet( Array[Long](0x0000780010000000L))
+      //new long[]{0x0000780010000000L});
+      final val FOLLOW_term_in_termlist1043:BitSet = new BitSet( Array[Long](0x0000000005000000L))
+      //new long[]{0x0000000005000000L});
+      final val FOLLOW_RPAREN_in_termlist1047:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_constant_in_term1072:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_variable_in_term1077:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      //new long[]{0x0000000000000002L});
+      final val FOLLOW_R_ID_in_relation1093:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
       final val FOLLOW_set_in_variable0:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
       final val FOLLOW_set_in_constant0:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
-      final val FOLLOW_STRING_in_url1106:BitSet = new BitSet( Array[Long](0x0000000000000002L))
+      final val FOLLOW_STRING_in_url1149:BitSet = new BitSet( Array[Long](0x0000000000000002L))
       //new long[]{0x0000000000000002L});
 
 }

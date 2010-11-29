@@ -87,9 +87,9 @@ class ServerTests{
 
   @Test //(timeout=35000)
   def testPicasaAlbum{
-    logLevel = DEBUG
-//    val pvmhost = "http://localhost:8080/vm/PVM"
-    val pvmhost = "http://criojo.appspot.com/vm/PVM"
+//    logLevel = DEBUG
+    val pvmhost = "http://localhost:8080/vm/PVM"
+//    val pvmhost = "http://criojo.appspot.com/vm/PVM"
     var result = false
     val vm2 = new CriojoClient(uri){
       val ACloning = Required("AlbumCloning",pvmhost)
@@ -104,7 +104,7 @@ class ServerTests{
           result = true
         case failatom => fail("Unexpected atom: " + failatom)
       }
-      val s,id,u,n,m = Var
+      val id,u,n,m,s = Var
       val palbum = RelVariable("PAlbum")
 
       rules(
@@ -118,10 +118,30 @@ class ServerTests{
     val palbum = RelVariable("PAlbum"); palbum.relation = vm2.PAlbum
     vm2.addAtom(Atom("Start",Value(0),Value("maylelacouture")))
 
-    Thread.sleep(30000)
-    assertTrue(result)
+    Thread.sleep(120000)
+    assertTrue("Finished with solution: " + vm2.prettyPrint, result)
   }
 
+  @Test
+  def testPicasaAlbumScript{
+//    logLevel = DEBUG
+    load(vm,
+    """(
+//    required:AlbumCloning@"http://criojo.appspot.com/vm/PVM";
+    required:AlbumCloning@"http://localhost:8080/vm/PVM";
+    provided:PAlbum;
+    local:Session,Count,Start)
+
+    !T => new(s)Start(s,"maylelacouture") |
+    Start(s,u) => AlbumCloning(s,u,PAlbum),Count(s,0,u) |
+    PAlbum(s,id), Count(s,n,u) => [Not(Null(id))]? new(m) AlbumCloning(s,u,PAlbum), Suc(n,m), Count(s,m,u) |
+    PAlbum(s,id), Count(s,n,u) => [Null(id)]? Print(n)
+    """
+    )
+    vm.start
+
+    Thread.sleep(120000)    
+  }
 }
 
 object CriojoClient{
@@ -157,7 +177,7 @@ class CriojoClient(url:URI) extends ConnectedVM(url) with Actor{
           e.printStackTrace
       }
 
-      Thread.sleep(3000)
+      Thread.sleep(500)
     }
   }
 

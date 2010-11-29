@@ -48,8 +48,12 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
     def processRelList(public:Boolean, lst: List[^]){
       lst match{
         case List() => //skip
-        case (h @ ^(R_ID, _)) :: res => machine.addRelation(new LocalRelation(h.getText, public)); processRelList(public,res)
-        case ^(MULTI, rid :: _) :: res => machine.addRelation(new LocalRelation(rid.getText, public)); processRelList(public,res)
+        case (h @ ^(R_ID, _)) :: res =>
+          machine.addRelation(machine.newLocalRelation(h.getText, public))
+          processRelList(public,res)
+        case ^(MULTI, rid :: _) :: res =>
+          machine.addRelation(machine.newLocalRelation(rid.getText, public))
+          processRelList(public,res)
         case ^(EMPTYLIST, _) :: _ => //SKIP
         case _ =>
       }

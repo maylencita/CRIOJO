@@ -8,8 +8,6 @@ package fr.emn.criojo.virtualmachine
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.util._
-import fr.emn.criojo.util._
-import fr.emn.criojo.model._
 
 import scala.reflect.BeanProperty
 

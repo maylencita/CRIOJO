@@ -64,7 +64,7 @@ class PicasaTest{
 
   @Test //(timeout=1000)
   def testAlbumCloning{
-    logLevel = DEBUG
+//    logLevel = DEBUG
     var result = false
     var i = 0
     val user = "maylelacouture"

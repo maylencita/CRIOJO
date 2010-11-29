@@ -3,46 +3,14 @@ package fr.emn.criojo.parser.tree
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.{CommonTree,Tree}
 
-//class CHRTree(typ:Int, childList:List[^]) extends ^(typ, childList){
-class CHRTree(token:Token) extends CommonTree(token){ //^(token, null){
-
-//	def this(){
-//		this(null.asInstanceOf[Token])
-//	}	
-	
-//	def this(old: ^){
-//		this(old.token)//, old.childList)
-//		this.childList = old.childList
-//		this.childList.foreach{c => c.setParent(this); c.setChildIndex(childList.indexOf(c))}
-//		this.startIndex = old.getStartIndex;
-//		this.stopIndex = old.getStopIndex;
-//
-//		this.childIndex = old.childIndex
-//		this.parent = old.parent
-//	}
-	
-//	def this(old: CHRTree){
-//		this(old.token) //, old.childList)
-//		this.startIndex = old.startIndex;
-//		this.stopIndex = old.stopIndex;
-//	}
-	
-//	def getSuper: ^ = ^(this.token, childList) //this.asInstanceOf[^]		                                   
-	                                    
-//	override def dupNode: Tree = new CHRTree(this)
-		
-//	def getStartIndex = startIndex	
-//	def stopIndex = stopIndex
-//	
-//	def setStartIndex(startIndex: Int)
-//		startIndex = startIndex
-//		
-//	def setStopIndex(stopIndex: Int)
-//		stopIndex = stopIndex
+class CHRTree(token:Token) extends CommonTree(token){
 }
 
-//case class ^(typ:Int, var childList:List[^]) extends CommonTree(){
-case class ^(tok:Token, var childList:List[^]) extends CHRTree(tok){ //CommonTree(tok){
+object ^{
+  def apply(tok:Token, children: ^ *): ^ = new ^(tok, children.toList) 
+}
+
+case class ^(tok:Token, var childList:List[^]) extends CHRTree(tok){
 	
 	def this(){
 		this(null, null)
@@ -53,11 +21,9 @@ case class ^(tok:Token, var childList:List[^]) extends CHRTree(tok){ //CommonTre
 	}
 	
 	def this(old: ^){
-		this(new CHRToken(old.token))//old.token) //, old.childList)
+		this(new CHRToken(old.token))
 		this.startIndex = old.startIndex
 		this.stopIndex = old.stopIndex
-//		setStartIndex(old.getStartIndex) //old.startIndex;
-//		setStopIndex(old.getStopIndex) //old.stopIndex;
 	}
 
 	if (childList != null){
@@ -66,7 +32,7 @@ case class ^(tok:Token, var childList:List[^]) extends CHRTree(tok){ //CommonTre
 			k => k.setParent(this)
 			k.setChildIndex(i)
 			i += 1
-		}//	registerChild(k)}
+		}
 	}	
 
 	override def dupNode: Tree = new ^(this)

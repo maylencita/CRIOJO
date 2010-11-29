@@ -47,6 +47,7 @@ class CHRTreeTokens(tokNames: Array[String])  {
   val STR_ATOM:Token = "STR_ATOM"
   val NULL_ATOM:Token = "NULL_ATOM"
   val NULL:Token = "NULL"
+  val NOT:Token = "NOT"
 
   private[this] def getToken(tokName: String): Token ={
 		if (tokNames != null)
