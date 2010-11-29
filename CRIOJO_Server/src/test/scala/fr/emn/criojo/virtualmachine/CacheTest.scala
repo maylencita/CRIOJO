@@ -9,6 +9,7 @@ package fr.emn.criojo.virtualmachine
  */
 
 import fr.emn.criojo.core._
+import fr.emn.criojo.util.LocalCache
 
 import collection.immutable.ListSet
 

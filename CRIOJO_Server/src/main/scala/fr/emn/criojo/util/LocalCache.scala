@@ -1,4 +1,4 @@
-package fr.emn.criojo.virtualmachine
+package fr.emn.criojo.util
 
 /**
  * Created by IntelliJ IDEA.

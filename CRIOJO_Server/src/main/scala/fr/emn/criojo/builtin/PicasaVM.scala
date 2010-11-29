@@ -69,8 +69,8 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
 
   def handleLogin(vars:List[Variable]){
     if (vars.size == 4){
-        val authToken = "DQAAAKAAAAC2fo_3dEqqiIFMggSLNv1hYa8rEJOlRs9qZNWOvc7fyDe0uoL3TfA7njSp9rLzIkBl9BcJ8Xt_CjIKUkV4QL6NnbN8mESk67xps59UKFB2JgnlB_ZsujcIivWp8XzHPnZV6lWVU_EyGpGXMNGrW0aq4e2qIat"
-//      val authToken = PicasaClient.login(vars(2).toString, vars(3).toString)
+//        val authToken = "DQAAAKAAAAC2fo_3dEqqiIFMggSLNv1hYa8rEJOlRs9qZNWOvc7fyDe0uoL3TfA7njSp9rLzIkBl9BcJ8Xt_CjIKUkV4QL6NnbN8mESk67xps59UKFB2JgnlB_ZsujcIivWp8XzHPnZV6lWVU_EyGpGXMNGrW0aq4e2qIat"
+      val authToken = PicasaClient.login(vars(2).toString, vars(3).toString)
 
       if ("" != authToken){
         val relVariable = vars(1).asInstanceOf[RelVariable]
@@ -87,7 +87,8 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
     case Atom("$GenAlbum", s::u::cont::_) =>
       getValue(u) match {
         case Value(v:String) =>
-          val albums = List(Atom("Album", s, Variable("album1")),Atom("Album", s, Variable("album2")))//PicasaClient.getAlbums(s, v)
+          val albums = List(Atom("Album", s, Variable("album1")),Atom("Album", s, Variable("album2")))
+//          val albums = PicasaClient.getAlbums(s, v)
           albums.foreach(solution.addAtom(_))
           debug(this.getClass,"generateAlbums", "Generated "+albums.size+" albums.")
         case _ => log(WARNING, this.getClass, "generateAlbums", "User not found: " + u)

@@ -25,7 +25,6 @@ tokens{
     STR_ATOM;
     NULL_ATOM;
 
-    EQ;
 }
 
 @lexer::header {
@@ -112,7 +111,9 @@ guard
     ;
 
 guardExpr
-    :   variable '=' variable -> ^(EQ variable variable)
+    :   variable EQ variable -> ^(EQ variable variable)
+    |   'Null' LPAREN variable RPAREN -> ^(NULL variable)
+    |   NOT LPAREN guardExpr RPAREN -> ^(NOT guardExpr)  
     ;
 
 nu
@@ -170,51 +171,26 @@ FALSE
 NULL
     :   'null'
     ;
+NOT
+    :   'Not'
+    ;
 ARROBAS
 	:	'@'
 	;
-/*
-ZERO
-    :   '0'
-    ;
-*/
 ABS
     :   'Abs'
     ;
-/*
-PACKAGE
-	:	'package'
-	;
-SOLVER
-	:	'solver'
-	;
-*/
 RARROW
 	:	'=>'
-	;
-/*
-IS
-	:	'is'
-	;
-CONSTRAINT
-	:	'constraint'
-	;
-LET
-	:	'let'
-	;
-IN
-	:	'in'
-	;
-USE
-	:	'use'
 	;
 EQ
 	:	'='
 	;
-*/
+/*
 EQ_OP
 	:	'=='
 	;
+*/
 LT
 	:	'<'
 	;

@@ -119,6 +119,8 @@ class Translator(tokens:CHRTreeTokens){
     def processGuard(lst: List[^]): List[^] = lst match{
       case ^(ABS, alst) :: _ => ^(GUARD, processAbs(processAtoms(alst)) :: Nil) :: Nil
       case ^(EQ, v1::v2::_) :: _  => ^(GUARD, processEq(v1,v2)) :: Nil
+      case ^(NULL, v::_) :: _ => ^(GUARD, processNull(v)) :: Nil
+      case ^(NOT, exp::_) :: _ => ^(GUARD, processNot(exp)) :: Nil
       case _ => ^(GUARD, lst) :: Nil //lst
     }
 
@@ -131,6 +133,28 @@ class Translator(tokens:CHRTreeTokens){
 
   }
 
+  def processNot(expr: ^):List[^] = expr match {
+    case ^(NULL, v::_) => processNotNull(v)
+    case ^(EQ, v1::v2::_) => processNotEq(v1, v2)
+    case _ => List()
+  }
+
+  def processNull(v: ^):List[^] = {
+    val t = ^(new CHRToken(R_ID.getType,"true"), Nil )
+    val f = ^(new CHRToken(R_ID.getType,"false"), Nil )
+
+    ^(RULE, ^(HEAD, ^(TRUE, v)),
+            ^(BODY, newAtom("Null_ask", v::t::f::Nil))) :: Nil
+  }
+
+  def processNotNull(v: ^):List[^] = {
+    val t = ^(new CHRToken(R_ID.getType,"true"), Nil )
+    val f = ^(new CHRToken(R_ID.getType,"false"), Nil )
+
+    ^(RULE, ^(HEAD, ^(TRUE, v)),
+            ^(BODY, newAtom("Null_ask", v::f::t::Nil))) :: Nil
+  }
+
   def processEq(v1: ^ , v2: ^):List[^] = {
     val s = ^(new CHRToken(V_ID.getType,"s"), Nil )
     val t = ^(new CHRToken(R_ID.getType,"true"), Nil )
@@ -140,6 +164,18 @@ class Translator(tokens:CHRTreeTokens){
 
     ^(RULE, ^(HEAD, ^(TRUE, v1::v2::Nil)::Nil) :: nu :: guard :: 
             ^(BODY, x :: newAtom("Eq_ask", s::v1::v2::t::Nil) :: Nil) :: Nil) :: Nil
+  }
+
+  def processNotEq(v1: ^ , v2: ^):List[^] = {
+    val s = ^(new CHRToken(V_ID.getType,"s"), Nil )
+    val t = ^(new CHRToken(R_ID.getType,"true"), Nil )
+    val f = ^(new CHRToken(R_ID.getType,"false"), Nil )
+    val nu = ^(NU, s::Nil)
+    val x = newTokenAtom
+    val guard = ^(GUARD, processAbs(x::Nil)::Nil)
+
+    ^(RULE, ^(HEAD, ^(TRUE, v1::v2::Nil)::Nil) :: nu :: guard ::
+            ^(BODY, x :: newAtom("Eq_ask", s::v1::v2::f::t::Nil) :: Nil) :: Nil) :: Nil
   }
 
   def processAbs(a: ^): ^ = processAbs(List(a))
