@@ -1,4 +1,4 @@
-package fr.emn.criojo.virtualmachine
+package fr.emn.criojo.console
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,6 +8,7 @@ package fr.emn.criojo.virtualmachine
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.util._
+import fr.emn.criojo.virtualmachine.VirtualMachineService
 
 import scala.reflect.BeanProperty
 
@@ -17,7 +18,7 @@ import javax.ws.rs._
 import javax.ws.rs.core._
 import com.sun.jersey.api.representation.Form
 
-@Path("/console")
+@Path("/")
 //@Singleton
 class Console (@Context @scala.reflect.BeanProperty var uriInfo:UriInfo) extends Configurator(uriInfo){
 

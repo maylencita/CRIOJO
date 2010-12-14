@@ -115,3 +115,14 @@ case class WebAtom(relName:String, @JSONTypeHint(classOf[WebVariable]) vlst: Lis
 
 //  def getVarList:List[Variable] = this.varLst
 }
+
+@BeanInfo
+case class AtomList(@JSONTypeHint(classOf[WebAtom]) atoms: List[WebAtom]) extends DomainClass{
+  private def this() = this(List[WebAtom]())
+
+  def this(dummyParam:String, alst:List[Atom]) = {
+    this(for(a <- alst) yield{
+      new WebAtom(a)
+    })
+  }
+}

@@ -12,50 +12,17 @@ import fr.emn.criojo.model._
 import fr.emn.criojo.core._
 import fr.emn.criojo.util._
 
-import scala.actors.Actor._
-import scala.actors.TIMEOUT
+import java.net.URI
 
-class ClientProxy(a:Atom) {
-  val cmActor = actor{
-    loop{
-      react{
-        case toSend: Atom =>
-//          Logger.log(this.getClass, "outher_loop", "Atom to send: " + toSend)
-          VirtualMachineService.addAtom(toSend)
-          sender ! receiveWithin(5000) {
-            case response:Atom =>
-//              Logger.log(this.getClass, "inner_loop", "received response on actor: "+ response)
-              response
-            case TIMEOUT =>
-              Logger.log(this.getClass, "inner_loop", "Hit timeout!")
-              null
-            case other =>
-//              Logger.log(this.getClass, "inner_loop", "Received wrong answer type: " + other)
-              null
-          }
-        case _ =>
-          sender ! null
-      }
-    }
-  }
+/**
+ * For each request a ClientProxy is created.
+ * A ClientProxy reacts when atoms should be send in the response.
+ */
+class ClientProxy(clientURI: URI) extends RelationObserver{
+  var response:List[Atom] = List()
 
-  val localAtom = new Atom(a.relName,
-    a.vars.map{
-      case rv:RelVariable => rv.relation = new ProxyRelation(rv.relation.name, cmActor); rv
-      case other => other
-    }
-  )
-
-  /**
-   * A synchronous send
-   */
-  def send:Option[Atom] = {
-    val futureResponse = cmActor !! localAtom
-    //Wait for the response, then forward it
-    futureResponse.inputChannel.receive{
-      case a:Atom => Some(a)
-      case _ => None
-    }
+  override def receiveUpdate(atom:Atom){
+    response = response :+ atom
   }
 
 }
