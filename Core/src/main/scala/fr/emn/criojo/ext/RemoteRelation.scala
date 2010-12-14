@@ -20,8 +20,4 @@ abstract class RemoteRelation extends Relation{
 
   val isMultiRel = true
 
-  def addObserver(observer:RelationObserver){
-    //Does nothing
-  }
-  
 }
