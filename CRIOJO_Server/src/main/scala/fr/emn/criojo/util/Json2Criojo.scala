@@ -26,6 +26,21 @@ case class Json2Criojo(machine:ConnectedVM){
     case _ => List()
   }
 
+  def parseAtomList(s:String):List[Atom] =  Json.parse(s) match {
+    case atomList: Map[String, _] =>
+      atomList("atoms") match{
+        case alts:List[_] =>
+          alts.foldLeft(List[Atom]()){(z, b) =>
+            parseAtom(b) match{
+              case Some(a) => z :+ a
+              case _ => z
+            }
+          }
+        case _ => List()
+      }
+    case _ => List()
+  }
+
   def parseAtom(s:String):Option[Atom] = Json.parse(s) match{
       case atomMap: Map[String, _] =>
         Some(new Atom(atomMap("relName").asInstanceOf[String],

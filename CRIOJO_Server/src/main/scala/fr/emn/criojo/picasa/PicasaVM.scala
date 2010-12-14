@@ -11,7 +11,6 @@ package fr.emn.criojo.builtin
 import fr.emn.criojo._, core._, ext._
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.virtualmachine.ConnectedVM
-import fr.emn.criojo.client._
 
 import java.io.File
 import java.net.URL
@@ -87,8 +86,8 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
     case Atom("$GenAlbum", s::u::cont::_) =>
       getValue(u) match {
         case Value(v:String) =>
-          val albums = List(Atom("Album", s, Variable("album1")),Atom("Album", s, Variable("album2")))
-//          val albums = PicasaClient.getAlbums(s, v)
+//          val albums = List(Atom("Album", s, Variable("album1")),Atom("Album", s, Variable("album2")))
+          val albums = PicasaClient.getAlbums(s, v)
           albums.foreach(solution.addAtom(_))
           debug(this.getClass,"generateAlbums", "Generated "+albums.size+" albums.")
         case _ => log(WARNING, this.getClass, "generateAlbums", "User not found: " + u)

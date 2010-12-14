@@ -12,19 +12,19 @@ import virtualmachine._
 import fr.emn.criojo.loader.ScriptLoader._
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.core._
-import fr.emn.criojo.util._
+import fr.emn.criojo.client._
 
 import org.junit._
 import Assert._
 
+import scala.xml.{XML,Elem}
 import javax.ws.rs.core._
 import java.net.InetAddress
 import java.net.URI
 
-import com.sun.jersey.api.client.Client
+import com.sun.jersey.api.client._
 import com.sun.jersey.api.client.config.DefaultClientConfig
-
-import actors._
+import com.sun.jersey.api.representation.Form
 
 class ServerTests{
   logLevel = INFO
@@ -32,10 +32,11 @@ class ServerTests{
   val uri = try{
     CriojoClient.registerClient
   }catch{
-    case e => log(WARNING, this.getClass, "testConnectedVM", "Proxy service unavailable.")
+    case e => log(WARNING, this.getClass, "init", "Proxy service unavailable.")
       UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()
   }
-  val vm = new CriojoClient(uri)
+  val vm = new DirectClient("CriojoTest",9999)
+//  val vm = new ProxiedClient(uri)
   
   @Test
   def testConnectedVM{
@@ -50,6 +51,7 @@ class ServerTests{
     """)
     assertTrue("Relation S not found in " + vm.relations, vm.relations.exists(r => r.name == "S"))
 
+    vm.start
     vm.execute
     assertTrue(vm.solution.findMatches(List(Atom("S", List(Undef))), List()).isEmpty)
     assertEquals(1, vm.solution.size)    
@@ -59,28 +61,56 @@ class ServerTests{
   def testPing{
     load(vm,
       """
-      (public:P; private:R@"http://localhost:8080/relation")
+      (provided:P; required:R@"http://localhost:8080/vm"; local:Ok)
       !T => new(x)R(x,P)
       |
-      P(x) => Print(x)
+      P(x) => Print(x),Ok
       """)
 
     vm.start
+    vm.execute
     Thread.sleep(10000)
-    assertFalse(vm.solution.findMatches(List(Atom("Print", List(Undef))), List()).isEmpty)
+    
+    assertFalse(vm.solution.findMatches(List(Atom("Ok", List(Undef))), List()).isEmpty)
+  }
+
+  @Test
+  def testDeployedVM{
+    val script = """
+    (provided:R)
+    R(x,P) => P(x)
+    """
+
+//    EmbededServer.start(8080)
+//    println("Server Started")
+    val client = Client.create(new DefaultClientConfig)
+    val deployService = client.resource(UriBuilder.fromUri("http://localhost:8080/console/").build())
+
+    val form = new Form
+    form.add("script",script)
+    val response = deployService.
+            post(classOf[ClientResponse], form).getEntity(classOf[String])
+
+    println("response: " + response)
+
+    testPing
+
+//    EmbededServer.stop
+//    println("Server Stoped")
   }
 
   @Test
   def testPicasaLogin{
     load(vm,
       """
-      (public:Tok; private:Session, Login@"http://localhost:8080/vm/P-VM")
+      (provided:Tok; local:Session; required:Login@"http://localhost:8080/picasa/VM")
       !T => new(x) Login(x,Tok,"maylelacouture@gmail.com","dr2g9n21r"),Session(x) 
       |
       Tok(x,tok),Session(x) => Print(tok)
       """)
 
     vm.start
+    vm.execute
     Thread.sleep(10000)
 //    assertFalse(vm.solution.findMatches(List(Atom("Print", List(Undef))), List()).isEmpty)
   }
@@ -88,10 +118,10 @@ class ServerTests{
   @Test //(timeout=35000)
   def testPicasaAlbum{
 //    logLevel = DEBUG
-    val pvmhost = "http://localhost:8080/vm/PVM"
+    val pvmhost = "http://localhost:8080/picasa/VM"
 //    val pvmhost = "http://criojo.appspot.com/vm/PVM"
     var result = false
-    val vm2 = new CriojoClient(uri){
+    val vm2 = new ProxiedClient(uri){
       val ACloning = Required("AlbumCloning",pvmhost)
       val Session = Rel("Session")
       val Start = Rel("Start")
@@ -114,6 +144,7 @@ class ServerTests{
       )
     }
     vm2.start
+    vm2.execute
 
     val palbum = RelVariable("PAlbum"); palbum.relation = vm2.PAlbum
     vm2.addAtom(Atom("Start",Value(0),Value("maylelacouture")))
@@ -127,71 +158,45 @@ class ServerTests{
 //    logLevel = DEBUG
     load(vm,
     """(
-//    required:AlbumCloning@"http://criojo.appspot.com/vm/PVM";
-    required:AlbumCloning@"http://localhost:8080/vm/PVM";
+    required:AlbumCloning@"http://criojo.appspot.com/picasa/VM";
+//    required:AlbumCloning@"http://localhost:8080/picasa/VM";
     provided:PAlbum;
-    local:Session,Count,Start)
+    local:Session,Count,Start,Result)
 
     !T => new(s)Start(s,"maylelacouture") |
-    Start(s,u) => AlbumCloning(s,u,PAlbum),Count(s,0,u) |
-    PAlbum(s,id), Count(s,n,u) => [Not(Null(id))]? new(m) AlbumCloning(s,u,PAlbum), Suc(n,m), Count(s,m,u) |
-    PAlbum(s,id), Count(s,n,u) => [Null(id)]? Print(n)
+    Start(s,u) => Count(s,0,u), AlbumCloning(s,u,PAlbum) |
+    PAlbum(s,id), Count(s,n,u) => [Not(Null(id))]? new(m) Suc(n,m), Count(s,m,u), AlbumCloning(s,u,PAlbum) |
+    PAlbum(s,id), Count(s,n,u) => [Null(id)]? Result(n)
     """
     )
     vm.start
+    vm.execute
 
-    Thread.sleep(120000)    
+    Thread.sleep(10000)
+    println(vm.prettyPrint)
   }
 }
 
-object CriojoClient{
-  val myclient:Client = Client.create(new DefaultClientConfig)
-  val PROXY_URL = "http://criojo.appspot.com/proxy"
-//  val PROXY_URL = "http://localhost:8080/proxy"
+import org.mortbay.jetty._ , nio.SelectChannelConnector, webapp.WebAppContext
 
-  @throws(classOf[Exception])
-  def registerClient:URI = {
-      val proxyservice = myclient.resource(PROXY_URL).path("register")
-      val resp:String = proxyservice.get(classOf[String])
-      println("Virtual address: " + resp)
+object EmbededServer {
 
-      UriBuilder.fromUri(resp).build()
+  val server = new Server();
+
+  def start(port:Int){
+    val connector:Connector = new SelectChannelConnector();
+    connector.setPort(port);
+    connector.setHost("localhost");
+    server.addConnector(connector);
+
+    val wac:WebAppContext = new WebAppContext();
+    wac.setContextPath("/");
+    wac.setWar("/users/mayleen/THESE/CRIOJO/CRIOJO_Server/target/CRIOJO_Server");    // this is path to .war OR TO expanded, existing webapp; WILL FIND web.xml and parse it
+    server.setHandler(wac);
+    server.setStopAtShutdown(true);
+
+    server.start();
   }
 
-}
-
-class CriojoClient(url:URI) extends ConnectedVM(url) with Actor{
-  def this(scriptUri:String, url:URI)={
-    this(url)
-    load(this, io.Source.fromFile(scriptUri).mkString)
-  }
-
-  def act{
-    this.execute
-    while(true){
-      try{
-        getMessages
-      }catch{
-        case e=>
-          log(WARNING, this.getClass,"act","Could not connect to proxy: " + e)
-          e.printStackTrace
-      }
-
-      Thread.sleep(500)
-    }
-  }
-
-  @throws(classOf[Exception])
-  def getMessages:String = {
-    val proxyservice = CriojoClient.myclient.resource(url)
-    val resp = proxyservice.get(classOf[String])
-
-    if (resp != "[]"){
-      for (a <- Json2Criojo(this).parseList(resp)){
-        debug(this.getClass,"getMessages", "Received atom: " + a)
-        addAtom(a)
-      }
-    }
-    resp
-  }
+  def stop{server.stop}
 }

@@ -10,6 +10,7 @@ package fr.emn.criojo.virtualmachine
 import fr.emn.criojo.core._
 import fr.emn.criojo.ext.{VirtualMachine,RemoteRelation}
 import fr.emn.criojo.util.Logger._
+import fr.emn.criojo.util.ConfigProperties._
 import fr.emn.criojo.util._
 import fr.emn.criojo.model._
 import Creole._
@@ -18,6 +19,8 @@ import Creole._
 
 import java.net.URI
 import javax.ws.rs.core.{UriBuilder,MediaType}
+import java.util.logging.Logger
+import java.util.logging.Level //._
 
 import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.config.DefaultClientConfig
@@ -30,7 +33,12 @@ trait PublicRelation extends Relation{
 class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
  assert(vmUrl != null)
 
-  val ROUTER = "http://criojo.appspot.com/router"
+//  type JWARNING = Level.WARNING
+//  type JSEVERE = Level.SEVERE
+
+  val owner = this
+  val logger = Logger.getLogger(this.getClass.getName())
+
   val solution = try{
     info(this.getClass,"init()","Cache Key: " + vmUrl.toString)
     CachedSolution(vmUrl.toString)
@@ -90,6 +98,11 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
   @serializable
   class RemoteRelationImpl(val name:String,val url:URI) extends RemoteRelation{
     val myclient:Client = Client.create(new DefaultClientConfig)
+    var observers:List[RelationObserver] = List()
+
+    def addObserver(observer:RelationObserver){
+      observers :+= observer
+    }
 
     override def notifyObservers(a: Atom){
       val subs = a.vars.map{
@@ -103,20 +116,44 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
 
       val newAtom = a.applySubstitutions(subs)
 
-      exportAtom(newAtom)//, url)
-      log(this.getClass,"notifyObservers"," Atom " + newAtom + " exported to " + url)
+//      observers.foreach(o => o.receiveUpdate(newAtom))
+      if (observers.isEmpty){
+        exportAtom(newAtom)//, url)
+//        log(this.getClass,"notifyObservers"," Atom " + newAtom + " exported to " + url)
+        log(this.getClass,"notifyObservers"," Solution after export: " + solution)
+      }else{
+        observers.foreach(o => o.receiveUpdate(newAtom))
+      }
     }
 
     def exportAtom(atom:Atom){//, url:URI){
       val myservice = myclient.resource(url).path(atom.relName)
-      val content = JSONUtil.serialize(new WebAtom(atom))
+//      val content = JSONUtil.serialize(new WebAtom(atom))
+      val content = JSONUtil.serialize(new AtomList("", List(atom)))
 
       try{
-        val resp:String = myservice.entity(content.getBytes, MediaType.APPLICATION_JSON_TYPE).
+//        info(this.getClass, "exportAtom","Sending: " + content)
+        logger.info("Sending: " + content)
+        val resp:String = myservice.
+                header("X-Client-URL", vmUrl.toString).
+                entity(content.getBytes, MediaType.APPLICATION_JSON_TYPE).
                 post(classOf[String])
-        log(this.getClass, "exportAtom","Response: " + resp)
+//        info(this.getClass, "exportAtom","Response: " + resp)
+        logger.info("Response: " + resp)
+        if (resp.startsWith("{\"atoms\"")){
+          Json2Criojo(owner).parseAtomList(new String(resp)) match{
+            case lst:List[Atom] =>
+              lst.foreach(addAtom(_))
+//              logger.info("Atoms " + lst + " successfully added.")
+//              logger.info("New solution: " + prettyPrint)
+            case _ => log(WARNING, this.getClass, "exportAtom", "Received empty list.")
+          }
+        }
       }catch{
-        case e => log(this.getClass, "exportAtom","Error: " + e)
+        case e =>
+          logger.log(Level.SEVERE, "Error exportin atom: " + e)
+//          error(this.getClass, "exportAtom","Error: " + e)
+//          e.printStackTrace()
       }
     }
 
