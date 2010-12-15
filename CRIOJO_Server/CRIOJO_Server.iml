@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="scala" name="Scala">
+      <configuration>
+        <option name="compilerLibraryLevel" value="Project" />
+        <option name="compilerLibraryName" value="Maven: org.scala-lang:scala-compiler-bundle:2.8.0" />
+        <option name="compilerOptions" value="-target:jvm-1.5" />
+        <option name="vmOptions" value="" />
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -10,19 +20,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: fr.emn.creole:creole-parser:1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: ANTLR_Scala:ANTLR_Scala:1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: fr.emn.creole:creole-core:1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: fr.emn.creole:creole-pivot:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
-    <orderEntry type="module" module-name="Parser" />
-    <orderEntry type="module" module-name="ANTLR_Scala" />
+    <orderEntry type="library" name="Maven: fr.emn.criojo:creole-parser:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: ANTLR_Scala:ANTLR_Scala:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.antlr:antlr-runtime:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.antlr:stringtemplate:3.2" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="module" module-name="Core" />
-    <orderEntry type="module" module-name="PiVot" />
+    <orderEntry type="library" name="Maven: fr.emn.criojo:creole-pivot:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.3" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
@@ -36,6 +42,7 @@
     <orderEntry type="library" name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.jsr:jsr107cache:1.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.gdata:gdata-core-1.0:1.41.3" level="project" />
     <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0-rc1" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
@@ -51,6 +58,8 @@
     <orderEntry type="library" name="Maven: sjson.json:sjson:0.7-2.8.0" level="project" />
     <orderEntry type="library" name="Maven: net.databinder:dispatch-json_2.8.0.RC3:0.7.4" level="project" />
     <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.3.1" level="project" />
+    <orderEntry type="library" name="Maven: jcache:jcache:1.0-dev-1" level="project" />
   </component>
 </module>
 

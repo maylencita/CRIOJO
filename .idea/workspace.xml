@@ -1,533 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Services/src/main/scala/fr/emn/creole/model/sjson_model.scala" line="41" mnemonic="9" />
-  </component>
   <component name="ChangeListManager">
-    <list readonly="true" id="934e7264-2972-4c97-a4fd-501741dcbe0f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$builtinconstraint_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$basicCHR$constraint$Constraint$$replaceValue$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/test/SQLParserTest$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$solvinstance_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$relation_list_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/Constraint.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/SQL2CHR.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/.settings/org.eclipse.jdt.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/FlickrSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$body_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/SRuleReturnScope.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/lib/antlr-3.2.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/EqualityBuiltinSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$search_condition_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$findMatches$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/CHR2Text.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$set_op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/codegen/templates/Scala/AST.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$basicCHR$constraint$Constraint$$replaceValue$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/SQL2CHRTreeConstructor$$anonfun$createCopyRules$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$findSucMatches$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EqualityBuiltinSolver$$anonfun$applySubstitution$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL_BasicTokens$DFA8.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$basicCHR$solver$NatSolver$$valuate$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/Rule.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/boolsolv.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/core/MinusOp.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$letexpr_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/AbstractSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$solvname_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$jointlist_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Term.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$attribute_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/SLexer.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/CHRrule.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/fr/emn/fullers/util/Converter.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$constant_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/schr_query" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$start_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/interpreter/Interpreter.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$applyChanges$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$sql_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/solvers.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$condition_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/VariableTypeException.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$relation_list_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/ListVal$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/codegen/templates/Scala/ASTTreeParser.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/MinusOp.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$ruleId_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/sql/test/sql_query" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/FlickrSolver$$anonfun$getPhotos$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$getConstraint$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EmptyState$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$DFA5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$condition_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/CHRState.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$base_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$applyRule$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$replaceValue$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$term_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/BasicTokens.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/parser/ParserFactory.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$applyRule$5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$toStringTree$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$relation_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/solvers.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/BasicTokens.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR$$anonfun$addRule$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/SQLParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/natsolv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/compiler/Compiler.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/fibonacci" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$deleteChild$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/basic_test.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/CHRTreeTokens.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$selector_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/CHRInterpreterTest$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/CHRParserTest.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Undef.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$constraintdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/AbstractSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/schr/SCHR.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/AuthManager$$anonfun$md5Sum$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$boolean_op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/tree/STreeParser.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/schr/SCHReval.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/AuthManager.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$solvparams_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$program_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/flickr_solv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$base_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$alias_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$body_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/InnerRule.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR$$anonfun$lookupDef$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/test/query_schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$tell$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/MinusOp.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$update_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/SCHRTreeIterator.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$builtinconstraint_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/Antlr_Scala_Target.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/solver/core/EqSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$DFA20$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/BuiltinOp.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$process$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/chrToText.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$newSolv_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/.scala_dependencies" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$builtinconstraint_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Value.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/X.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/SQL2CHR.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$termlist_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$expression_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Variable$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$addChild$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$importdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$findNatMatches$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/boolsolv.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/EqSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$compareTerms$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/schr/SCHRParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$consId_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR$$anonfun$addObserver$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/natsolv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$storePersistent$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/BuiltinOp$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR$$anonfun$addRule$2$$anonfun$apply$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/build.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/SQL2CHRTreeConstructor$$anonfun$createTermList$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/core/MinusOp$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/codegen/templates/Scala/Scala.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$constraintdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$attribute_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/SQL_BasicTokens.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$receiveUpdate$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/codegen/templates/Scala/ST.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/grammars/SCHReval.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$solvparams_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/util/java/CollectionWrapper.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$function_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$axiom_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/StringVal$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$constraint_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$termlist_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/natsolv.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$findEqMatches$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/IDGenerator$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$boolean_op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLLexer$DFA17.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/SCHRTokens.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/natsolv.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/ParserFactory.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$findNatMatches$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$constraintsdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Bool.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/CHRTreeTest.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/core/EqSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/InnerRule$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/ListVal.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL_BasicTokens.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$ruledef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/solver/core/MinusOp.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/UndefinedSolverError.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/SCHR.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$solvinstance_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/CHR.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRException.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/SQLLexer.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$comp_op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$ruledef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$getList$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/SystemSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL_BasicTokens$DFA8$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/schr/SCHReval.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EqualityBuiltinSolver$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$zipRec$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/StringSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/FlickrSolver$$anonfun$print$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$innerrule_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRLexer$DFA14$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/schr_solvers/fr/emn/fullers/solver/schr/EqualitySolver" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$gensolver_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/ParserFactory$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Num$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/ConstraintDef.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$findN0Matches$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$isFixed$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/Value.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$union_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$function_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$receiveUpdate$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$relation_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/MinusOp$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/SystemSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$deleteChild$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$quantifier_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/schr/EqualitySolver" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/test/sql_query" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Undef$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/.scala_dependencies" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver$$anonfun$basicCHR$util$solver$importer$NewSolver$$matchingTypes$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/State.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLLexer.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$createMatchCondition$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$EquivalenceClass$$anonfun$add$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/StringSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$comp_op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$evalMatchCondition$1$1$$anonfun$apply$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Fun.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$letexpr_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$3$$anonfun$apply$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$print$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/BasicTokens.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/CHRInterpreterTest.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$quantifier_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$solvId_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$applyRule$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$addChildren$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/CHRParserTest$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/IDGenerator.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$select_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$constraint_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/SQL2CHRTreeConstructor.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/ConstraintObserver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Variable.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/BuiltinConstraint.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/SDFA.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/EqualitySolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/CHRTreeTest.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$importdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$solvinstance_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$ruledef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/util/solver/importer/NewSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$simpleterm_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$term_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$start_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$consId_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/flickr_solv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$term_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/solver/core/SystemSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/solver/sql/ExistsSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$ask$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/parser/schr/SCHRTemplate.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$relation_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$disjlist_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/SQL.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$newSolv_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$applyRule$6.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$STAttrMap.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/AuthManager$$anonfun$md5Sum$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$solvname_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Solver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$attribute_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$relation_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Bool$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$tell$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/SCHR_OLD.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/tree/STreeRewriter.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/IllegalRuleDefinition.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EqualityBuiltinSolver$$anonfun$ask$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$6.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$EquivalenceClass$$anonfun$union$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/CHRToken.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$packagedef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver$$anonfun$getTypes$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$getVariables$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$program_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver$$anonfun$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/ConstraintSystem.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$replaceValue$2$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLLexer$DFA17$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Term$class.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$axiom_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/Solver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/CommonToken.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$solvdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$receiveUpdate$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$gensolver_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$ask$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$program_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRLexer$DFA14.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$findEqMatches$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$applyRule$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$findInstances$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$variable_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/CHRInterpreterTest.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR$$anonfun$addRule$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$createRuleIter$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$simpleterm_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$start_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$constraint_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$getConstraint$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$constraintsdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/CHRTreeAdaptor.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/sql/orsolver.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$process$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$letexpr_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$set_op_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$findSucMatches$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver$$anonfun$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/OpSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/basic_test.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$getConstraint$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$termlist_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$solvdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$isFixed$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$function_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$prog_element_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/CHRTree.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/InnerRule$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Num.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$term_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$ask$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/CHRTreeTest$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/ConstraintDef.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$tell$5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$STAttrMap.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$axiom_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/SParser.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$program_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/test/schr_query" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$removeLinear$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHR.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/core/SumOp$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$update_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$search_condition_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$headcons_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$packagedef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/NatSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$union_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver$$anonfun$apply$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$receiveUpdate$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/sql/test/SQLParserTest.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$getConstraint$5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$DFA5$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$constraintdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$storeBuiltin$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$constraintsdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/SQL_0_1.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EqualityBuiltinSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$function_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$solvId_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/schr_solvers/fr/emn/fullers/solver/sql/exists_solver" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$DFA20.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$getFirstChildWithType$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/SQL.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$solvname_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$sub_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$solvid_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/schr_solvers/fr/emn/fullers/solver/sql/andsolver.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$applyRule$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/java/CollectionWrapper$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/SumOp.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$constraintList_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHR$$anonfun$notify$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/SQL2CHRTreeConstructor$$anonfun$createConditionRule$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$process$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$matches$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$body_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Fun$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$print$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text.tokens" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$getVariables$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$program_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/CHR2Text.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/ConstraintObserver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$expression_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$gensolver_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/GenericSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/schr/test/CHRParserTest.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/codegen/templates/Scala/ASTParser.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$variable_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/solver/importer/NewSolver$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/java/CollectionWrapper.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/SumOp.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$tell$3.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$setUnknownTokenBoundaries$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/db/TableSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/util/java/ListWrapper.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$findEqMatches$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$prog_element_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/schr_solvers/fr/emn/fullers/solver/sql/orsolver.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$getVariables$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$constant_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/compiler/Compiler.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/UndefinedConstraintError.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/parser/tree/CHRTreeTokens.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$evalMatchCondition$1$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/core/SumOp.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$createDisjointList$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/OpSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$receiveUpdate$6.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$isFixed$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/BaseSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$packagedef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$ruleId_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/AndSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EqualityBuiltinSolver$$anonfun$tell$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$exists$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$sub_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/CHRException.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRState$$anonfun$isFixed$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/gen_src/fr/emn/fullers/parser/sql/SQL2CHR.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$createRuleIter$1$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/BuiltinOp.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$findEqMatches$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRTemplate.stg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/grammar_test/CHR2Text.g" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$solvparams_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRLexer.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$importdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$select_spec_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/rest/AuthManager$$anonfun$md5Sum$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/solver/EquivalenceSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver$$anonfun$call$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$variable_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Solver$class.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/BaseSolver$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/db/TableSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/EmptyState.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$DFA4$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$solvdef_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$alias_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/ANTLR_Scala_Target/bin/org/antlr/runtime/SRecognizerSharedState.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$expression_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$term_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$process$4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$STAttrMap$$anonfun$put$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/sql/exists_solver" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/core/SystemSolver.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$sql_query_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$DFA4.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHRParser$constant_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/solver/sql/andsolver.schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/test/SQLParserTest.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/SumOp$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/InnerRule$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$function_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$constant_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$constant_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$EquivalenceClass.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/CHRrule$$anonfun$receiveUpdate$5.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/NatSolver$$anonfun$2.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/Constraint$$anonfun$createMatchCondition$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/StringVal.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/tree/$up$$anonfun$getChildren$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/interpreter/Interpreter$$anonfun$getConstraint$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/test/fr/emn/fullers/parser/sql/test/query_schr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$EquivalenceClass$$anonfun$apply$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/constraint/InnerRule$$anonfun$$init$$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/rest/FlickrSolver.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/bin/basicCHR/solver/EquivalenceSolver$$anonfun$tell$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/CHR2Text$constraintList_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$STAttrMap$$anonfun$put$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/InnerRule.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/constraint/State.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/SCHR_VARS/src/basicCHR/util/java/ListWrapper.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/schr/SCHReval$simpleterm_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/compiler/Compiler$.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQLParser$selector_return.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/src/fr/emn/fullers/solver/core/SumOp.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LEGACY/PI-VOT/bin/fr/emn/fullers/parser/sql/SQL2CHR$attribute_spec_return.class" />
+    <list id="934e7264-2972-4c97-a4fd-501741dcbe0f" name="Default" comment="" />
+    <list default="true" id="32ff1f7e-485c-46e2-9e7a-aa395565673c" name="TO_COMMIT" comment="Working Implementation (Login in PicasaVM)">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CRIOJO.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/client/CriojoClient.scala" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_framework_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_http_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_http_servlet_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_portunif_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_rcm_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_servlet_webserver_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_grizzly_grizzly_utils_1_9_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_1_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_3_8_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_distributions_web_all_10_0_build_20080812.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_1_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__sjson_json_sjson_0_6_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/CREOLE.iml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ANTLR_Scala/ANTLR_Scala.iml" afterPath="$PROJECT_DIR$/ANTLR_Scala/ANTLR_Scala.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CRIOJO_Server/CRIOJO_Server.iml" afterPath="$PROJECT_DIR$/CRIOJO_Server/CRIOJO_Server.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/Core.iml" afterPath="$PROJECT_DIR$/Core/Core.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/pom.xml" afterPath="$PROJECT_DIR$/Core/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser/Parser.iml" afterPath="$PROJECT_DIR$/Parser/Parser.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser/pom.xml" afterPath="$PROJECT_DIR$/Parser/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PiVot/PiVot.iml" afterPath="$PROJECT_DIR$/PiVot/PiVot.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PiVot/pom.xml" afterPath="$PROJECT_DIR$/PiVot/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
     </list>
-    <list default="true" id="32ff1f7e-485c-46e2-9e7a-aa395565673c" name="TO_COMMIT" comment="Working Implementation (Login in PicasaVM)" />
     <ignored path="CREOLE.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -591,9 +96,72 @@
   <component name="FavoritesManager">
     <favorites_list name="CREOLE" />
   </component>
-  <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="ScriptLoader.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/util/ScriptLoader.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="43" selection-start="814" selection-end="814" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerTests.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/test/scala/fr/emn/criojo/ServerTests.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="21" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CriojoClient.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/client/CriojoClient.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="20" selection-start="709" selection-end="709" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Parser/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="20" selection-start="443" selection-end="443" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PiVot/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="262" selection-end="409" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Core/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="16" selection-start="1289" selection-end="1289" vertical-scroll-proportion="0.45967743">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -601,8 +169,8 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
-    <option name="GIT_EXECUTABLE" value="/usr/local/git/bin/git" />
     <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
+    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
@@ -618,6 +186,11 @@
         <option value="$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/relations/RelationResource.scala" />
         <option value="$PROJECT_DIR$/CRIOJO_Server/src/test/scala/fr/emn/criojo/ServerTests.scala" />
         <option value="$PROJECT_DIR$/Services/pom.xml" />
+        <option value="$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/client/CriojoClient.scala" />
+        <option value="$PROJECT_DIR$/Parser/pom.xml" />
+        <option value="$PROJECT_DIR$/PiVot/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/Core/pom.xml" />
       </list>
     </option>
   </component>
@@ -648,7 +221,7 @@
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="CRIOJO_Server" />
+          <option name="myItemId" value="CRIOJO" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -658,39 +231,7 @@
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="CRIOJO_Server" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Plugins" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$PluginsNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="CRIOJO_Server" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Plugins" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$PluginsNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="jetty" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$PluginNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="CRIOJO_Server" />
+          <option name="myItemId" value="CRIOJO" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -738,45 +279,61 @@
       <sortByType ProjectPane="true" />
     </navigator>
     <panes>
+      <pane id="Favorites" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Services" />
+              <option name="myItemId" value="PiVot" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CREOLE" />
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -784,10 +341,22 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ANTLR_Scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Favorites" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -800,7 +369,7 @@
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="MavenSettings" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -808,19 +377,23 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo" />
       <recent name="$PROJECT_DIR$/../LiftTesting/LiftREST/src/main/webapp/WEB-INF" />
       <recent name="$PROJECT_DIR$/CRIOJO_Server/src/main/webapp/WEB-INF" />
       <recent name="$PROJECT_DIR$/../MiscTesting/CRIOJO_Server/src/main/scala/frm/emn/criojo/model" />
       <recent name="$PROJECT_DIR$/../MiscTesting/CRIOJO_Server/src/main/webapp" />
-      <recent name="$PROJECT_DIR$/../MiscTesting/CRIOJO_JXTA_Server/src/main/webapp/WEB-INF" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="hello.world" />
+      <recent name="fr.emn.creole.test" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/PiVot/src/test/scala/fr/emn/creole/ext" />
@@ -829,14 +402,9 @@
       <recent name="$PROJECT_DIR$/Core/src/main/scala/fr/emn/creole/ext" />
       <recent name="$PROJECT_DIR$/Services/src/main/scala/fr/emn/creole/virtualmachine" />
     </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="hello.world" />
-      <recent name="fr.emn.creole.test" />
-    </key>
   </component>
   <component name="RunManager" selected="JUnit.ServerTests.testPicasaLogin">
     <configuration default="false" name="PicasaTest.testLogin" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
       <module name="CRIOJO_Server" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -853,12 +421,12 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="ServerTests.testAtomExport" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
       <module name="CRIOJO_Server" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -875,6 +443,7 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="63814" />
         <option name="TRANSPORT" value="0" />
@@ -886,7 +455,6 @@
       <method />
     </configuration>
     <configuration default="false" name="ServerTests.testPing" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
       <module name="CRIOJO_Server" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -903,12 +471,12 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="ServerTests.testPicasaLogint" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
       <module name="CRIOJO_Server" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -925,12 +493,12 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="ServerTests.testPicasaLogin" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
       <module name="CRIOJO_Server" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -947,6 +515,7 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
@@ -957,10 +526,10 @@
           <MavenGeneralSettings>
             <option name="checksumPolicy" value="FAIL" />
             <option name="failureBehavior" value="FAST" />
-            <option name="localRepository" value="" />
             <option name="mavenHome" value="/usr/share/java/maven-2.2.0" />
             <option name="mavenSettingsFile" value="" />
             <option name="nonRecursive" value="false" />
+            <option name="overriddenLocalRepository" value="" />
             <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
             <option name="printErrorStackTraces" value="false" />
             <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
@@ -1041,8 +610,26 @@
         <option name="SBT.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+        <option name="SBT.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="snapshooter" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1075,27 +662,7 @@
         <option name="SBT.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="SBT.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
@@ -1116,7 +683,6 @@
       </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
-      <extension name="snapshooter" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1133,6 +699,7 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -1158,7 +725,6 @@
       </method>
     </configuration>
     <configuration default="false" name="ANTLR_Tool" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="org.antlr.Tool" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="test_grammar/X.g -fo test_generated" />
@@ -1175,7 +741,6 @@
       <method />
     </configuration>
     <configuration default="false" name="Gen CREOLE" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="org.antlr.Tool" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="src/main/antlr3/fr/emn/creole/parser/CREOLE.g -fo src/main/scala/fr/emn/creole/parser" />
@@ -1192,7 +757,6 @@
       <method />
     </configuration>
     <configuration default="false" name="ParserTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.ParserTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -1209,7 +773,6 @@
       <method />
     </configuration>
     <configuration default="false" name="InterpreterTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.InterpreterTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="fr/emn/creole/test/naive_execution_test.crl" />
@@ -1232,7 +795,6 @@
       <method />
     </configuration>
     <configuration default="false" name="GuardTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.InterpreterTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="fr/emn/creole/test/guards.crl" />
@@ -1255,7 +817,6 @@
       <method />
     </configuration>
     <configuration default="false" name="DuplicateEliminationTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.InterpreterTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="fr/emn/creole/test/duplicate_elimination.crl" />
@@ -1272,7 +833,6 @@
       <method />
     </configuration>
     <configuration default="false" name="SecondOrderTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.InterpreterTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="fr/emn/creole/test/second_order_test.crl" />
@@ -1289,7 +849,6 @@
       <method />
     </configuration>
     <configuration default="false" name="Gen CREOLE-X" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="org.antlr.Tool" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="src/main/antlr3/fr/emn/creole/parser/CREOLE_X.g -fo src/main/scala/fr/emn/creole/parser" />
@@ -1308,7 +867,6 @@
       </method>
     </configuration>
     <configuration default="false" name="TranslateTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.TranslateTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="fr/emn/creole/test/simple.crj" />
@@ -1331,7 +889,6 @@
       <method />
     </configuration>
     <configuration default="false" name="PhotoTest" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.TranslateTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="fr/emn/creole/test/vm.crl" />
@@ -1354,7 +911,6 @@
       <method />
     </configuration>
     <configuration default="false" name="GrizzlyDeploy" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.Main" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -1371,7 +927,6 @@
       <method />
     </configuration>
     <configuration default="false" name="SjsonTests" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.SjsonTests" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
@@ -1394,7 +949,6 @@
       <method />
     </configuration>
     <configuration default="false" name="TestClient" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.creole.test.TestClient" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -1411,7 +965,6 @@
       <method />
     </configuration>
     <configuration default="false" name="CreoleClient" type="Application" factoryName="Application">
-      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.criojo.client.CreoleClient" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="client.crj Login@http://localhost:8080/vm/P-VM" />
@@ -1434,7 +987,6 @@
       <method />
     </configuration>
     <configuration default="false" name="TransferTest" type="JUnit" factoryName="JUnit">
-      <extension name="snapshooter" />
       <module name="Services" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1451,12 +1003,12 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="TypeTests" type="JUnit" factoryName="JUnit">
-      <extension name="snapshooter" />
       <module name="Core" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -1473,12 +1025,12 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="fr.emn.creole in Core" type="JUnit" factoryName="JUnit">
-      <extension name="snapshooter" />
       <module name="Core" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1495,12 +1047,12 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="ChamTests" type="JUnit" factoryName="JUnit">
-      <extension name="snapshooter" />
       <module name="Core" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1517,6 +1069,7 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <patterns />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
@@ -1527,10 +1080,10 @@
           <MavenGeneralSettings>
             <option name="checksumPolicy" value="FAIL" />
             <option name="failureBehavior" value="FAST" />
-            <option name="localRepository" value="" />
             <option name="mavenHome" value="/usr/share/java/maven-2.2.0" />
             <option name="mavenSettingsFile" value="" />
             <option name="nonRecursive" value="false" />
+            <option name="overriddenLocalRepository" value="" />
             <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
             <option name="printErrorStackTraces" value="false" />
             <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
@@ -1573,10 +1126,10 @@
           <MavenGeneralSettings>
             <option name="checksumPolicy" value="FAIL" />
             <option name="failureBehavior" value="FAST" />
-            <option name="localRepository" value="" />
             <option name="mavenHome" value="/usr/share/java/maven-2.2.0" />
             <option name="mavenSettingsFile" value="" />
             <option name="nonRecursive" value="false" />
+            <option name="overriddenLocalRepository" value="" />
             <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
             <option name="printErrorStackTraces" value="false" />
             <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
@@ -1661,9 +1214,22 @@
     <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
     <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
     <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <configuration useDefault="true">$PROJECT_DIR$/../../.subversion_IDEA</configuration>
+    <configuration useDefault="true">$USER_HOME$/.subversion_IDEA</configuration>
     <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
     <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1292406853150</created>
+      <updated>1292406853150</updated>
+    </task>
+    <task id="LOCAL-00001" summary="TO_COMMIT">
+      <changelist id="32ff1f7e-485c-46e2-9e7a-aa395565673c" name="TO_COMMIT" comment="Working Implementation (Login in PicasaVM)" />
+      <created>1292406845119</created>
+      <updated>1292406845119</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -1691,21 +1257,21 @@
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38425046" sideWeight="0.7936815" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44592032" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16408338" sideWeight="0.64611006" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33017078" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33776093" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2533207" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32777777" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22243714" sideWeight="0.15749526" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12830432" sideWeight="0.60910815" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22243714" sideWeight="0.44402277" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13023856" sideWeight="0.61574954" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39886272" sideWeight="0.66413665" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22243714" sideWeight="0.44497153" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22243714" sideWeight="0.61574954" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31309298" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven-2 Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.7712963" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44592032" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven-2 Build Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1723,6 +1289,7 @@
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="LAST_COMMIT_MESSAGE" value="Working Implementation (Login in PicasaVM)" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
@@ -1771,79 +1338,71 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/relations/RelationResource.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="22" selection-start="666" selection-end="666" vertical-scroll-proportion="-0.06745362">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/test/scala/fr/emn/criojo/util/JSONTests.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="2" selection-start="1671" selection-end="1671" vertical-scroll-proportion="0.0">
+        <state line="50" column="2" selection-start="1671" selection-end="1671" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/virtualmachine/ConnectedVM.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="0" selection-start="1136" selection-end="1136" vertical-scroll-proportion="0.70799345" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/util/Json2Criojo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="15" selection-start="345" selection-end="345" vertical-scroll-proportion="0.29363784" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/webapp/WEB-INF/appengine-web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="26" selection-start="191" selection-end="191" vertical-scroll-proportion="0.11984021" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/util/ScriptLoader.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="43" selection-start="814" selection-end="814" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/test/scala/fr/emn/criojo/ServerTests.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="66" selection-start="1930" selection-end="1930" vertical-scroll-proportion="0.0">
+        <state line="14" column="21" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/creole/ext/RemoteRelation.scala">
+    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/client/CriojoClient.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="15" selection-start="253" selection-end="253" vertical-scroll-proportion="0.3946037">
+        <state line="28" column="20" selection-start="709" selection-end="709" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/client/ExportAtom.scala">
+    <entry file="file://$PROJECT_DIR$/Parser/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="42" selection-start="1272" selection-end="1272" vertical-scroll-proportion="1.1451876">
+        <state line="9" column="20" selection-start="443" selection-end="443" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/virtualmachine/PicasaBuiltin.scala">
+    <entry file="file://$PROJECT_DIR$/PiVot/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="25" selection-start="849" selection-end="849" vertical-scroll-proportion="0.822186">
+        <state line="9" column="0" selection-start="262" selection-end="409" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/virtualmachine/ConnectedVM.scala">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1136" selection-end="1136" vertical-scroll-proportion="0.70799345">
+        <state line="10" column="0" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/scala/fr/emn/criojo/util/Json2Criojo.scala">
+    <entry file="file://$PROJECT_DIR$/Core/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="15" selection-start="345" selection-end="345" vertical-scroll-proportion="0.29363784">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Services/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="758" selection-end="758" vertical-scroll-proportion="-1.4380826">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/main/webapp/WEB-INF/appengine-web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="26" selection-start="191" selection-end="191" vertical-scroll-proportion="0.11984021">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Services/src/main/webapp/WEB-INF/appengine-web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="26" selection-start="65" selection-end="65" vertical-scroll-proportion="0.023968043">
+        <state line="41" column="16" selection-start="1289" selection-end="1289" vertical-scroll-proportion="0.45967743">
           <folding />
         </state>
       </provider>
@@ -1852,47 +1411,86 @@
   <component name="masterDetails">
     <states>
       <state key="ArtifactsStructureConfigurable.UI">
-        <UIState>
+        <settings>
+          <artifact-editor />
           <splitter-proportions>
-            <SplitterProportionsDataImpl>
-              <option name="proportions">
-                <list>
-                  <option value="0.2" />
-                </list>
-              </option>
-            </SplitterProportionsDataImpl>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
           </splitter-proportions>
-          <settings />
-        </UIState>
+        </settings>
       </state>
       <state key="Copyright.UI">
-        <UIState>
-          <splitter-proportions>
-            <SplitterProportionsDataImpl />
-          </splitter-proportions>
-        </UIState>
+        <settings>
+          <splitter-proportions />
+        </settings>
       </state>
-      <state key="ProjectJDKs.UI">
-        <UIState>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Invalid</last-edited>
           <splitter-proportions>
-            <SplitterProportionsDataImpl>
-              <option name="proportions">
-                <list>
-                  <option value="0.2" />
-                </list>
-              </option>
-            </SplitterProportionsDataImpl>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
           </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>scala-compiler-2.8.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
           <last-edited>1.6</last-edited>
-        </UIState>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>PiVot</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
       </state>
       <state key="ScopeChooserConfigurable.UI">
-        <UIState>
-          <splitter-proportions>
-            <SplitterProportionsDataImpl />
-          </splitter-proportions>
-          <settings />
-        </UIState>
+        <settings>
+          <splitter-proportions />
+        </settings>
       </state>
     </states>
   </component>

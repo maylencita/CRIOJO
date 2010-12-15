@@ -1,24 +1,16 @@
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
-<!--<project xmlns="http://maven.apache.org/POM/4.0.0"-->
-         <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-         <!--xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">-->
-    <!--<modelVersion>4.0.0</modelVersion>-->
-
-    <!--<groupId>CREOLE_Core</groupId>-->
-    <!--<artifactId>Core</artifactId>-->
-    <!--<version>1.0-SNAPSHOT</version>-->
-
-
-    
-<!--</project>-->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+       <groupId>fr.emn.criojo</groupId>
+        <artifactId>CRIOJO</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.emn.criojo</groupId>
-  <artifactId>criojo-core</artifactId>
+  <artifactId>CRIOJO-core</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <inceptionYear>2008</inceptionYear>
+
   <properties>
     <scala.version>2.8.0</scala.version>
     <junit.version>4.8.1</junit.version>
