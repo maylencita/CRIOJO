@@ -7,7 +7,7 @@
     </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.emn.criojo</groupId>
-  <artifactId>creole-parser</artifactId>
+  <artifactId>CRIOJO-parser</artifactId>
   <version>1.0-SNAPSHOT</version>
   <inceptionYear>2008</inceptionYear>
   <properties>

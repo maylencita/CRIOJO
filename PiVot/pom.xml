@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.emn.criojo</groupId>
-    <artifactId>creole-pivot</artifactId>
+    <artifactId>CRIOJO-pivot</artifactId>
     <version>1.0-SNAPSHOT</version>
 
   <properties>
