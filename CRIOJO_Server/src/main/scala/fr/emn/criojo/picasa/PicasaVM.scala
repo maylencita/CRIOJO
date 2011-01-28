@@ -1,4 +1,4 @@
-package fr.emn.criojo.builtin
+package fr.emn.criojo.picasa
 
 /**
  * Created by IntelliJ IDEA.
@@ -54,11 +54,11 @@ object PicasaVM extends ConnectedVM(PicasaParams.url){
 
   rules(
     Login(ps,tok,user,pwd) ==> HandleLogin(ps,tok,user,pwd),
-    AlbumCloning(ps,user,Cont) ==> {(T(ps) &: Init(ps)) ==> F} ?:
+    AlbumCloning(ps,user,Cont) ==> Abs(Init(ps)) ?
           (GenAlbum(ps,user,Cont) &: Init(ps) &: AlbumCloning(ps,user,Cont)),
     (AlbumCloning(ps,user,Cont) &: Album(ps,id)) ==> Cont(ps,id),
     (AlbumCloning(ps,user,Cont) &: Init(ps)) ==>
-            {(T(ps) &: Album(ps,id)) ==> F} ?: Nu(id)( NullRel(id) &: Cont(ps,id) )
+            Abs(Album(ps,Undef)) ? Nu(id)( NullRel(id) &: Cont(ps,id) )
   )
   /***********************************************************************/
 

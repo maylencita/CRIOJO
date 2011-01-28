@@ -5,7 +5,7 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>fr.emn.criojo.console</param-value>
+            <param-value>fr.emn.criojo.webconsole</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.feature.Redirect</param-name>
