@@ -36,6 +36,12 @@ abstract class CHAM extends AbstractMachine {
 
   def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
 
+  def querySansEffect(conj:List[Atom]):List[Atom] = {
+    val lstresult= query(conj, conj.flatMap(a=>a.vars.map(v=>(v,v))))
+    solution.revert
+    lstresult
+  }
+
   implicit def atomToConjunction(a:Atom):Conjunction = new &:(a, Empty)
 
   def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule = new CHAMRule(h, b, g, scope)
@@ -145,7 +151,10 @@ abstract class CHAM extends AbstractMachine {
     new Variable("x"+index)
   }
 
-  @serializable
+  case class Tok extends LocalRelation("$X"+index,true){
+    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
+  }
+
   case class Rel(n:String) extends LocalRelation(n,true){
     addRelation(this)
 
@@ -160,7 +169,7 @@ abstract class CHAM extends AbstractMachine {
   object NativeRelation{
     def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
   }
-  @serializable
+
   class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
     override def notifyObservers(a:Atom)= a match{
       case Atom(this.name, _) =>

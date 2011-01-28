@@ -20,13 +20,13 @@ abstract class Conjunction{
 
 //    def ?: (g:Guard): (Guard,Conjunction) = (g, this)
 
-    def ?: (ruleDefs: (RuleFactory => Rule)* ): (List[RuleFactory => Rule],Conjunction) = {
+//    def ?: (ruleDefs: (RuleFactory => Rule)* ): (List[RuleFactory => Rule],Conjunction) = {
 //      val guard = new Guard
 //      val guardBuilder = (rf:RuleFactory) => rf.createGuard(ruleDefs)
 //      ruleDefs.toList.foreach(f => guard.rules(f))
 //      (guard,this)
-      (ruleDefs.toList, this)
-    }
+//      (ruleDefs.toList, this)
+//    }
 
     def #: (vlst : Variable*): Conjunction = {this.scope = vlst.toList; this}
 
@@ -37,11 +37,22 @@ abstract class Conjunction{
       f
     }
 
-    def ==> (gc: (List[RuleFactory => Rule], Conjunction)):RuleFactory => Rule = {
-      val guardDefs = gc._1; val c2 = gc._2
+    def ==> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
+      case (g:Guard, conj:Conjunction) => getRuleBuilder(g,conj)
+      case (gd: List[RuleFactory => Rule], conj:Conjunction) => getRuleBuilder(gd, conj)
+      case _ => null
+    }
+
+    def getRuleBuilder (g:Guard,conj:Conjunction): RuleFactory => Rule = {
+      val f = (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
+      f
+    }
+
+    def getRuleBuilder (guardDefs: List[RuleFactory => Rule], conj:Conjunction):RuleFactory => Rule = {
+//      val guardDefs = gc._1; val c2 = gc._2
       val f = (rf:RuleFactory) => {
         val guard = rf.createGuard(guardDefs)
-        rf.createRule(this.toList,c2.toList,guard,c2.scope)
+        rf.createRule(this.toList,conj.toList,guard,conj.scope)
       }
       f
     }

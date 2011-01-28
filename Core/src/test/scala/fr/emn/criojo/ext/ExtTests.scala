@@ -16,11 +16,13 @@ import Assert._
 
 import java.net.URI
 
-class TypeTests{
+object ExtTests{
 
   val a = Variable("a")
   val b = Variable("b")
   val c = Variable("c")
+  val d = Variable("d")
+  val e = Variable("d")
 
   implicit def intToVar(n:Int):Variable = new Variable(n.toString)
   implicit def relToVar(r:Relation):RelVariable = {
@@ -29,50 +31,13 @@ class TypeTests{
     vr
   }
   implicit def strToVar(str:String):Variable = new Variable(str)
-
-  logLevel = INFO
-
-  @Test
-  def testInt{
-//    logLevel = DEBUG
-    val machine = new TestCham with IntVM{
-      val s,x,y,n = Var
-      val S = Rel("S"); val Seis = Rel("Seis"); val Siete = Rel("Siete")
-
-      rules(
-        S(n,s,x) ==> Int_ask(n,s,x,Siete)
-      )
-    }
-
-    machine.introduceAtom(Atom("$Int",Variable("7"),a))
-    machine.introduceAtom(Atom("$Int",Variable("6"),b))
-
-    machine.intEqClasses.get(7) match{
-      case Some(ec) if (ec.contains(a)) => assertTrue(true)//Ok
-      case _ => fail("Missing value 7->a. Actual eqClass: " +  machine.intEqClasses)
-    }
-
-    machine.introduceAtom(Atom("S", 7, c, a))
-    machine.introduceAtom(Atom("S", 7, c, b))
-
-    val a7 = Atom("Siete", a)
-    val a6 = Atom("Seis", b)
-
-//    log("Relations: " + machine.relations)
-    log("intEqClasses:" + machine.intEqClasses)
-    log("EqClasses:" + machine.eqClasses)
-
-    assertFalse("Missing element: " + a7 + ". Actual solution: " + machine.solution,
-      machine.query(List(a7),List()).isEmpty
-    )
-    assertTrue("Wrong solution with: " + a6 + ". Actual solution: " + machine.solution,
-      machine.query(List(a6),List()).isEmpty
-    )
-  }
+}
+class ExtTests{
+  import ExtTests._
 
   @Test
   def testStr{
-    logLevel = DEBUG
+//    logLevel = DEBUG
     val machine = new TestCham with StringVM{
       val s,x,y = Var
       val S = Rel("S"); val MyStr = Rel("MyStr")
@@ -99,43 +64,12 @@ class TypeTests{
     log("strEqClasses:" + machine.strEqClasses)
     log("EqClasses:" + machine.eqClasses)
 
+    val s = Variable("s"); val x = Variable("x")
     assertFalse("Missing element: " + a7 + ". Actual solution: " + machine.solution,
-      machine.query(List(a7),List()).isEmpty
+      machine.query(List(Atom("MyStr",s,x)),List((x,a))).isEmpty
     )
   }
 
-  @Test
-  def testEqInt{
-//    logLevel = DEBUG
-    var result = false
-
-    val machine = new TestCham with IntVM{
-      val s,x,y = Var
-      val S = Rel("S");
-      val Iguales = NativeRelation("Iguales"){
-        case Atom("Iguales", a::b::_) => result = true
-        case atom => fail("Expected atom: Iguales(a,b). Actual: " + atom)
-      }
-
-      rules(
-        S(s,x,y) ==> EQ_ask(s,x,y,Iguales)
-      )
-    }
-
-    machine.introduceAtom(Atom("$Int",Variable("8"),a))
-    machine.introduceAtom(Atom("$Int",Variable("8"),b))
-    machine.introduceAtom(Atom("S",Variable("1"),a,b))
-
-    log("intEqClasses:" + machine.intEqClasses)
-    log("EqClasses:" + machine.eqClasses)
-    assertTrue("Missing element: Iguales(a,b). Actual solution: " + machine.solution, result)
-
-    machine.introduceAtom(Atom("Eq", c, b))
-    machine.intEqClasses.get(8) match {
-      case Some(ec) if(ec.contains(a) && ec.contains(b) && ec.contains(c)) => assertTrue(true)
-      case _ => fail("Expected intEqClasses: Map(7->{a,b,c}). Actual: " + machine.intEqClasses)
-    }
-  }
 
   @Test
   def testEqStr{
@@ -194,7 +128,7 @@ class TypeTests{
 
   }
 
-  @Test
+  @Test (timeout=1000)
   def testPrint{
 //    logLevel = INFO
     val machine = new LocalVM{
@@ -217,4 +151,6 @@ class TypeTests{
     info(this.getClass, "testPrint", "intEqClasses: " + machine.intEqClasses)
     info(this.getClass, "testPrint", "strEqClasses:" + machine.strEqClasses)
   }
+
+
 }

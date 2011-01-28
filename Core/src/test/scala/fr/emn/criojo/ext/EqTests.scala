@@ -24,11 +24,12 @@ class EqTests{
   val c = Variable("c")
   val d = Variable("d")
 
-  val EQQ = "EqVM"
+  val testMachine = new LocalVM
+  val EQQ = testMachine.EQ
 
   @Test
   def testEq{
-    logLevel = DEBUG
+//    logLevel = DEBUG
     val machine = new LocalVM
 
     log("relations: " + machine.relations)
@@ -38,30 +39,29 @@ class EqTests{
     machine.introduceAtom(Atom(EQQ, c, d))
 
     log("solution: " + machine.solution)
-/*
+
 //    info(this.getClass, "testEq", "eqClasses= " + eqClasses)
-    assertTrue("Missing elements from eqClasses: " + machine.eqClasses,
+    assertTrue("Missing elements from eqClasses: " + machine.eqClasses + ". Expected: <{a,b},{c,d}>",
       machine.eqClasses.exists(ec => ec.contains(a) && ec.contains(b)) &&
       machine.eqClasses.exists(ec => ec.contains(c) && ec.contains(d))
     )
 
     machine.introduceAtom(Atom(EQQ, b, c))
 //    info(this.getClass, "testEq", "eqClasses= " + eqClasses)
-    assertTrue("Wrong eqClasses: " + machine.eqClasses,
+    assertTrue("Wrong eqClasses: " + machine.eqClasses + ". Expected: <{a,b,c,d}>",
       machine.eqClasses.exists(ec => ec.contains(a) && ec.contains(b) &&
         ec.contains(c) && ec.contains(d))
     )
-*/  }
+  }
 
-/*
-  @Test
-  def testAskEq{
+  @Test (expected=classOf[InvalidStateError])
+  def testErrorNotEq{
     logLevel = INFO
-    val machine = new CHAM with EqVM with IntVM  {
+    val machine = new LocalVM {
       val R = Rel("R") ; val S=Rel("S")
       val x,y,z,w = Var
 
-      val r2 = (R(x,y) &: R(z,w) &: EQ(y,z)) ==> R(x,w)
+      rules((R(x,y) &: R(x,w)) ==> EQ(y,w))
     }
     log("Relations: " + machine.relations)
     log("Solution: " + machine.solution)
@@ -70,13 +70,27 @@ class EqTests{
     val R = "R"
 
     machine.introduceAtom(Atom(R, a, b))
-    machine.introduceAtom(Atom(R, b, c))
-
-    val atom = Atom(R, a,c)
-    assertTrue("Expected value in solution: " + atom + ". Actual solution: " + machine.solution,
-      machine.solution.exists(at => at.relName == atom.relName && at.vars == atom.vars)
-    )
+    machine.introduceAtom(Atom(R, a, c))
+    machine.introduceAtom(Atom("$NotEq", b, c))
   }
-*/
+
+  @Test (expected=classOf[InvalidStateError])
+  def testErrorEq{
+    logLevel = DEBUG
+    val machine = new LocalVM {
+      val R = Rel("R") ; val S=Rel("S")
+      val x,y,z,w = Var
+
+      rules(
+        (S(x) &: R(x,w)) ==> NotEQ(x,w)
+      )
+    }
+    log("Relations: " + machine.relations)
+    log("Solution: " + machine.solution)
+    log("Rules: " + machine.rules)
+
+    machine.introduceAtom(Atom("S", a))
+    machine.introduceAtom(Atom("R", a, a))
+  }
 
 }

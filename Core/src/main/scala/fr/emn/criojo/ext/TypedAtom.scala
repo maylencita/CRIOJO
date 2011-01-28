@@ -36,7 +36,17 @@ TypedAtom("$Str", sval, strVar){
   }
 
   override def applySubstitutions(subs:List[Substitution]):Atom = {
-    this
+//    this
+    def replaceVar(variable:Variable):Variable = variable match{
+      case vl:Value[Int] => vl
+      case _ => find(variable.name)
+    }
+    def find(name:String):Variable = subs.find(s => s._1.name == name) match{
+        case Some(v) => v._2
+        case _ => Undef
+    }
+
+    new StringAtom(sval, replaceVar(strVar))
   }
 }
 
@@ -51,13 +61,6 @@ case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int", num, intV
   }
 
   override def applySubstitutions(subs:List[Substitution]):Atom = {
-    def replace(variable:Variable):Variable = {
-      subs.find(s => s._1.name == variable.name) match{
-        case Some(nv) => nv._2
-        case _ => Undef
-      }
-    }
-
     this
   }
 }

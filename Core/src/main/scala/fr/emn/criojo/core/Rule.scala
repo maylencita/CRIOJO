@@ -66,8 +66,9 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
     if (newSolution != solution){
       solution.update(newSolution)
 
-      Logger.log("[Rule.applyReaction] applied! newSolution=" + solution)
-//      newAtoms.foreach(a => a.relation.notifyObservers(a))
+      Logger.debug(this.getClass, "applyReaction", this.toString + " applied! solution=" + solution)
+      head.foreach(h => h.setActive(true))
+//      println(this.toString + " applied! solution=" + solution)
       newAtoms.foreach(a => notifyRelationObservers(a))
       true
     }else{
@@ -113,12 +114,13 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
       Logger.log("============================================================================")
       Logger.log(this.getClass,"receiveUpdate","this: " + this)
       Logger.levelDown
-      atom.setActive(!execute(getSubstitutions(this, List(atom))))
+      if(!execute(getSubstitutions(this, List(atom)))){
+        atom.setActive(true)
+        this.active = true
+      }
       Logger.levelUp
 //    Logger.log(this.getClass, "receiveUpdate", "Final solution: " + solution)
       Logger.log("============================================================================")
-
-      this.active = true
     }
 
   }
