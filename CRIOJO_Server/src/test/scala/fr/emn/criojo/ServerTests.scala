@@ -84,7 +84,7 @@ class ServerTests{
 //    EmbededServer.start(8080)
 //    println("Server Started")
     val client = Client.create(new DefaultClientConfig)
-    val deployService = client.resource(UriBuilder.fromUri("http://localhost:8080/console/").build())
+    val deployService = client.resource(UriBuilder.fromUri("http://localhost:8080/webconsole/").build())
 
     val form = new Form
     form.add("script",script)
@@ -115,7 +115,7 @@ class ServerTests{
 //    assertFalse(vm.solution.findMatches(List(Atom("Print", List(Undef))), List()).isEmpty)
   }
 
-  @Test //(timeout=35000)
+  @Test (timeout=35000)
   def testPicasaAlbum{
 //    logLevel = DEBUG
     val pvmhost = "http://localhost:8080/picasa/VM"
@@ -139,8 +139,8 @@ class ServerTests{
 
       rules(
         Start(n,u) ==> Nu(s)(ACloning(s,u,palbum) &: Count(s,n,u)),
-        (PAlbum(s,id) &: Count(s,n,u) ) ==> {NotNul(id)} ?: Nu(m)(ACloning(s,u,palbum) &: Suc(n,m) &: Count(s,m,u)),
-        (PAlbum(s,id) &: Count(s,n,u) ) ==> {Nul(id)} ?: Ok(s,n)
+        (PAlbum(s,id) &: Count(s,n,u) ) ==> NotNul(id) ? Nu(m)(ACloning(s,u,palbum) &: Suc(n,m) &: Count(s,m,u)),
+        (PAlbum(s,id) &: Count(s,n,u) ) ==> Nul(id) ? Ok(s,n)
       )
     }
     vm2.start

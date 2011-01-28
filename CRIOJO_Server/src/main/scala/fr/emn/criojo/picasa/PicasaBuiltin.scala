@@ -10,7 +10,6 @@ package fr.emn.criojo.picasa
 
 import fr.emn.criojo.ext.RemoteRelation
 import fr.emn.criojo.core._
-import fr.emn.criojo.builtin.{PicasaVM, PicasaParams}
 import fr.emn.criojo.util._
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.virtualmachine.ClientProxy

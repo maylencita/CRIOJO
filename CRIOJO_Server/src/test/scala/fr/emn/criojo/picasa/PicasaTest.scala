@@ -1,4 +1,4 @@
-package fr.emn.criojo.builtin
+package fr.emn.criojo.picasa
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ package fr.emn.criojo.builtin
  */
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.virtualmachine.ConnectedVM
+import fr.emn.criojo.net.ConnectedVM
 import fr.emn.criojo.ext.RemoteRelation
 import fr.emn.criojo.util.Logger._
 
@@ -47,13 +47,13 @@ class PicasaTest{
     val auth = PicasaClient.login("maylelacouture@gmail.com","dr2g9n21r")
 
     val c_vm = new ConnectedVM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost()).build()){
-      val Tok = NativeRelation("Tok"){
+      val Token = NativeRelation("Tok"){
         case Atom("Tok", id::token::_) => result=true
         case a => fail("Received wrong answer. Expected: " + auth + " .Actual: " + a)
       }
     }
 
-    val tok = new RelVariable("Tok"); tok.relation = c_vm.Tok
+    val tok = new RelVariable("Tok"); tok.relation = c_vm.Token
     val x = Variable("x")
     val user = Variable("maylelacouture@gmail.com")
     val pwd = Variable("dr2g9n21r")

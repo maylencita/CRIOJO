@@ -1,4 +1,4 @@
-package fr.emn.criojo.console
+package fr.emn.criojo.webconsole
 
 /**
  * Created by IntelliJ IDEA.
