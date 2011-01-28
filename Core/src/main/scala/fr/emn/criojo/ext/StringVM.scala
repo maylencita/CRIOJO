@@ -12,18 +12,26 @@ import Creole._
 
 trait StringVM extends CHAM with EqVM{
 
-  val strEqClasses = new TypedEqClasses[String](eqClasses)
+  val strEqClasses = new TypedEqClasses[String](eqClasses,disjClasses)
 
   /**********************************************************************
   * VM definition:
   */
-  val StrRel = NativeRelation("$Str"){a => strEqClasses add (a(0).name,a(1))}
+  val Str_print = Rel("$Str_print")
+  val StrRel = new NativeRelation("$Str", a => strEqClasses add (a(0).name,a(1))){
+    override def apply(vars:Variable*):Atom = new StringAtom(vars(0).toString, vars(1))
+  }
   val Str_ask = NativeRelation("$Str_ask"){a => ask(a) }
 
   //--Private:
   private val NewStr = NativeRelation("$NewStr"){ a => add(a) }
   private val AskStr = NativeRelation("$AskStr"){ a => ask(a) }
+  private val PrintStr = NativeRelation("$PrintStr"){a => println(a(0) + "=" + a(1))}
   private val str,s,x,y = Var; private val K = RelVariable("K")
+
+  rules(
+    (StrRel(s,x) &: Str_print(x)) ==> PrintStr(x,s)
+  )
 
   /***********************************************************************/
 
@@ -43,5 +51,6 @@ trait StringVM extends CHAM with EqVM{
       }
     case _=>
   }
+
 
 }

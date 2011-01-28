@@ -14,12 +14,12 @@ object Solution{
   def createDefault(atoms:List[Atom]) = new SolutionImpl(atoms)
 }
 
-//class Solution(var elems:Set[Atom]){
+class InvalidStateError(msg:String) extends Exception(msg)
+
 trait Solution{
-//  def this()= this(Set[Atom]())
   def elems:List[Atom]
 
-  def addAtom(atom:Atom)//{ elems += atom }
+  def addAtom(atom:Atom)
 
   def addMolecule(molecule:List[Atom]){ molecule foreach (addAtom(_)) }
 
@@ -37,29 +37,19 @@ trait Solution{
 
   def foreach(f: (Atom) => Unit) {elems.foreach(f)}
 
-  def remove(a:Atom) //{ elems -= a}
+  def remove(a:Atom)
 
   def exists(f: (Atom)=>Boolean) = elems.exists(f)
 
   def map[B](f: (Atom)=> B) = elems.map(f)
 
-  def clear //{  elems = Set[Atom]() }
+  def clear
 
-  def cleanup/*{
-    elems = elems.filter(_.active)
-  }*/
+  def cleanup
 
-  def revert/*{
-    elems.foreach(_.isActive = true)
-  }*/
+  def revert
 
-  def update(newsol: Solution)/*{
-    if (newsol.contains(False) || newsol.isEmpty){
-      clear
-    }else{
-      this.elems = newsol.elems
-    }
-  }*/
+  def update(newsol: Solution)
 
   /**
    * Inactivates an atom in the solution
@@ -83,10 +73,8 @@ trait Solution{
           var i = matches.iterator
           while (i.hasNext && results.isEmpty){
             val m = i.next
-//            m.active = false
             inactivate(m)
             results = findMatchesRec(rest, subs.union(h.vars.zip(m.vars)), acum :+ m)
-//            m.active = results.isEmpty
             if(results.isEmpty)
               activate(m)
           }
@@ -97,7 +85,7 @@ trait Solution{
     findMatchesRec(conjunction, substitutions, List())
   }
 
-  def copy:Solution //= new Solution(elems.map(a => a.clone))
+  def copy:Solution
 
   protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
@@ -108,7 +96,7 @@ trait Solution{
     }
   }
 
-  override def clone:Solution = Solution.createDefault(List[Atom]() ++ this.elems)//=new Solution(Set[Atom]() ++ this.elems)
+  override def clone:Solution = Solution.createDefault(List[Atom]() ++ this.elems)
 
   override def equals(that:Any)= that match{
     case thatS:Solution => this.size == thatS.size && (this.elems intersect thatS.elems).size == this.size

@@ -27,10 +27,6 @@ class VirtualMachineTests{
   @Test (timeout=1000)
   def testEqGuard{
 //    logLevel = DEBUG
-    val a = Variable("a")
-    val b = Variable("b")
-    val c = Variable("c")
-    val d = Variable("d")
 
     var result = false
 
@@ -45,11 +41,11 @@ class VirtualMachineTests{
         case resp => fail("Expected atom: Resp(1,d). Actual: " + resp)
       }
       rules(
-        R(s,x,y,Cont) ==> {(T &: X1(s)) ==> F} ?: (R(s,x,y,Cont) &: X1(s)) ,
-        (R(s,x,y,Cont) &: S(y2,z)) ==> { T(s,y,y2) ==> {(T &: X2()) ==> F} ?: (EQ_ask(s,y,y2,TT) &: X2()) } ?: Cont(s,z)
+        R(s,x,y,Cont) ==> Abs(X1(s)) ? (R(s,x,y,Cont) &: X1(s)) ,
+        (R(s,x,y,Cont) &: S(y2,z)) ==> Eq(y,y2) ? Cont(s,z)
       )
     }
-    info (this.getClass, "testGuard", "m2: " + m2) //.rules.mkString("","\n",""))
+    info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
 
     val atom1 = Atom("R", Variable("1"), a, b, RelVariable(m2.Resp))
     val atom2 = Atom("S", b, d)
@@ -63,11 +59,6 @@ class VirtualMachineTests{
   @Test (timeout=1000)
   def testEqClassesGuard{
 //    logLevel = DEBUG
-    val a = Variable("a")
-    val b = Variable("b")
-    val c = Variable("c")
-    val d = Variable("d")
-
     var result = false
 
     val m2 = new LocalVM{
@@ -81,8 +72,8 @@ class VirtualMachineTests{
         case resp => fail("Expected atom: Resp(1,d). Actual: " + resp)
       }
       rules(
-        R(s,x,y,Cont) ==> {(T &: X1(s)) ==> F} ?: (R(s,x,y,Cont) &: X1(s)) ,
-        (R(s,x,y,Cont) &: S(y2,z)) ==> { T(s,y,y2) ==> {(T &: X2()) ==> F} ?: (EQ_ask(s,y,y2,TT) &: X2()) } ?: Cont(s,z)
+        R(s,x,y,Cont) ==> Abs(X1(s)) ? (R(s,x,y,Cont) &: X1(s)) ,
+        (R(s,x,y,Cont) &: S(y2,z)) ==> Eq(y,y2) ? Cont(s,z)
       )
     }
     info (this.getClass, "testEqClassesGuard", "m2: " + m2) //.rules.mkString("","\n",""))
@@ -96,4 +87,48 @@ class VirtualMachineTests{
     info(this.getClass, "testEqClassesGuard", "eqClasses: " + m2.eqClasses)
     assertTrue("Expected: <Resp(1,d)>. Actual: " + m2.solution, result)
   }
+
+  @Test (timeout=2000)
+  def testMapReduce{
+//    logLevel = DEBUG
+    var total:Int = 0
+    val m2 = new LocalVM{
+      val Word = Rel("Word")
+      val Map = Rel("Map")
+      val Reduce = Rel("Reduce")
+      val Init = Rel("Init")
+      val X1 = Rel("X1"); val X2 = Rel("X2")
+      val n,m,nm,s,w1,w2 = Var
+      val Total = NativeRelation("Total"){
+        case Atom(_, vlst) =>
+          getIntValue(vlst(0)) match{
+            case Some(num) => total = num
+            case _ =>
+          }
+        case _ =>
+      }
+
+      rules(
+        Empty ==> Abs(X2()) ? Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2()),
+        (Init() &: Word(w)) ==> Nu(n)(Map(w,n) &: IntRel(1,n) &: Init()),
+        (Map(w1,n) &: Reduce(w2,m)) ==> Eq(w1,w2) ? Nu(nm)(Reduce(w1,nm) &: Sum(n,m,nm)),
+        (Reduce(w,n) &: Init()) ==> Abs(Word()) ? (Print(n) &: Total(n))
+      )
+    }
+
+    val s1=Variable("s1");val s2=Variable("s2");val s3=Variable("s3"); val s4=Variable("s4"); val s5=Variable("s5")
+    m2.execute
+    m2.introduceAtom(Atom("$Str",Value("foo"),s1)); m2.introduceAtom(Atom("Word",s1))
+    m2.introduceAtom(Atom("$Str",Value("boo"),s2)); m2.introduceAtom(Atom("Word",s2))
+    m2.introduceAtom(Atom("$Str",Value("foo"),s3)); m2.introduceAtom(Atom("Word",s3))
+    m2.introduceAtom(Atom("$Str",Value("cat"),s4)); m2.introduceAtom(Atom("Word",s4))
+    m2.introduceAtom(Atom("$Str",Value("lol"),s5)); m2.introduceAtom(Atom("Word",s5))
+    m2.introduceAtom(Atom("Init"))
+
+    assertEquals("Expected: 3, got: " + total +". Final solution: " + m2.solution, total,2)
+  }
+
+//  implicit def intToVar(n:Int):Variable = new Value[](n)
+  implicit def strToVar(str:String):Variable = new Variable(str)
+
 }

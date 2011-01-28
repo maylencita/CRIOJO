@@ -32,9 +32,10 @@ extends Relation{
   
   def notifyObservers(a: Atom){
     observers.foreach{o =>
-      Logger.log("[Relation("+name+").notifyObservers]"+ o + " notified by " + a)
-      if (a.isActive)
+      if (a.isActive){
+//        Logger.log("[Relation("+name+").notifyObservers]"+ o + " notified by " + a)
         o.receiveUpdate(a)
+      }
     }
   }
 

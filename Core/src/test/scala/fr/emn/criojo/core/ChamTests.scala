@@ -102,7 +102,8 @@ class ChamTests{
       val X1 = Rel("X1")
 
       rules(
-        R(x,y) ==> {(T &: X1()) ==> F} ?: (R(x,y) &: R(x,y) &: X1())
+        R(x,y) ==> Guard(T(), (T &: X1(x,y)) ==> F) ? (R(x,y) &: R(x,y) &: X1())
+//        R(x,y) ==> {(T &: X1()) ==> F} ?: (R(x,y) &: R(x,y) &: X1())
       )
     }
     info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
@@ -110,9 +111,9 @@ class ChamTests{
     val atom = Atom("R", a, b) 
     m2.introduceAtom(atom)
 
-    assertEquals(2, m2.query(List(atom,atom), List()).size)
+//    assertEquals(2, m2.query(List(atom,atom), List()).size)
     assertTrue("Expected: <R(a,b),R(a,b)>. Actual: " + m2.solution,
-      m2.query(List(atom,atom), List()).size == 2)
+      m2.query(List(atom,atom), List((a,a),(b,b))).size == 2)
   }
 
   @Test (timeout=1000)
@@ -129,7 +130,7 @@ class ChamTests{
       val X1 = Rel("X1")
 
       rules(
-        R(s,x,y) ==> {(T(s) &: X1(s)) ==> F} ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
+        R(s,x,y) ==> Guard(T(s), (T(s) &: X1(s)) ==> F) ? (R(s,x,y) &: R(s,x,y) &: X1(s))
       )
     }
     info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))

@@ -17,25 +17,31 @@ import collection.mutable.HashSet
  * Extended CHAM with support for constant values, pretty-print, etc.
  */
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
-trait ExtendedCHAM extends CHAM with IntVM with StringVM{
+trait ExtendedCHAM extends CHAM with IntVM with StringVM with NullCHAM{
 
-  val nullVars:EqClass = HashSet[Variable]()
-  val f = new RelVariable("false")
-  val t = new RelVariable("true")
+  private val x,y = Var
 
   /**********************************************************************
   * VM definition:
   */
-  val Print = NativeRelation("Print")(printAtom(_) )
-  val NullRel = NativeRelation("Null")( addNull(_) )
-  val Null_ask = NativeRelation("Null_ask")(askNull(_))
+  val Print = Rel("Print") //NativeRelation("Print")(printAtom(_) )
+
+  private val Null_print = NativeRelation("Null_print"){a => println("Null")}
+
+  rules(
+    Print(x) ==> NotNul(x) ? (Int_print(x) &: Str_print(x)),
+    Print(x) ==> Nul(x) ? Null_print(x)
+  )
   /***********************************************************************/
 
-  def getValue(x:Variable):ValueVariable[_]={
-    getStrValue(x) getOrElse (getIntValue(x) getOrElse null) match{
-      case y if(y != null) => new Value(y)
-      case _ if (nullVars contains x) => Null
-      case _ => NoValue
+  def getValue(v:Variable):ValueVariable[_]={
+    if (nullVars contains v)
+      Null
+    else{
+      getStrValue(v) getOrElse (getIntValue(v) getOrElse null) match{
+        case v2 if(v2 != null) => new Value(v2)
+        case _ => NoValue
+      }
     }
   }
 
@@ -54,44 +60,23 @@ trait ExtendedCHAM extends CHAM with IntVM with StringVM{
     case _ => //Nothing
   }
 
-  private def addNull(a:Atom) = a match{
-    case Atom("Null", v::_) =>
-      if (nullVars isEmpty){
-        eqClasses add nullVars
-      }
-      nullVars add v
-//      a.inactivate
-      solution.inactivate(a)
-      solution.cleanup
-    case _ => //Nothing
-  }
-
-  private def askNull(a:Atom) = a match{
-    case Atom(_, v::kplus::kminus::_) =>
-      if (nullVars contains (v))
-        solution.addAtom(Atom(kplus.name, v))
-      else
-        solution.addAtom(Atom(kminus.name, v))
-    case _ =>
-  }
-
   override def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
     val guard = new ExtendedGuard(this)
     guard.initRules(ruleDefs)
     guard
   }
 
-  def Abs(atom:Atom) = (new Top(atom.vars) &: atom) ==> F
-
-  def NotNul(variable:Variable) = T(variable) ==> Null_ask(variable, f,t)
-
-  def Nul(variable:Variable) = T(variable) ==> Null_ask(variable, t,f)
-
 }
 
 class ExtendedGuard (outherVM: ExtendedCHAM) extends Guard with ExtendedCHAM{
-  eqClasses = outherVM.eqClasses
+  def this(outVM: ExtendedCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) {
+    this(outVM)
+    starter = sttr
+    initRules(ruleDefs.toList)
+  }
+
+//  eqClasses = outherVM.eqClasses
   override val intEqClasses = outherVM.intEqClasses
   override val strEqClasses = outherVM.strEqClasses
-  override val nullVars = outherVM.nullVars
+//  override val nullVars = outherVM.nullVars
 }
