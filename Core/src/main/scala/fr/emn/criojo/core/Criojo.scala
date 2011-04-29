@@ -8,7 +8,7 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-object Creole{
+object Criojo{
   var id = 0
   type Substitution = Pair[Variable, Variable]
 

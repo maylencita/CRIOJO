@@ -43,7 +43,7 @@ object CriojoClient{
   }
 }
 
-class ProxiedClient(url:URI) extends ConnectedVM(url) with Actor{
+class ProxiedClient(url:URI) extends ConnectedCHAM(url) with Actor{
 //  def this(scriptUri:String, url:URI)={
 //    this(url)
 //    ScriptLoader.load(this, io.Source.fromFile(scriptUri).mkString)
@@ -85,7 +85,7 @@ import java.io._
 case class Connection(socket:Socket)
 
 class DirectClient(name:String, port:Int)  extends
-ConnectedVM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "/" + name).build()) with Actor{
+ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "/" + name).build()) with Actor{
 
   def act() {
 //    this.execute

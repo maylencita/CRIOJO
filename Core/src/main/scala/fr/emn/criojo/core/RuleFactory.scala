@@ -15,5 +15,5 @@ trait RuleFactory{
   def createRule(h:Head,b:Body,g:Guard):Rule = createRule(h,b,g,List()) 
   def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule
 
-  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard
+//  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard
 }

@@ -10,14 +10,15 @@ package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
 
-abstract class VirtualMachine extends ExtendedCHAM 
+@Deprecated
+abstract class StandardCHAM extends ExtendedCHAM
 {
-  def execute{
-      while (rules.exists(r => r.isAxiom && r.execute)){}
-  }
+//  def execute{
+//      while (rules.exists(r => r.isAxiom && r.execute)){}
+//  }
 
-  def newRemoteRelation(remoteName:String,url:String):RemoteRelation
-  def newLocalRelation(name:String,public:Boolean):LocalRelation
+//  def newRemoteRelation(remoteName:String,url:String):RemoteRelation
+//  def newLocalRelation(name:String,public:Boolean):LocalRelation
 
   override def toString:String = {
     val nonPrint = List("Eq","Eq_ask","$Int","$AskInt","$Str","$AskStr")

@@ -8,11 +8,11 @@ package fr.emn.criojo.net
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
-import fr.emn.criojo.ext.{VirtualMachine,RemoteRelation}
+import fr.emn.criojo.ext.ExtendedCHAM //{StandardCHAM,RemoteRelation}
 import fr.emn.criojo.util.Logger._
 //import fr.emn.criojo.util.ConfigProperties._
 import fr.emn.criojo.util.json._
-import Creole._
+import Criojo._
 
 //import fr.emn.criojo.model.RemoteRelationImpl
 
@@ -29,7 +29,7 @@ trait PublicRelation extends Relation{
   def url:URI
 }
 
-class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
+class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{//StandardCHAM{
  assert(vmUrl != null)
 
 //  type JWARNING = Level.WARNING
@@ -38,7 +38,7 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
   val owner = this
   val logger = Logger.getLogger(this.getClass.getName())
 
-  val solution = Solution()
+//  val solution = Solution()
 
 //  def loadSolution{
 //    solution match{
@@ -68,11 +68,11 @@ class ConnectedVM(val vmUrl:URI) extends VirtualMachine{
     introduceAtom(a2)
   }
 
-  def newLocalRelation(name:String,public:Boolean):LocalRelation = {
+  override def newLocalRelation(name:String,public:Boolean):LocalRelation = {
     Provided(name)
   }
 
-  def newRemoteRelation(remoteName:String,remoteUrl:String):RemoteRelation = {
+  override def newRemoteRelation(remoteName:String,remoteUrl:String):RemoteRelation = {
     val uri = UriBuilder.fromUri(remoteUrl).build()
     val r = new RemoteRelationImpl(remoteName,uri)
     //addRelation(r)

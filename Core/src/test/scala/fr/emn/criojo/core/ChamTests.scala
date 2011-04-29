@@ -12,16 +12,27 @@ import fr.emn.criojo.util.Logger._
 import org.junit._
 import Assert._
 
-class TestCham extends CHAM{
-  val solution = Solution()
+/*
+trait DefaultCham extends CHAM{
+  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
+    if (ruleDefs isEmpty)
+      new EmptyGuard
+    else
+      new Guard with DefaultCham{
+        initRules(ruleDefs.toList)
+      }
+  }
 }
 
+class TestCham extends CHAM with DefaultCham{}
+*/
+
 class ChamTests{
-  import Creole._
+  import Criojo._
 
   logLevel = INFO
   
-  val machine:CHAM = new TestCham{
+  val machine:CHAM = new CHAM{ //TestCham with DefaultCham{
     val x = Variable("x")
     val y = Variable("y")
     val z = Variable("z")
@@ -46,28 +57,28 @@ class ChamTests{
     }
   }
 
-  @Test
-  def testRuleCreation{
-    val x = Variable("x")
-    val y = Variable("y")
-    val z = Variable("z")
-    val r1:Rule = new Rule{
-      val head = List(Atom("R",x,y),Atom("R",y,z))
-      val body = List(Atom("R",x,z))
-      val guard = new Guard(List())
-      def execute (subs:List[Substitution]):Boolean = true
-      def notifyRelationObservers(a:Atom){}
-    }
-    val r2:Rule = new Rule{
-      val head = Atom("S",x,y)::Nil
-      val body = Atom("R",x,y)::Nil
-      val guard = new Guard
-      def execute (subs:List[Substitution]):Boolean = true
-      def notifyRelationObservers(a:Atom){}
-    }
-    assertTrue("Rule "+ r1 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
-    assertTrue("Rule "+ r2 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
-  }
+//  @Test
+//  def testRuleCreation{
+//    val x = Variable("x")
+//    val y = Variable("y")
+//    val z = Variable("z")
+//    val r1:Rule = new Rule{
+//      val head = List(Atom("R",x,y),Atom("R",y,z))
+//      val body = List(Atom("R",x,z))
+//      val guard = new Guard(List())
+//      def execute (subs:List[Substitution]):Boolean = true
+//      def notifyRelationObservers(a:Atom){}
+//    }
+//    val r2:Rule = new Rule{
+//      val head = Atom("S",x,y)::Nil
+//      val body = Atom("R",x,y)::Nil
+//      val guard = new Guard
+//      def execute (subs:List[Substitution]):Boolean = true
+//      def notifyRelationObservers(a:Atom){}
+//    }
+//    assertTrue("Rule "+ r1 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
+//    assertTrue("Rule "+ r2 +" not found! Existing rules: " + machine.rules, machine.rules.exists(_ == r1))
+//  }
 
   @Test(timeout=1000)
   def testAtomInsertion{
@@ -79,7 +90,7 @@ class ChamTests{
     val a3 = Atom("R", Variable("a"),Variable("c"))
 
     machine.introduceAtom(a1)
-    assertEquals(Solution(a1), machine.solution)
+    assertEquals(StandAloneSolution(List(a1)), machine.solution)
 
     machine.introduceAtom(a2)
     log(this.getClass, "testAtomInsertion", "solution: " + machine.solution)
@@ -90,19 +101,19 @@ class ChamTests{
 
   @Test(timeout=1000)
   def testGuard{
-//    logLevel = DEBUG
+    logLevel = DEBUG
     val a = Variable("a")
     val b = Variable("b")
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new TestCham{
+    val m2 = new CHAM{//TestCham {
       val x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
 
       rules(
-        R(x,y) ==> Guard(T(), (T &: X1(x,y)) ==> F) ? (R(x,y) &: R(x,y) &: X1())
+        R(x,y) ==> Guard(T(x,y), (T(x,y) &: X1(x,y)) ==> F) ? (R(x,y) &: R(x,y) &: X1(x,y))
 //        R(x,y) ==> {(T &: X1()) ==> F} ?: (R(x,y) &: R(x,y) &: X1())
       )
     }
@@ -124,7 +135,7 @@ class ChamTests{
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new TestCham{
+    val m2 = new CHAM{ //TestCham {
       val s,x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
@@ -152,11 +163,11 @@ class ChamTests{
     val a = Variable("a")
     val b = Variable("b")
 
-    val vm = new TestCham{
+    val vm = new CHAM{ //TestCham{
       val x,y,z,w = Var
       val S = Rel("S")
       val R = NativeRelation("R"){
-        case Atom("R", a::v2::v3::_) if (v2 != Undef && v3 != Undef) => result = true
+        case (Atom("R", a::v2::v3::_),s) if (v2 != Undef && v3 != Undef) => result = true
         case at => fail("Expected: R(x1,x2,x3). Actual: " + at)
       }
 
@@ -171,10 +182,31 @@ class ChamTests{
 //    vm.introduceAtom(atom)
 
     assertTrue("Expected: <R(x1,x2,x3)>. Actual: " + vm.solution, result)
-
   }
 
-  @Test
+  @Test (timeout=1000)
+  def testAbs{
+    val vm = new CHAM{
+      val s,x,y,z,w = Var
+      val R = Rel("R")
+      val X1 = Rel("X1")
+
+      rules(
+        R(s,x,y) ==> Abs(X1(s)) ? (R(s,x,y) &: R(s,x,y) &: X1(s))
+      )
+    }
+
+      val a = Variable("a"); val b= Variable("b")
+      val atom = Atom("R", Variable("1"), a, b)
+      val atom2 = Atom("R", Variable("2"), a, b)
+      vm.introduceAtom(atom)
+      vm.introduceAtom(atom2)
+
+      assertTrue("Expected: <R(1,a,b),R(1,a,b),R(2,a,b),R(2,a,b)>. Actual: " + vm.solution,
+        vm.query(List(atom,atom,atom2,atom2), List()).size == 4)
+  }
+
+  @Test (timeout=1000)
   def testHORelation{
     logLevel = DEBUG
     
@@ -182,13 +214,13 @@ class ChamTests{
     val b = Variable("b")
     var result = false
 
-    val vm = new TestCham{
+    val vm = new CHAM{ //TestCham{
       val x,y,z,w = Var
       val Cont = RelVariable("Cont")
 
       val R = Rel("R"); val S = Rel("S")
       val Resp = NativeRelation("Resp"){
-        case Atom("Resp", a::b::_) => result = true
+        case (Atom("Resp", a::b::_),s) => result = true
         case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
       }
       val RespVar = RelVariable(Resp)

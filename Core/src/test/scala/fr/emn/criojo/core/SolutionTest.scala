@@ -24,7 +24,7 @@ import Assert._
 
 class SolutionTest {
 
-  val solution = /*new*/ Solution()
+  val solution = new StandAloneSolution()
   val r = new LocalRelation("R")
   val a = Atom(r, Variable("x1"))
   val a2 = Atom(r, Variable("x1"))
@@ -37,7 +37,7 @@ class SolutionTest {
 //    assertTrue("<R(x1)>" == solution.toString)
 //  }
 
-  @Test
+  @Test (timeout=1000)
   def testMultiRel{
     solution.addAtom(a)
     solution.addAtom(a2)
@@ -46,7 +46,7 @@ class SolutionTest {
     assertTrue("<R(x1),R(x1)>" == solution.toString)
   }
 
-  @Test
+  @Test (timeout=1000)
   def testCleanup{
     solution.addAtom(a)
     a.setActive(false)
@@ -55,7 +55,7 @@ class SolutionTest {
     assertTrue("<>" == solution.toString)
   }
 
-  @Test
+  @Test (timeout=1000)
   def testRevert{
     solution.addAtom(a)
     a.setActive(false)
@@ -64,7 +64,7 @@ class SolutionTest {
     assertTrue("<R(x1)>" == solution.toString)
   }
 
-  @Test
+  @Test  (timeout=1000)
   def testClone{
     solution.addAtom(a)
     solution.addAtom(a2)
@@ -79,11 +79,11 @@ class SolutionTest {
     assertFalse(solution.toString == sol2.toString)
   }
 
-  @Test
+  @Test (timeout=1000)
   def testEquals{
     val b = Atom(r, Variable("y1"))
-    val sol1 = /*new*/ Solution.createDefault(List(a,b))
-    val sol2 = /*new*/ Solution.createDefault(List(a,b))
+    val sol1 = StandAloneSolution(List(a,b))
+    val sol2 = StandAloneSolution(List(a,b))
 
     println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
 
@@ -96,7 +96,7 @@ class SolutionTest {
     assertFalse(sol1 == sol2)
   }
 
-  @Test
+  @Test (timeout=1000)
   def testUpdate{
     solution.addAtom(a); solution.addAtom(a2)
 

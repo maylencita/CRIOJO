@@ -9,7 +9,7 @@ package fr.emn.criojo.ext
  */
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.core.Creole._
+import fr.emn.criojo.core.Criojo._
 
 abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
         extends Atom(relName, (if (value != null) List(Variable(value.toString),variable) else List(variable))){ 

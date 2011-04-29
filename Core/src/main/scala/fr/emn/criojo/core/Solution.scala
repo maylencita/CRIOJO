@@ -1,6 +1,6 @@
 package fr.emn.criojo.core
 
-import Creole.Substitution
+import Criojo.Substitution
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,8 +10,8 @@ import Creole.Substitution
  * To change this template use File | Settings | File Templates.
  */
 object Solution{
-  def apply(atoms:Atom*) = new SolutionImpl(atoms.toList)
-  def createDefault(atoms:List[Atom]) = new SolutionImpl(atoms)
+  def apply(cham:CHAM, atoms:Atom*) = new SolutionImpl(cham, atoms.toList)
+  def createDefault(atoms:List[Atom]) = new SolutionImpl(null, atoms)
 }
 
 class InvalidStateError(msg:String) extends Exception(msg)
@@ -21,7 +21,7 @@ trait Solution{
 
   def addAtom(atom:Atom)
 
-  def addMolecule(molecule:List[Atom]){ molecule foreach (addAtom(_)) }
+  def addMolecule(molecule:List[Atom])//{ molecule foreach (addAtom(_)) }
 
   def size = elems.size
 
@@ -85,7 +85,7 @@ trait Solution{
     findMatchesRec(conjunction, substitutions, List())
   }
 
-  def copy:Solution
+  def copy(newOwner:CHAM):Solution
 
   protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
@@ -106,14 +106,24 @@ trait Solution{
   override def toString = {
     elems.mkString("<",",",">")
   }
+
+  def notifyCHAM(newAtom:Atom)
 }
 
-class SolutionImpl(var elems:List[Atom]) extends Solution{
-  def this()= this(List[Atom]())
-  def addAtom(atom:Atom){ elems :+= atom }
+class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
+  def this()= this(null, List[Atom]())
   def remove(a:Atom) { elems -= a}
   def clear {   elems = List[Atom]()  }
-  def copy:Solution = new SolutionImpl(elems.map(a => a.clone))
+  def copy(newOwner:CHAM):Solution = new SolutionImpl(newOwner,elems.map(a => a.clone))
+  def addAtom(atom:Atom){
+    elems :+= atom
+    notifyCHAM(atom)
+  }
+  def addMolecule(molecule:List[Atom]){
+    elems ++= molecule
+//    molecule foreach (notifyCHAM(_))
+  }//{ molecule foreach (addAtom(_)) }
+
   def cleanup{
     elems = elems.filter(_.isActive)
   }
@@ -133,6 +143,44 @@ class SolutionImpl(var elems:List[Atom]) extends Solution{
   def activate(a:Atom){
     a.setActive(true)
   }
-  override def clone:Solution = new SolutionImpl(List[Atom]() ++ this.elems)
+  override def clone:Solution = new SolutionImpl(this.owner, List[Atom]() ++ this.elems)
 
+  def notifyCHAM(newAtom:Atom){
+    owner.receiveUpdate(newAtom)
+  }
+}
+
+case class StandAloneSolution(var elems:List[Atom]) extends Solution{
+  def this()= this(List[Atom]())
+  def remove(a:Atom) { elems -= a}
+  def clear {   elems = List[Atom]()  }
+  def copy(newOwner:CHAM):Solution = new StandAloneSolution(elems.map(a => a.clone))
+  def addAtom(atom:Atom){
+    elems :+= atom
+  }
+  def addMolecule(molecule:List[Atom]){
+    elems ++= molecule
+  }
+  def cleanup{
+    elems = elems.filter(_.isActive)
+  }
+  def revert{
+    elems.foreach(_.setActive(true))
+  }
+  def update(newsol: Solution){
+    if (newsol.contains(False) || newsol.isEmpty){
+      clear
+    }else{
+      this.elems = newsol.elems
+    }
+  }
+  def inactivate(a:Atom){
+    a.setActive(false)
+  }
+  def activate(a:Atom){
+    a.setActive(true)
+  }
+  override def clone:Solution = new StandAloneSolution(List[Atom]() ++ this.elems)
+
+  def notifyCHAM(newAtom:Atom){}
 }

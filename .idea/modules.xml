@@ -3,13 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ANTLR_Scala/ANTLR_Scala.iml" filepath="$PROJECT_DIR$/ANTLR_Scala/ANTLR_Scala.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ActorsTesting/ActorsTesting.iml" filepath="$PROJECT_DIR$/ActorsTesting/ActorsTesting.iml" />
       <module fileurl="file://$PROJECT_DIR$/CRIOJO.iml" filepath="$PROJECT_DIR$/CRIOJO.iml" />
       <module fileurl="file://$PROJECT_DIR$/CRIOJO_Server/CRIOJO_Server.iml" filepath="$PROJECT_DIR$/CRIOJO_Server/CRIOJO_Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Console/Console.iml" filepath="$PROJECT_DIR$/Console/Console.iml" />
       <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/Parser/Parser.iml" filepath="$PROJECT_DIR$/Parser/Parser.iml" />
       <module fileurl="file://$PROJECT_DIR$/PiVot/PiVot.iml" filepath="$PROJECT_DIR$/PiVot/PiVot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Services/Services.iml" filepath="$PROJECT_DIR$/Services/Services.iml" />
     </modules>
   </component>
 </project>
