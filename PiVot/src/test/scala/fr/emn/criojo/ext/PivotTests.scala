@@ -24,7 +24,7 @@ class PivotTests{//} extends TestCase("types"){
   val a = Variable("a"); val b = Variable("b"); val c = Variable("c")
   val x = Variable("x"); val y = Variable("y"); val z = Variable("z"); val w = Variable("w")
 
-  val machine = new LocalVM
+  val machine = new LocalCHAM
 
   @Test(timeout=1000)
   def testRun{
@@ -60,6 +60,22 @@ class PivotTests{//} extends TestCase("types"){
       case Some(ec) if (ec.size == 2) => assertTrue(true)
       case _ => fail("Value 123 not found in intEqClasses: " + machine.intEqClasses)
     }
+  }
+
+  @Test(timeout=1000)
+  def testInt2{
+    logLevel = DEBUG
+    load(machine,
+      """(local:S,R)
+            S => R(123)
+      """
+    )
+    machine.introduceAtom(Atom("S"))
+
+//    info(this.getClass, "testInt", "rules: " + machine)
+    info(this.getClass, "testInt", "solution: " + machine.solution /*.prettyPrint*/)
+//    info(this.getClass, "testInt", "intEqClasses: " + machine.intEqClasses)
+
   }
 
   @Test(timeout=1000)
@@ -107,7 +123,7 @@ class PivotTests{//} extends TestCase("types"){
   def testPrint{
 //    logLevel = DEBUG
 
-    val vm = new LocalVM 
+    val vm = new LocalCHAM
     log("machine: " + vm.relations)
     
     load(vm,

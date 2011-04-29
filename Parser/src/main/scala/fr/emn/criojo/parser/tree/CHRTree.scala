@@ -175,7 +175,7 @@ case class ^(tok:Token, var childList:List[^]) extends CHRTree(tok){
 			}
 			var first = true
 			childList.foreach{
-				c => if ( first ){first = false}else{buf.append(' ')}	
+				c => if ( first ){first = false}else{buf.append("\n   ")}
 				buf.append(c.toStringTree())
 			}
 			if ( !isNil() ) {

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:activiti="http://activiti.org/bpmn" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:signavio="http://www.signavio.com"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Signavio Process Editor, http://www.signavio.com"
+             exporterVersion="" id="sid-cdf6a683-13e2-424b-9d1f-da5e4de21f64" targetNamespace="http://www.signavio.com/bpmn20"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+        xmlns:booking="http://webservice.activiti.org/">
+
+    <import importType="http://schemas.xmlsoap.org/wsdl/"
+            location="/Users/mayleen/THESE/CRIOJO2/CRIOJO/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess_DF.wsdl"
+            namespace="http://webservice.activiti.org/" />
+
+    <itemDefinition id="ReservationItem" isCollection="false" itemKind="Information"
+        structureRef="booking:reservationRequest" />
+    <itemDefinition id="ResponseItem" isCollection="false" itemKind="Information"
+        structureRef="booking:ReservationResponse" />
+    <itemDefinition id="CCItem" isCollection="false" itemKind="Information"
+        structureRef="booking:ccInfo" />
+    <itemDefinition id="CCResponse" isCollection="false" itemKind="Information"
+        structureRef="xsi:String"/>
+    <itemDefinition id="HotelReservationItem" isCollection="false" itemKind="Information"
+            structureRef="booking:hotelReservationRequest"/>
+    <itemDefinition id="HotelConfirmationItem" isCollection="false" itemKind="Information"
+            structureRef="booking:hotelReservationResponse"/>
+    <itemDefinition id="FlightReservationItem" isCollection="false" itemKind="Information"
+            structureRef="booking:flightReservationRequest"/>
+    <itemDefinition id="FlightConfirmationItem" isCollection="false" itemKind="Information"
+            structureRef="booking:flightReservationResponse"/>
+
+    <message id="ReservationMessage" itemRef="ReservationItem"/>
+    <message id="ccRequestMessage" itemRef="CCItem" />
+    <message id="ccResponseMessage" itemRef="" />
+
+    <interface name="Reservation Interface">
+        <operation id="checkCCOperation" name="checkCCOperation" implementationRef="booking:checkCC">
+            <inMessageRef>tns:ccRequestMessage</inMessageRef>
+            <outMessageRef>booking:ccResponseMessage</outMessageRef>
+        </operation>
+    </interface>
+
+   <process id="Reservation_BP" isExecutable="true" name="Reservation_BP">
+      <ioSpecification id="sid-dff2ec5d-3d92-4294-bba7-bf1b69eb171f">
+         <dataInput id="Reservation_Request_3" name="Book Reservation Request" itemSubjectRef="tns:ReservationItem">
+            <documentation id="sid-ddf63f84-dac4-43c3-a7e8-bd345bda9eed">Original ID: "sid-BAF52288-D4E9-4AEA-BA09-A1539A52670C"</documentation>
+            <extensionElements>
+               
+            </extensionElements>
+         </dataInput>
+         <dataOutput id="Book_Reservation_Response_3" name="Book Reservation Response" itemSubjectRef="tns:ResponseItem">
+            <documentation id="sid-b6dbb831-32b3-45f0-a5af-23e1ec3f0b35">Original ID: "sid-AF39C8AB-01E0-404E-A481-0387B09E24D8"</documentation>
+            <extensionElements>
+               
+            </extensionElements>
+         </dataOutput>
+         <inputSet id="sid-35697d27-2d06-46c6-b9e6-28ee6fb83fcb">
+            <dataInputRefs>Book_Reservation_Request_3</dataInputRefs>
+         </inputSet>
+         <outputSet id="sid-b37c7f27-b13d-49ef-97d8-4810caf08ecd">
+            <dataOutputRefs>Book_Reservation_Response_3</dataOutputRefs>
+         </outputSet>
+      </ioSpecification>
+      
+      <serviceTask id="Check_Hotel_Reservation_3" name="Check Hotel Reservation">
+         <documentation id="sid-4c1794ca-bfb9-4678-a729-f9bb548b7e02">Original ID: "sid-E35A127C-0756-4652-8F6E-CD40601F5CAF"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+          <ioSpecification>
+            <dataInput id="CheckHotelInput" itemSubjectRef="tns:HotelReservationItem"/>
+            <dataOutput id="CheckHotelOutput" itemSubjectRef="tns:HotelConfirmationItem" />
+          </ioSpecification>
+          <dataInputAssociation>
+              <sourceRef>Reservation_Request_3</sourceRef>
+              <targetRef>CheckHotelInput</targetRef>
+              <assignment>
+                  <from>${getDataObject("Reservation_Request_3").arrival}</from>
+                  <to>${getDataObject("CheckHotelInput").arrival}</to>
+              </assignment>
+              <assignment>
+                  <from>${getDataObject("Reservation_Request_3").departure}</from>
+                  <to>${getDataObject("CheckHotelInput").departure}</to>
+              </assignment>
+          </dataInputAssociation>
+          <dataOutputAssociation>
+              <sourceRef>CheckHotelOutput</sourceRef>
+              <targetRef>HotelConfirmationDataObject</targetRef>
+          </dataOutputAssociation>
+         <incoming>SequenceFlow_11</incoming>
+         <outgoing>SequenceFlow_8</outgoing>
+      </serviceTask>
+
+       <dataObject id="HotelConfirmationDataObject" itemSubjectRef="tns:HotelConfirmationItem" />
+
+      <serviceTask id="Check_Car_Reservation_3" name="Check Car Reservation">
+         <documentation id="sid-9b071cc8-d3e1-4bc6-970c-fa64112dfb55">Original ID: "sid-F1B873E2-AC4A-4E70-9A3D-B16AB247DBA8"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+         <incoming>Check_Again</incoming>
+         <incoming>SequenceFlow_7</incoming>
+         <outgoing>SequenceFlow_10</outgoing>
+      </serviceTask>
+      <exclusiveGateway gatewayDirection="Diverging" id="Exclusive_Databased_Gateway_3" name="Exclusive_Databased_Gateway">
+         <documentation id="sid-73f132a0-6f57-4600-88f8-f090c0c77d2d">Original Name: "" Original ID: "sid-7DA7AF73-B09C-4559-A4F5-53C40EBAEBF7"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+         <incoming>SequenceFlow_10</incoming>
+         <outgoing>Check_Again</outgoing>
+         <outgoing>Done</outgoing>
+      </exclusiveGateway>
+      <serviceTask id="Check_Flight_Reservation_3" name="Check Flight Reservation">
+         <documentation id="sid-9b2ab706-71e9-4f56-86e0-60f2c50b3952">Original ID: "sid-4E6B0E87-FE6C-4762-9B67-F92D02C885C2"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+          <ioSpecification>
+            <dataInput id="CheckFlightInput" itemSubjectRef="tns:FlightReservationItem"/>
+            <dataOutput id="CheckFlightOutput" itemSubjectRef="tns:FlightConfirmationItem" />
+          </ioSpecification>
+          <dataInputAssociation>
+              <sourceRef>Reservation_Request_3</sourceRef>
+              <targetRef>CheckFlightInput</targetRef>
+              <assignment>
+                  <from>${getDataObject("Reservation_Request_3").arrival}</from>
+                  <to>${getDataObject("CheckHotelInput").arrival}</to>
+              </assignment>
+              <assignment>
+                  <from>${getDataObject("Reservation_Request_3").departure}</from>
+                  <to>${getDataObject("CheckHotelInput").departure}</to>
+              </assignment>
+          </dataInputAssociation>
+          <dataOutputAssociation>
+              <sourceRef>CheckFlightOutput</sourceRef>
+              <targetRef>FlightConfirmationDataObject</targetRef>
+          </dataOutputAssociation>
+         <incoming>SequenceFlow_3</incoming>
+         <outgoing>SequenceFlow_2</outgoing>
+      </serviceTask>
+
+      <dataObject id="FlightConfirmationDataObject" itemSubjectRef="tns:FlightConfirmationItem" />
+
+      <parallelGateway gatewayDirection="Converging" id="ParallelGateway_3" name="ParallelGateway">
+         <documentation id="sid-74dd1694-0530-4470-b643-937484b36e74">Original Name: "" Original ID: "sid-EE599B2E-0E94-4706-9973-6072CC0982B7"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+         <incoming>SequenceFlow_8</incoming>
+         <incoming>Done</incoming>
+         <incoming>SequenceFlow_2</incoming>
+         <outgoing>SequenceFlow_9</outgoing>
+      </parallelGateway>
+      <serviceTask id="Check_Credit_Card_3" name="Check Credit Card" operationRef="tns:checkCCOperation">
+         <documentation id="sid-5f3e6421-4ef0-473a-89b9-53a472320284">Original ID: "sid-057F4E43-C83B-42DF-9E0C-3DC75DB926EB"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+          <ioSpecification>
+            <dataInput id="CheckCreditCardInput" itemSubjectRef="tns:CCItem"/>
+          </ioSpecification>
+          <dataInputAssociation>
+              <sourceRef>Reservation_Request_3</sourceRef>
+              <targetRef>CheckCreditCardInput</targetRef>
+              <assignment>
+                  <from>${getDataObject("Reservation_Request_3").cardNumber}</from>
+                  <to>${getDataObject("CheckCreditCardInput").cardNumber}</to>
+              </assignment>
+              <assignment>
+                  <from>${getDataObject("Reservation_Request_3").cardType}</from>
+                  <to>${getDataObject("CheckCreditCardInput").cardType}</to>
+              </assignment>
+          </dataInputAssociation>
+         <incoming>SequenceFlow_5</incoming>
+         <outgoing>SequenceFlow_11</outgoing>
+         <outgoing>SequenceFlow_3</outgoing>
+         <outgoing>SequenceFlow_7</outgoing>
+      </serviceTask>
+      <boundaryEvent attachedToRef="Check_Credit_Card_3" cancelActivity="true" id="IntermediateErrorEvent_3" name="IntermediateErrorEvent" parallelMultiple="false">
+         <outgoing>SequenceFlow_6</outgoing>
+         <errorEventDefinition errorRef="sid-5d5da98e-dc61-439b-b966-67dc6bd6bd9c" id="sid-a2c91f34-307b-4a2f-a07c-d25a12b3df98"/>
+      </boundaryEvent>
+      <endEvent id="Error_Message_Event_3" name="Error Message Event">
+         <documentation id="sid-6bb91f2d-711b-4e60-b257-4740f217db20">Original ID: "sid-58B91684-D274-4670-A6B6-028DB5D9A9BF"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+         <incoming>SequenceFlow_6</incoming>
+         
+      </endEvent>
+      <dataObject id="BookDataObject_3" isCollection="false" name="BookDataObject" itemSubjectRef="">
+         <documentation id="sid-ff8e3851-b4fb-4c78-bf2e-b9a084532c86">Original ID: "sid-6FF0FF92-2BD2-413E-836F-BC04EF30357C"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+      </dataObject>
+      <!--<receiveTask id="Receive_Request_3" instantiate="true" name="Receive Request">-->
+         <!--<documentation id="sid-b4e550b2-c64c-4f60-b2f4-738c204d1123">Original ID: "sid-1FC079FD-5C6E-4737-AF9D-C53FE8C6C8E6"</documentation>-->
+         <!--<extensionElements>-->
+            <!---->
+         <!--</extensionElements>-->
+         <!--<incoming>SequenceFlow_4</incoming>-->
+         <!--<outgoing>SequenceFlow_5</outgoing>-->
+          <!--<ioSpecification>-->
+              <!--<dataOutput id="ReceiveOutput" itemSubjectRef="tns:ReservationItem" />-->
+          <!--</ioSpecification>-->
+          <!--<dataOutputAssociation>-->
+              <!--<sourceRef>ReceiveOutput</sourceRef>-->
+              <!--<targetRef>Book_Reservation_Request_3</targetRef>-->
+          <!--</dataOutputAssociation>-->
+      <!--</receiveTask>-->
+      <sendTask id="Send_Confirmation_3" name="Send Confirmation">
+         <documentation id="sid-a6839e5a-1fcb-45fc-bab0-823e22698987">Original ID: "sid-83A2D7CE-3A7F-4FCD-B5BA-E05C28C3123B"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+         <incoming>SequenceFlow_9</incoming>
+         <outgoing>SequenceFlow</outgoing>
+      </sendTask>
+      <startEvent id="Receive_Request" name="Receive Request">
+         <documentation id="sid-c525ce51-2efd-4cfc-b72e-5fff4a11b88d">Original Name: "" Original ID: "sid-873F14CE-5281-4920-8F6E-F9877E8EC9B5"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+          <dataOutput itemSubjectRef="tns:ReservationItem" id="RequestOutputOfStartEvent"/>
+          <dataOutputAssociation>
+              <sourceRef>RequestOutputOfStartEvent</sourceRef>
+              <targetRef>Reservation_Request_3</targetRef>
+          </dataOutputAssociation>
+         <outgoing>SequenceFlow_4</outgoing>
+          <messageEventDefinition messageRef="tns:ReservationMessage" />
+          <outgoing>SequenceFlow_5</outgoing>
+      </startEvent>
+      <endEvent id="EndNoneEvent_3" name="EndNoneEvent">
+         <documentation id="sid-c36d318a-5821-4331-916d-6c35e73170d7">Original Name: "" Original ID: "sid-A605FA43-0947-4FE2-833B-157F0C231A5F"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+         <incoming>SequenceFlow</incoming>
+      </endEvent>
+      <sequenceFlow id="SequenceFlow_10" name="SequenceFlow" sourceRef="Check_Car_Reservation_3" targetRef="Exclusive_Databased_Gateway_3">
+         <documentation id="sid-5105a294-bed7-4d51-9fc6-a976862f833b">Original Name: "" Original ID: "sid-A3C51C3B-0E7A-4233-A7C6-5F270EE08D8F"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_8" name="SequenceFlow" sourceRef="Check_Hotel_Reservation_3" targetRef="ParallelGateway_3">
+         <documentation id="sid-31507172-be27-491b-9971-c3ad79b30362">Original Name: "" Original ID: "sid-42E57804-5853-4325-8D9F-C0C7BCDC161F"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_2" name="SequenceFlow" sourceRef="Check_Flight_Reservation_3" targetRef="ParallelGateway_3">
+         <documentation id="sid-8cbd0c3c-24f4-40f8-89a5-1dd0f540325c">Original Name: "" Original ID: "sid-6F501F94-46E1-495C-A289-9F3C71138BDB"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_6" name="SequenceFlow" sourceRef="IntermediateErrorEvent_3" targetRef="Error_Message_Event_3">
+         <documentation id="sid-027bdf4a-1d78-480a-9b79-eedc50d0819c">Original Name: "" Original ID: "sid-42E06756-D401-4B81-848B-C308584600DD"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_11" name="SequenceFlow" sourceRef="Check_Credit_Card_3" targetRef="Check_Hotel_Reservation_3">
+         <documentation id="sid-64bf1c03-e48d-42a0-8cb7-08d4dffc7e91">Original Name: "" Original ID: "sid-225E4518-6819-4369-834E-690D60A73AA9"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_3" name="SequenceFlow" sourceRef="Check_Credit_Card_3" targetRef="Check_Flight_Reservation_3">
+         <documentation id="sid-04029d28-7632-4913-a396-490f316fbb8d">Original Name: "" Original ID: "sid-FD95E0BA-A7DC-4BBB-B8AB-9D54CB94337F"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_7" name="SequenceFlow" sourceRef="Check_Credit_Card_3" targetRef="Check_Car_Reservation_3">
+         <documentation id="sid-9a915d18-6889-483e-a30f-3c11a1895ef8">Original Name: "" Original ID: "sid-E8B6D05A-32D9-4A71-8EF8-BFC12A40821C"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="Done" name="Done" sourceRef="Exclusive_Databased_Gateway_3" targetRef="ParallelGateway_3">
+         <documentation id="sid-355eb11e-8e9e-4489-8974-062077bfd630">Original ID: "sid-A3C683DB-BF2A-4E5A-B379-42137C2C8D1B"</documentation>
+         <conditionExpression id="sid-714ef5af-de30-4b10-9905-ed908bd73431" xsi:type="tFormalExpression">${getDataObject("CarReservationResult").status==done}</conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="Check_Again" name="Check Again" sourceRef="Exclusive_Databased_Gateway_3" targetRef="Check_Car_Reservation_3">
+         <documentation id="sid-52d85ce2-3538-4a0c-82a9-43098a8b186d">Original ID: "sid-733FA4DC-B88E-4B2F-8921-71407CEC83A1"</documentation>
+         <conditionExpression id="sid-28d5496d-a70f-4ce6-b978-1c550d0b45df" xsi:type="tFormalExpression">${getDataObject("CarReservationResult").status==check_again}</conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_9" name="SequenceFlow" sourceRef="ParallelGateway_3" targetRef="Send_Confirmation_3">
+         <documentation id="sid-bc666c70-f57e-40f5-a20e-009cb8c34e31">Original Name: "" Original ID: "sid-B7EF0A5B-771C-4C31-8501-5E0D684D5FA4"</documentation>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_5" name="SequenceFlow" sourceRef="Receive_Request" targetRef="Check_Credit_Card_3">
+         <documentation id="sid-9240d4a6-b212-4bde-9b89-5d549858f41e">Original Name: "" Original ID: "sid-39B028B0-1977-4D6B-9F8E-CBB53F7A09AC"</documentation>
+      </sequenceFlow>
+      <!--<sequenceFlow id="SequenceFlow_4" name="SequenceFlow" sourceRef="StartNoneEvent_3" targetRef="Receive_Request_3">-->
+         <!--<documentation id="sid-432007c4-1dda-443c-85b9-f6017fcbc53d">Original Name: "" Original ID: "sid-1AA6A4AA-646C-45F8-8478-B014CB3699CF"</documentation>-->
+      <!--</sequenceFlow>-->
+      <sequenceFlow id="SequenceFlow" name="SequenceFlow" sourceRef="Send_Confirmation_3" targetRef="EndNoneEvent_3">
+         <documentation id="sid-a12afb9f-0fb2-44e9-b5cf-7d93910da9d4">Original Name: "" Original ID: "sid-C0FCCFBA-CD47-43C5-8C64-B0F4CBB32A4C"</documentation>
+      </sequenceFlow>
+   </process>
+
+
+   <collaboration id="sid-a5457ec9-a5e0-4853-b174-e880c74d2f6d">
+      <participant id="Travel_Reservation_BP" name="Travel Reservation BP" processRef="sid-36a7b597-7e4e-4fa1-9013-ee9c4e4dbd88">
+         <documentation id="sid-b0250a22-ebe1-4079-b9eb-b4e77bcb3032">Original ID: "sid-49BA1119-3BAE-4E5C-971F-EF2AC8C3D237"</documentation>
+         <extensionElements>
+            
+         </extensionElements>
+      </participant>
+
+   </collaboration>
+   <bpmndi:BPMNDiagram id="sid-377888b3-194c-482f-a7ab-ed7d967a3c72">
+      <bpmndi:BPMNPlane bpmnElement="Reservation_BP" id="sid-37c18e03-163e-405c-9832-eaa1be40bc04">
+         <bpmndi:BPMNShape bpmnElement="Lane_2" id="Lane_2_gui" isHorizontal="true">
+            <omgdc:Bounds height="466.9672536340492" width="852.0718076970231" x="30.0" y="79.24767817521439"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Check_Hotel_Reservation_3" id="Check_Hotel_Reservation_3_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="458.64848109362583" y="240.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Check_Car_Reservation_3" id="Check_Car_Reservation_3_gui">
+            <omgdc:Bounds height="80.0" width="100.00000000000006" x="458.6484810936258" y="124.07700683017399"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Exclusive_Databased_Gateway_3" id="Exclusive_Databased_Gateway_3_gui" isMarkerVisible="true">
+            <omgdc:Bounds height="40.0" width="40.0" x="640.3898312436406" y="144.07700683017399"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Check_Flight_Reservation_3" id="Check_Flight_Reservation_3_gui">
+            <omgdc:Bounds height="80.0" width="100.00000000000006" x="458.6484810936258" y="356.91917765788594"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ParallelGateway_3" id="ParallelGateway_3_gui">
+            <omgdc:Bounds height="40.0" width="40.0" x="640.3898312436406" y="260.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Check_Credit_Card_3" id="Check_Credit_Card_3_gui">
+            <omgdc:Bounds height="80.0" width="100.00000000000011" x="245.7316635174588" y="240.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="IntermediateErrorEvent_3" id="IntermediateErrorEvent_3_gui">
+            <omgdc:Bounds height="30.0" width="30.0" x="230.18683754343724" y="304.91689474696744"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Error_Message_Event_3" id="Error_Message_Event_3_gui">
+            <omgdc:Bounds height="28.0" width="28.0" x="296.88002363132085" y="447.56500630982003"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="BookDataObject_3" id="BookDataObject_3_gui">
+            <omgdc:Bounds height="29.964177387217035" width="127.88172588837583" x="238.4953563504288" y="114.3840719463512"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Receive_Request_3" id="Receive_Request_3_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="90.66762470786244" y="240.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Send_Confirmation_3" id="Send_Confirmation_3_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="715.0071853089682" y="240.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="StartNoneEvent_3" id="StartNoneEvent_3_gui">
+            <omgdc:Bounds height="30.0" width="30.0" x="30.0" y="265.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="EndNoneEvent_3" id="EndNoneEvent_3_gui">
+            <omgdc:Bounds height="28.0" width="28.0" x="848.6656172882101" y="266.96998104251816"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Book_Reservation_Request_3" id="Book_Reservation_Request_3_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="60.0" y="96.3857869749715"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Book_Reservation_Response_3" id="Book_Reservation_Response_3_gui">
+            <omgdc:Bounds height="97.0" width="88.0" x="692.0899198665543" y="419.44843628276016"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Travel_Reservation_BP" id="Travel_Reservation_BP_gui" isHorizontal="false">
+            <omgdc:Bounds height="466.9672536340492" width="882.0718076970231" x="0.0" y="79.24767817521439"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="Check_Again" id="Check_Again_gui">
+            <omgdi:waypoint x="660.0" y="144.0"/>
+            <omgdi:waypoint x="660.8898312436406" y="96.17038469957214"/>
+            <omgdi:waypoint x="508.64848109362583" y="96.17038469957214"/>
+            <omgdi:waypoint x="508.0" y="124.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_8" id="SequenceFlow_8_gui">
+            <omgdi:waypoint x="558.0" y="280.0"/>
+            <omgdi:waypoint x="640.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_9" id="SequenceFlow_9_gui">
+            <omgdi:waypoint x="680.0" y="281.0"/>
+            <omgdi:waypoint x="715.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_6" id="SequenceFlow_6_gui">
+            <omgdi:waypoint x="245.0" y="334.0"/>
+            <omgdi:waypoint x="245.18683754343724" y="461.56500630982003"/>
+            <omgdi:waypoint x="296.0" y="461.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="Done" id="Done_gui">
+            <omgdi:waypoint x="660.0" y="184.0"/>
+            <omgdi:waypoint x="660.0" y="260.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_7" id="SequenceFlow_7_gui">
+            <omgdi:waypoint x="345.0" y="280.0"/>
+            <omgdi:waypoint x="393.26975018857775" y="280.5623650021415"/>
+            <omgdi:waypoint x="393.26975018857775" y="164.07700683017396"/>
+            <omgdi:waypoint x="458.0" y="164.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_4" id="SequenceFlow_4_gui">
+            <omgdi:waypoint x="60.0" y="280.0"/>
+            <omgdi:waypoint x="90.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_5" id="SequenceFlow_5_gui">
+            <omgdi:waypoint x="190.0" y="280.0"/>
+            <omgdi:waypoint x="245.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_2" id="SequenceFlow_2_gui">
+            <omgdi:waypoint x="558.0" y="396.0"/>
+            <omgdi:waypoint x="660.3898312436406" y="396.9191776578859"/>
+            <omgdi:waypoint x="660.0" y="300.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_3" id="SequenceFlow_3_gui">
+            <omgdi:waypoint x="345.0" y="280.0"/>
+            <omgdi:waypoint x="393.26975018857775" y="280.5623650021415"/>
+            <omgdi:waypoint x="393.26975018857775" y="396.9191776578859"/>
+            <omgdi:waypoint x="458.0" y="396.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_11" id="SequenceFlow_11_gui">
+            <omgdi:waypoint x="345.0" y="280.0"/>
+            <omgdi:waypoint x="458.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow" id="SequenceFlow_gui">
+            <omgdi:waypoint x="815.0" y="280.0"/>
+            <omgdi:waypoint x="848.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_10" id="SequenceFlow_10_gui">
+            <omgdi:waypoint x="558.0" y="164.0"/>
+            <omgdi:waypoint x="640.0" y="164.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>
