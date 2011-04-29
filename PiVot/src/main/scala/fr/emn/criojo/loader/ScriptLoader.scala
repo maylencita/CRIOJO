@@ -18,17 +18,17 @@ import java.net.URL
 
 object ScriptLoader{
 
-  def load(machine:VirtualMachine, url:URL){
+  def load(machine:ExtendedCHAM, url:URL){
     val lex = new CREOLE_XLexer(new ANTLRFileStream(url.getFile))
     load(machine,lex)
   }
 
-  def load(machine:VirtualMachine, script:String){
+  def load(machine:ExtendedCHAM, script:String){
     val lex = new CREOLE_XLexer(new ANTLRStringStream(script))
     load(machine,lex)
   }
 
-  private def load(machine:VirtualMachine, lex: CREOLE_XLexer){
+  private def load(machine:ExtendedCHAM, lex: CREOLE_XLexer){
     val adaptor = new CHRTreeAdaptor
 
     val tokens = new CommonTokenStream(lex)

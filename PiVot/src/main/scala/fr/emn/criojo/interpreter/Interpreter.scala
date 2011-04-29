@@ -14,10 +14,10 @@ import org.antlr.runtime.Token;
 
 
 
-class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
+class Interpreter(machine:ExtendedCHAM, tokens:CHRTreeTokens) {
 
   def this(tokens:CHRTreeTokens)={
-    this (new LocalVM, tokens)
+    this (new LocalCHAM, tokens)
   }
 
 	import tokens._
@@ -96,7 +96,7 @@ class Interpreter(machine:VirtualMachine, tokens:CHRTreeTokens) {
     var head:List[Atom] = List()
     var body:List[Atom] = List()
     var scope:List[Variable] = List()
-    var guard = new ExtendedGuard(mv.asInstanceOf[ExtendedCHAM]) //new Guard
+    var guard = null //new ExtendedGuard(mv.asInstanceOf[ExtendedCHAM]) //new Guard
 
     processRuleIter(r)
 
