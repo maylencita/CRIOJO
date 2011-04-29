@@ -1,6 +1,6 @@
 package fr.emn.criojo.core
 
-import Creole.Substitution
+import Criojo.Substitution
 
 /**
  * Created by IntelliJ IDEA.

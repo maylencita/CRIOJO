@@ -1,6 +1,6 @@
 package fr.emn.criojo.core
 
-import Creole.Substitution
+import Criojo.Substitution
 import fr.emn.criojo.util.Logger
 
 /**
@@ -112,7 +112,7 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
       atom.setActive(false)
       
       Logger.log("============================================================================")
-      Logger.log(this.getClass,"receiveUpdate","this: " + this)
+//      Logger.log(this.getClass,"receiveUpdate","this: " + this)
       Logger.levelDown
       if(!execute(getSubstitutions(this, List(atom)))){
         atom.setActive(true)

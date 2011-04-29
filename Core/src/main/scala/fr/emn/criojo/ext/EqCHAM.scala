@@ -9,84 +9,23 @@ package fr.emn.criojo.ext
  */
 
 import fr.emn.criojo.core._
-import Creole._
+import Criojo._
 
 import collection.mutable.{HashSet,HashMap}
+import EqClass._
 
-object EqVM{
-  type EqClass = HashSet[Variable]
-}
-import EqVM._
-
-class TypedEqClasses[T](eqClasses:EqClassList,noEqClasses:EqClassList) extends HashMap[T, EqClass]{
-
-  def add(k:T, v:Variable){
-    get(k) match{
-      case Some(iec) =>
-        eqClasses.find(v) match{
-          case Some(ec) if(iec != ec) =>
-            if(noEqClasses.contains(ec) && noEqClasses.contains(iec))
-              throw new InvalidStateError("Illegal operation: " + iec + " != " + ec)
-            else
-              update (k, eqClasses.merge(iec,ec))
-          case _ => iec.add(v)
-        }
-      case _ =>
-        eqClasses.find(v) match{
-          case Some(ec) => put(k, ec)
-          case _ =>
-            val newEC = HashSet(v)
-            eqClasses.add(newEC)
-            put(k, newEC)
-        }
-    }
-    //Update noEqClasses
-    for (ec <- this.values){
-      if(!noEqClasses.contains(ec))
-        noEqClasses.add(ec)
-    }
-  }
-
-  def getValue(x:Variable):Option[T] = {
-    find(_._2 contains (x)) match{
-      case Some((k, ec)) => Some (k)
-      case _ => None
-    }
-  }
-}
-
-class EqClassList{
-  var eqClasses = List[EqClass]()
-
-  def add(ec:EqClass){ eqClasses :+= ec}
-  def find(x:Variable):Option[EqClass] = eqClasses.find(_.contains(x))
-  def exists(f:EqClass => Boolean) = eqClasses.exists(f)
-  def remove(ec:EqClass) { eqClasses = eqClasses.filterNot(e => e == ec) }
-  def contains(ec:EqClass) = eqClasses.contains(ec)
-
-  def merge(ec1:EqClass, ec2:EqClass):EqClass = {
-    val merged = ec1.union(ec2)
-    remove(ec1)
-    remove(ec2)
-    add(merged)
-    merged
-  }
-
-  override def toString = eqClasses.map(_.mkString("{",",","}")).mkString("[",",","]") 
-}
-
-trait EqVM extends CHAM{
+trait EqCHAM extends CHAM{
 
   var eqClasses = new EqClassList
   var disjClasses = new EqClassList
 
   /**********************************************************************
-  * VM definition:
+  * CHM definition:
   */
   //--Public:
-  val EQ = NativeRelation("Eq"){ a => if (a.vars.size == 2) addEquivalence(a(0),a(1)) }
-  val EQ_ask = NativeRelation("Eq_ask"){ a => askEq(a) }
-  val NotEQ = NativeRelation("$NotEq"){a => addNotEqual(a(0),a(1))}
+  val EQ = NativeRelation("Eq"){ (a,s) => if (a.vars.size == 2) addEquivalence(a(0),a(1),s) }
+  val EQ_ask = NativeRelation("Eq_ask")(askEq)
+  val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a(0),a(1),s)}
   //--Private:
   private val s,x,y,z = Var; private val K = RelVariable("K")
   /***********************************************************************/
@@ -102,7 +41,7 @@ trait EqVM extends CHAM{
   }
 
   // Native
-  private def addEquivalence(v1:Variable, v2:Variable) =
+  private def addEquivalence(v1:Variable, v2:Variable, s:Solution) =
   (eqClasses.find(v1),eqClasses.find(v2)) match{
     case (Some(e1),Some(e2)) if e1 != e2 =>
       //Found two equivalent EqClasses
@@ -118,7 +57,7 @@ trait EqVM extends CHAM{
       eqClasses add HashSet(v1,v2)
   }
 
-  private def addNotEqual(v1:Variable, v2:Variable){
+  private def addNotEqual(v1:Variable, v2:Variable, s:Solution){
     if(v1 == v2)
       throw new InvalidStateError("Illegal operation: " + v1 + " == " + v2)
     (eqClasses.find(v1),eqClasses.find(v2)) match{
@@ -135,24 +74,26 @@ trait EqVM extends CHAM{
     }
   }
 
-  private def askEq(a:Atom) = a match{
+  private def askEq(a:Atom, sol:Solution) = a match{
     case Atom(_, i::v1::v2::kpls::kmin::_) =>
       if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2))){
         //They are equal
-        introduceAtom(Atom(kpls.toString, i,v1,v2))
+//        introduceAtom(Atom(kpls.toString, i,v1,v2))
+        sol.addAtom(Atom(kpls.toString, i,v1,v2))
       }
       else
         (disjClasses.find(v1), disjClasses.find(v2)) match{
           case (Some(e1),Some(e2)) if e1 != e2 =>
             //They are different
-            introduceAtom(Atom(kmin.toString, i,v1,v2))
+//            introduceAtom(Atom(kmin.toString, i,v1,v2))
+            sol.addAtom(Atom(kmin.toString, i,v1,v2))
           case _ => //No enough information to answer
         }
     case _ => //Nothing
   }
 
 
-  def askEquivalence(x:Variable, y:Variable):Boolean = {
+  def askEquivalence(x:Variable, y:Variable, s:Solution):Boolean = {
     x == y ||
     eqClasses.exists(ec => ec.contains(x) && ec.contains(y))
   }
@@ -170,22 +111,32 @@ trait EqVM extends CHAM{
   }
 
   def Eq(v1:Variable, v2:Variable):Guard = {
-    val g = new EqGuard(this,T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,t,f)))
-    g
+//    val g = new EqGuard(this,T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,t,f)))
+//    g
+    Guard(T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,t,f)))
   }
 
   def NotEq(v1:Variable, v2:Variable):Guard = {
-    val g = new EqGuard(this,T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,f,t)))
-    g
+//    val g = new EqGuard(this,T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,f,t)))
+//    g
+    Guard(T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,f,t)))
   }
+
 }
+//import EqVM._
 
-class EqGuard(owner:EqVM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with EqVM{
-    this.eqClasses = owner.eqClasses
-    this.disjClasses = owner.disjClasses
-    private val s,x,y,z = Var
 
-    initRules(ruleDefs.toList)
-  }
+
+
+
+
+
+//class EqGuard(owner:EqCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with EqCHAM{
+//    this.eqClasses = owner.eqClasses
+//    this.disjClasses = owner.disjClasses
+//    private val s,x,y,z = Var
+//
+//    initRules(ruleDefs.toList)
+//  }
 
 

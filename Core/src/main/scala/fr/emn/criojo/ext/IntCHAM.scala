@@ -9,9 +9,9 @@ package fr.emn.criojo.ext
  */
 import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger._
-import Creole._
+import Criojo._
 
-trait IntVM extends CHAM with EqVM{
+trait IntCHAM extends /*CHAM with*/ EqCHAM{
 
   val intEqClasses = new TypedEqClasses[Int](eqClasses,disjClasses)
 
@@ -20,16 +20,20 @@ trait IntVM extends CHAM with EqVM{
   */
   //--Public:
   val IntRel = new Rel("$Int"){override def apply(vars:Variable*)=new NumAtom(this.name, vars.toList)} //NativeRelation("$Int"){ a => add(a) }
-  val Int_ask = NativeRelation("$Int_ask"){ a => askInt(a) }
+  val Int_ask = NativeRelation("$Int_ask"){ (a,s) => askInt(a) }
   val Int_print = Rel("$Int_print")
   val Suc = Rel("$Suc") //NativeRelation("Suc"){a => addSuc(a)}
   val Sum = Rel("$Sum")
   //--Private:
-  private val AskInt = NativeRelation("$AskInt"){ a => askInt(a) }
-  private val AddInt = NativeRelation("$AddInt"){ a => add(a) }
-  private val PrintInt = NativeRelation("$PrintInt"){a => println(a(0) + "=" + a(1))}
-  private val Error = NativeRelation("$ErrorInt"){a => throw new Exception("Invalid equal state:" + a(0) + "=" + a(1))}
+  private val AskInt = NativeRelation("$AskInt"){ (a,s) => askInt(a) }
+  private val AddInt = NativeRelation("$AddInt"){ (a,s) => add(a) }
+  private val PrintInt = NativeRelation("$PrintInt"){(a,s) => println(a(0) + "=" + a(1))}
+  private val Error = NativeRelation("$ErrorInt"){(a,s) => throw new Exception("Invalid equal state:" + a(0) + "=" + a(1))}
 //  private val AddSum = NativeRelation("$AddSum"){ a => addSum(a)}
+  private val AddSum = new NativeRelation("$AddSum", this.solution, (a,s) => addSum(a)){
+    addRelation(this)
+    override def apply(vars:Variable*):Atom = new NumAtom(this.name,vars.toList)
+  }
 
   private val s,n,m,x,y,z = Var;
   private val K = RelVariable("K")
@@ -38,9 +42,6 @@ trait IntVM extends CHAM with EqVM{
 //  private val AddInt = new NativeRelation("$AddInt", a => add(a)){
 //    override def apply(vars:Variable*):Atom = new IntAtom(name, vars.toList)
 //  }
-  private val AddSum = new NativeRelation("$AddSum", a => addSum(a)){
-    override def apply(vars:Variable*):Atom = new NumAtom(this.name,vars.toList)
-  }
   rules(
     IntRel(n,x) ==> Abs(X1(n,x)) ? (X1(n,x) &: AddInt(n,x) &: IntRel(n,x)),
     (IntRel(n,x) &: Suc(x,y)) ==> (AddSum(n,1,y) &: IntRel(n,x)),
@@ -61,7 +62,7 @@ trait IntVM extends CHAM with EqVM{
   }
 
   private def addSum(a:Atom) = a.vars match{
-    case t1::t2::t3::Nil => introduceAtom(IntRel(Variable((t1.toInt+t2.toInt).toString),t3))
+    case t1::t2::t3::_ => introduceAtom(IntRel(Variable((t1.toInt+t2.toInt).toString),t3))
     case _ => //Skip
   }
 

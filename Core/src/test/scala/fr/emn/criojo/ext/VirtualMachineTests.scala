@@ -26,18 +26,18 @@ class VirtualMachineTests{
 
   @Test (timeout=1000)
   def testEqGuard{
-//    logLevel = DEBUG
+    logLevel = DEBUG
 
     var result = false
 
-    val m2 = new LocalVM{
+    val m2 = new LocalCHAM{
       val s,x,y,y2,z = Var
       val R = Rel("R"); val S = Rel("S")
       val X1 = Rel("X1"); val X2 = Rel("X2")
-      val TT = RelVariable("true")
+//      val TT = RelVariable("true")
       val Cont = RelVariable("Cont")
       val Resp = NativeRelation("Resp"){
-        case Atom("Resp", id::d::_) => result = true
+        case (Atom("Resp", id::d::_),_) => result = true
         case resp => fail("Expected atom: Resp(1,d). Actual: " + resp)
       }
       rules(
@@ -45,7 +45,7 @@ class VirtualMachineTests{
         (R(s,x,y,Cont) &: S(y2,z)) ==> Eq(y,y2) ? Cont(s,z)
       )
     }
-    info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
+    info (this.getClass, "testEqGuard", "m2: " + m2.rules.mkString("","\n",""))
 
     val atom1 = Atom("R", Variable("1"), a, b, RelVariable(m2.Resp))
     val atom2 = Atom("S", b, d)
@@ -58,17 +58,17 @@ class VirtualMachineTests{
 
   @Test (timeout=1000)
   def testEqClassesGuard{
-//    logLevel = DEBUG
+    logLevel = DEBUG
     var result = false
 
-    val m2 = new LocalVM{
+    val m2 = new LocalCHAM{
       val s,x,y,y2,z = Var
       val R = Rel("R"); val S = Rel("S")
       val X1 = Rel("X1"); val X2 = Rel("X2")
-      val TT = RelVariable("true")
+//      val TT = RelVariable("true")
       val Cont = RelVariable("Cont")
       val Resp = NativeRelation("Resp"){
-        case Atom("Resp", id::d::_) => result = true
+        case (Atom("Resp", id::d::_),s) => result = true
         case resp => fail("Expected atom: Resp(1,d). Actual: " + resp)
       }
       rules(
@@ -92,7 +92,7 @@ class VirtualMachineTests{
   def testMapReduce{
 //    logLevel = DEBUG
     var total:Int = 0
-    val m2 = new LocalVM{
+    val m2 = new LocalCHAM{
       val Word = Rel("Word")
       val Map = Rel("Map")
       val Reduce = Rel("Reduce")
@@ -100,7 +100,7 @@ class VirtualMachineTests{
       val X1 = Rel("X1"); val X2 = Rel("X2")
       val n,m,nm,s,w1,w2 = Var
       val Total = NativeRelation("Total"){
-        case Atom(_, vlst) =>
+        case (Atom(_, vlst),s) =>
           getIntValue(vlst(0)) match{
             case Some(num) => total = num
             case _ =>

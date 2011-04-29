@@ -8,7 +8,6 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-import fr.emn.criojo.util.Logger
 
 object LocalRelation{
   def apply(name:String):Relation = new LocalRelation(name, false)  
@@ -45,3 +44,4 @@ extends Relation{
   }
 
 }
+

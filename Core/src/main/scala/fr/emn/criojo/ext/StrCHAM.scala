@@ -8,9 +8,9 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
-import Creole._
+import Criojo._
 
-trait StringVM extends CHAM with EqVM{
+trait StrCHAM extends /*CHAM with*/ EqCHAM{
 
   val strEqClasses = new TypedEqClasses[String](eqClasses,disjClasses)
 
@@ -18,20 +18,22 @@ trait StringVM extends CHAM with EqVM{
   * VM definition:
   */
   val Str_print = Rel("$Str_print")
-  val StrRel = new NativeRelation("$Str", a => strEqClasses add (a(0).name,a(1))){
+  val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a(0).name,a(1))){
+    addRelation(this)
     override def apply(vars:Variable*):Atom = new StringAtom(vars(0).toString, vars(1))
   }
-  val Str_ask = NativeRelation("$Str_ask"){a => ask(a) }
+  val Str_ask = NativeRelation("$Str_ask"){(a,s) => ask(a) }
 
   //--Private:
-  private val NewStr = NativeRelation("$NewStr"){ a => add(a) }
-  private val AskStr = NativeRelation("$AskStr"){ a => ask(a) }
-  private val PrintStr = NativeRelation("$PrintStr"){a => println(a(0) + "=" + a(1))}
+  private val NewStr = NativeRelation("$NewStr"){ (a,s) => add(a) }
+  private val AskStr = NativeRelation("$AskStr"){ (a,s) => ask(a) }
+  private val PrintStr = NativeRelation("$PrintStr"){(a,s) => println(a(0) + "=" + a(1))}
   private val str,s,x,y = Var; private val K = RelVariable("K")
 
   rules(
     (StrRel(s,x) &: Str_print(x)) ==> PrintStr(x,s)
   )
+
 
   /***********************************************************************/
 

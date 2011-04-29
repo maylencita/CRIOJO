@@ -14,8 +14,6 @@ import fr.emn.criojo.util.Logger._
 import org.junit._
 import Assert._
 
-import java.net.URI
-
 object ExtTests{
 
   val a = Variable("a")
@@ -32,89 +30,34 @@ object ExtTests{
   }
   implicit def strToVar(str:String):Variable = new Variable(str)
 }
-class ExtTests{
+
+class MiscTexts{
   import ExtTests._
 
-  @Test
-  def testStr{
-//    logLevel = DEBUG
-    val machine = new TestCham with StringVM{
-      val s,x,y = Var
-      val S = Rel("S"); val MyStr = Rel("MyStr")
+  @Test (timeout=1000)
+  def nativeRelTest{
+    val vm = new CHAM{
+      val NatRel = NativeRelation("NatRel")(dummyMethod)
 
-      rules{
-        S(y,s,x) ==> Str_ask(y,s,x,MyStr)
+      def dummyMethod(a:Atom, s:Solution){
+        println("Called Dummy Method with " + a)
       }
     }
 
-    machine.introduceAtom(Atom("$Str",Variable("Mayleen"),a))
-    machine.introduceAtom(Atom("$Str",Variable("Otro"),b))
-
-    machine.strEqClasses.get("Mayleen") match{
-      case Some(ec) if (ec.contains(a)) => assertTrue(true)//Ok
-      case _ => fail("Missing value \"Mayleen\" ->a. Actual eqClass: " +  machine.strEqClasses)
-    }
-
-    machine.introduceAtom(Atom("S", "Mayleen",c, a))
-    machine.introduceAtom(Atom("S", "Mayleen",c, b))
-
-    val a7 = Atom("MyStr", a)
-
-//    log("Relations: " + machine.relations)
-    log("strEqClasses:" + machine.strEqClasses)
-    log("EqClasses:" + machine.eqClasses)
-
-    val s = Variable("s"); val x = Variable("x")
-    assertFalse("Missing element: " + a7 + ". Actual solution: " + machine.solution,
-      machine.query(List(Atom("MyStr",s,x)),List((x,a))).isEmpty
-    )
-  }
-
-
-  @Test
-  def testEqStr{
-//    logLevel = DEBUG
-    var result = false
-
-    val machine = new TestCham with StringVM{
-      val s,x,y = Var
-      val S = Rel("S");
-      val Iguales = NativeRelation("Iguales"){
-        case Atom("Iguales", a::b::_) => result = true
-        case atom => fail("Expected atom: Iguales(a,b). Actual: " + atom)
-      }
-
-      rules(
-        S(s,x,y) ==> EQ_ask(s,x,y,Iguales)
-      )
-    }
-
-    machine.introduceAtom(Atom("$Str",Variable("Mayleen"),a))
-    machine.introduceAtom(Atom("$Str",Variable("Mayleen"),b))
-    machine.introduceAtom(Atom("S",Variable("1"),a,b))
-
-    val a8 = Atom("Iguales", a,b)
-
-    log("strEqClasses:" + machine.strEqClasses)
-    log("EqClasses:" + machine.eqClasses)
-    assertTrue("Missing element: Iguales(a,b). Actual solution: " + machine.solution, result)
-
-    machine.introduceAtom(Atom("Eq", c, b))
-    machine.strEqClasses.get("Mayleen") match {
-      case Some(ec) if(ec.contains(a) && ec.contains(b) && ec.contains(c)) => assertTrue(true)
-      case _ => fail("Expected intEqClasses: Map(Mayleen->{a,b,c}). Actual: " + machine.strEqClasses)
-    }
+    vm.introduceAtom(Atom("NatRel",a,b))
   }
 
   @Test (timeout=1000)
   def mixedVMTest{
-    val vm = new TestCham with StringVM with IntVM{
+    logLevel = DEBUG
+
+    val vm = new CHAM with StrCHAM with IntCHAM{ //DefaultCham with StrCHAM with IntCHAM{
       val s,x,y,id,name,id2,name2 = Var
-      val Alumni = Rel("Alumni"); val SameName = Rel("SameName"); val SameId = Rel("SameId")
+      val Alumni = Rel("Alumni"); val SameName = Rel("SameName"); val SameId = Rel("SameId"); val NotSame = Rel("NotSame")
 
       rules(
         (Alumni(s, id, name) &: Alumni(s,id2,name2)) ==>
-              (EQ_ask(s, name,name2,SameName) &: EQ_ask(s,id,id2,SameId)) ,
+              (EQ_ask(s, name,name2,SameName,NotSame) &: EQ_ask(s,id,id2,SameId,NotSame)) ,
         (SameName(s,name,name) &: SameId(s,id,id)) ==> Alumni(s, id, name)
       )
     }
@@ -130,13 +73,13 @@ class ExtTests{
 
   @Test (timeout=1000)
   def testPrint{
-//    logLevel = INFO
-    val machine = new LocalVM{
+    logLevel = DEBUG
+    val machine = new LocalCHAM{
       val x = Var; val y = Variable("$y")
       val X = Rel("X")
 
       rules(
-        X(x) ==> (StringAtom("x=",y) &: Print(y,x))
+        X(x) ==> Nu(y)(StringAtom("x=",y) &: Print(y,x))
       )
 
 //      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null

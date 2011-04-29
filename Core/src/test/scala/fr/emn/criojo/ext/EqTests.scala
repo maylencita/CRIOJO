@@ -24,13 +24,13 @@ class EqTests{
   val c = Variable("c")
   val d = Variable("d")
 
-  val testMachine = new LocalVM
+  val testMachine = new LocalCHAM
   val EQQ = testMachine.EQ
 
-  @Test
+  @Test (timeout=1000)
   def testEq{
 //    logLevel = DEBUG
-    val machine = new LocalVM
+    val machine = new LocalCHAM
 
     log("relations: " + machine.relations)
     log("rules: " + machine.rules)
@@ -54,10 +54,10 @@ class EqTests{
     )
   }
 
-  @Test (expected=classOf[InvalidStateError])
+  @Test (timeout=1000, expected=classOf[InvalidStateError])
   def testErrorNotEq{
     logLevel = INFO
-    val machine = new LocalVM {
+    val machine = new LocalCHAM {
       val R = Rel("R") ; val S=Rel("S")
       val x,y,z,w = Var
 
@@ -74,10 +74,10 @@ class EqTests{
     machine.introduceAtom(Atom("$NotEq", b, c))
   }
 
-  @Test (expected=classOf[InvalidStateError])
+  @Test (timeout=1000,expected=classOf[InvalidStateError])
   def testErrorEq{
     logLevel = DEBUG
-    val machine = new LocalVM {
+    val machine = new LocalCHAM {
       val R = Rel("R") ; val S=Rel("S")
       val x,y,z,w = Var
 

@@ -16,10 +16,10 @@ import ExtTests._
 
 class IntTests{
 
-  @Test
+  @Test (timeout=1000)
   def testDeclare{
 //    logLevel = DEBUG
-    val machine = new TestCham with IntVM{
+    val machine = new CHAM with IntCHAM{ //DefaultCham with IntCHAM{
       val s,x,y,n = Var
       val S = Rel("S"); val Siete = Rel("Siete")
 
@@ -61,21 +61,21 @@ class IntTests{
     )
   }
 
-  @Test
+  @Test (timeout=1000)
   def testEqInt{
 //    logLevel = DEBUG
     var iguales = false
     var noIguales = false
 
-    val machine = new TestCham with IntVM{
+    val machine = new CHAM with IntCHAM{ //DefaultCham with IntCHAM{
       val s,x,y = Var
       val Test = Rel("Test");
       val Iguales = NativeRelation("Iguales"){
-        case Atom(_, a::b::_) => iguales = true
+        case (Atom(_, a::b::_),s) => iguales = true
         case atom => fail("Expected atom: Iguales(a,b). Actual: " + atom)
       }
       val NoIguales = NativeRelation("NoIguales"){
-        case Atom(_, a::b::_) => noIguales = true
+        case (Atom(_, a::b::_),s) => noIguales = true
         case atom => fail("Expected atom: NoIguales(a,b). Actual: " + atom)
       }
 
@@ -110,9 +110,9 @@ class IntTests{
     }
   }
 
-  @Test (expected=classOf[InvalidStateError])
+  @Test (timeout=1000,expected=classOf[InvalidStateError])
   def testEqError{
-    val machine = new TestCham with IntVM
+    val machine = new CHAM with IntCHAM //DefaultCham with IntCHAM
     machine.introduceAtom(Atom("$Int",Variable("8"),a))
     machine.introduceAtom(Atom("$Int",Variable("9"),b))
     machine.introduceAtom(Atom("Eq",a,b))
@@ -124,7 +124,7 @@ class IntTests{
     val n = Variable("n")
     val x = Variable("x")
 
-    val machine = new TestCham with IntVM
+    val machine = new CHAM with IntCHAM //DefaultCham with IntCHAM
 //    println("Rules: " + machine.rules.mkString("","\n",""))
 
     machine.introduceAtom(Atom("$Suc",a,b))
@@ -137,12 +137,12 @@ class IntTests{
 
   @Test (timeout=1000)
   def testSum{
-    logLevel = DEBUG
+//    logLevel = DEBUG
 
     val n = Variable("n")
     val x = Variable("x")
 
-    val machine = new TestCham with IntVM
+    val machine = new CHAM with IntCHAM //DefaultCham with IntCHAM
     println("Rules: " + machine.rules.mkString("","\n",""))
 
     machine.introduceAtom(Atom("$Sum",a,b,c))

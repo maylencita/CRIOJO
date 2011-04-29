@@ -1,7 +1,7 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
-import EqVM._
+import EqClass._
 
 import collection.mutable.HashSet
 
@@ -17,7 +17,7 @@ import collection.mutable.HashSet
  * Extended CHAM with support for constant values, pretty-print, etc.
  */
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
-trait ExtendedCHAM extends CHAM with IntVM with StringVM with NullCHAM{
+abstract class ExtendedCHAM extends CHAM with IntCHAM with StrCHAM with NullCHAM{
 
   private val x,y = Var
 
@@ -26,7 +26,7 @@ trait ExtendedCHAM extends CHAM with IntVM with StringVM with NullCHAM{
   */
   val Print = Rel("Print") //NativeRelation("Print")(printAtom(_) )
 
-  private val Null_print = NativeRelation("Null_print"){a => println("Null")}
+  private val Null_print = NativeRelation("Null_print"){(a,s) => println("Null")}
 
   rules(
     Print(x) ==> NotNul(x) ? (Int_print(x) &: Str_print(x)),
@@ -60,23 +60,37 @@ trait ExtendedCHAM extends CHAM with IntVM with StringVM with NullCHAM{
     case _ => //Nothing
   }
 
+/*
   override def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
-    val guard = new ExtendedGuard(this)
-    guard.initRules(ruleDefs)
-    guard
+    val owner:ExtendedCHAM = this
+    new ExtendedCHAM with Guard { //with IntCHAM with StrCHAM with NullCHAM{
+      this.eqClasses = owner.eqClasses
+      this.disjClasses = owner.disjClasses
+      override val nullVars = owner.nullVars
+      initRules(ruleDefs)
+
+//      def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = new EmptyGuard
+    }
   }
+*/
+
+//  override def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
+//    val guard = new ExtendedGuard(this)
+//    guard.initRules(ruleDefs)
+//    guard
+//  }
 
 }
 
-class ExtendedGuard (outherVM: ExtendedCHAM) extends Guard with ExtendedCHAM{
-  def this(outVM: ExtendedCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) {
-    this(outVM)
-    starter = sttr
-    initRules(ruleDefs.toList)
-  }
-
-//  eqClasses = outherVM.eqClasses
-  override val intEqClasses = outherVM.intEqClasses
-  override val strEqClasses = outherVM.strEqClasses
-//  override val nullVars = outherVM.nullVars
-}
+//class ExtendedGuard (owner: ExtendedCHAM) extends CHAM with IntCHAM with StrCHAM with NullCHAM with Guard {
+//  def this(owner: ExtendedCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) {
+//    this(owner)
+//    starter = sttr
+//    initRules(ruleDefs.toList)
+//  }
+//
+//  eqClasses = owner.eqClasses
+//  override val intEqClasses = owner.intEqClasses
+//  override val strEqClasses = owner.strEqClasses
+//  override val nullVars = owner.nullVars
+//}

@@ -10,9 +10,9 @@ package fr.emn.criojo.util.json
 
 import fr.emn.criojo.core._
 import fr.emn.criojo.util.json.jsonparser.Json
-import fr.emn.criojo.net.ConnectedVM
+import fr.emn.criojo.net.ConnectedCHAM
 
-case class Json2Criojo(machine:ConnectedVM){
+case class Json2Criojo(machine:ConnectedCHAM){
 
   def parseList(s:String):List[Atom] =  Json.parse(s) match {
     case atomList: List[_] => atomList.foldLeft(List[Atom]()){(z, b) =>

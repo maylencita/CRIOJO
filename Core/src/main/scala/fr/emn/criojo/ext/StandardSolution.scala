@@ -1,7 +1,7 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
-import Creole.Substitution
+import Criojo.Substitution
 import fr.emn.criojo.util.Logger
 
 /**

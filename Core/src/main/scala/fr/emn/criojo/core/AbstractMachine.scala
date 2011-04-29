@@ -8,7 +8,7 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-import Creole._
+import Criojo._
 import fr.emn.criojo.util.Logger
 
 trait AbstractMachine extends RuleFactory{
@@ -82,6 +82,6 @@ trait AbstractMachine extends RuleFactory{
     rule  
   }
 
-  def newRule(head:List[Atom], body:List[Atom]):Rule = newRule(head, body, new Guard)
+  def newRule(head:List[Atom], body:List[Atom]):Rule //= newRule(head, body, new Guard)
 
 }

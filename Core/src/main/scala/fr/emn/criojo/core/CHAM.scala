@@ -8,10 +8,11 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-import Creole._
+import Criojo._
 import fr.emn.criojo.util.Logger._
 
-abstract class CHAM extends AbstractMachine {
+abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
+  protected var index = 0
 
   val T = new Top(){ def apply(vlst:Variable*):Atom = new Top(vlst.toList) } //Atom("true") //Rel("true")
   val F = Atom("false") //Rel("false")
@@ -20,8 +21,43 @@ abstract class CHAM extends AbstractMachine {
   var rules:List[Rule] = List()
   var relations:List[Relation] = List()
 
+  val solution = Solution(this)
+
+  def Guard(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = new ChamGuard(this, sttr, ruleDefs.toList)
+  def Abs(atom:Atom):Guard = new ChamGuard(this, new Top(atom.vars), List((new Top(atom.vars) &: atom) ==> F))
+
+  def addRelation(relation:Relation) = relations :+= relation
+
+  def addRule(rule:Rule) = rules :+= rule
+
+  def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
+
+  def relation(relName:String):Option[Relation] = relations.find(_.name == relName)
+
+
+  def execute{
+      while (rules.exists(r => r.isAxiom && r.execute)){}
+  }
+
+  def newLocalRelation(name:String,public:Boolean):LocalRelation = {
+    new LocalRelation(name, public)
+  }
+
+  def newRemoteRelation(remoteName:String,url:String):RemoteRelation = {
+    throw new IllegalAccessException("Unimplemented method newRemoteRelation.")
+  }
+
   def introduceAtom(atom:Atom){
     solution.addAtom(atom)
+//    findRelation(atom.relName) match{
+//      case r:Relation =>
+//        atom.relation = r
+//        r.notifyObservers(atom)
+//      case _ => //skip
+//    }
+  }
+
+  def receiveUpdate(atom:Atom){
     findRelation(atom.relName) match{
       case r:Relation =>
         atom.relation = r
@@ -30,11 +66,16 @@ abstract class CHAM extends AbstractMachine {
     }
   }
 
-  def addRelation(relation:Relation) = relations :+= relation
-
-  def addRule(rule:Rule) = rules :+= rule
-
-  def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
+  def findRelation(relName:String):Relation = relation(relName) match{
+      case Some(r) => r
+      case _ =>
+        if(relName startsWith ("$"))
+          new LocalRelation(relName)
+        else{
+          log(WARNING, this.getClass, "findRelation","Undefined relation " + relName)
+          new LocalRelation("Undefined")
+        }
+  }
 
   def querySansEffect(conj:List[Atom]):List[Atom] = {
     val lstresult= query(conj, conj.flatMap(a=>a.vars.map(v=>(v,v))))
@@ -46,11 +87,14 @@ abstract class CHAM extends AbstractMachine {
 
   def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule = new CHAMRule(h, b, g, scope)
 
-  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
-    val guard = new Guard
-    guard.initRules(ruleDefs)
-    guard
-  }
+//  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
+//    new CHAM with Guard{
+//      initRules(ruleDefs)
+//    }
+//    val guard = new Guard
+//    guard.initRules(ruleDefs)
+//    guard
+//  }
 
   def rules(ruleDefs:(RuleFactory => Rule)*) = initRules(ruleDefs.toList)
 
@@ -60,6 +104,53 @@ abstract class CHAM extends AbstractMachine {
       processBody(processHead(r),r)
       addRule(r)
     }
+  }
+
+  def newRule(head:List[Atom], body:List[Atom]):Rule = newRule(head, body, new EmptyGuard)
+
+  def newRule(head:List[Atom], body:List[Atom], guard:Guard):Rule={
+    var headVars = List[RelVariable]()
+    val rule = createRule(head,body,guard)//new CHAMRule(head, body, guard)
+
+    if (!rule.isAxiom)
+      rule.head.foreach{
+        case a:rule.HeadAtom =>
+          relation(a.relName) match{
+            case Some(r) =>
+              a.relation = r
+              r.addObserver(a)
+            case _ =>
+              //TODO Improve this. AbstractMachine should not be aware of values
+              if (!a.relName.startsWith("$")){
+                log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
+                a.relation = new LocalRelation("Undefined")
+              }else{
+                a.relation = findRelation(a.relName)
+              }
+          }
+          a.vars.foreach{
+            case rv:RelVariable => headVars :+= rv
+            case _ =>
+          }
+        case _ =>
+      }
+
+    rule.body.foreach{a =>
+      a.relation = headVars.find(hv => hv.name == a.relName) match{
+        case Some(hv) => hv.relation //new LocalRelation(a.relName)
+        case _=> findRelation(a.relName)
+      }
+      a.vars.foreach{
+        case rv: RelVariable if(!headVars.contains(rv)) =>
+          relations.find(_.name == rv.name) match{
+            case Some(r) => rv.relation = r
+            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);
+          }
+        case _ =>
+      }
+    }
+    addRule(rule)
+    rule
   }
 
   def processHead(rule:Rule):List[RelVariable]={
@@ -102,8 +193,15 @@ abstract class CHAM extends AbstractMachine {
     }
   }
 
+//object Guard{
+//  def apply(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = {
+//    val g = new Guard(sttr,ruleDefs.toList)
+//    g
+//  }
+//}
+
   class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{//(head, body, guard){
-    def this() = this(List(), List(), new Guard, List())
+    def this() = this(List(), List(), new EmptyGuard, List())
 
     scope = scp
     val head:List[HeadAtom] = h.map{h => new HeadAtom(h)}
@@ -121,14 +219,14 @@ abstract class CHAM extends AbstractMachine {
     }
 
     def execute (subs:List[Substitution]):Boolean = {
-      log("[Rule.execute] {"+this+"} Substitutions: " + subs)
-      log("[Rule.execute] solution= " + solution)
       var matches = List[Atom]()
       var result = false
 
       if (this.isAxiom ||
               (head.size == 1 && head.filter(_.isActive).isEmpty) ||
               !{matches= query(head.filter(_.isActive),subs); matches}.isEmpty){
+        log("[Rule.execute] {"+this+"} Substitutions: " + subs)
+        log("[Rule.execute] solution= " + solution)
         log("[Rule.execute] Found Matches: " + matches + " for rule " + this)
         levelDown
         val subs2 = subs.union(getSubstitutions(matches))
@@ -166,20 +264,89 @@ abstract class CHAM extends AbstractMachine {
     }
   }
 
-  object NativeRelation{
-    def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
+//  object NativeRelation{
+//    def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
+//  }
+  def NativeRelation(n:String)(f:(Atom,Solution) => Unit)= {
+    val natRel = new NativeRelation(n,this.solution,f)
+    addRelation(natRel)
+    natRel
   }
 
-  class NativeRelation(n:String, f:(Atom) => Unit) extends Rel(n){
+/*
+  case class NativeRelation(rn:String, sol:Solution, f:(Atom,Solution) => Unit) extends Rel(rn){
     override def notifyObservers(a:Atom)= a match{
       case Atom(this.name, _) =>
         log("[Relation("+name+").notifyObservers] notified by " + a)
-        f(a)
+        f(a, sol)
 //        a.inactivate
         solution.inactivate(a)
         solution.cleanup
       case _ => super.notifyObservers(a)
     }
   }
-  
+*/
+
+  class ChamGuard(outerCM:CHAM, sttr:Atom, ruleDefs:List[RuleFactory => Rule]) extends CHAM with Guard{
+
+    val TopRel:Relation = Rel("true")
+    val falseRel:Relation = Rel("false")
+    val starter = sttr
+
+    initRules(ruleDefs)
+
+    def empty:Boolean = rules.isEmpty
+
+    //Copy relations
+    def initRelations(){
+      for(r <- outerCM.relations){
+        r match{
+          case nr:NativeRelation => addRelation(new NativeRelation(nr.name, this.solution, nr.f))
+          case _ => addRelation(new LocalRelation(r.name,r.isMultiRel))
+        }
+      }
+//      outerCM.relations.foreach{
+//        case NativeRelation(n, _, f) => addRelation(new NativeRelation(n, this.solution, f))
+//        case r @ _ => addRelation(new LocalRelation(r.name,r.isMultiRel))
+//      }
+    }
+
+    def eval(sol:Solution, subs:List[Substitution]):Boolean ={
+      log("------------------------------------------------------")
+      log("[Guard.eval] Begin " + this.toString)
+      log("[Guard.eval] substitutions: " + subs)
+
+      this.solution.revert
+      this.solution.update(sol.copy(this))
+      levelDown
+//      introduceAtom(starter.applySubstitutions(subs))
+      this.solution.addAtom(starter.applySubstitutions(subs))
+      levelUp
+
+      log("[Guard.eval] finished with solution: " + this.solution)
+      log("------------------------------------------------------")
+      this.solution.exists(a => a.relName == TopRel.name)
+    }
+
+    override def relation(relName:String):Option[Relation] = {
+      relations.find(_.name == relName) match{
+        case sr:Some[_] => sr
+        case _ =>
+          val rel = new LocalRelation(relName,false)
+          addRelation(rel)
+          Some(rel)
+      }
+    }
+
+    override def toString:String = {
+      starter + ":" + rules.mkString("",";","")
+    }
+  }
+
+//  /*(new Top(atom.vars))*/{
+//    starter = new Top(atom.vars)
+//    rules(
+//      (new Top(atom.vars) &: atom) ==> F
+//    )
+//  }
 }

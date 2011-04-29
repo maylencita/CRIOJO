@@ -1,4 +1,4 @@
-package fr.emn.criojo.ext
+package fr.emn.criojo.core
 
 /**
  * Created by IntelliJ IDEA.
