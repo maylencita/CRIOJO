@@ -26,16 +26,16 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
   def Guard(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = new ChamGuard(this, sttr, ruleDefs.toList)
   def Abs(atom:Atom):Guard = new ChamGuard(this, new Top(atom.vars), List((new Top(atom.vars) &: atom) ==> F))
 
-  def addRelation(relation:Relation) = relations :+= relation
+  def addRelation(relation:Relation) { relations :+= relation }
 
-  def addRule(rule:Rule) = rules :+= rule
+  def addRule(rule:Rule) { rules :+= rule }
 
   def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
 
   def relation(relName:String):Option[Relation] = relations.find(_.name == relName)
 
 
-  def execute{
+  def execute(){
       while (rules.exists(r => r.isAxiom && r.execute)){}
   }
 
@@ -96,7 +96,7 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
 //    guard
 //  }
 
-  def rules(ruleDefs:(RuleFactory => Rule)*) = initRules(ruleDefs.toList)
+  def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
   def initRules(ruleDefs:List[RuleFactory => Rule]){
     ruleDefs.foreach{f =>
@@ -249,7 +249,7 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
     new Variable("x"+index)
   }
 
-  case class Tok extends LocalRelation("$X"+index,true){
+  case class Tok() extends LocalRelation("$X"+index,true){
     def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
   }
 
