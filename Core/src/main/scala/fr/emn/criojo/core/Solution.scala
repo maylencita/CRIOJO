@@ -21,7 +21,7 @@ trait Solution{
 
   def addAtom(atom:Atom)
 
-  def addMolecule(molecule:List[Atom])//{ molecule foreach (addAtom(_)) }
+  def addMolecule(molecule:List[Atom])
 
   def size = elems.size
 
@@ -43,11 +43,11 @@ trait Solution{
 
   def map[B](f: (Atom)=> B) = elems.map(f)
 
-  def clear
+  def clear()
 
-  def cleanup
+  def cleanup()
 
-  def revert
+  def revert()
 
   def update(newsol: Solution)
 
@@ -70,7 +70,7 @@ trait Solution{
           List()
         else{
           var results = List[Atom]()
-          var i = matches.iterator
+          val i = matches.iterator
           while (i.hasNext && results.isEmpty){
             val m = i.next
             inactivate(m)
@@ -112,8 +112,8 @@ trait Solution{
 
 class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
   def this()= this(null, List[Atom]())
-  def remove(a:Atom) { elems -= a}
-  def clear {   elems = List[Atom]()  }
+  def remove(a:Atom) { elems.filterNot(_ == a)}
+  def clear() {   elems = List[Atom]()  }
   def copy(newOwner:CHAM):Solution = new SolutionImpl(newOwner,elems.map(a => a.clone))
   def addAtom(atom:Atom){
     elems :+= atom
@@ -121,18 +121,17 @@ class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
   }
   def addMolecule(molecule:List[Atom]){
     elems ++= molecule
-//    molecule foreach (notifyCHAM(_))
-  }//{ molecule foreach (addAtom(_)) }
+  }
 
-  def cleanup{
+  def cleanup(){
     elems = elems.filter(_.isActive)
   }
-  def revert{
+  def revert(){
     elems.foreach(_.setActive(true))
   }
   def update(newsol: Solution){
     if (newsol.contains(False) || newsol.isEmpty){
-      clear
+      clear()
     }else{
       this.elems = newsol.elems
     }
@@ -150,37 +149,3 @@ class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
   }
 }
 
-case class StandAloneSolution(var elems:List[Atom]) extends Solution{
-  def this()= this(List[Atom]())
-  def remove(a:Atom) { elems -= a}
-  def clear {   elems = List[Atom]()  }
-  def copy(newOwner:CHAM):Solution = new StandAloneSolution(elems.map(a => a.clone))
-  def addAtom(atom:Atom){
-    elems :+= atom
-  }
-  def addMolecule(molecule:List[Atom]){
-    elems ++= molecule
-  }
-  def cleanup{
-    elems = elems.filter(_.isActive)
-  }
-  def revert{
-    elems.foreach(_.setActive(true))
-  }
-  def update(newsol: Solution){
-    if (newsol.contains(False) || newsol.isEmpty){
-      clear
-    }else{
-      this.elems = newsol.elems
-    }
-  }
-  def inactivate(a:Atom){
-    a.setActive(false)
-  }
-  def activate(a:Atom){
-    a.setActive(true)
-  }
-  override def clone:Solution = new StandAloneSolution(List[Atom]() ++ this.elems)
-
-  def notifyCHAM(newAtom:Atom){}
-}

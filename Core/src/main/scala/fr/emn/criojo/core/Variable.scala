@@ -44,6 +44,7 @@ object RelVariable{
     rv
   }
 }
+
 @serializable
 case class RelVariable(n:String) extends Variable(n){
   @transient
@@ -74,7 +75,7 @@ case class Value[+T](value:T) extends Variable(if (value == null) "_" else value
   }
 }
 
-//TODO Why not extends ValueVariable[Nothing]? 
+//TODO Why not to extend ValueVariable[Nothing]?
 object Null extends Value[Any](null){
   override def toString = "null"
 }

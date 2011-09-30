@@ -8,22 +8,18 @@ package fr.emn.criojo.net
  * To change this template use File | Settings | File Templates.
  */
 
-//import fr.emn.criojo.loader.ScriptLoader
 import fr.emn.criojo.util.json.Json2Criojo
 import fr.emn.criojo.util.Logger._
-//import fr.emn.criojo.util.ConfigProperties._
 
 import java.net.URI
 import javax.ws.rs.core._
 import java.util.logging.Logger
-import java.util.logging.Level
 
 import com.sun.jersey.api.client._
 import com.sun.jersey.api.client.config.DefaultClientConfig
 
 import actors._
 import collection.mutable.HashMap
-import actors.remote.RemoteActor
 
 object CriojoClient{
   val myclient:Client = Client.create(new DefaultClientConfig)
@@ -44,20 +40,14 @@ object CriojoClient{
 }
 
 class ProxiedClient(url:URI) extends ConnectedCHAM(url) with Actor{
-//  def this(scriptUri:String, url:URI)={
-//    this(url)
-//    ScriptLoader.load(this, io.Source.fromFile(scriptUri).mkString)
-//  }
 
   def act{
-//    this.execute
     while(true){
       try{
         getMessages
       }catch{
         case e=>
           log(WARNING, this.getClass,"act","Could not connect to proxy: " + e)
-//          e.printStackTrace
       }
 
       Thread.sleep(500)
@@ -88,7 +78,6 @@ class DirectClient(name:String, port:Int)  extends
 ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "/" + name).build()) with Actor{
 
   def act() {
-//    this.execute
     info(this.getClass,"act", "The client is running at " + vmUrl)
     val s_socket = new ServerSocket(port)
     while(true){
@@ -97,7 +86,6 @@ ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostA
       val ch = new ConnectionHandler(this)
       ch.start
       ch ! new Connection(conn)
-//      handleConnection(conn)
     }
   }
 }
@@ -106,8 +94,6 @@ ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostA
     val logger = Logger.getLogger(this.getClass.getName())
     
     private val Post = "^(POST /.*)$".r
-//  |Date: Sat, 07 Mar 2009 12:20:25 GMT
-//  |Content-Length: 45
     private val okAnswer = """|HTTP/1.1 200 OK
                               |Server: Criojo Client
                               |Accept-Ranges: bytes
@@ -136,7 +122,7 @@ ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostA
       val is = socket.getInputStream
       val reader = new BufferedReader(new InputStreamReader(is))
 
-      var line = reader.readLine()
+      val line = reader.readLine()
       if(line != null){
         line.trim match{
           case Post(s) =>
@@ -145,7 +131,6 @@ ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostA
             writer.flush()
             writer.close()
             socket.close()
-//          info(this.getClass, "handleConnection", "Got message: " + message)
             logger.info("Message received: " + message)
             handleMessage(message)
           case msg =>
@@ -160,7 +145,6 @@ ConnectedCHAM(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getHostA
 
     def handleMessage(message:String){
       for (a <- Json2Criojo(owner).parseAtomList(message)){
-//      info(this.getClass,"getMessages", "Received atom: " + a)
         owner.addAtom(a)
         logger.info("Atom " + a + " successfully added.")
       }

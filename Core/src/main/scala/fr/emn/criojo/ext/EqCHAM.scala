@@ -11,7 +11,7 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 import Criojo._
 
-import collection.mutable.{HashSet,HashMap}
+import collection.mutable.HashSet
 import EqClass._
 
 trait EqCHAM extends CHAM{
@@ -74,24 +74,23 @@ trait EqCHAM extends CHAM{
     }
   }
 
-  private def askEq(a:Atom, sol:Solution) = a match{
-    case Atom(_, i::v1::v2::kpls::kmin::_) =>
-      if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2))){
-        //They are equal
-//        introduceAtom(Atom(kpls.toString, i,v1,v2))
-        sol.addAtom(Atom(kpls.toString, i,v1,v2))
-      }
-      else
-        (disjClasses.find(v1), disjClasses.find(v2)) match{
-          case (Some(e1),Some(e2)) if e1 != e2 =>
-            //They are different
-//            introduceAtom(Atom(kmin.toString, i,v1,v2))
-            sol.addAtom(Atom(kmin.toString, i,v1,v2))
-          case _ => //No enough information to answer
+  private def askEq(a:Atom, sol:Solution){
+    a match{
+      case Atom(_, i::v1::v2::kpls::kmin::_) =>
+        if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2))){
+          //They are equal
+          sol.addAtom(Atom(kpls.toString, i,v1,v2))
         }
-    case _ => //Nothing
+        else
+          (disjClasses.find(v1), disjClasses.find(v2)) match{
+            case (Some(e1),Some(e2)) if e1 != e2 =>
+              //They are different
+              sol.addAtom(Atom(kmin.toString, i,v1,v2))
+            case _ => //No enough information to answer
+          }
+      case _ => //Nothing
+    }
   }
-
 
   def askEquivalence(x:Variable, y:Variable, s:Solution):Boolean = {
     x == y ||
@@ -111,32 +110,12 @@ trait EqCHAM extends CHAM{
   }
 
   def Eq(v1:Variable, v2:Variable):Guard = {
-//    val g = new EqGuard(this,T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,t,f)))
-//    g
     Guard(T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,t,f)))
   }
 
   def NotEq(v1:Variable, v2:Variable):Guard = {
-//    val g = new EqGuard(this,T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,f,t)))
-//    g
     Guard(T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,f,t)))
   }
 
 }
-//import EqVM._
-
-
-
-
-
-
-
-//class EqGuard(owner:EqCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with EqCHAM{
-//    this.eqClasses = owner.eqClasses
-//    this.disjClasses = owner.disjClasses
-//    private val s,x,y,z = Var
-//
-//    initRules(ruleDefs.toList)
-//  }
-
 

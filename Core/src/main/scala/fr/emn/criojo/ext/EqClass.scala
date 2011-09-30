@@ -9,14 +9,8 @@ package fr.emn.criojo.ext
  */
 
 import fr.emn.criojo.core._
-import Criojo._
 
 import collection.mutable.{HashSet,HashMap}
-
-//object EqVM{
-//  type EqClass = HashSet[Variable]
-//}
-//import EqVM._
 
 object EqClass{
   type EqClass = HashSet[Variable]
@@ -26,9 +20,6 @@ object EqClass{
   }
 }
 
-//class EqClass extends HashSet[Variable]{
-//  def this(vlst:)
-//}
 import EqClass._
 
 class TypedEqClasses[T](eqClasses:EqClassList,noEqClasses:EqClassList) extends HashMap[T, EqClass]{
@@ -48,7 +39,7 @@ class TypedEqClasses[T](eqClasses:EqClassList,noEqClasses:EqClassList) extends H
         eqClasses.find(v) match{
           case Some(ec) => put(k, ec)
           case _ =>
-            val newEC = EqClass(v)//HashSet(v)
+            val newEC = EqClass(v)
             eqClasses.add(newEC)
             put(k, newEC)
         }
@@ -87,15 +78,4 @@ class EqClassList{
 
   override def toString = eqClasses.map(_.mkString("{",",","}")).mkString("[",",","]") 
 }
-
-
-
-//class EqGuard(owner:EqCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with EqCHAM{
-//    this.eqClasses = owner.eqClasses
-//    this.disjClasses = owner.disjClasses
-//    private val s,x,y,z = Var
-//
-//    initRules(ruleDefs.toList)
-//  }
-
 

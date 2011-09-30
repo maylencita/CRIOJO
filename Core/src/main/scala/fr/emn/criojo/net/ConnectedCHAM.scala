@@ -8,44 +8,28 @@ package fr.emn.criojo.net
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
-import fr.emn.criojo.ext.ExtendedCHAM //{StandardCHAM,RemoteRelation}
+import fr.emn.criojo.ext.ExtendedCHAM
 import fr.emn.criojo.util.Logger._
-//import fr.emn.criojo.util.ConfigProperties._
 import fr.emn.criojo.util.json._
 import Criojo._
-
-//import fr.emn.criojo.model.RemoteRelationImpl
 
 import java.net.URI
 import javax.ws.rs.core.{UriBuilder,MediaType}
 import java.util.logging.Logger
-import java.util.logging.Level //._
+import java.util.logging.Level
 
 import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.config.DefaultClientConfig
 
-//case class PublicRelation(override val name:String, url:URI) extends LocalRelation(name, true)
 trait PublicRelation extends Relation{
   def url:URI
 }
 
-class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{//StandardCHAM{
+class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
  assert(vmUrl != null)
 
-//  type JWARNING = Level.WARNING
-//  type JSEVERE = Level.SEVERE
-
   val owner = this
-  val logger = Logger.getLogger(this.getClass.getName())
-
-//  val solution = Solution()
-
-//  def loadSolution{
-//    solution match{
-//      case s:CachedSolution => s.load
-//      case _ => //Skip
-//    }
-//  }
+  val logger = Logger.getLogger(this.getClass.getName)
 
   def addAtom(a:Atom){
     var nuAtoms = List[Atom]()
@@ -62,7 +46,6 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{//StandardCHAM{
       case v => nuVars :+= v
     }
     val a2=new Atom(a.relName, nuVars); a2.relation = a.relation
-//    nuAtoms :+= a2
 
     nuAtoms.foreach(introduceAtom(_))
     introduceAtom(a2)
@@ -75,7 +58,6 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{//StandardCHAM{
   override def newRemoteRelation(remoteName:String,remoteUrl:String):RemoteRelation = {
     val uri = UriBuilder.fromUri(remoteUrl).build()
     val r = new RemoteRelationImpl(remoteName,uri)
-    //addRelation(r)
     r
   }
 
@@ -105,44 +87,35 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{//StandardCHAM{
 
       val newAtom = a.applySubstitutions(subs)
 
-//      observers.foreach(o => o.receiveUpdate(newAtom))
       if (observers.isEmpty){
-        exportAtom(newAtom)//, url)
-//        log(this.getClass,"notifyObservers"," Atom " + newAtom + " exported to " + url)
+        exportAtom(newAtom)
         log(this.getClass,"notifyObservers"," Solution after export: " + solution)
       }else{
         observers.foreach(o => o.receiveUpdate(newAtom))
       }
     }
 
-    def exportAtom(atom:Atom){//, url:URI){
+    def exportAtom(atom:Atom){
       val myservice = myclient.resource(url).path(atom.relName)
-//      val content = JSONUtil.serialize(new WebAtom(atom))
       val content = JSONUtil.serialize(new AtomList("", List(atom)))
 
       try{
-//        info(this.getClass, "exportAtom","Sending: " + content)
         logger.info("Sending: " + content)
         val resp:String = myservice.
                 header("X-Client-URL", vmUrl.toString).
                 entity(content.getBytes, MediaType.APPLICATION_JSON_TYPE).
                 post(classOf[String])
-//        info(this.getClass, "exportAtom","Response: " + resp)
         logger.info("Response: " + resp)
         if (resp.startsWith("{\"atoms\"")){
           Json2Criojo(owner).parseAtomList(new String(resp)) match{
             case lst:List[Atom] =>
               lst.foreach(addAtom(_))
-//              logger.info("Atoms " + lst + " successfully added.")
-//              logger.info("New solution: " + prettyPrint)
             case _ => log(WARNING, this.getClass, "exportAtom", "Received empty list.")
           }
         }
       }catch{
         case e =>
           logger.log(Level.SEVERE, "Error exportin atom: " + e)
-//          error(this.getClass, "exportAtom","Error: " + e)
-//          e.printStackTrace()
       }
     }
 

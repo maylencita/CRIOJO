@@ -1,9 +1,6 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
-import EqClass._
-
-import collection.mutable.HashSet
 
 /**
  * Created by IntelliJ IDEA.
@@ -60,37 +57,5 @@ abstract class ExtendedCHAM extends CHAM with IntCHAM with StrCHAM with NullCHAM
     case _ => //Nothing
   }
 
-/*
-  override def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
-    val owner:ExtendedCHAM = this
-    new ExtendedCHAM with Guard { //with IntCHAM with StrCHAM with NullCHAM{
-      this.eqClasses = owner.eqClasses
-      this.disjClasses = owner.disjClasses
-      override val nullVars = owner.nullVars
-      initRules(ruleDefs)
-
-//      def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = new EmptyGuard
-    }
-  }
-*/
-
-//  override def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
-//    val guard = new ExtendedGuard(this)
-//    guard.initRules(ruleDefs)
-//    guard
-//  }
-
 }
 
-//class ExtendedGuard (owner: ExtendedCHAM) extends CHAM with IntCHAM with StrCHAM with NullCHAM with Guard {
-//  def this(owner: ExtendedCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) {
-//    this(owner)
-//    starter = sttr
-//    initRules(ruleDefs.toList)
-//  }
-//
-//  eqClasses = owner.eqClasses
-//  override val intEqClasses = owner.intEqClasses
-//  override val strEqClasses = owner.strEqClasses
-//  override val nullVars = owner.nullVars
-//}

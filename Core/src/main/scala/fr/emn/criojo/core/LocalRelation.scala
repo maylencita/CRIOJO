@@ -14,15 +14,13 @@ object LocalRelation{
 }
 
 @serializable
-class LocalRelation(val name:String, val public:Boolean, val isMultiRel:Boolean=true)//(implicit multirelation:Boolean = true)
+class LocalRelation(val name:String, val public:Boolean, val isMultiRel:Boolean=true)
 extends Relation{
   def this(n:String)={
     this(n,false)
   }
   
   var observers:List[RelationObserver] = List()
-
-//  def isMultiRel = this.multirelation
 
   def addObserver(observer:RelationObserver){
     if (!observers.contains(observer) )
@@ -32,7 +30,6 @@ extends Relation{
   def notifyObservers(a: Atom){
     observers.foreach{o =>
       if (a.isActive){
-//        Logger.log("[Relation("+name+").notifyObservers]"+ o + " notified by " + a)
         o.receiveUpdate(a)
       }
     }
