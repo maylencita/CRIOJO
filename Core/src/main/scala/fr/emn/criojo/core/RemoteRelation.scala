@@ -7,7 +7,6 @@ package fr.emn.criojo.core
  * Time: 2:05:31 PM
  * To change this template use File | Settings | File Templates.
  */
-import fr.emn.criojo.core._
 
 import java.net.URI;
 

@@ -12,7 +12,7 @@ import EqClass._
 
 import collection.mutable.HashSet
 
-trait NullCHAM extends /*CHAM with*/ EqCHAM{
+trait NullCHAM extends EqCHAM{
   val nullVars:EqClass = HashSet[Variable]()
   private val x,y = Var
 
@@ -27,30 +27,32 @@ trait NullCHAM extends /*CHAM with*/ EqCHAM{
 
   /***********************************************************************/
 
-  private def addNull(a:Atom, s:Solution) = a match{
-    case Atom("Null", v::_) =>
-      if (nullVars isEmpty){
-        eqClasses add nullVars
-      }
-      nullVars add v
-//      a.inactivate
-      s.inactivate(a)
-      s.cleanup
-    case _ => //Nothing
+  private def addNull(a:Atom, s:Solution){
+    a match{
+      case Atom("Null", v::_) =>
+        if (nullVars.isEmpty){
+          eqClasses add nullVars
+        }
+        nullVars add v
+        s.inactivate(a)
+        s.cleanup()
+        true
+      case _ => false //Nothing
+    }
   }
 
-  private def askNull(a:Atom, s:Solution) = a match{
-    case Atom(_, v::kplus::kminus::_) =>
-      if (nullVars contains (v))
-        s.addAtom(Atom(kplus.name, v))
-      else
-        s.addAtom(Atom(kminus.name, v))
-    case _ =>
+  private def askNull(a:Atom, s:Solution){
+    a match{
+      case Atom(_, v::kplus::kminus::_) =>
+        if (nullVars contains (v))
+          s.addAtom(Atom(kplus.name, v))
+        else
+          s.addAtom(Atom(kminus.name, v))
+      case _ =>
+    }
   }
 
   def NotNul(variable:Variable):Guard = {
-//    val g = new NullGuard (this, T(variable), T(x) ==> Null_ask(x, f, t))
-//    g
     Guard (T(variable), T(x) ==> Abs(Null_ask())? Null_ask(x, f, t))
   }
 
@@ -60,8 +62,3 @@ trait NullCHAM extends /*CHAM with*/ EqCHAM{
 
 }
 
-//class NullGuard(owner:NullCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with NullCHAM{
-//  this.eqClasses = owner.eqClasses
-//  override val nullVars = owner.nullVars
-//  initRules(ruleDefs.toList)
-//}

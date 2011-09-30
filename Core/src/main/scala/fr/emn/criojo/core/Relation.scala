@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import fr.emn.criojo.util.Logger
-
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen

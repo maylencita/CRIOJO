@@ -11,13 +11,12 @@ package fr.emn.criojo.core
 import Criojo._
 import fr.emn.criojo.util.Logger._
 
-abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
+abstract class CHAM extends RuleFactory{
   protected var index = 0
 
-  val T = new Top(){ def apply(vlst:Variable*):Atom = new Top(vlst.toList) } //Atom("true") //Rel("true")
-  val F = Atom("false") //Rel("false")
+  val T = new Top(){ def apply(vlst:Variable*):Atom = new Top(vlst.toList) }
+  val F = Atom("false")
 
-//  val solution = Solution() //new Solution
   var rules:List[Rule] = List()
   var relations:List[Relation] = List()
 
@@ -49,12 +48,6 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
 
   def introduceAtom(atom:Atom){
     solution.addAtom(atom)
-//    findRelation(atom.relName) match{
-//      case r:Relation =>
-//        atom.relation = r
-//        r.notifyObservers(atom)
-//      case _ => //skip
-//    }
   }
 
   def receiveUpdate(atom:Atom){
@@ -87,15 +80,6 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
 
   def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule = new CHAMRule(h, b, g, scope)
 
-//  def createGuard(ruleDefs:List[RuleFactory => Rule]):Guard = {
-//    new CHAM with Guard{
-//      initRules(ruleDefs)
-//    }
-//    val guard = new Guard
-//    guard.initRules(ruleDefs)
-//    guard
-//  }
-
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
   def initRules(ruleDefs:List[RuleFactory => Rule]){
@@ -110,7 +94,7 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
 
   def newRule(head:List[Atom], body:List[Atom], guard:Guard):Rule={
     var headVars = List[RelVariable]()
-    val rule = createRule(head,body,guard)//new CHAMRule(head, body, guard)
+    val rule = createRule(head,body,guard)
 
     if (!rule.isAxiom)
       rule.head.foreach{
@@ -137,7 +121,7 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
 
     rule.body.foreach{a =>
       a.relation = headVars.find(hv => hv.name == a.relName) match{
-        case Some(hv) => hv.relation //new LocalRelation(a.relName)
+        case Some(hv) => hv.relation
         case _=> findRelation(a.relName)
       }
       a.vars.foreach{
@@ -193,14 +177,7 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
     }
   }
 
-//object Guard{
-//  def apply(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = {
-//    val g = new Guard(sttr,ruleDefs.toList)
-//    g
-//  }
-//}
-
-  class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{//(head, body, guard){
+  class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{
     def this() = this(List(), List(), new EmptyGuard, List())
 
     scope = scp
@@ -213,7 +190,6 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
         relation(atom.relName) match{
           case Some(relation) =>
             relation.notifyObservers(atom)
-  //          if (relation.isInstanceOf[RemoteRelation])
           case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relName)
         }
     }
@@ -244,49 +220,6 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
     }
   }
 
-  def Var:Variable = {
-    index += 1
-    new Variable("x"+index)
-  }
-
-  case class Tok() extends LocalRelation("$X"+index,true){
-    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
-  }
-
-  case class Rel(n:String) extends LocalRelation(n,true){
-    addRelation(this)
-
-    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
-
-    override def equals(that:Any):Boolean = that match{
-      case r:Relation => this.name == r.name
-      case _ => false
-    }
-  }
-
-//  object NativeRelation{
-//    def apply(n:String)(f:(Atom) => Unit)=new NativeRelation(n,f)
-//  }
-  def NativeRelation(n:String)(f:(Atom,Solution) => Unit)= {
-    val natRel = new NativeRelation(n,this.solution,f)
-    addRelation(natRel)
-    natRel
-  }
-
-/*
-  case class NativeRelation(rn:String, sol:Solution, f:(Atom,Solution) => Unit) extends Rel(rn){
-    override def notifyObservers(a:Atom)= a match{
-      case Atom(this.name, _) =>
-        log("[Relation("+name+").notifyObservers] notified by " + a)
-        f(a, sol)
-//        a.inactivate
-        solution.inactivate(a)
-        solution.cleanup
-      case _ => super.notifyObservers(a)
-    }
-  }
-*/
-
   class ChamGuard(outerCM:CHAM, sttr:Atom, ruleDefs:List[RuleFactory => Rule]) extends CHAM with Guard{
 
     val TopRel:Relation = Rel("true")
@@ -305,10 +238,6 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
           case _ => addRelation(new LocalRelation(r.name,r.isMultiRel))
         }
       }
-//      outerCM.relations.foreach{
-//        case NativeRelation(n, _, f) => addRelation(new NativeRelation(n, this.solution, f))
-//        case r @ _ => addRelation(new LocalRelation(r.name,r.isMultiRel))
-//      }
     }
 
     def eval(sol:Solution, subs:List[Substitution]):Boolean ={
@@ -319,7 +248,6 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
       this.solution.revert
       this.solution.update(sol.copy(this))
       levelDown
-//      introduceAtom(starter.applySubstitutions(subs))
       this.solution.addAtom(starter.applySubstitutions(subs))
       levelUp
 
@@ -343,10 +271,34 @@ abstract class CHAM /*extends AbstractMachine*/ extends RuleFactory{
     }
   }
 
-//  /*(new Top(atom.vars))*/{
-//    starter = new Top(atom.vars)
-//    rules(
-//      (new Top(atom.vars) &: atom) ==> F
-//    )
-//  }
+  /*-------------------------------------------*/
+  //  INNER SYNTAX
+  def Var:Variable = {
+    index += 1
+    new Variable("x"+index)
+  }
+
+  def NativeRelation(n:String)(f:(Atom,Solution) => Unit)= {
+    val natRel = new NativeRelation(n,this.solution,f)
+    addRelation(natRel)
+    natRel
+  }
+
+  case class Tok() extends LocalRelation("$X"+index,true){
+    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
+  }
+
+  case class Rel(n:String) extends LocalRelation(n,true){
+    addRelation(this)
+
+    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
+
+    override def equals(that:Any):Boolean = that match{
+      case r:Relation => this.name == r.name
+      case _ => false
+    }
+  }
+
+
+
 }

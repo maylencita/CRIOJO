@@ -11,6 +11,7 @@ package fr.emn.criojo.core
 import Criojo._
 import fr.emn.criojo.util.Logger
 
+@Deprecated
 trait AbstractMachine extends RuleFactory{
   protected var index = 0
 

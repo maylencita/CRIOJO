@@ -15,7 +15,6 @@ case class NativeRelation(rn:String, sol:Solution, f:(Atom,Solution) => Unit) ex
     case Atom(this.name, _) =>
       log("[Relation("+name+").notifyObservers] notified by " + a)
       f(a, sol)
-//        a.inactivate
       sol.inactivate(a)
       sol.cleanup
     case _ => super.notifyObservers(a)

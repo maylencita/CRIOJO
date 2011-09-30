@@ -8,9 +8,8 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
-import Criojo._
 
-trait StrCHAM extends /*CHAM with*/ EqCHAM{
+trait StrCHAM extends EqCHAM{
 
   val strEqClasses = new TypedEqClasses[String](eqClasses,disjClasses)
 
@@ -40,18 +39,22 @@ trait StrCHAM extends /*CHAM with*/ EqCHAM{
   def getStrValue(x:Variable):Option[String]= strEqClasses getValue x
   
   //Native
-  private def add(a:Atom) = a match{
-    case Atom("$NewStr", i::v::_) => strEqClasses add (i.name,v)
-    case _ => //Nothing, wrong variables
+  private def add(a:Atom){
+    a match{
+      case Atom("$NewStr", i::v::_) => strEqClasses add (i.name,v)
+      case _ => //Nothing, wrong variables
+    }
   }
 
-  private def ask(a:Atom) = a match{
-    case Atom(_, sval::session::vr::k::_) =>
-      strEqClasses.get(sval.name) match{
-        case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
-        case _ => //Nothing or negative answer
-      }
-    case _=>
+  private def ask(a:Atom){
+    a match{
+      case Atom(_, sval::session::vr::k::_) =>
+        strEqClasses.get(sval.name) match{
+          case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
+          case _ => //Nothing or negative answer
+        }
+      case _=>
+    }
   }
 
 

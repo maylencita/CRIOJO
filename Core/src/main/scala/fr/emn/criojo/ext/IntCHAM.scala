@@ -11,7 +11,7 @@ import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger._
 import Criojo._
 
-trait IntCHAM extends /*CHAM with*/ EqCHAM{
+trait IntCHAM extends EqCHAM{
 
   val intEqClasses = new TypedEqClasses[Int](eqClasses,disjClasses)
 
@@ -19,17 +19,17 @@ trait IntCHAM extends /*CHAM with*/ EqCHAM{
   * VM definition:
   */
   //--Public:
-  val IntRel = new Rel("$Int"){override def apply(vars:Variable*)=new NumAtom(this.name, vars.toList)} //NativeRelation("$Int"){ a => add(a) }
+  val IntRel = new Rel("$Int"){override def apply(vars:Variable*)=new NumAtom(this.name, vars.toList)}
   val Int_ask = NativeRelation("$Int_ask"){ (a,s) => askInt(a) }
   val Int_print = Rel("$Int_print")
-  val Suc = Rel("$Suc") //NativeRelation("Suc"){a => addSuc(a)}
+  val Suc = Rel("$Suc")
   val Sum = Rel("$Sum")
   //--Private:
   private val AskInt = NativeRelation("$AskInt"){ (a,s) => askInt(a) }
   private val AddInt = NativeRelation("$AddInt"){ (a,s) => add(a) }
   private val PrintInt = NativeRelation("$PrintInt"){(a,s) => println(a(0) + "=" + a(1))}
   private val Error = NativeRelation("$ErrorInt"){(a,s) => throw new Exception("Invalid equal state:" + a(0) + "=" + a(1))}
-//  private val AddSum = NativeRelation("$AddSum"){ a => addSum(a)}
+
   private val AddSum = new NativeRelation("$AddSum", this.solution, (a,s) => addSum(a)){
     addRelation(this)
     override def apply(vars:Variable*):Atom = new NumAtom(this.name,vars.toList)
@@ -39,9 +39,6 @@ trait IntCHAM extends /*CHAM with*/ EqCHAM{
   private val K = RelVariable("K")
   private val X1,X2 = Tok()
 
-//  private val AddInt = new NativeRelation("$AddInt", a => add(a)){
-//    override def apply(vars:Variable*):Atom = new IntAtom(name, vars.toList)
-//  }
   rules(
     IntRel(n,x) ==> Abs(X1(n,x)) ? (X1(n,x) &: AddInt(n,x) &: IntRel(n,x)),
     (IntRel(n,x) &: Suc(x,y)) ==> (AddSum(n,1,y) &: IntRel(n,x)),
@@ -56,32 +53,32 @@ trait IntCHAM extends /*CHAM with*/ EqCHAM{
   //Native functions
   implicit def int2Var(num:Int):Value[Int] = new Value[Int](num)
 
-  private def add(a:Atom)= a match{
-    case Atom(_, i::v::_) => intEqClasses add (i.toInt,v)
-    case _ => //Nothing, wrong format
+  private def add(a:Atom):Boolean = a match{
+    case Atom(_, i::v::_) => intEqClasses add (i.toInt,v); true
+    case _ => false //Nothing, wrong format
   }
 
-  private def addSum(a:Atom) = a.vars match{
-    case t1::t2::t3::_ => introduceAtom(IntRel(Variable((t1.toInt+t2.toInt).toString),t3))
-    case _ => //Skip
+  private def addSum(a:Atom):Boolean = a.vars match{
+    case t1::t2::t3::_ => introduceAtom(IntRel(Variable((t1.toInt+t2.toInt).toString),t3)); true
+    case _ => false //Skip
   }
 
-  private def askInt(a:Atom)= a match{
+  private def askInt(a:Atom):Boolean = a match{
     case Atom(_, num::session::vr::k::_) =>
       intEqClasses.get(num.toInt) match{
-        case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
-        case _ => //Nothing or negative answer
+        case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr)); true
+        case _ => false //Nothing or negative answer
       }
-    case _ =>
+    case _ => false
   }
 
-  private def addSuc(a:Atom) = a match{
+  private def addSuc(a:Atom):Boolean = a match{
     case Atom(_, v1::v2::_) =>
       intEqClasses getValue v1 match{
-        case Some(k) => intEqClasses add (k+1, v2)
-        case _ => log(WARNING, this.getClass, "addSuc", "Variable " + v1 + " not found.") 
+        case Some(k) => intEqClasses add (k+1, v2); true
+        case _ => log(WARNING, this.getClass, "addSuc", "Variable " + v1 + " not found."); true
       }
-    case _ =>
+    case _ => false
   }
 
   object sum {

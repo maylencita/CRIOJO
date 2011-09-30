@@ -12,28 +12,26 @@ import fr.emn.criojo.util.Logger
  */
 
 
-abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guard) extends RelationObserver{
+abstract class Rule{
 
   var linear = false;
   var active = true;
   var scope:List[Variable] = List()
 
-//  var solution:Solution = _
-//  var relations:List[Relation] = List() 
   def head:List[Atom]
   def body:List[Atom]
   def guard:Guard
 
-  def inactivate{
+  def inactivate(){
     active = false;
   }
 
-  def setLinear{
+  def setLinear(){
     linear = true
   }
 
   def setScope(newScope: List[Variable]){
-    this.scope = newScope//.map(x => x+Indexator.getIndex)
+    this.scope = newScope
   }
 
   def isAxiom:Boolean = head.isEmpty
@@ -68,7 +66,6 @@ abstract class Rule{ //(val head:List[Atom], val body:List[Atom], val guard:Guar
 
       Logger.debug(this.getClass, "applyReaction", this.toString + " applied! solution=" + solution)
       head.foreach(h => h.setActive(true))
-//      println(this.toString + " applied! solution=" + solution)
       newAtoms.foreach(a => notifyRelationObservers(a))
       true
     }else{
