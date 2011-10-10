@@ -19,14 +19,15 @@ trait Guard {
 
   def initRelations()
 
-  def ? (conj:Conjunction):(Guard,Conjunction)={
-    (this,conj)
-  }
+//  def ? (conj:Conjunction):(Guard,Conjunction)={
+//    (this,conj)
+//  }
 
   def eval(sol:Solution, subs:List[Substitution]):Boolean
+
 }
 
-class EmptyGuard extends Guard{
+object EmptyGuard extends Guard{
   val starter = Top()
   override def empty = true
   override def eval(sol:Solution, subs:List[Substitution]):Boolean = true
@@ -36,6 +37,7 @@ class EmptyGuard extends Guard{
 
 
 object Top{
+  def relName = "true"
   def apply():Top = new Top(List())
   def apply(vseq:Variable*):Top = new Top(vseq.toList)
 }

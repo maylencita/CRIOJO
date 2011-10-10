@@ -119,6 +119,8 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
       }
     }
 
+    def copy(sol:Solution) = new RemoteRelationImpl(name, url)
+
     override def toString = name + "@" + url
   }
 

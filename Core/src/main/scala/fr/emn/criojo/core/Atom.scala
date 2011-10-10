@@ -20,7 +20,7 @@ object Atom{
   }
 }
 
-case class Atom (val relName:String, val vars: List[Variable]) {
+case class Atom (relName:String, vars: List[Variable]) {
   protected var active:Boolean = true
   @transient
   var relation:Relation = _

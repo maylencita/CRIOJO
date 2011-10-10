@@ -13,13 +13,14 @@ import fr.emn.criojo.util.Logger._
 import org.junit._
 import Assert._
 import ExtTests._
+import fr.emn.criojo.lang.Cham
 
 class IntTests{
 
   @Test (timeout=1000)
   def testDeclare{
 //    logLevel = DEBUG
-    val machine = new CHAM with IntCHAM{ //DefaultCham with IntCHAM{
+    val machine = new Cham with IntCHAM{ //DefaultCham with IntCHAM{
       val s,x,y,n = Var
       val S = Rel("S"); val Siete = Rel("Siete")
 
@@ -67,7 +68,7 @@ class IntTests{
     var iguales = false
     var noIguales = false
 
-    val machine = new CHAM with IntCHAM{ //DefaultCham with IntCHAM{
+    val machine = new Cham with IntCHAM{
       val s,x,y = Var
       val Test = Rel("Test");
       val Iguales = NativeRelation("Iguales"){
@@ -112,7 +113,7 @@ class IntTests{
 
   @Test (timeout=1000,expected=classOf[InvalidStateError])
   def testEqError{
-    val machine = new CHAM with IntCHAM //DefaultCham with IntCHAM
+    val machine = new Cham with IntCHAM //DefaultCham with IntCHAM
     machine.introduceAtom(Atom("$Int",Variable("8"),a))
     machine.introduceAtom(Atom("$Int",Variable("9"),b))
     machine.introduceAtom(Atom("Eq",a,b))
@@ -124,7 +125,7 @@ class IntTests{
     val n = Variable("n")
     val x = Variable("x")
 
-    val machine = new CHAM with IntCHAM //DefaultCham with IntCHAM
+    val machine = new Cham with IntCHAM //DefaultCham with IntCHAM
 //    println("Rules: " + machine.rules.mkString("","\n",""))
 
     machine.introduceAtom(Atom("$Suc",a,b))
@@ -142,8 +143,8 @@ class IntTests{
     val n = Variable("n")
     val x = Variable("x")
 
-    val machine = new CHAM with IntCHAM //DefaultCham with IntCHAM
-    println("Rules: " + machine.rules.mkString("","\n",""))
+    val machine = new Cham with IntCHAM //DefaultCham with IntCHAM
+    println("Rules: " + machine.printRules)
 
     machine.introduceAtom(Atom("$Sum",a,b,c))
     machine.introduceAtom(Atom("$Int",Value[Int](7),a))

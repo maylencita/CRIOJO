@@ -10,6 +10,7 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger._
 import Criojo._
+import fr.emn.criojo.lang.{NativeRelation, CrjAtom}
 
 trait IntCHAM extends EqCHAM{
 
@@ -32,15 +33,15 @@ trait IntCHAM extends EqCHAM{
 
   private val AddSum = new NativeRelation("$AddSum", this.solution, (a,s) => addSum(a)){
     addRelation(this)
-    override def apply(vars:Variable*):Atom = new NumAtom(this.name,vars.toList)
+    override def apply(vars:Variable*) = new NumAtom(this.name,vars.toList)
   }
 
   private val s,n,m,x,y,z = Var;
-  private val K = RelVariable("K")
+  private val K = VarR("K")
   private val X1,X2 = Tok()
 
   rules(
-    IntRel(n,x) ==> Abs(X1(n,x)) ? (X1(n,x) &: AddInt(n,x) &: IntRel(n,x)),
+    IntRel(n,x) ==> Abs(X1(n,x)) ?: (X1(n,x) &: AddInt(n,x) &: IntRel(n,x)),
     (IntRel(n,x) &: Suc(x,y)) ==> (AddSum(n,1,y) &: IntRel(n,x)),
     (IntRel(n,x) &: IntRel(m,y) &: Sum(x,y,z)) ==> (AddSum(n,m,z) &: IntRel(n,x) &: IntRel(m,y)),
     (Int_print(x) &: IntRel(n,x)) ==> PrintInt(x,n)
@@ -88,7 +89,7 @@ trait IntCHAM extends EqCHAM{
 
   case class SumVar[T,S](t1:T,t2:S) extends Variable(t1.toString+"+"+t2.toString)
 
-  class NumAtom(name:String, vars:List[Variable]) extends Atom(name, vars){
+  class NumAtom(name:String, vars:List[Variable]) extends CrjAtom(name, vars){//Atom(name, vars){
     override def applySubstitutions(subs:List[Substitution]):Atom = {
       def replaceVar(variable:Variable):Variable = variable match{
         case vl:Value[Int] => vl

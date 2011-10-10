@@ -20,10 +20,10 @@ abstract class StandardCHAM extends ExtendedCHAM
 //  def newRemoteRelation(remoteName:String,url:String):RemoteRelation
 //  def newLocalRelation(name:String,public:Boolean):LocalRelation
 
-  override def toString:String = {
-    val nonPrint = List("Eq","Eq_ask","$Int","$AskInt","$Str","$AskStr")
-    rules.filterNot(r=>r.head.exists(a => nonPrint.contains(a.relName))).mkString("","\n","")
-  }
+//  override def toString:String = {
+//    val nonPrint = List("Eq","Eq_ask","$Int","$AskInt","$Str","$AskStr")
+//    rules.filterNot(r=>r.head.exists(a => nonPrint.contains(a.relName))).mkString("","\n","")
+//  }
 
 }
 

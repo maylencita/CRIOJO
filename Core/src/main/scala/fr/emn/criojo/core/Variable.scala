@@ -46,15 +46,15 @@ object RelVariable{
 }
 
 @serializable
-case class RelVariable(n:String) extends Variable(n){
+class RelVariable(n:String) extends Variable(n){
   @transient
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 
-  def apply(vlst:Variable*):Atom = {
-    val at = new Atom(this.name, vlst.toList)
-    at.relation = this.relation
-    at
-  }
+//  def apply(vlst:Variable*):Atom = {
+//    val at = new Atom(this.name, vlst.toList)
+//    at.relation = this.relation
+//    at
+//  }
 
   override def toString = if (relation == null) this.name else relation.toString
 }

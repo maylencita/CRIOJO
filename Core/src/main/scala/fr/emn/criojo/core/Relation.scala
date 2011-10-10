@@ -15,6 +15,7 @@ trait Relation{
   def isMultiRel:Boolean
   def addObserver(observer:RelationObserver)
   def notifyObservers(a: Atom)
+  def copy(sol:Solution):Relation
 
   override def toString = name
 }
