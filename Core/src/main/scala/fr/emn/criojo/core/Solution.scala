@@ -1,6 +1,7 @@
 package fr.emn.criojo.core
 
 import Criojo.Substitution
+import collection.mutable.MutableList
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +18,9 @@ object Solution{
 class InvalidStateError(msg:String) extends Exception(msg)
 
 trait Solution{
+  def createBackUp()
+  def reverse()
+
   def elems:List[Atom]
 
   def addAtom(atom:Atom)
@@ -47,7 +51,7 @@ trait Solution{
 
   def cleanup()
 
-  def revert()
+  def revert(){ elems.foreach(_.setActive(true))  }
 
   def update(newsol: Solution)
 
@@ -112,7 +116,10 @@ trait Solution{
 
 class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
   def this()= this(null, List[Atom]())
-  def remove(a:Atom) { elems.filterNot(_ == a)}
+
+  private var oldElements:List[Atom] = List()
+
+  def remove(a:Atom) { elems = elems.filterNot(_ == a)}
   def clear() {   elems = List[Atom]()  }
   def copy(newOwner:CHAM):Solution = new SolutionImpl(newOwner,elems.map(a => a.clone))
   def addAtom(atom:Atom){
@@ -125,9 +132,6 @@ class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
 
   def cleanup(){
     elems = elems.filter(_.isActive)
-  }
-  def revert(){
-    elems.foreach(_.setActive(true))
   }
   def update(newsol: Solution){
     if (newsol.contains(False) || newsol.isEmpty){
@@ -147,5 +151,14 @@ class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
   def notifyCHAM(newAtom:Atom){
     owner.receiveUpdate(newAtom)
   }
+
+  def createBackUp(){
+    oldElements = elems
+  }
+  def reverse(){
+    elems = oldElements
+  }
 }
+
+
 

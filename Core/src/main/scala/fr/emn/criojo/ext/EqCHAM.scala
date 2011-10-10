@@ -9,12 +9,13 @@ package fr.emn.criojo.ext
  */
 
 import fr.emn.criojo.core._
+import fr.emn.criojo.lang._
 import Criojo._
 
 import collection.mutable.HashSet
 import EqClass._
 
-trait EqCHAM extends CHAM{
+trait EqCHAM extends Cham{
 
   var eqClasses = new EqClassList
   var disjClasses = new EqClassList
@@ -27,7 +28,7 @@ trait EqCHAM extends CHAM{
   val EQ_ask = NativeRelation("Eq_ask")(askEq)
   val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a(0),a(1),s)}
   //--Private:
-  private val s,x,y,z = Var; private val K = RelVariable("K")
+  private val s,x,y,z = Var; private val K = VarR("K")
   /***********************************************************************/
 
   private val f = new RelVariable("false")
@@ -110,11 +111,11 @@ trait EqCHAM extends CHAM{
   }
 
   def Eq(v1:Variable, v2:Variable):Guard = {
-    Guard(T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,t,f)))
+    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,t,f)))
   }
 
   def NotEq(v1:Variable, v2:Variable):Guard = {
-    Guard(T(v1,v2), T(x,y) ==> Abs(EQ_ask()) ? Nu(s)(EQ_ask(s,x,y,f,t)))
+    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,f,t)))
   }
 
 }

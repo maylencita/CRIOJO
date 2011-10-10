@@ -13,6 +13,7 @@ import fr.emn.criojo.util.Logger._
 
 import org.junit._
 import Assert._
+import fr.emn.criojo.lang._
 
 class VirtualMachineTests{
   val x = Variable("x")
@@ -35,17 +36,17 @@ class VirtualMachineTests{
       val R = Rel("R"); val S = Rel("S")
       val X1 = Rel("X1"); val X2 = Rel("X2")
 //      val TT = RelVariable("true")
-      val Cont = RelVariable("Cont")
+      val Cont = VarR("Cont")
       val Resp = NativeRelation("Resp"){
-        case (Atom("Resp", id::d::_),_) => result = true
+        case (Atom("Resp", id::dd::_),_) if(dd == d) => result = true
         case resp => fail("Expected atom: Resp(1,d). Actual: " + resp)
       }
       rules(
-        R(s,x,y,Cont) ==> Abs(X1(s)) ? (R(s,x,y,Cont) &: X1(s)) ,
-        (R(s,x,y,Cont) &: S(y2,z)) ==> Eq(y,y2) ? Cont(s,z)
+        R(s,x,y,Cont) --> Abs(X1(s)) ?: (R(s,x,y,Cont) &: X1(s)) ,
+        (R(s,x,y,Cont) &: S(y2,z)) --> Eq(y,y2) ?: Cont(s,z)
       )
     }
-    info (this.getClass, "testEqGuard", "m2: " + m2.rules.mkString("","\n",""))
+    info (this.getClass, "testEqGuard", "m2: " + m2.printRules)
 
     val atom1 = Atom("R", Variable("1"), a, b, RelVariable(m2.Resp))
     val atom2 = Atom("S", b, d)
@@ -66,14 +67,14 @@ class VirtualMachineTests{
       val R = Rel("R"); val S = Rel("S")
       val X1 = Rel("X1"); val X2 = Rel("X2")
 //      val TT = RelVariable("true")
-      val Cont = RelVariable("Cont")
+      val Cont = VarR("Cont")
       val Resp = NativeRelation("Resp"){
         case (Atom("Resp", id::d::_),s) => result = true
         case resp => fail("Expected atom: Resp(1,d). Actual: " + resp)
       }
       rules(
-        R(s,x,y,Cont) ==> Abs(X1(s)) ? (R(s,x,y,Cont) &: X1(s)) ,
-        (R(s,x,y,Cont) &: S(y2,z)) ==> Eq(y,y2) ? Cont(s,z)
+        R(s,x,y,Cont) ==> Abs(X1(s)) ?: (R(s,x,y,Cont) &: X1(s)) ,
+        (R(s,x,y,Cont) &: S(y2,z)) ==> Eq(y,y2) ?: Cont(s,z)
       )
     }
     info (this.getClass, "testEqClassesGuard", "m2: " + m2) //.rules.mkString("","\n",""))
@@ -90,7 +91,7 @@ class VirtualMachineTests{
 
   @Test (timeout=2000)
   def testMapReduce{
-//    logLevel = DEBUG
+    logLevel = DEBUG
     var total:Int = 0
     val m2 = new LocalCHAM{
       val Word = Rel("Word")
@@ -108,12 +109,35 @@ class VirtualMachineTests{
         case _ =>
       }
 
-      rules(
-        Empty ==> Abs(X2()) ? Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2()),
-        (Init() &: Word(w)) ==> Nu(n)(Map(w,n) &: IntRel(1,n) &: Init()),
-        (Map(w1,n) &: Reduce(w2,m)) ==> Eq(w1,w2) ? Nu(nm)(Reduce(w1,nm) &: Sum(n,m,nm)),
-        (Reduce(w,n) &: Init()) ==> Abs(Word()) ? (Print(n) &: Total(n))
-      )
+//      rules(
+//        Empty ==> Abs(X2()) ?: Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2()),
+//        (Init() &: Word(w)) ==> Nu(n)(Map(w,n) &: IntRel(1,n) &: Init()),
+//        (Map(w1,n) &: Reduce(w2,m)) ==> Eq(w1,w2) ?: Nu(nm)(Reduce(w1,nm) &: Sum(n,m,nm)),
+//        (Reduce(w,n) &: Init()) ==> Abs(Word()) ?: (Print(n) &: Total(n))
+//      )
+
+      // _ => Reduce("foo",0) & X2()
+      when(Empty){
+        If(Abs(X2())){
+          Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2())
+        }
+      }
+      //Init() & Word(w) => Map(w,1) & Init()
+      when(Init() &: Word(w)){
+        Nu(n)(Map(w,n) &: IntRel(1,n) &: Init())
+      }
+      //Map(w1,n) & Reduce(w2,m) => [w1 == w2] ? Nu(nm) Reduce(w1,nm) & Sum(n,m,nm)
+      when(Map(w1,n) &: Reduce(w2,m)){
+        If(Eq(w1,w2)){
+          Nu(nm)(Reduce(w1,nm) &: Sum(n,m,nm))
+        }
+      }
+      //Reduce(w,n) & Init() => Abs[Word(w)] ? Print(n) & Total(n)
+      when(Reduce(w,n) &: Init()){
+        If(Abs(Word())){
+          Print(n) &: Total(n)
+        }
+      }
     }
 
     val s1=Variable("s1");val s2=Variable("s2");val s3=Variable("s3"); val s4=Variable("s4"); val s5=Variable("s5")
@@ -125,7 +149,7 @@ class VirtualMachineTests{
     m2.introduceAtom(Atom("$Str",Value("lol"),s5)); m2.introduceAtom(Atom("Word",s5))
     m2.introduceAtom(Atom("Init"))
 
-    assertEquals("Expected: 3, got: " + total +". Final solution: " + m2.solution, total,2)
+    assertEquals("Final solution: " + m2.solution, 2,total)
   }
 
 //  implicit def intToVar(n:Int):Variable = new Value[](n)

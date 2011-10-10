@@ -45,8 +45,8 @@ abstract class Rule{
   def notifyRelationObservers(atom:Atom)
 
   protected def applyReaction(solution:Solution, subs:List[Substitution]):Boolean = {
-    var newSolution = solution.clone
-    Logger.log("[Rule.applyReaction] Substitutions: " + subs)
+    val newSolution = solution.clone
+//    Logger.log("[Rule.applyReaction] Substitutions: " + subs)
 
     var newAtoms = this.body.map{
       a => val newA = a.applySubstitutions(subs)
@@ -54,17 +54,18 @@ abstract class Rule{
     }
     newAtoms = if(newAtoms.contains(False)) List() else newAtoms
 
-    Logger.log("[Rule.applyReaction] newAtoms=" + newAtoms)
+//    Logger.log("[Rule.applyReaction] newAtoms=" + newAtoms)
 
     newSolution.cleanup
     newSolution.addMolecule(newAtoms.filter(a=>a.relation.isInstanceOf[LocalRelation]))
-    Logger.log("[Rule.applyReaction] solution = " + solution)
-    Logger.log("[Rule.applyReaction] newSolution (after cleanup) = " + newSolution)
+//    Logger.log("[Rule.applyReaction] solution = " + solution)
+//    Logger.log("[Rule.applyReaction] newSolution (after cleanup) = " + newSolution)
 
     if (newSolution != solution){
       solution.update(newSolution)
 
-      Logger.debug(this.getClass, "applyReaction", this.toString + " applied! solution=" + solution)
+      Logger.debug(this.getClass, "applyReaction", this.toString + " applied!")
+      Logger.debug(this.getClass, "applyReaction", "New solution=" + solution)
       head.foreach(h => h.setActive(true))
       newAtoms.foreach(a => notifyRelationObservers(a))
       true

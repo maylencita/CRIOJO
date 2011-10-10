@@ -21,9 +21,6 @@ case class StandAloneSolution(var elems:List[Atom]) extends Solution{
   def cleanup(){
     elems = elems.filter(_.isActive)
   }
-  def revert(){
-    elems.foreach(_.setActive(true))
-  }
   def update(newsol: Solution){
     if (newsol.contains(False) || newsol.isEmpty){
       clear()
@@ -40,4 +37,10 @@ case class StandAloneSolution(var elems:List[Atom]) extends Solution{
   override def clone:Solution = new StandAloneSolution(List[Atom]() ++ this.elems)
 
   def notifyCHAM(newAtom:Atom){}
+
+  def createBackUp(){
+  }
+  def reverse(){
+  }
+
 }

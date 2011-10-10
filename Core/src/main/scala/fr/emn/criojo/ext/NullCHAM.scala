@@ -11,6 +11,7 @@ import fr.emn.criojo.core._
 import EqClass._
 
 import collection.mutable.HashSet
+import fr.emn.criojo.lang.Molecule
 
 trait NullCHAM extends EqCHAM{
   val nullVars:EqClass = HashSet[Variable]()
@@ -53,12 +54,17 @@ trait NullCHAM extends EqCHAM{
   }
 
   def NotNul(variable:Variable):Guard = {
-    Guard (T(variable), T(x) ==> Abs(Null_ask())? Null_ask(x, f, t))
+    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, f, t))
   }
 
   def Nul(variable:Variable):Guard = {
-    Guard (T(variable), T(x) ==> Abs(Null_ask())? Null_ask(x, t, f))
+    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, t, f))
   }
 
 }
 
+//class NullGuard(owner:NullCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with NullCHAM{
+//  this.eqClasses = owner.eqClasses
+//  override val nullVars = owner.nullVars
+//  initRules(ruleDefs.toList)
+//}

@@ -10,9 +10,10 @@ package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
 import fr.emn.criojo.core.Criojo._
+import fr.emn.criojo.lang.CrjAtom
 
 abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
-        extends Atom(relName, (if (value != null) List(Variable(value.toString),variable) else List(variable))){ 
+        extends CrjAtom(relName, (if (value != null) List(Variable(value.toString),variable) else List(variable))){
   def unapply(ta:TypedAtom[_]) = ta match{
     case StringAtom(sval, strVar) => Option((sval, strVar))
     case IntAtom(num, intVar) => Option((num, intVar))

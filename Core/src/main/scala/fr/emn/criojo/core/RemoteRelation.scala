@@ -8,7 +8,8 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-import java.net.URI;
+import java.net.URI
+
 
 @serializable
 abstract class RemoteRelation extends Relation{

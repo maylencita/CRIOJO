@@ -9,7 +9,7 @@ package fr.emn.criojo.ext
  */
 import fr.emn.criojo.core._
 
-trait BoolCHAM extends CHAM with EqCHAM{
+trait BoolCHAM extends EqCHAM{
   val boolEqClasses = new TypedEqClasses[Boolean](eqClasses,disjClasses)
 
   /**********************************************************************

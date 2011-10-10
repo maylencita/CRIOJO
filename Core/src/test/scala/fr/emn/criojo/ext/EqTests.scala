@@ -33,7 +33,7 @@ class EqTests{
     val machine = new LocalCHAM
 
     log("relations: " + machine.relations)
-    log("rules: " + machine.rules)
+    log("rules: " + machine.printRules)
 
     machine.introduceAtom(Atom(EQQ, a, b))
     machine.introduceAtom(Atom(EQQ, c, d))
@@ -65,7 +65,7 @@ class EqTests{
     }
     log("Relations: " + machine.relations)
     log("Solution: " + machine.solution)
-    log("Rules: " + machine.rules)
+    log("Rules: " + machine.printRules)
 
     val R = "R"
 
@@ -87,7 +87,7 @@ class EqTests{
     }
     log("Relations: " + machine.relations)
     log("Solution: " + machine.solution)
-    log("Rules: " + machine.rules)
+    log("Rules: " + machine.printRules)
 
     machine.introduceAtom(Atom("S", a))
     machine.introduceAtom(Atom("R", a, a))

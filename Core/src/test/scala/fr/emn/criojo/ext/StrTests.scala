@@ -11,6 +11,7 @@ import fr.emn.criojo.util.Logger._
 
 import org.junit._
 import Assert._
+import fr.emn.criojo.lang.Cham
 
 class StrTests {
   import ExtTests._
@@ -18,7 +19,7 @@ class StrTests {
   @Test (timeout=1000)
   def testStr{
     logLevel = DEBUG
-    val machine = new CHAM with StrCHAM{ //DefaultCham with StrCHAM{
+    val machine = new Cham with StrCHAM{ //DefaultCham with StrCHAM{
       val s,x,y = Var
       val S = Rel("S"); val MyStr = Rel("MyStr")
 
@@ -55,7 +56,7 @@ class StrTests {
     logLevel = DEBUG
     var result = false
 
-    val machine = new CHAM with StrCHAM{ //DefaultCham with StrCHAM{
+    val machine = new Cham with StrCHAM{ //DefaultCham with StrCHAM{
       val s,x,y = Var
       val S = Rel("S");
       val Iguales = NativeRelation("Iguales"){

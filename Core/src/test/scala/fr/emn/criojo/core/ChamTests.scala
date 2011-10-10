@@ -11,6 +11,7 @@ import fr.emn.criojo.util.Logger._
 
 import org.junit._
 import Assert._
+import fr.emn.criojo.lang._
 
 /*
 trait DefaultCham extends CHAM{
@@ -32,10 +33,8 @@ class ChamTests{
 
   logLevel = INFO
   
-  val machine:CHAM = new CHAM{ //TestCham with DefaultCham{
-    val x = Variable("x")
-    val y = Variable("y")
-    val z = Variable("z")
+  val machine:CHAM = new Cham{ //TestCham with DefaultCham{
+    val x,y,z = Var
     val R = Rel("R")
     val S = Rel("S")
 
@@ -45,7 +44,39 @@ class ChamTests{
     )
   }
 
+  @Test
+  def testSyntax{
+    val mv = new Cham{
+      val x,y,z = Var
+      val R = Rel("R")
+      val S = Rel("S")
+      val X1,X2 = Tok()
 
+//      rules(
+//        (R(x,y) &: R(y,z)) ==> R(x,z),
+//        S(x,y) ==> R(x,y),
+//        R(x,y) ==> guard(T(x,y), (T(x,y) &: X1(x,y)) ==> F) ?: (R(x,y) &: R(x,y) &: X1(x,y))
+//      )
+
+      when(R(x,y) &: R(y,z)){
+        S(x,y)
+      }
+      when(R(x,y) &: R(y,z)){
+        R(x,z) &: S(x,y)
+      }
+      when(R(x,y)){
+        If(T(x,y), (T(x,y) &: X1(x,y)) --> F()){
+          (R(x,y) &: R(x,y) &: X1(x,y))
+        }
+      }
+      when(S(x,y)){
+        If(Abs(X2(x,y))){
+          (S(x,y) &: S(x,y) &: X2(x,y))
+        }
+      }
+    }
+    println("mv: " + mv.printRules)
+  }
 
   @Test
   def testRelations{
@@ -83,7 +114,7 @@ class ChamTests{
   @Test(timeout=1000)
   def testAtomInsertion{
     log("relations: " + machine.relations)
-    log("rules: " + machine.rules)
+    log("rules: " + machine.printRules)
 
     val a1 = Atom("R", Variable("a"),Variable("b"))
     val a2 = Atom("S", Variable("b"),Variable("c"))
@@ -99,7 +130,7 @@ class ChamTests{
     assertTrue(machine.solution.exists(a => a.relName == a3.relName && a.vars == a3.vars))
   }
 
-  @Test(timeout=1000)
+  @Test(timeout=500)
   def testGuard{
     logLevel = DEBUG
     val a = Variable("a")
@@ -107,17 +138,22 @@ class ChamTests{
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new CHAM{//TestCham {
+    val m2 = new Cham{
       val x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
 
-      rules(
-        R(x,y) ==> Guard(T(x,y), (T(x,y) &: X1(x,y)) ==> F) ? (R(x,y) &: R(x,y) &: X1(x,y))
-//        R(x,y) ==> {(T &: X1()) ==> F} ?: (R(x,y) &: R(x,y) &: X1())
-      )
+//      rules(
+//        R(x,y) ==> guard(T(x,y), (T(x,y) &: X1(x,y)) ==> F) ?: (R(x,y) &: R(x,y) &: X1(x,y))
+////        R(x,y) ==> {(T &: X1()) ==> F} ?: (R(x,y) &: R(x,y) &: X1())
+//      )
+      when(R(x,y)){
+        If(T(x,y), (T(x,y) &: X1(x,y)) --> F()){
+          R(x,y) &: R(x,y) &: X1(x,y)
+        }
+      }
     }
-    info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
+    info (this.getClass, "testGuard", "m2: " + m2.printRules)
 
     val atom = Atom("R", a, b) 
     m2.introduceAtom(atom)
@@ -135,16 +171,16 @@ class ChamTests{
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new CHAM{ //TestCham {
+    val m2 = new Cham{
       val s,x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
 
       rules(
-        R(s,x,y) ==> Guard(T(s), (T(s) &: X1(s)) ==> F) ? (R(s,x,y) &: R(s,x,y) &: X1(s))
+        R(s,x,y) --> guard(T(s), (T(s) &: X1(s)) --> F()) ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
       )
     }
-    info (this.getClass, "testGuard", "m2: " + m2.rules.mkString("","\n",""))
+    info (this.getClass, "testGuard", "m2: " + m2.printRules)
 
     val atom = Atom("R", Variable("1"), a, b)
     val atom2 = Atom("R", Variable("2"), a, b)
@@ -163,7 +199,7 @@ class ChamTests{
     val a = Variable("a")
     val b = Variable("b")
 
-    val vm = new CHAM{ //TestCham{
+    val vm = new Cham{
       val x,y,z,w = Var
       val S = Rel("S")
       val R = NativeRelation("R"){
@@ -175,7 +211,7 @@ class ChamTests{
         S(x) ==> Nu(y,z)(R(x,y,z))
       }
     }
-    info (this.getClass, "testNu", "vm: " + vm.rules.mkString("","\n",""))
+    info (this.getClass, "testNu", "vm: " + vm.printRules)
 
 //    val atom = Atom("R", a, b)
     vm.introduceAtom(Atom("S", a))
@@ -186,13 +222,13 @@ class ChamTests{
 
   @Test (timeout=1000)
   def testAbs{
-    val vm = new CHAM{
+    val vm = new Cham{
       val s,x,y,z,w = Var
       val R = Rel("R")
       val X1 = Rel("X1")
 
       rules(
-        R(s,x,y) ==> Abs(X1(s)) ? (R(s,x,y) &: R(s,x,y) &: X1(s))
+        R(s,x,y) ==> Abs(X1(s)) ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
       )
     }
 
@@ -214,9 +250,9 @@ class ChamTests{
     val b = Variable("b")
     var result = false
 
-    val vm = new CHAM{ //TestCham{
+    val vm = new Cham{
       val x,y,z,w = Var
-      val Cont = RelVariable("Cont")
+      val Cont = VarR("Cont")
 
       val R = Rel("R"); val S = Rel("S")
       val Resp = NativeRelation("Resp"){
@@ -236,5 +272,4 @@ class ChamTests{
     assertTrue("Expected: <Resp(a,b)>. Actual: " + vm.solution, result)
 
   }
-
 }

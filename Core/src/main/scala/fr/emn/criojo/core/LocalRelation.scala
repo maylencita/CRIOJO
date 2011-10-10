@@ -35,6 +35,9 @@ extends Relation{
     }
   }
 
+  def copy(sol:Solution):Relation =
+    new LocalRelation(this.name, this.public, this.isMultiRel)
+
   override def equals(that:Any) = that match{
     case r:Relation => !this.isMultiRel && this.name == r.name
     case _ => false

@@ -80,7 +80,7 @@ case class Json2Criojo(machine:ConnectedCHAM){
           case _ => Value[Any](value)
         }
       }else{
-        val rv = RelVariable(attrs("name").asInstanceOf[String])
+        val rv = new RelVariable(attrs("name").asInstanceOf[String])
         rv.relation = relation
         rv
       }

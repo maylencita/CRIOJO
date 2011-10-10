@@ -8,6 +8,7 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
+import fr.emn.criojo.lang._
 
 trait StrCHAM extends EqCHAM{
 
@@ -19,7 +20,7 @@ trait StrCHAM extends EqCHAM{
   val Str_print = Rel("$Str_print")
   val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a(0).name,a(1))){
     addRelation(this)
-    override def apply(vars:Variable*):Atom = new StringAtom(vars(0).toString, vars(1))
+    override def apply(vars:Variable*) = new StringAtom(vars(0).toString, vars(1))
   }
   val Str_ask = NativeRelation("$Str_ask"){(a,s) => ask(a) }
 
@@ -27,7 +28,7 @@ trait StrCHAM extends EqCHAM{
   private val NewStr = NativeRelation("$NewStr"){ (a,s) => add(a) }
   private val AskStr = NativeRelation("$AskStr"){ (a,s) => ask(a) }
   private val PrintStr = NativeRelation("$PrintStr"){(a,s) => println(a(0) + "=" + a(1))}
-  private val str,s,x,y = Var; private val K = RelVariable("K")
+  private val str,s,x,y = Var; private val K = VarR("K")
 
   rules(
     (StrRel(s,x) &: Str_print(x)) ==> PrintStr(x,s)

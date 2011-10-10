@@ -13,6 +13,7 @@ import fr.emn.criojo.util.Logger._
 
 import org.junit._
 import Assert._
+import fr.emn.criojo.lang.{Cham, Nu}
 
 object ExtTests{
 
@@ -36,7 +37,7 @@ class MiscTexts{
 
   @Test (timeout=1000)
   def nativeRelTest{
-    val vm = new CHAM{
+    val vm = new Cham{
       val NatRel = NativeRelation("NatRel")(dummyMethod)
 
       def dummyMethod(a:Atom, s:Solution){
@@ -51,7 +52,7 @@ class MiscTexts{
   def mixedVMTest{
     logLevel = DEBUG
 
-    val vm = new CHAM with StrCHAM with IntCHAM{ //DefaultCham with StrCHAM with IntCHAM{
+    val vm = new Cham with StrCHAM with IntCHAM{ //DefaultCham with StrCHAM with IntCHAM{
       val s,x,y,id,name,id2,name2 = Var
       val Alumni = Rel("Alumni"); val SameName = Rel("SameName"); val SameId = Rel("SameId"); val NotSame = Rel("NotSame")
 
@@ -84,7 +85,7 @@ class MiscTexts{
 
 //      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
     }
-    info(this.getClass, "testPrint", "rules: " + machine.rules.mkString("","\n",""))
+    info(this.getClass, "testPrint", "rules: " + machine.printRules)
 
     machine.introduceAtom(Atom("X", Variable("SomeVariable")))
     machine.introduceAtom(Atom("X", Value("Mayleen")))
