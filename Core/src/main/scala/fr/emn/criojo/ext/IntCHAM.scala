@@ -20,7 +20,7 @@ trait IntCHAM extends EqCHAM{
   * VM definition:
   */
   //--Public:
-  val IntRel = new Rel("$Int"){override def apply(vars:Variable*)=new NumAtom(this.name, vars.toList)}
+  val IntRel = Rel("$Int", (vars:List[Variable]) => new NumAtom("$Int", vars))
   val Int_ask = NativeRelation("$Int_ask"){ (a,s) => askInt(a) }
   val Int_print = Rel("$Int_print")
   val Suc = Rel("$Suc")
@@ -41,10 +41,10 @@ trait IntCHAM extends EqCHAM{
   private val X1,X2 = Tok()
 
   rules(
-    IntRel(n,x) ==> Abs(X1(n,x)) ?: (X1(n,x) &: AddInt(n,x) &: IntRel(n,x)),
-    (IntRel(n,x) &: Suc(x,y)) ==> (AddSum(n,1,y) &: IntRel(n,x)),
-    (IntRel(n,x) &: IntRel(m,y) &: Sum(x,y,z)) ==> (AddSum(n,m,z) &: IntRel(n,x) &: IntRel(m,y)),
-    (Int_print(x) &: IntRel(n,x)) ==> PrintInt(x,n)
+    IntRel(n,x) --> Abs(X1(n,x)) ?: (X1(n,x) &: AddInt(n,x) &: IntRel(n,x)),
+    (IntRel(n,x) &: Suc(x,y)) --> (AddSum(n,1,y) &: IntRel(n,x)),
+    (IntRel(n,x) &: IntRel(m,y) &: Sum(x,y,z)) --> (AddSum(n,m,z) &: IntRel(n,x) &: IntRel(m,y)),
+    (Int_print(x) &: IntRel(n,x)) --> PrintInt(x,n)
   )
 
   /***********************************************************************/

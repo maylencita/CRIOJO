@@ -24,11 +24,11 @@ object ExtTests{
   val e = Variable("d")
 
   implicit def intToVar(n:Int):Variable = new Variable(n.toString)
-  implicit def relToVar(r:Relation):RelVariable = {
-    val vr = new RelVariable(r.name)
-    vr.relation = r
-    vr
-  }
+//  implicit def relToVar(r:Relation):RelVariable = {
+//    val vr = new RelVariable(r.name)
+//    vr.relation = r
+//    vr
+//  }
   implicit def strToVar(str:String):Variable = new Variable(str)
 }
 
@@ -54,12 +54,15 @@ class MiscTexts{
 
     val vm = new Cham with StrCHAM with IntCHAM{ //DefaultCham with StrCHAM with IntCHAM{
       val s,x,y,id,name,id2,name2 = Var
-      val Alumni = Rel("Alumni"); val SameName = Rel("SameName"); val SameId = Rel("SameId"); val NotSame = Rel("NotSame")
+      val Alumni = Rel("Alumni");
+      val SameName = Rel("SameName");
+      val SameId = Rel("SameId");
+      val NotSame = Rel("NotSame")
 
       rules(
-        (Alumni(s, id, name) &: Alumni(s,id2,name2)) ==>
+        (Alumni(s, id, name) &: Alumni(s,id2,name2)) -->
               (EQ_ask(s, name,name2,SameName,NotSame) &: EQ_ask(s,id,id2,SameId,NotSame)) ,
-        (SameName(s,name,name) &: SameId(s,id,id)) ==> Alumni(s, id, name)
+        (SameName(s,name,name) &: SameId(s,id,id)) --> Alumni(s, id, name)
       )
     }
 

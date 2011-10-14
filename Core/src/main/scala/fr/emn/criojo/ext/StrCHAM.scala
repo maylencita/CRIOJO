@@ -31,7 +31,7 @@ trait StrCHAM extends EqCHAM{
   private val str,s,x,y = Var; private val K = VarR("K")
 
   rules(
-    (StrRel(s,x) &: Str_print(x)) ==> PrintStr(x,s)
+    (StrRel(s,x) &: Str_print(x)) --> PrintStr(x,s)
   )
 
 

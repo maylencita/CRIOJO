@@ -59,7 +59,11 @@ case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int", num, intV
   }
 
   override def applySubstitutions(subs:List[Substitution]):Atom = {
-    this
+    def replaceVar(variable:Variable):Variable = subs.find(_._1.name == variable.name) match{
+      case Some(v) => v._2
+      case _ => Undef
+    }
+    new IntAtom(num, replaceVar(intVar))
   }
 }
 

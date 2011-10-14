@@ -10,6 +10,18 @@ import fr.emn.criojo.core._
  * To change this template use File | Settings | File Templates.
  */
 
+object Molecule{
+  def apply(lst:List[Atom]):Molecule = lst match{
+    case List() => Empty
+    case head :: tail => &:(head, Molecule(tail))
+  }
+  def apply(scope:List[Variable], lst:List[Atom]):Molecule = {
+    val molecule = Molecule(lst)
+    molecule.scope = scope
+    molecule
+  }
+}
+
 trait Molecule{
   def empty:Boolean
   def head:Atom
@@ -17,9 +29,16 @@ trait Molecule{
 
   var scope = List[Variable]()
 
-  def &: (a:Atom) = new &: (a, this)
+  def &: (a:Atom) = { //new &: (a, this)
+    val molecule = new &: (a, this)
+    molecule.scope = this.scope
+    molecule
+  }
 
-  def & (a:Atom) = new &: (a, this)
+  def & (a:Molecule) = {//new &: (a, this)
+    val newList = this.toList ++ a.toList
+    Molecule(this.scope ++ a.scope, newList)
+  }
 
   def toList:List[Atom] = head :: tail.toList
 
@@ -44,7 +63,8 @@ trait Molecule{
   }
 
   def --> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
-    case (g:Guard, conj:Molecule) => getRuleBuilder(g,conj)
+    case (g:Guard, conj:Molecule) => //getRuleBuilder(g,conj)
+      (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
     case _ => null
   }
 

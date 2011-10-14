@@ -22,10 +22,11 @@ class IntTests{
 //    logLevel = DEBUG
     val machine = new Cham with IntCHAM{ //DefaultCham with IntCHAM{
       val s,x,y,n = Var
-      val S = Rel("S"); val Siete = Rel("Siete")
+      val S = Rel("S");
+      val Siete = Rel("Siete")
 
       rules(
-        S(n,s,x) ==> Int_ask(n,s,x,Siete)
+        S(n,s,x) --> Int_ask(n,s,x,Siete)
       )
     }
 
@@ -132,7 +133,7 @@ class IntTests{
     machine.introduceAtom(Atom("$Int",Value[Int](7),a))
 
     assertTrue("Element $Int(8,b) not found in solution " + machine.solution,
-      machine.query(List(machine.IntRel(n,x)),List((n,8),(x,b))).size > 0 )
+      machine.query(List(Atom("$Int",n,x)),List((n,8),(x,b))).size > 0 )
     println("Final Solution: " + machine.solution)
   }
 
@@ -150,15 +151,15 @@ class IntTests{
     machine.introduceAtom(Atom("$Int",Value[Int](7),a))
     machine.introduceAtom(Atom("$Int",Value[Int](5),b))
 
-    println("Query result: " + machine.querySansEffect(List(machine.IntRel(12,c))))
+    println("Query result: " + machine.querySansEffect(List(Atom("$Int",12,c))))
     assertTrue("Element $Int(12,c) not found in solution " + machine.solution,
-      machine.querySansEffect(List(machine.IntRel(12,c))).size > 0 )
+      machine.querySansEffect(List(Atom("$Int",12,c))).size > 0 )
 
     println("La solution hasta aca: " + machine.solution)
 
     machine.introduceAtom(Atom("$Sum",c,b,d))
     assertTrue("Element $Int(17,d) not found in solution " + machine.solution,
-      machine.querySansEffect(List(machine.IntRel(17,d))).size > 0 )
+      machine.querySansEffect(List(Atom("$Int",17,d))).size > 0 )
 
     println("Final Solution: " + machine.solution)
   }

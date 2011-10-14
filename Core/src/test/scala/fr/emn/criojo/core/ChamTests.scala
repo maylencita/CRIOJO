@@ -78,15 +78,15 @@ class ChamTests{
     println("mv: " + mv.printRules)
   }
 
-  @Test
-  def testRelations{
-    val relLst = new LocalRelation("R") :: new LocalRelation("S") :: Nil
-    log("relLst: " + relLst)
-    for(r <- relLst){
-      if (!machine.relations.contains(r))
-        fail("Expected: " + relLst + " Actual: " + machine.relations)
-    }
-  }
+//  @Test
+//  def testRelations{
+//    val relLst = new LocalRelation("R") :: new LocalRelation("S") :: Nil
+//    log("relLst: " + relLst)
+//    for(r <- relLst){
+//      if (!machine.relations.contains(r))
+//        fail("Expected: " + relLst + " Actual: " + machine.relations)
+//    }
+//  }
 
 //  @Test
 //  def testRuleCreation{
@@ -252,7 +252,7 @@ class ChamTests{
 
     val vm = new Cham{
       val x,y,z,w = Var
-      val Cont = VarR("Cont")
+      val Cont = Rel("Cont")
 
       val R = Rel("R"); val S = Rel("S")
       val Resp = NativeRelation("Resp"){

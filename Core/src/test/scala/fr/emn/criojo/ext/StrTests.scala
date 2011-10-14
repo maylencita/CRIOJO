@@ -21,11 +21,15 @@ class StrTests {
     logLevel = DEBUG
     val machine = new Cham with StrCHAM{ //DefaultCham with StrCHAM{
       val s,x,y = Var
-      val S = Rel("S"); val MyStr = Rel("MyStr")
+      val S = Rel("S");
+      val MyStr = Rel("MyStr")
 
-      rules{
-        S(y,s,x) ==> Str_ask(y,s,x,MyStr)
+      when(S(y,s,x)){
+        Str_ask(y,s,x,MyStr)
       }
+//      when(MyStr(y,x)){
+//        S(x)
+//      }
     }
 
     machine.introduceAtom(Atom("$Str",Variable("Mayleen"),a))
@@ -63,10 +67,10 @@ class StrTests {
         case (Atom("Iguales", a::b::_),_) => result = true
         case (atom,_) => fail("Expected atom: Iguales(a,b). Actual: " + atom)
       }
-      val NoIguales = Rel("NoIguales")
+      val NoIguales = VarR("NoIguales")
 
       rules(
-        S(s,x,y) ==> EQ_ask(s,x,y,Iguales,NoIguales)
+        S(s,x,y) --> EQ_ask(s,x,y,Iguales,NoIguales)
       )
     }
 

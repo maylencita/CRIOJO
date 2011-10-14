@@ -56,7 +56,7 @@ abstract class Rule{
 
 //    Logger.log("[Rule.applyReaction] newAtoms=" + newAtoms)
 
-    newSolution.cleanup
+    newSolution.cleanup()
     newSolution.addMolecule(newAtoms.filter(a=>a.relation.isInstanceOf[LocalRelation]))
 //    Logger.log("[Rule.applyReaction] solution = " + solution)
 //    Logger.log("[Rule.applyReaction] newSolution (after cleanup) = " + newSolution)
@@ -70,7 +70,7 @@ abstract class Rule{
       newAtoms.foreach(a => notifyRelationObservers(a))
       true
     }else{
-      solution.revert
+      solution.revert()
       false
     }
   }
