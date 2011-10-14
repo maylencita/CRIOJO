@@ -89,7 +89,7 @@ class VirtualMachineTests{
     assertTrue("Expected: <Resp(1,d)>. Actual: " + m2.solution, result)
   }
 
-  @Test (timeout=2000)
+  @Test //(timeout=2000)
   def testMapReduce{
     logLevel = DEBUG
     var total:Int = 0
@@ -109,22 +109,17 @@ class VirtualMachineTests{
         case _ =>
       }
 
-//      rules(
-//        Empty ==> Abs(X2()) ?: Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2()),
-//        (Init() &: Word(w)) ==> Nu(n)(Map(w,n) &: IntRel(1,n) &: Init()),
-//        (Map(w1,n) &: Reduce(w2,m)) ==> Eq(w1,w2) ?: Nu(nm)(Reduce(w1,nm) &: Sum(n,m,nm)),
-//        (Reduce(w,n) &: Init()) ==> Abs(Word()) ?: (Print(n) &: Total(n))
-//      )
-
       // _ => Reduce("foo",0) & X2()
       when(Empty){
         If(Abs(X2())){
-          Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2())
+//          Nu(s,n)(Reduce(s,n) &: StrRel("foo",s) &: IntRel(0,n) &: X2())
+          Reduce("foo",0) & X2()
         }
       }
       //Init() & Word(w) => Map(w,1) & Init()
       when(Init() &: Word(w)){
-        Nu(n)(Map(w,n) &: IntRel(1,n) &: Init())
+//        Nu(n)(Map(w,n) &: IntRel(1,n) &: Init())
+        Map(w,1) & Init()
       }
       //Map(w1,n) & Reduce(w2,m) => [w1 == w2] ? Nu(nm) Reduce(w1,nm) & Sum(n,m,nm)
       when(Map(w1,n) &: Reduce(w2,m)){
@@ -149,10 +144,7 @@ class VirtualMachineTests{
     m2.introduceAtom(Atom("$Str",Value("lol"),s5)); m2.introduceAtom(Atom("Word",s5))
     m2.introduceAtom(Atom("Init"))
 
-    assertEquals("Final solution: " + m2.solution, 2,total)
+    assertEquals("Final solution: " + m2.prettyPrint, 2,total)
   }
-
-//  implicit def intToVar(n:Int):Variable = new Value[](n)
-  implicit def strToVar(str:String):Variable = new Variable(str)
 
 }

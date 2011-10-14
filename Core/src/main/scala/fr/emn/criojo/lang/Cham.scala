@@ -1,8 +1,7 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.core.Criojo._
-import fr.emn.criojo.util.Logger._
+import fr.emn.criojo.ext._
 
 /*
 * Created by IntelliJ IDEA.
@@ -11,8 +10,9 @@ import fr.emn.criojo.util.Logger._
 * Time: 14:59
 */
 class Cham extends CHAM{
+  type MoleculeBuilder = (Variable*) => Molecule
 
-  val T = Rel("true") //new Top(){ def apply(vlst:Variable*):Molecule = new CrjAtom(name, vars.toList) }
+  val T = Rel("true")
   val F = Rel("false")
 
   def Var:Variable = {
@@ -40,7 +40,7 @@ class Cham extends CHAM{
   }
 
   def Abs(atom:Atom):Guard =
-    new CriojoGuard(new Top(atom.vars), List((new CrjAtom(Top.relName, atom.vars) & atom) --> F()), this.relations)
+    new CriojoGuard(new Top(atom.vars), List((atom &: new CrjAtom(Top.relName, atom.vars)) --> F()), this.relations)
 
   def when(head:Molecule)(body: RuleBody){
     if(body.guard == EmptyGuard)
@@ -49,10 +49,26 @@ class Cham extends CHAM{
       initRule(head --> (body.guard, body.conj))
   }
 
-//  implicit def atomToConjunction(a:Atom):Conjunction = new &:(a, Empty)
-//  implicit def atomToRuleBody(a:Atom):RuleBody = new RuleBody(new &:(a,Empty))
+  def Rel(n:String): ApplicableRel = {
+    val r = new ApplicableRel(n,
+      (vars:List[Variable])=>new CrjAtom(n, vars.toList))
+    addRelation(r)
+    r
+  }
+
+  def Rel(relName:String, f:(List[Variable]=>Molecule)): ApplicableRel = {
+    val r = new ApplicableRel(relName, f)
+    addRelation(r)
+    r
+  }
+
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
   implicit def mol2atom(mol:Molecule):Atom = mol.head
+  implicit def relToVar(r:Relation):RelVariable = {
+    val vr = new RelVariable(r.name)
+    vr.relation = r
+    vr
+  }
 
   // A variable of type Relation
   case class VarR(override val name:String) extends RelVariable(name){
@@ -68,23 +84,9 @@ class Cham extends CHAM{
     def apply(vars:Variable*) = new CrjAtom(name, vars.toList)
   }
 
-  case class Rel(n:String) extends LocalRelation(n, true) {
-    addRelation(this)
+  class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
-//    def apply(vars:Variable*):Atom = new Atom(name, vars.toList)
-    def apply(vars:Variable*):Molecule = {
-
-      new CrjAtom(name, vars.toList)
-    }
-
-    override def equals(that:Any):Boolean = that match{
-      case r:Relation => this.name == r.name
-      case _ => false
-    }
+  class ApplicableRel(name:String,f:List[Variable] => Molecule) extends LocalRelation(name, true){
+    def apply(vars:Variable*):Molecule = f(vars.toList)
   }
-
-  class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){
-
-  }
-
 }
