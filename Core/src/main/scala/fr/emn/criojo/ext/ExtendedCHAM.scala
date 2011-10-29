@@ -66,7 +66,7 @@ abstract class ExtendedCHAM extends Cham with IntCHAM with StrCHAM with NullCHAM
 
   override def Rel(relName:String) = {
     val r = new ApplicableRel(relName,
-      (vars:List[Variable]) => {
+      (vars:List[Term]) => {
       var newVars = List[Variable]()
       var valVars = List[(Variable,Variable)]()
       val valAtoms = vars.foldLeft(List[Atom]()){

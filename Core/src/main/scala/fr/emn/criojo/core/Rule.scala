@@ -46,7 +46,7 @@ abstract class Rule{
 
   protected def applyReaction(solution:Solution, subs:List[Substitution]):Boolean = {
     val newSolution = solution.clone
-//    Logger.log("[Rule.applyReaction] Substitutions: " + subs)
+    Logger.log("[Rule.applyReaction] Substitutions: " + subs)
 
     var newAtoms = this.body.map{
       a => val newA = a.applySubstitutions(subs)
@@ -81,7 +81,7 @@ abstract class Rule{
       case ra :: rest =>
         satoms match{
           case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.vars)))
+          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms)))
         }
     }
 
@@ -89,42 +89,63 @@ abstract class Rule{
   }
 
   //TODO Rewrite
-  def getSubstitutions(hatom:HeadAtom, solAtoms:List[Atom]):List[Substitution] = {
-    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
-      case List() => acum
-      case ra :: rest =>
-        satoms match{
-          case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.vars)))
-        }
-    }
+  def getSubstitutions(hatom:Atom, solatom:Atom):List[Substitution] = {
+//    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
+//      case List() => acum
+//      case ra :: rest =>
+//        satoms match{
+//          case List() => acum
+//          case sa :: rest2 =>
+//            getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms).flatMap(p=>getSubstitution(p._1,p._2))))
+//        }
+//    }
+//
+//    getSubsRec(List(hatom), solAtoms, scope.map{v => (v,v+"@"+Indexator.getIndex)})
 
-    getSubsRec(List(hatom), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
+    scope.map{v => (v,v+"@"+Indexator.getIndex)}.union(getSubstitutions(hatom.terms,solatom.terms))
   }
 
-  class HeadAtom(relName:String, vars: List[Variable]) extends Atom(relName, vars) with RelationObserver{
-    def this(a:Atom) = this(a.relName, a.vars)
+  def getSubstitutions(l1:List[Term], l2:List[Term]):List[Substitution] = {
+    l1.zip(l2).flatMap(p=>getSubstitution(p._1,p._2))
+  }
+
+  def getSubstitution(term1:Term,term2:Term):List[Substitution] = term1 match{
+    case v:Variable => List((v,term2))
+    case f1@Function(n,params) => term2 match{
+      case f2:Function if(f2.params.size == f1.params.size) =>
+        getSubstitutions(f1.params,f2.params)
+//        f1.params.zip(f2.params).flatMap(p => getSubstitution(p._1,p._2))
+      case _ => (Undef,term2) :: Nil
+    }
+    case _ => (Undef,term2) :: Nil
+  }
+
+  class HeadAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) with RelationObserver{
+    def this(a:Atom) = this(a.relName, a.terms)
 
     override def receiveUpdate(atom:Atom){
-      this.active = false
-      atom.setActive(false)
-      
-      Logger.log("============================================================================")
-//      Logger.log(this.getClass,"receiveUpdate","this: " + this)
-      Logger.levelDown
-      if(!execute(getSubstitutions(this, List(atom)))){
-        atom.setActive(true)
-        this.active = true
+      val subs = getSubstitutions(this, atom)
+      if(this.applySubstitutions(subs).matches(atom)){
+        this.active = false
+        atom.setActive(false)
+
+        Logger.log("============================================================================")
+  //      Logger.log(this.getClass,"receiveUpdate","this: " + this)
+        Logger.levelDown
+        if(!execute(subs)){
+          atom.setActive(true)
+          this.active = true
+        }
+        Logger.levelUp
+  //    Logger.log(this.getClass, "receiveUpdate", "Final solution: " + solution)
+        Logger.log("============================================================================")
       }
-      Logger.levelUp
-//    Logger.log(this.getClass, "receiveUpdate", "Final solution: " + solution)
-      Logger.log("============================================================================")
     }
 
   }
 
   override def equals(that:Any) = {
-    def eq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.vars == a2.vars
+    def eq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.terms == a2.terms
     def eq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => eq2(a1,a2)))
 
     that match{

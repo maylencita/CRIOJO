@@ -10,7 +10,7 @@ package fr.emn.criojo.core
 
 object Criojo{
   var id = 0
-  type Substitution = Pair[Variable, Variable]
+  type Substitution = Pair[Variable, Term]//Variable]
 
   def newId = {
     id += 1

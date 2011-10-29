@@ -101,8 +101,8 @@ class VirtualMachineTests{
       val X1 = Rel("X1"); val X2 = Rel("X2")
       val n,m,nm,s,w1,w2 = Var
       val Total = NativeRelation("Total"){
-        case (Atom(_, vlst),s) =>
-          getIntValue(vlst(0)) match{
+        case (a:Atom,ss) =>
+          getIntValue(a.vars(0)) match{
             case Some(num) => total = num
             case _ =>
           }
