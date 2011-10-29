@@ -73,18 +73,16 @@ trait Molecule{
     f
   }
 
-  override def toString = head + (if (tail.empty) "" else  " & " + tail)
-
 }
 
-class CrjAtom(relName:String, vars: List[Variable]) extends Atom(relName, vars) with Molecule {
+class CrjAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) with Molecule {
   def empty:Boolean = false
 
   def head:Atom = this
 
   def tail:Molecule = Empty
 
-  override def toString = relName + vars.mkString("(",",",")")
+//  override def toString = relName + vars.mkString("(",",",")")
 }
 
 case class Nu(varLst:Variable*){
@@ -112,5 +110,8 @@ final case class &: (hd:Atom, tl:Molecule) extends Molecule{
   def tail = tl
   def empty = false
   scope = List()
+
+  override def toString = head + (if (tail.empty) "" else  " & " + tail)
+
 }
 

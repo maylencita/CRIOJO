@@ -24,9 +24,9 @@ trait EqCHAM extends Cham{
   * CHM definition:
   */
   //--Public:
-  val EQ = NativeRelation("Eq"){ (a,s) => if (a.vars.size == 2) addEquivalence(a(0),a(1),s) }
+  val EQ = NativeRelation("Eq"){ (a,s) => if (a.terms.size == 2) addEquivalence(a.vars(0),a.vars(1),s) }
   val EQ_ask = NativeRelation("Eq_ask")(askEq)
-  val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a(0),a(1),s)}
+  val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a.vars(0),a.vars(1),s)}
   //--Private:
   private val s,x,y,z = Var; private val K = VarR("K")
   /***********************************************************************/
@@ -77,7 +77,7 @@ trait EqCHAM extends Cham{
 
   private def askEq(a:Atom, sol:Solution){
     a match{
-      case Atom(_, i::v1::v2::kpls::kmin::_) =>
+      case Atom(_, i::(v1:Variable)::(v2:Variable)::kpls::kmin::_) =>
         if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2))){
           //They are equal
           sol.addAtom(Atom(kpls.toString, i,v1,v2))
@@ -104,7 +104,7 @@ trait EqCHAM extends Cham{
       case ra :: rest =>
         satoms match{
           case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.vars)))
+          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms).filterNot(_._1 == Undef)))
         }
     }
     getSubsRec(List(hatom), solAtoms, List())

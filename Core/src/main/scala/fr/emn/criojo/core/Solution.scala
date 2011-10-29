@@ -78,7 +78,7 @@ trait Solution{
           while (i.hasNext && results.isEmpty){
             val m = i.next
             inactivate(m)
-            results = findMatchesRec(rest, subs.union(h.vars.zip(m.vars)), acum :+ m)
+            results = findMatchesRec(rest, subs.union(h.vars.zip(m.terms)), acum :+ m)
             if(results.isEmpty)
               activate(m)
           }
@@ -96,7 +96,8 @@ trait Solution{
       filter(_.relName == atom.relName).toList
     }else{
       val test = atom.applySubstitutions(subs)
-      filter(a => a.isActive && a.matches(test)).toList
+//      filter(a => a.isActive && a.matches(test)).toList
+      filter(a => a.isActive && test.matches(a)).toList
     }
   }
 

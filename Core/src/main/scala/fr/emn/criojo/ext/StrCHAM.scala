@@ -18,7 +18,7 @@ trait StrCHAM extends EqCHAM{
   * VM definition:
   */
   val Str_print = Rel("$Str_print")
-  val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a(0).name,a(1))){
+  val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a.vars(0).name,a.vars(1))){
     addRelation(this)
     override def apply(vars:Variable*) = new StringAtom(vars(0).toString, vars(1))
   }
@@ -42,14 +42,14 @@ trait StrCHAM extends EqCHAM{
   //Native
   private def add(a:Atom){
     a match{
-      case Atom("$NewStr", i::v::_) => strEqClasses add (i.name,v)
+      case Atom("$NewStr", i::(v:Variable)::_) => strEqClasses add (i.name,v)
       case _ => //Nothing, wrong variables
     }
   }
 
   private def ask(a:Atom){
     a match{
-      case Atom(_, sval::session::vr::k::_) =>
+      case Atom(_, sval::session::(vr:Variable)::k::_) =>
         strEqClasses.get(sval.name) match{
           case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr))
           case _ => //Nothing or negative answer

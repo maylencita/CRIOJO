@@ -58,7 +58,7 @@ trait AbstractMachine extends RuleFactory{
                 a.relation = findRelation(a.relName)
               }
           }
-          a.vars.foreach{
+          a.terms.foreach{
             case rv:RelVariable => headVars :+= rv
             case _ =>
           }
@@ -70,7 +70,7 @@ trait AbstractMachine extends RuleFactory{
         case Some(hv) => hv.relation //new LocalRelation(a.relName)
         case _=> findRelation(a.relName)
       }
-      a.vars.foreach{
+      a.terms.foreach{
         case rv: RelVariable if(!headVars.contains(rv)) =>
           relations.find(_.name == rv.name) match{
             case Some(r) => rv.relation = r

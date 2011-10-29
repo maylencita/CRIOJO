@@ -42,7 +42,7 @@ object Top{
   def apply(vseq:Variable*):Top = new Top(vseq.toList)
 }
 
-class Top(vlst:List[Variable]) extends Atom ("true", vlst){
+class Top(vlst:List[Term]) extends Atom ("true", vlst){
   def this() = this(List())
   
   relation = new LocalRelation("true", false, false)

@@ -23,7 +23,7 @@ abstract class CHAM extends RuleFactory{
   val solution:Solution = Solution(this)
 
 //  def Guard(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = new ChamGuard(this, sttr, ruleDefs.toList)
-//  def Abs(atom:Atom):Guard = new ChamGuard(this, new Top(atom.vars), List((new Top(atom.vars) &: atom) ==> F))
+//  def Abs(atom:Atom):Guard = new ChamGuard(this, new Top(atom.terms), List((new Top(atom.terms) &: atom) ==> F))
 
   def addRelation(relation:Relation) { relations :+= relation }
 
@@ -78,7 +78,7 @@ abstract class CHAM extends RuleFactory{
   }
 
   def querySansEffect(conj:List[Atom]):List[Atom] = {
-    val lstresult= query(conj, conj.flatMap(a=>a.vars.map(v=>(v,v))))
+    val lstresult= query(conj, conj.flatMap(a=>a.vars.zip(a.terms)).filterNot(p => p._1 == Undef))
     solution.revert
     lstresult
   }
@@ -117,7 +117,7 @@ abstract class CHAM extends RuleFactory{
 //                a.relation = findRelation(a.relName)
 //              }
 //          }
-//          a.vars.foreach{
+//          a.terms.foreach{
 //            case rv:RelVariable => headVars :+= rv
 //            case _ =>
 //          }
@@ -129,7 +129,7 @@ abstract class CHAM extends RuleFactory{
 //        case Some(hv) => hv.relation
 //        case _=> findRelation(a.relName)
 //      }
-//      a.vars.foreach{
+//      a.terms.foreach{
 //        case rv: RelVariable if(!headVars.contains(rv)) =>
 //          relations.find(_.name == rv.name) match{
 //            case Some(r) => rv.relation = r
@@ -156,7 +156,7 @@ abstract class CHAM extends RuleFactory{
                 log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
                 a.relation = new LocalRelation("Undefined")
           }
-          a.vars.foreach{
+          a.terms.foreach{
             case rv:RelVariable => headVars :+= rv
             case _ =>
           }
@@ -171,7 +171,7 @@ abstract class CHAM extends RuleFactory{
         case Some(hv) => hv.relation
         case _=> getRelation(a.relName)
       }
-      a.vars.foreach{
+      a.terms.foreach{
         case rv: RelVariable if(!headVars.contains(rv)) =>
           findRelation(rv.name) match{
             case Some(r) => rv.relation = r

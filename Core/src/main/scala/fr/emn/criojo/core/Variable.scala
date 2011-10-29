@@ -8,22 +8,26 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-object Variable{
-  def apply(n: String):Variable = new Variable(n)  
-}
+//object Variable{
+//  def apply(n: String):Variable = new Variable(n)
+//}
 
 @serializable
-class Variable (n: String){
+case class Variable (name: String) extends Term{
 
-  def name:String = this.n
+//  def name:String = this.n
 
-  def matches(that:Variable):Boolean = that match{
-    case Undef => true
-    case _ => this.equals(that)
+//  def matches(that:Variable):Boolean = that match{
+//    case Undef => true
+//    case _ => this.equals(that)
+//  }
+  def matches(that:Term) = that match{
+    case Variable(n) if(n == name) => true
+    case _ => false
   }
 
   def +(index:Any):Variable = {
-     new Variable(this.n+index)
+     new Variable(this.name+index)
   }
 
   override def hashCode = this.name.hashCode
@@ -46,7 +50,7 @@ object RelVariable{
 }
 
 @serializable
-class RelVariable(n:String) extends Variable(n){
+class RelVariable(name:String) extends Variable(name){
   @transient
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 
@@ -82,4 +86,7 @@ object Null extends Value[Any](null){
 
 object NoValue extends ValueVariable[Nothing]
 
-object Undef extends Variable("_")
+object Undef extends Variable("_"){
+  //Undef matches anything
+  override def matches(that:Term) = true
+}

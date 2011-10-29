@@ -40,7 +40,7 @@ TypedAtom("$Str", sval, strVar){
       case _ => find(variable.name)
     }
     def find(name:String):Variable = subs.find(s => s._1.name == name) match{
-        case Some(v) => v._2
+        case Some((v1:Variable,v2:Variable)) => v2
         case _ => Undef
     }
 
@@ -60,7 +60,7 @@ case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int", num, intV
 
   override def applySubstitutions(subs:List[Substitution]):Atom = {
     def replaceVar(variable:Variable):Variable = subs.find(_._1.name == variable.name) match{
-      case Some(v) => v._2
+      case Some((v1:Variable,v2:Variable)) => v2
       case _ => Undef
     }
     new IntAtom(num, replaceVar(intVar))

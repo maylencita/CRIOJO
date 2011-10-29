@@ -25,7 +25,7 @@ trait DomainClass{
 case class WebVariable(name:String, typ:String, value:String, @JSONTypeHint(classOf[WebRelation]) relation:WebRelation) extends DomainClass{
   private def this() = this(null,null,null,null)
 
-  def this(variable:Variable) =
+  def this(variable:Term) =
     this(variable.name,
       variable match{
         case Null => "Null"
@@ -81,7 +81,7 @@ case class WebAtom(relName:String, @JSONTypeHint(classOf[WebVariable]) vlst: Lis
 
   def this(atom:Atom) = {
     this(atom.relName,
-      for(a <- atom.vars) yield{
+      for(a <- atom.terms) yield{
         new WebVariable(a)
       })
   }

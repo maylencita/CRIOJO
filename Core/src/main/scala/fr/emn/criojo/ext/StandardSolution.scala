@@ -22,7 +22,7 @@ class StandardSolution /*extends Solution{
   }
 
 //  override def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = relation match{
-//    case Atom(SUC, vars) =>
+//    case Atom(SUC, terms) =>
 //    case _ =>
 //      if (subs.isEmpty){
 //        filter(_.relName == relation.relName).toList
@@ -64,7 +64,7 @@ class StandardSolution /*extends Solution{
   }
 
   def prettyPrint = {
-      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getPrintVariable(_)))).mkString("<",",",">")
+      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.terms.map(getPrintVariable(_)))).mkString("<",",",">")
   }
   
   override def clone:Solution = {
@@ -89,7 +89,7 @@ class StandardSolution /*extends Solution{
 ////          v
 //      }
 
-      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.vars.map(getPrintVariable(_)))).mkString("<",",",">")
+      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.terms.map(getPrintVariable(_)))).mkString("<",",",">")
     }
 
   }

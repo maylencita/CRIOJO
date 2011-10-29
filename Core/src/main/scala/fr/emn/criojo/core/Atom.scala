@@ -12,15 +12,24 @@ import Criojo.Substitution
 
 @serializable
 object Atom{
-  def apply(rn:String, lst:Variable*):Atom = new Atom(rn, lst.toList)
-  def apply(rel:Relation, lst:Variable*):Atom = {
+  def apply(rn:String, lst:Term*):Atom = new Atom(rn, lst.toList)
+  def apply(rel:Relation, lst:Term*):Atom = {
     val a = new Atom(rel.name, lst.toList)
     a.relation = rel
     a
   }
 }
 
-case class Atom (relName:String, vars: List[Variable]) {
+case class Atom(relName:String, terms: List[Term]) {
+//  def this(relName:String, terms: List[Variable]){
+//    this(relName, List[Term](), terms)
+//  }
+//  def this(relName:String, terms: List[Term]){
+//    this(relName, terms, List[Variable]())
+//  }
+
+  val vars = terms.map{case v:Variable => v; case _ => Undef}
+
   protected var active:Boolean = true
   @transient
   var relation:Relation = _
@@ -28,7 +37,7 @@ case class Atom (relName:String, vars: List[Variable]) {
   def isTrue:Boolean = false
   def isFalse:Boolean = false
 
-  def arity = vars.size
+  def arity = terms.size
 
   @deprecated ("Use: Solution.inactivate")
   def inactivate(){
@@ -38,7 +47,7 @@ case class Atom (relName:String, vars: List[Variable]) {
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
   
-  def apply(n:Int):Variable = vars(n) 
+  def apply(n:Int):Term = terms(n)
 
   def applySubstitutions(subs:List[Substitution]):Atom = {
     val nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
@@ -54,37 +63,54 @@ case class Atom (relName:String, vars: List[Variable]) {
       case _ => this.relName
     }
 
-    def replace(variable:Variable):Variable = {
-      val newVar = subs.find(s => s._1.name == variable.name)
-      newVar match{
-        case Some(nv) => nv._2
+//    def replace(variable:Variable):Variable = {
+//      val newVar = subs.find(s => s._1.name == variable.name)
+//      newVar match{
+//        case Some((v1:Variable,v2:Variable)) => v2//nv._2
+//        case _ =>
+//          variable match{
+//            case rv:RelVariable => if (rv.relation != null) rv else Undef
+//            case _ =>
+//              if (variable.name.startsWith("$"))
+//                variable
+//              else
+//                Undef
+//          }
+//      }
+//    }
+
+    def applySubstitution(term:Term):Term = term match{
+      case v:Variable => findSubstitution(v)
+      case v:ValTerm => v
+      case Function(n, plst) => Function(n, plst.map(p => applySubstitution(p)))
+      case _ => Undef
+    }
+    def findSubstitution(variable:Variable) =
+      subs.find(s => s._1.name == variable.name) match{
+        case Some((v,t)) => t
         case _ =>
           variable match{
-            case rv:RelVariable => if (rv.relation != null) rv else Undef
-            case _ =>
-              if (variable.name.startsWith("$"))
-                variable
-              else
-                Undef
+            case rv:RelVariable if (rv.relation != null) => rv
+            case rv:RelVariable if (rv.relation == null) => Undef
+            case _ => Undef
           }
-      }
     }
 
-    val newVars = this.vars.map {v => replace(v)}
+    val newTerms = terms.map(applySubstitution(_))
 
-    val atom = new Atom(nuRelName, newVars)
-    atom.relation = nuRel
-    atom
+    val newAtom = new Atom(nuRelName, newTerms)
+    newAtom.relation = nuRel
+    newAtom
   }
 
   def matches(that: Atom) : Boolean = {
     this.relName == that.relName &&
     this.arity == that.arity &&
-    this.vars.zip(that.vars).forall(p => p._1.matches(p._2))
+    this.terms.zip(that.terms).forall(p => p._1.matches(p._2))
   }
 
   def hasVariable(v: Variable): Boolean = {
-    this.vars.contains(v)
+    this.terms.contains(v)
   }
 
   override def hashCode =
@@ -98,17 +124,17 @@ case class Atom (relName:String, vars: List[Variable]) {
       if (relation != null && relation.isMultiRel)
         super.equals(a)
       else
-        this.relName == a.relName && this.vars.zip(a.vars).forall(p => p._1 == p._2)
+        this.relName == a.relName && this.terms.zip(a.terms).forall(p => p._1 == p._2)
     case _ => false
   }
 
   override def toString =
     (if (active) "" else "!") +
             (if (relation != null) relation else relName) +
-            (if (vars.isEmpty) "" else vars.mkString("(",",",")"))
+            (if (terms.isEmpty) "" else terms.mkString("(",",",")"))
 
   override def clone:Atom = {
-    val a = new Atom(relName,vars)
+    val a = new Atom(relName,terms)
     a.active = this.active
     a.relation = this.relation
     a

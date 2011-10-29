@@ -20,7 +20,7 @@ trait IntCHAM extends EqCHAM{
   * VM definition:
   */
   //--Public:
-  val IntRel = Rel("$Int", (vars:List[Variable]) => new NumAtom("$Int", vars))
+  val IntRel = Rel("$Int", (vars:List[Term]) => new NumAtom("$Int", vars))
   val Int_ask = NativeRelation("$Int_ask"){ (a,s) => askInt(a) }
   val Int_print = Rel("$Int_print")
   val Suc = Rel("$Suc")
@@ -55,7 +55,7 @@ trait IntCHAM extends EqCHAM{
   implicit def int2Var(num:Int):Value[Int] = new Value[Int](num)
 
   private def add(a:Atom):Boolean = a match{
-    case Atom(_, i::v::_) => intEqClasses add (i.toInt,v); true
+    case Atom(_, (i:Variable)::(v:Variable)::_) => intEqClasses add (i.toInt,v); true
     case _ => false //Nothing, wrong format
   }
 
@@ -65,7 +65,7 @@ trait IntCHAM extends EqCHAM{
   }
 
   private def askInt(a:Atom):Boolean = a match{
-    case Atom(_, num::session::vr::k::_) =>
+    case Atom(_, (num:Variable)::session::(vr:Variable)::k::_) =>
       intEqClasses.get(num.toInt) match{
         case Some(vlst) if(vlst contains vr) => introduceAtom(Atom(k.toString, session, vr)); true
         case _ => false //Nothing or negative answer
@@ -74,7 +74,7 @@ trait IntCHAM extends EqCHAM{
   }
 
   private def addSuc(a:Atom):Boolean = a match{
-    case Atom(_, v1::v2::_) =>
+    case Atom(_, (v1:Variable)::(v2:Variable)::_) =>
       intEqClasses getValue v1 match{
         case Some(k) => intEqClasses add (k+1, v2); true
         case _ => log(WARNING, this.getClass, "addSuc", "Variable " + v1 + " not found."); true
@@ -89,14 +89,14 @@ trait IntCHAM extends EqCHAM{
 
   case class SumVar[T,S](t1:T,t2:S) extends Variable(t1.toString+"+"+t2.toString)
 
-  class NumAtom(name:String, vars:List[Variable]) extends CrjAtom(name, vars){//Atom(name, vars){
+  class NumAtom(name:String, terms:List[Term]) extends CrjAtom(name, terms){//Atom(name, terms){
     override def applySubstitutions(subs:List[Substitution]):Atom = {
-      def replaceVar(variable:Variable):Variable = variable match{
+      def replaceVar(variable:Variable):Term = variable match{
         case vl:Value[Int] => vl
         case _ => find(variable.name)
       }
-      def find(name:String):Variable = subs.find(s => s._1.name == name) match{
-          case Some(v) => v._2
+      def find(name:String):Term = subs.find(s => s._1.name == name) match{
+          case Some((v1:Variable,v2:Term)) => v2
           case _ => Undef
       }
       val atom = new Atom(relName, vars.map {v => replaceVar(v)})

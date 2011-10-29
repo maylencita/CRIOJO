@@ -30,7 +30,7 @@ trait NullCHAM extends EqCHAM{
 
   private def addNull(a:Atom, s:Solution){
     a match{
-      case Atom("Null", v::_) =>
+      case Atom("Null", (v:Variable)::_) =>
         if (nullVars.isEmpty){
           eqClasses add nullVars
         }
@@ -44,7 +44,7 @@ trait NullCHAM extends EqCHAM{
 
   private def askNull(a:Atom, s:Solution){
     a match{
-      case Atom(_, v::kplus::kminus::_) =>
+      case Atom(_, (v:Variable)::kplus::kminus::_) =>
         if (nullVars contains (v))
           s.addAtom(Atom(kplus.name, v))
         else

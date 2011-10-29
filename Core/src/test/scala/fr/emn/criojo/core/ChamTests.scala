@@ -39,8 +39,8 @@ class ChamTests{
     val S = Rel("S")
 
     rules(
-      (R(x,y) &: R(y,z)) ==> R(x,z),
-      S(x,y) ==> R(x,y)
+      (R(x,y) &: R(y,z)) --> R(x,z),
+      S(x,y) --> R(x,y)
     )
   }
 
@@ -113,6 +113,8 @@ class ChamTests{
 
   @Test(timeout=1000)
   def testAtomInsertion{
+    logLevel = DEBUG
+
     log("relations: " + machine.relations)
     log("rules: " + machine.printRules)
 
@@ -127,7 +129,7 @@ class ChamTests{
     log(this.getClass, "testAtomInsertion", "solution: " + machine.solution)
 
     assertEquals(1, machine.solution.size)
-    assertTrue(machine.solution.exists(a => a.relName == a3.relName && a.vars == a3.vars))
+    assertTrue(machine.solution.exists(a => a.relName == a3.relName && a.terms == a3.terms))
   }
 
   @Test(timeout=500)
@@ -272,4 +274,52 @@ class ChamTests{
     assertTrue("Expected: <Resp(a,b)>. Actual: " + vm.solution, result)
 
   }
+
+  @Test (timeout=1000)
+  def testTerms{
+//    logLevel = DEBUG
+
+    var result = false
+
+    //Test with nums: n ::= 0 | S(n)
+    val m2 = new Cham{
+      val Add = Rel("Add")
+      val S = Fun("S")
+      val zero = Fun("0")
+      private val Sum = Rel("Sum")
+      private val Add2 = Rel("Add2")
+      private val Res = Rel("Res")
+      private val Val = Rel("Val")
+      private val Suc = Rel("Suc")
+      private val K = VarR("K")
+      private val s,i,x,y,z,z2,v = Var
+      private val X = Tok()
+      private val Print = NativeRelation("Print"){(a,s) =>
+        result = true
+        a.terms.foreach(print(_) + " ")
+      }
+
+      rules(
+        Add(s,x,y,K) --> Nu(i,z)(Res(s,i,x,y,z,K) &: Add2(i,x,y,z)),
+        Add2(i,0,y,z) --> Val(i,z,y),
+        Add2(i,S(x),y,z) --> Nu(z2)(Suc(z2,z) &: Add2(i,x,y,z2)),
+        (Val(i,z,v) &: Suc(z,z2)) --> Val(i,z2,S(v)),
+        (Res(s,i,x,y,z,K) &: Val(i,z,v)) --> K(s,x,y,v),
+
+        Empty --> Abs(X()) ?: Nu(s)(Add(s,S(S(0)),S(0),Sum) &: X()),
+        Sum(s,x,y,v) --> Print(v)
+      )
+
+      implicit def num2fun(n:Int):Term =
+        if(n == 0) zero()
+        else{
+            new Function("S", List(num2fun(n-1)))
+        }
+    }
+
+    m2.execute()
+
+    assertTrue("Expected: <Sum(s,S(S(0)),S(0),S(S(S(0)))>. Actual: " + m2.solution, result)
+  }
+
 }

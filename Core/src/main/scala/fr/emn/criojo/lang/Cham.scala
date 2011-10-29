@@ -40,7 +40,7 @@ class Cham extends CHAM{
   }
 
   def Abs(atom:Atom):Guard =
-    new CriojoGuard(new Top(atom.vars), List((atom &: new CrjAtom(Top.relName, atom.vars)) --> F()), this.relations)
+    new CriojoGuard(new Top(atom.terms), List((atom &: new CrjAtom(Top.relName, atom.terms)) --> F()), this.relations)
 
   def when(head:Molecule)(body: RuleBody){
     if(body.guard == EmptyGuard)
@@ -51,12 +51,12 @@ class Cham extends CHAM{
 
   def Rel(n:String): ApplicableRel = {
     val r = new ApplicableRel(n,
-      (vars:List[Variable])=>new CrjAtom(n, vars.toList))
+      (terms:List[Term])=>new CrjAtom(n, terms.toList))
     addRelation(r)
     r
   }
 
-  def Rel(relName:String, f:(List[Variable]=>Molecule)): ApplicableRel = {
+  def Rel(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
     val r = new ApplicableRel(relName, f)
     addRelation(r)
     r
@@ -72,8 +72,8 @@ class Cham extends CHAM{
 
   // A variable of type Relation
   case class VarR(override val name:String) extends RelVariable(name){
-    def apply(vlst:Variable*):CrjAtom = {
-      val at = new CrjAtom(this.name, vlst.toList)
+    def apply(tlst:Term*):CrjAtom = {
+      val at = new CrjAtom(this.name, tlst.toList)
       at.relation = this.relation
       at
     }
@@ -81,12 +81,16 @@ class Cham extends CHAM{
 
   case class Tok() extends LocalRelation("$X"+index,true){
     index += 1
-    def apply(vars:Variable*) = new CrjAtom(name, vars.toList)
+    def apply(vars:Term*) = new CrjAtom(name, vars.toList)
+  }
+
+  case class Fun(name:String){
+    def apply(terms:Term*) = new Function(name, terms.toList)
   }
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
-  class ApplicableRel(name:String,f:List[Variable] => Molecule) extends LocalRelation(name, true){
-    def apply(vars:Variable*):Molecule = f(vars.toList)
+  class ApplicableRel(name:String,f:List[Term] => Molecule) extends LocalRelation(name, true){
+    def apply(vars:Term*):Molecule = f(vars.toList)
   }
 }
