@@ -11,31 +11,27 @@ package fr.emn.criojo.core
 import Criojo._
 import fr.emn.criojo.util.Logger._
 
-abstract class CHAM extends RuleFactory{
+abstract class CHAM {//extends RuleFactory{
+  this:Engine =>
+
   protected var index = 0
 
 //  val T = new Top(){ def apply(vlst:Variable*):Atom = new Top(vlst.toList) }
 //  val F = Atom("false")
 
-  protected var rules:List[Rule] = List()
-  var relations:List[Relation] = List()
+//  protected var rules:List[Rule] = List()
+//  var relations:List[Relation] = List()
 
-  val solution:Solution = Solution(this)
+//  val solution:Solution = Solution(this)
 
 //  def Guard(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = new ChamGuard(this, sttr, ruleDefs.toList)
 //  def Abs(atom:Atom):Guard = new ChamGuard(this, new Top(atom.terms), List((new Top(atom.terms) &: atom) ==> F))
 
-  def addRelation(relation:Relation) { relations :+= relation }
+//  def addRelation(relation:Relation) { relations :+= relation }
+//
+//  def addRule(rule:Rule) { rules :+= rule }
 
-  def addRule(rule:Rule) { rules :+= rule }
-
-  def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
-
-  /**
-   * Searches for a relation. If found, Some[Relation] is returned.
-   * Otherwise, it will return Nothing
-   */
-  def findRelation(relName:String):Option[Relation] = relations.find(_.name == relName)
+//  def query(conj:List[Atom], subs:List[Substitution]):List[Atom] = solution.findMatches(conj, subs)
 
   /**
    * Gets a relation with name "relName", if found.
@@ -52,9 +48,9 @@ abstract class CHAM extends RuleFactory{
         }
   }
 
-  def execute(){
-      while (rules.exists(r => r.isAxiom && r.execute)){}
-  }
+//  def executeRules(){
+//      while (rules.exists(r => r.isAxiom && r.executeRules)){}
+//  }
 
   def newLocalRelation(name:String,public:Boolean):LocalRelation = {
     new LocalRelation(name, public)
@@ -64,26 +60,26 @@ abstract class CHAM extends RuleFactory{
     throw new IllegalAccessException("Unimplemented method newRemoteRelation.")
   }
 
-  def introduceAtom(atom:Atom){
-    solution.addAtom(atom)
-  }
+//  def introduceAtom(atom:Atom){
+//    solution.addAtom(atom)
+//  }
 
-  def receiveUpdate(atom:Atom){
-    getRelation(atom.relName) match{
-      case r:Relation =>
-        atom.relation = r
-        r.notifyObservers(atom)
-      case _ => //skip
-    }
-  }
+//  def receiveUpdate(atom:Atom){
+//    getRelation(atom.relName) match{
+//      case r:Relation =>
+//        atom.relation = r
+//        r.notifyObservers(atom)
+//      case _ => //skip
+//    }
+//  }
 
-  def querySansEffect(conj:List[Atom]):List[Atom] = {
-    val lstresult= query(conj, conj.flatMap(a=>a.vars.zip(a.terms)).filterNot(p => p._1 == Undef))
-    solution.revert
-    lstresult
-  }
+//  def querySansEffect(conj:List[Atom]):List[Atom] = {
+//    val lstresult= query(conj, conj.flatMap(a=>a.vars.zip(a.terms)).filterNot(p => p._1 == Undef))
+//    solution.revert
+//    lstresult
+//  }
 
-  def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule = new CHAMRule(h, b, g, scope)
+//  def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule = new CHAMRule(h, b, g, scope)
 
   def initRules(ruleDefs:List[RuleFactory => Rule]){
     ruleDefs.foreach{ f => initRule(f)  }
@@ -146,21 +142,28 @@ abstract class CHAM extends RuleFactory{
     var headVars = List[RelVariable]()
 
     if (!rule.isAxiom)
-      rule.head.foreach{
-        case a:rule.HeadAtom =>
-          findRelation(a.relName) match{
-            case Some(r) =>
-              a.relation = r
-              r.addObserver(a)
-            case _ =>
-                log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
-                a.relation = new LocalRelation("Undefined")
-          }
+      rule.head.foreach{a =>
+        findRelation(a.relName) match{
+          case Some(r) => r.addObserver(rule)
+          case _ =>
+            log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
+            a.relation = new LocalRelation("Undefined")
+        }
+
+//        case a:rule.HeadAtom =>
+//          findRelation(a.relName) match{
+//            case Some(r) =>
+//              a.relation = r
+//              r.addObserver(a)
+//            case _ =>
+//                log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
+//                a.relation = new LocalRelation("Undefined")
+//          }
           a.terms.foreach{
             case rv:RelVariable => headVars :+= rv
             case _ =>
           }
-        case _ =>
+//        case _ =>
       }
     headVars
   }
@@ -184,48 +187,48 @@ abstract class CHAM extends RuleFactory{
 
   def printRules: String = rules.mkString("","\n","")
 
-  class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{
-    def this() = this(List(), List(), EmptyGuard, List())
-
-    scope = scp
-    val head:List[HeadAtom] = h.map{h => new HeadAtom(h)}
-
-    def notifyRelationObservers(atom:Atom){
-      if (atom.relation != null)
-        atom.relation.notifyObservers(atom)
-      else
-        findRelation(atom.relName) match{
-          case Some(relation) =>
-            relation.notifyObservers(atom)
-          case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relName)
-        }
-    }
-
-    def execute (subs:List[Substitution]):Boolean = {
-      var matches = List[Atom]()
-      var result = false
-
-      if (this.isAxiom ||
-              (head.size == 1 && head.filter(_.isActive).isEmpty) ||
-              !{matches= query(head.filter(_.isActive),subs); matches}.isEmpty){
-        log("[Rule.execute] {"+this+"} Substitutions: " + subs)
-//        log("[Rule.execute] solution= " + solution)
-//        log("[Rule.execute] Found Matches: " + matches + " for rule " + this)
-        levelDown
-        val subs2 = subs.union(getSubstitutions(matches))
-        if (guard.empty || guard.eval(solution, subs2)){
-          levelUp
-          applyReaction(solution, subs2)
-          result=true
-        }else
-          levelUp
-      }
-
-      //Activate atoms that were inactivated but not eliminated
-      solution.revert
-      result
-    }
-  }
+//  class CHAMRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{
+//    def this() = this(List(), List(), EmptyGuard, List())
+//
+//    scope = scp
+//    val head:List[HeadAtom] = h.map{h => new HeadAtom(h)}
+//
+//    def notifyCham(atom:Atom){
+//      if (atom.relation != null)
+//        atom.relation.notifyObservers(atom)
+//      else
+//        findRelation(atom.relName) match{
+//          case Some(relation) =>
+//            relation.notifyObservers(atom)
+//          case _ => log(WARNING, this.getClass, "notifyCham", "Undefined relation " + atom.relName)
+//        }
+//    }
+//
+//    def executeRules (subs:List[Substitution]):Boolean = {
+//      var matches = List[Atom]()
+//      var result = false
+//
+//      if (this.isAxiom ||
+//              (head.size == 1 && head.filter(_.isActive).isEmpty) ||
+//              !{matches= query(head.filter(_.isActive),subs); matches}.isEmpty){
+//        log("[Rule.executeRules] {"+this+"} Substitutions: " + subs)
+////        log("[Rule.executeRules] solution= " + solution)
+////        log("[Rule.executeRules] Found Matches: " + matches + " for rule " + this)
+//        levelDown
+//        val subs2 = subs.union(getHeadSubstitutions(matches))
+//        if (guard.empty || guard.eval(solution, subs2)){
+//          levelUp
+//          applyReaction(solution, subs2)
+//          result=true
+//        }else
+//          levelUp
+//      }
+//
+//      //Activate atoms that were inactivated but not eliminated
+//      solution.revert
+//      result
+//    }
+//  }
 
 //  class ChamGuard(outerCM:CHAM, sttr:Atom, ruleDefs:List[RuleFactory => Rule]) extends CHAM with Guard{
 //

@@ -8,6 +8,7 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
+import fr.emn.criojo.lang.Cham
 
 trait BoolCHAM extends EqCHAM{
   val boolEqClasses = new TypedEqClasses[Boolean](eqClasses,disjClasses)
@@ -18,4 +19,35 @@ trait BoolCHAM extends EqCHAM{
   //--Public:
   /***********************************************************************/
 
+}
+
+trait BoolCHAM2 extends Cham{
+
+  val And = Rel("And")
+  val Or = Rel("Or")
+  val TrueRel = Rel("TrueRel")
+  val FalseRel = Rel("FalseRel")
+  val trueFun = Fun("true")
+  val falseFun = Fun("false")
+  private val K = VarR("K")
+  private val Val = Rel("$Val")
+  private val s,x,y,v,v1,v2 = Var
+
+  rules(
+    And(s,true,true,K) --> K(s,true),
+    And(s,x,false,K) --> K(s,false),
+    And(s,false,x,K) --> K(s,false),
+    (And(s,x,y,K) & Val(x,v1) & Val(y,v2)) --> And(s,v1,v2,K),
+
+    Or(s,true,x,K) --> K(s,true),
+    Or(s,x,true,K) --> K(s,true),
+    Or(s,false,false,K) --> K(s,false),
+    (Or(s,x,y,K) & Val(x,v1) & Val(y,v2)) --> Or(s,v1,v2,K),
+
+    TrueRel(x) --> Val(x,true),
+    FalseRel(x) --> Val(x,false)
+  )
+
+  implicit def bool2fun(bool:Boolean):Term =
+    if(bool) trueFun() else falseFun()
 }

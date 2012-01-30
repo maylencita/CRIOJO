@@ -16,11 +16,11 @@ trait RichList extends ListCham{
   private val Tl = Rel("$$Tail")
   private val LErr = Rel("$$LErr")
   private val LNil = Rel("$$LNil")
-  private val Fun = VarR("$F")
+  private val Fn = VarR("$F")
   private val K = VarR("K")
   private val Kmin = VarR("K-")
   private val Err = VarR("Err")
-  private val a,l,l0,l1,l2,tl,r,x,s = Var
+  private val a,l,l0,l1,l2,tl,r,x,s,h = Var
   private val X,Y = Tok()
 
   val Copy = Rel("Copy")
@@ -46,10 +46,10 @@ trait RichList extends ListCham{
   }
 
   val Foreach = Rel("Foreach")
-  when(Foreach(l,Fun) & Head(l,a) & Tail(l,tl)){
-    Fun(a) & Foreach(tl,Fun) & Head(l,a) & Tail(l,tl)
+  when(Foreach(l,Fn) & Head(l,a) & Tail(l,tl)){
+    Fn(a) & Foreach(tl,Fn) & Head(l,a) & Tail(l,tl)
   }
-  when(Foreach(l,Fun) & Nil(l)){
+  when(Foreach(l,Fn) & Nil(l)){
     Nil(l)
   }
 
@@ -57,10 +57,10 @@ trait RichList extends ListCham{
    * Map: List => List
    */
   val Map = Rel("Map")
-  when(Map(l,Fun,l0) & Head(l,a) & Tail(l,tl)){
-    Nu(l1,r)(Map(tl,Fun,l1) & Fun(a,r) & Appd(r,l1,l0) & Head(l,a) & Tail(l,tl))
+  when(Map(l,Fn,l0) & Head(l,a) & Tail(l,tl)){
+    Nu(l1,r)(Map(tl,Fn,l1) & Fn(a,r) & Appd(r,l1,l0) & Head(l,a) & Tail(l,tl))
   }
-  when(Map(l,Fun,l2) & Nil(l)){
+  when(Map(l,Fn,l2) & Nil(l)){
     Nil(l2) & Nil(l)
   }
 
@@ -71,14 +71,14 @@ trait RichList extends ListCham{
   private val Cont = Rel("$Cont")
   val Kp = Rel("K+")
   val Km = Rel("K-")
-  when(Filter(l0,Fun,l1) & Head(l0,a)){
-    Nu(x,l2)(Fun(x,a,Kp,Km) & Cont(x,l0,Fun,l1))
+  when(Filter(l0,Fn,l1) & Head(l0,a)){
+    Nu(x,l2)(Fn(x,a,Kp,Km) & Cont(x,l0,Fn,l1))
   }
-  when(Kp(x,a) & Cont(x,l0,Fun,l2) & Tail(l0,tl)){
-    Nu(l1)(Filter(tl,Fun,l1) & Appd(a,l1,l2) & Head(l0,a) & Tail(l0,tl))
+  when(Kp(x,a) & Cont(x,l0,Fn,l2) & Tail(l0,tl)){
+    Nu(l1)(Filter(tl,Fn,l1) & Appd(a,l1,l2) & Head(l0,a) & Tail(l0,tl))
   }
-  when(Km(x,a) & Cont(x,l0,Fun,l2) & Tail(l0,tl)){
-    Filter(tl,Fun,l2) & Head(l0,a) & Tail(l0,tl)
+  when(Km(x,a) & Cont(x,l0,Fn,l2) & Tail(l0,tl)){
+    Filter(tl,Fn,l2) & Head(l0,a) & Tail(l0,tl)
   }
 
 }

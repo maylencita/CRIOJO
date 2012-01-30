@@ -21,10 +21,11 @@ case class Variable (name: String) extends Term{
 //    case Undef => true
 //    case _ => this.equals(that)
 //  }
-  def matches(that:Term) = that match{
-    case Variable(n) if(n == name) => true
-    case _ => false
-  }
+  def matches(that:Term) = true
+//    that match{
+//    case Variable(n) if(n == name) => true
+//    case _ => false
+//  }
 
   def +(index:Any):Variable = {
      new Variable(this.name+index)
@@ -63,28 +64,22 @@ class RelVariable(name:String) extends Variable(name){
   override def toString = if (relation == null) this.name else relation.toString
 }
 
-trait ValueVariable[+T]
+//trait ValueVariable[+T]
 
-@serializable
-case class Value[+T](value:T) extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
-
-  override def equals(that: Any) = that match{
-    case v:Value[_] => this.value == v.value
-    case _ => false
-  }
-
-  override def toString = value match{
-    case s:String => "\"" + s + "\""
-    case _ => value.toString
-  }
-}
-
-//TODO Why not to extend ValueVariable[Nothing]?
-object Null extends Value[Any](null){
-  override def toString = "null"
-}
-
-object NoValue extends ValueVariable[Nothing]
+//@serializable
+//case class Value[+T](value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
+//  extends Function(if (value == null) "_" else value.toString) with ValueVariable[T]{
+//
+//  override def equals(that: Any) = that match{
+//    case v:Value[_] => this.value == v.value
+//    case _ => false
+//  }
+//
+//  override def toString = value match{
+//    case s:String => "\"" + s + "\""
+//    case _ => value.toString
+//  }
+//}
 
 object Undef extends Variable("_"){
   //Undef matches anything

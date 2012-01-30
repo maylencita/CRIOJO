@@ -13,8 +13,8 @@ import fr.emn.criojo.core._
 @Deprecated
 abstract class StandardCHAM extends ExtendedCHAM
 {
-//  def execute{
-//      while (rules.exists(r => r.isAxiom && r.execute)){}
+//  def executeRules{
+//      while (rules.exists(r => r.isAxiom && r.executeRules)){}
 //  }
 
 //  def newRemoteRelation(remoteName:String,url:String):RemoteRelation

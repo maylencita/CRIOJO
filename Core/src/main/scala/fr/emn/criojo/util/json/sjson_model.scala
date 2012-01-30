@@ -28,14 +28,14 @@ case class WebVariable(name:String, typ:String, value:String, @JSONTypeHint(clas
   def this(variable:Term) =
     this(variable.name,
       variable match{
-        case Null => "Null"
-        case Value(i:Int) => "Int"
-        case Value(s:String) => "String"
+        case NullVal => "Null"
+        case ValueTerm(i:Int) => "Int"
+        case ValueTerm(s:String) => "String"
         case _ => null
       },
       variable match{
-        case Null => null
-        case vv:Value[_] => vv.value.toString
+        case NullVal => null
+        case ValueTerm(value) => value.toString
         case _ => null
       },
       variable match{

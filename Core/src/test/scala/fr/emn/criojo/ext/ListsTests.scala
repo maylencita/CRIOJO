@@ -99,10 +99,10 @@ class ListsTests {
   @Test (timeout=1000)
   def listCreation{
 
-    import lstCham.{NewLst,PrintLst,Map,Foreach}
+    import lstCham.{NewLst,PrintLst}
     lstCham.introduceAtom(NewLst(l,a,b,c))
     lstCham.introduceAtom(PrintLst(l))
-    println("\nSolution: " + lstCham.solution)
+//    println("\nSolution: " + lstCham.solution)
     print("\n")
 
 //    lstCham.introduceAtom(Map(l,F,l2))
@@ -118,7 +118,7 @@ class ListsTests {
     lstCham.introduceAtom(NewLst(a,b,c))
 
     lstCham.introduceAtom(PrintNum(a))
-    println("\nSolution: " + lstCham.solution)
+//    println("\nSolution: " + lstCham.solution)
   }
 
   implicit def mol2atom(mol:Molecule):Atom = mol.head

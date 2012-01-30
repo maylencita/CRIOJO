@@ -1,18 +1,16 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.ext._
 
 /*
 * Created by IntelliJ IDEA.
 * User: mayleen
-* Date: 30/09/11
-* Time: 14:59
+* Date: 23/11/11
+* Time: 15:33
 */
-class Cham extends
-StatefulEngine2
-//SimpleEngine
-{
+class Cham2 extends SimpleEngine{
+  this: Engine =>
+
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
@@ -123,10 +121,10 @@ StatefulEngine2
     index
   }
 
-  override def executeRules(){
-    ruleDefList.foreach(initRule(_))
-    super.executeRules()
-  }
+//  override def executeRules(){
+//    ruleDefList.foreach(initRule(_))
+//    super.executeRules()
+//  }
 
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
   implicit def mol2atom(mol:Molecule):Atom = mol.head
@@ -159,11 +157,4 @@ StatefulEngine2
   class ApplicableRel(name:String,f:List[Term] => Molecule) extends LocalRelation(name, true){
     def apply(vars:Term*):Molecule = f(vars.toList)
   }
-}
-
-trait ChamGuard extends CriojoGuard{
-
-  def && (guard:CriojoGuard):CriojoGuard = new AndGuard(this, guard)
-
-  def || (guard:CriojoGuard):CriojoGuard = new OrGuard(this, guard)
 }

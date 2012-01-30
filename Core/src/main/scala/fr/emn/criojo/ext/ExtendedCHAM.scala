@@ -15,7 +15,7 @@ import fr.emn.criojo.lang.{CrjAtom, Molecule, Cham}
  * Extended CHAM with support for constant values, pretty-print, etc.
  */
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
-abstract class ExtendedCHAM extends Cham with IntCHAM with StrCHAM with NullCHAM{
+abstract class ExtendedCHAM extends Cham with IntegerCham with StrCHAM with NullCHAM{
 
   private val x,y = Var
 
@@ -32,19 +32,19 @@ abstract class ExtendedCHAM extends Cham with IntCHAM with StrCHAM with NullCHAM
   )
   /***********************************************************************/
 
-  def getValue(v:Variable):ValueVariable[_]={
+  def getValue(v:Variable):Value[_]={ //ValueVariable[_]={
     if (nullVars contains v)
-      Null
+      NullVal
     else{
       getStrValue(v) getOrElse (getIntValue(v) getOrElse null) match{
-        case v2 if(v2 != null) => new Value(v2)
+        case v2 if(v2 != null) => new ValueTerm(v2)
         case _ => NoValue
       }
     }
   }
 
-  def getPrintVariable(v:Variable):Variable = getValue(v) match{
-    case value:Value[_] => value
+  def getPrintVariable(v:Variable):Term = getValue(v) match{
+    case value:ValueTerm[_] => value
     case NoValue => v
   }
 
@@ -59,8 +59,8 @@ abstract class ExtendedCHAM extends Cham with IntCHAM with StrCHAM with NullCHAM
   }
 
   def generateValAtom(value:Any , variable: Variable): Atom = value match{
-    case n:Int => IntAtom(n, variable)
-    case s:String => StringAtom(s, variable)
+    case n:Int => Atom(IntVal.name, variable, n) //IntVal(variable,n) //IntAtom(n, variable)
+    case s:String => Atom(StrVal.name, variable, s)
     case _ => null
   }
 
@@ -68,11 +68,11 @@ abstract class ExtendedCHAM extends Cham with IntCHAM with StrCHAM with NullCHAM
     val r = new ApplicableRel(relName,
       (vars:List[Term]) => {
       var newVars = List[Variable]()
-      var valVars = List[(Variable,Variable)]()
+      var valVars = List[(Term,Variable)]()
       val valAtoms = vars.foldLeft(List[Atom]()){
-        case (lst, variable @ Value(v)) =>
+        case (lst, term @ ValueTerm(v)) =>
           val newVar = Var
-          valVars :+= (variable, newVar)
+          valVars :+= (term, newVar)
           newVars :+= newVar
           generateValAtom(v, newVar) +: lst
         case (lst, v:Variable ) =>
@@ -90,8 +90,8 @@ abstract class ExtendedCHAM extends Cham with IntCHAM with StrCHAM with NullCHAM
     r
   }
 
-  implicit def intToVar(n:Int):Variable = new Value[Int](n)
-  implicit def strToVar(str:String):Variable = new Value[String](str)
+//  implicit def intToVar(n:Int):Variable = new Value[Int](n)
+//  implicit def strToTerm(str:String):Term = new Value[String](str)
 
 }
 
