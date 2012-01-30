@@ -34,12 +34,12 @@ case class Atom(relName:String, terms: List[Term]) {
   @transient
   var relation:Relation = _
 
-  def isTrue:Boolean = false
+  def isTrue:Boolean = false     //TODO ??
   def isFalse:Boolean = false
 
   def arity = terms.size
 
-  @deprecated ("Use: Solution.inactivate")
+  @deprecated ("Use: setActive(false)")
   def inactivate(){
     active = false
   }  
@@ -81,8 +81,8 @@ case class Atom(relName:String, terms: List[Term]) {
 
     def applySubstitution(term:Term):Term = term match{
       case v:Variable => findSubstitution(v)
-      case v:ValTerm => v
-      case Function(n, plst) => Function(n, plst.map(p => applySubstitution(p)))
+      case v:ValueTerm[_] => v
+      case f@Function(n, plst) => f(plst.map(p => applySubstitution(p)))
       case _ => Undef
     }
     def findSubstitution(variable:Variable) =
@@ -129,7 +129,7 @@ case class Atom(relName:String, terms: List[Term]) {
   }
 
   override def toString =
-    (if (active) "" else "!") +
+    (if (active) "" else "-") +
             (if (relation != null) relation else relName) +
             (if (terms.isEmpty) "" else terms.mkString("(",",",")"))
 
@@ -140,4 +140,8 @@ case class Atom(relName:String, terms: List[Term]) {
     a
   }
 }
+
+
+
+
 

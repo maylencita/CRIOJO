@@ -32,13 +32,13 @@ class EqTests{
 //    logLevel = DEBUG
     val machine = new LocalCHAM
 
-    log("relations: " + machine.relations)
+//    log("relations: " + machine.relations)
     log("rules: " + machine.printRules)
 
     machine.introduceAtom(Atom(EQQ, a, b))
     machine.introduceAtom(Atom(EQQ, c, d))
 
-    log("solution: " + machine.solution)
+//    log("solution: " + machine.solution)
 
 //    info(this.getClass, "testEq", "eqClasses= " + eqClasses)
     assertTrue("Missing elements from eqClasses: " + machine.eqClasses + ". Expected: <{a,b},{c,d}>",
@@ -63,8 +63,8 @@ class EqTests{
 
       rules((R(x,y) &: R(x,w)) ==> EQ(y,w))
     }
-    log("Relations: " + machine.relations)
-    log("Solution: " + machine.solution)
+//    log("Relations: " + machine.relations)
+//    log("Solution: " + machine.solution)
     log("Rules: " + machine.printRules)
 
     val R = "R"
@@ -85,8 +85,8 @@ class EqTests{
         (S(x) &: R(x,w)) ==> NotEQ(x,w)
       )
     }
-    log("Relations: " + machine.relations)
-    log("Solution: " + machine.solution)
+//    log("Relations: " + machine.relations)
+//    log("Solution: " + machine.solution)
     log("Rules: " + machine.printRules)
 
     machine.introduceAtom(Atom("S", a))

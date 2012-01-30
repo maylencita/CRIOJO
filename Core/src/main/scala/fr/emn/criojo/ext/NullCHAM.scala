@@ -11,7 +11,7 @@ import fr.emn.criojo.core._
 import EqClass._
 
 import collection.mutable.HashSet
-import fr.emn.criojo.lang.Molecule
+import fr.emn.criojo.lang.{ChamGuard, Molecule}
 
 trait NullCHAM extends EqCHAM{
   val nullVars:EqClass = HashSet[Variable]()
@@ -53,13 +53,14 @@ trait NullCHAM extends EqCHAM{
     }
   }
 
-  def NotNul(variable:Variable):Guard = {
-    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, f, t))
+  case class NotNul(override val variable:Variable) extends Nul(variable){
+    override def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+      ! super.eval(sol, subs)
+    }
+//    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, f, t))
   }
 
-  def Nul(variable:Variable):Guard = {
-    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, t, f))
-  }
+  case class Nul(variable:Variable) extends ExistGuard(Atom("Null",variable)::Nil) with ChamGuard
 
 }
 

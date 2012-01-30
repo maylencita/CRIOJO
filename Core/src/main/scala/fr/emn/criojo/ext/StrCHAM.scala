@@ -18,20 +18,27 @@ trait StrCHAM extends EqCHAM{
   * VM definition:
   */
   val Str_print = Rel("$Str_print")
-  val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a.vars(0).name,a.vars(1))){
-    addRelation(this)
-    override def apply(vars:Variable*) = new StringAtom(vars(0).toString, vars(1))
-  }
-  val Str_ask = NativeRelation("$Str_ask"){(a,s) => ask(a) }
+  val StrVal = Rel("Str")
+//  val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a.vars(0).name,a.vars(1))){
+//    addRelation(this)
+//    override def apply(vars:Term*) = new StringAtom(vars(0).toString, vars(1))
+//  }
+  val Str_ask = Rel("Str_ask")//NativeRelation("$Str_ask"){(a,s) => ask(a) }
 
   //--Private:
-  private val NewStr = NativeRelation("$NewStr"){ (a,s) => add(a) }
+  private val Declare = NativeRelation("$StrCham.Declare"){ (a,s) => declare(a) }
   private val AskStr = NativeRelation("$AskStr"){ (a,s) => ask(a) }
   private val PrintStr = NativeRelation("$PrintStr"){(a,s) => println(a(0) + "=" + a(1))}
   private val str,s,x,y = Var; private val K = VarR("K")
+  private val Err = VarR("Err")
+  private val X1 = Tok()
 
   rules(
-    (StrRel(s,x) &: Str_print(x)) --> PrintStr(x,s)
+    StrVal(x,str) --> Abs(X1(x)) ?: (Declare(x,str) & StrVal(x,str) & X1(x)),
+    (StrVal(s,x) &: Str_print(x)) --> PrintStr(x,s),
+
+    (Str_ask(s,x,K,Err) & StrVal(x,str)) --> (K(s,x,str) & StrVal(x,str)),
+    Str_ask(s,x,K,Err) --> Abs(StrVal(x,str)) ?: Err(s,x)
   )
 
 
@@ -40,9 +47,9 @@ trait StrCHAM extends EqCHAM{
   def getStrValue(x:Variable):Option[String]= strEqClasses getValue x
   
   //Native
-  private def add(a:Atom){
+  private def declare(a:Atom){
     a match{
-      case Atom("$NewStr", i::(v:Variable)::_) => strEqClasses add (i.name,v)
+      case Atom(_, (v:Variable)::(s:ValueTerm[String])::_) => strEqClasses add (s.value,v)
       case _ => //Nothing, wrong variables
     }
   }
@@ -58,5 +65,5 @@ trait StrCHAM extends EqCHAM{
     }
   }
 
-
+  implicit def str2fun(str:String):Term = new ValueTerm[String](str)
 }

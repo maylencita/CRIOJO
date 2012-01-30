@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import collection.immutable.HashSet
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -20,18 +22,18 @@ extends Relation{
     this(n,false)
   }
   
-  var observers:List[RelationObserver] = List()
+  var observers:HashSet[RelationObserver] = HashSet() //List[RelationObserver] = List()
 
   def addObserver(observer:RelationObserver){
     if (!observers.contains(observer) )
-      observers :+= observer
+      observers += observer
   }
   
   def notifyObservers(a: Atom){
     observers.foreach{o =>
-      if (a.isActive){
+//      if (a.isActive){
         o.receiveUpdate(a)
-      }
+//      }
     }
   }
 

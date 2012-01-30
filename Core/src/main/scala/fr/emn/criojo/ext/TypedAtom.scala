@@ -12,7 +12,8 @@ import fr.emn.criojo.core._
 import fr.emn.criojo.core.Criojo._
 import fr.emn.criojo.lang.CrjAtom
 
-abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
+@deprecated
+abstract class TypedAtom[T](relName:String, value:T, val variable:Term)
         extends CrjAtom(relName, (if (value != null) List(Variable(value.toString),variable) else List(variable))){
   def unapply(ta:TypedAtom[_]) = ta match{
     case StringAtom(sval, strVar) => Option((sval, strVar))
@@ -22,7 +23,8 @@ abstract class TypedAtom[T](relName:String, value:T, val variable:Variable)
   }
 }
 
-case class StringAtom(sval:String, strVar:Variable) extends
+@deprecated
+case class StringAtom(sval:String, strVar:Term) extends
 TypedAtom("$Str", sval, strVar){  
 
   def str:String = this.sval
@@ -35,7 +37,7 @@ TypedAtom("$Str", sval, strVar){
   }
 
   override def applySubstitutions(subs:List[Substitution]):Atom = {
-    def replaceVar(variable:Variable):Variable = variable match{
+    def replaceVar(variable:Term):Term = variable match{
       case vl:Value[Int] => vl
       case _ => find(variable.name)
     }
@@ -48,7 +50,8 @@ TypedAtom("$Str", sval, strVar){
   }
 }
 
-case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int", num, intVar){
+@deprecated
+case class IntAtom(num:Int, intVar:Term) extends TypedAtom("$Int", num, intVar){
   def number:Int = this.num
 
   override def clone:Atom = {
@@ -59,15 +62,16 @@ case class IntAtom(num:Int, intVar:Variable) extends TypedAtom("$Int", num, intV
   }
 
   override def applySubstitutions(subs:List[Substitution]):Atom = {
-    def replaceVar(variable:Variable):Variable = subs.find(_._1.name == variable.name) match{
-      case Some((v1:Variable,v2:Variable)) => v2
+    def replaceVar(variable:Term):Term = subs.find(_._1.name == variable.name) match{
+      case Some((v1:Variable,v2:Term)) => v2
       case _ => Undef
     }
     new IntAtom(num, replaceVar(intVar))
   }
 }
 
-case class NullAtom(v:Variable) extends TypedAtom("Null", null, v){
+@deprecated
+case class NullAtom(v:Term) extends TypedAtom("Null", null, v){
   override def clone:Atom = {
     val a = new NullAtom(v)
     a.active = this.active

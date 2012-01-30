@@ -11,9 +11,11 @@ import collection.mutable.MutableList
  * To change this template use File | Settings | File Templates.
  */
 object Solution{
-  def apply(cham:CHAM, atoms:Atom*) = new SolutionImpl(cham, atoms.toList)
+  def apply(chamEngine:Engine, atoms:Atom*) = new SolutionImpl(chamEngine, atoms.toList)
   def createDefault(atoms:List[Atom]) = new SolutionImpl(null, atoms)
 }
+
+object EmptySolution extends SolutionImpl(null, List[Atom]())
 
 class InvalidStateError(msg:String) extends Exception(msg)
 
@@ -89,7 +91,7 @@ trait Solution{
     findMatchesRec(conjunction, substitutions, List())
   }
 
-  def copy(newOwner:CHAM):Solution
+  def copy(newOwner:Engine):Solution
 
   protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
@@ -115,14 +117,14 @@ trait Solution{
   def notifyCHAM(newAtom:Atom)
 }
 
-class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
+class SolutionImpl(owner:Engine, var elems:List[Atom]) extends Solution{
   def this()= this(null, List[Atom]())
 
   private var oldElements:List[Atom] = List()
 
   def remove(a:Atom) { elems = elems.filterNot(_ == a)}
   def clear() {   elems = List[Atom]()  }
-  def copy(newOwner:CHAM):Solution = new SolutionImpl(newOwner,elems.map(a => a.clone))
+  def copy(newOwner:Engine):Solution = new SolutionImpl(newOwner,elems.map(a => a.clone))
   def addAtom(atom:Atom){
     elems :+= atom
     notifyCHAM(atom)
@@ -150,7 +152,8 @@ class SolutionImpl(owner:CHAM, var elems:List[Atom]) extends Solution{
   override def clone:Solution = new SolutionImpl(this.owner, List[Atom]() ++ this.elems)
 
   def notifyCHAM(newAtom:Atom){
-    owner.receiveUpdate(newAtom)
+    if(owner != null)
+      owner.notifyRelationObservers(newAtom)
   }
 
   def createBackUp(){

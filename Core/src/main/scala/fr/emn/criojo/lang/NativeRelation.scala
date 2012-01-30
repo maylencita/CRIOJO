@@ -11,7 +11,7 @@ import fr.emn.criojo.core._
 
 case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Unit) extends LocalRelation(rn, false, true){
 
-  def apply(vars:Variable*):Molecule = new CrjAtom(name, vars.toList)
+  def apply(vars:Term*):Molecule = new CrjAtom(name, vars.toList)
 
   override def copy(sol:Solution) = new NativeRelation(rn, sol, f)
 
@@ -20,7 +20,7 @@ case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Uni
       log("[Relation("+name+").notifyObservers] notified by " + a)
       f(a, solution)
       solution.inactivate(a)
-      solution.cleanup
+      solution.cleanup()
     case _ => super.notifyObservers(a)
   }
 }

@@ -46,7 +46,7 @@ case class Json2Criojo(machine:ConnectedCHAM){
       case _ => None
   }
 
-  def parseVarList(s:String):List[Variable] = {
+  def parseVarList(s:String):List[Term] = {
     val jsonparse = Json.parse(s)
     jsonparse match{
       case atomMap: Map[String, _] => parseList(atomMap("vlst"))
@@ -61,23 +61,23 @@ case class Json2Criojo(machine:ConnectedCHAM){
     case _ => None       
   }
 
-  def parseList(vlst: Any): List[Variable] = vlst match{
+  def parseList(vlst: Any): List[Term] = vlst match{
     case List() => List()
     case varAttrs :: rest => parseVariable(varAttrs) :: parseList(rest)
     case _ => null
   }
 
-  def parseVariable(varAttrs: Any):Variable = varAttrs match{
+  def parseVariable(varAttrs: Any):Term = varAttrs match{
     case attrs:Map[String, _] =>
       val relation = parseRelation(attrs("relation").asInstanceOf[Map[String,_]])
       if (relation == null){
         val value = attrs("value").asInstanceOf[String]
         attrs("typ") match{
-          case "Int" => Value[Int](value.toInt)
-          case "String" => Value[String](value)
-          case "Null" => Null
+          case "Int" => ValueTerm[Int](value.toInt)
+          case "String" => ValueTerm[String](value)
+          case "Null" => NullVal
           case null => new Variable(attrs("name").asInstanceOf[String])
-          case _ => Value[Any](value)
+          case _ => ValueTerm[Any](value)
         }
       }else{
         val rv = new RelVariable(attrs("name").asInstanceOf[String])

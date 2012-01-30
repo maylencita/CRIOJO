@@ -11,7 +11,7 @@ case class StandAloneSolution(var elems:List[Atom]) extends Solution{
   def this()= this(List[Atom]())
   def remove(a:Atom) { elems.filterNot(_==a)}
   def clear() {   elems = List[Atom]()  }
-  def copy(newOwner:CHAM):Solution = new StandAloneSolution(elems.map(a => a.clone))
+  def copy(newOwner:Engine):Solution = new StandAloneSolution(elems.map(a => a.clone))
   def addAtom(atom:Atom){
     elems :+= atom
   }

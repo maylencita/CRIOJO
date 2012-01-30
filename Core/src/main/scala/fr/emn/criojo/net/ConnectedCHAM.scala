@@ -8,7 +8,6 @@ package fr.emn.criojo.net
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
-import fr.emn.criojo.ext.ExtendedCHAM
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.util.json._
 import Criojo._
@@ -20,6 +19,7 @@ import java.util.logging.Level
 
 import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.config.DefaultClientConfig
+import fr.emn.criojo.ext.{IntAtom, ExtendedCHAM}
 
 trait PublicRelation extends Relation{
   def url:URI
@@ -33,14 +33,14 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
 
   def addAtom(a:Atom){
     var nuAtoms = List[Atom]()
-    var nuVars = List[Variable]()
-    a.vars foreach{
-      case Value(v) =>
+    var nuVars = List[Term]()
+    a.terms foreach{
+      case ValueTerm(v) =>
         val nuVar = Variable("y@"+newId)
         nuVars :+= nuVar
         v match{
-          case n:Int => nuAtoms :+= Atom(IntRel.name, Variable(n.toString), nuVar)
-          case s:String => nuAtoms :+= Atom(StrRel.name, Variable(s), nuVar)
+          case n:Int => nuAtoms :+= IntAtom(n, nuVar) //Atom(IntRel.name, Variable(n.toString), nuVar)
+          case s:String => nuAtoms :+= Atom(StrVal.name, Variable(s), nuVar)
           case null => nuAtoms :+= Atom(NullRel.name, nuVar )
         }
       case v => nuVars :+= v
@@ -52,7 +52,7 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
   }
 
   override def newLocalRelation(name:String,public:Boolean):LocalRelation = {
-    Provided(name)
+    new LocalRelation(name) with PublicRelation{val url = vmUrl}
   }
 
   override def newRemoteRelation(remoteName:String,remoteUrl:String):RemoteRelation = {
@@ -61,10 +61,12 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
     r
   }
 
-  def Provided(relName:String):Rel = new Rel(relName) with PublicRelation{val url = vmUrl}
+  def Provided(relName:String) = {
+    new LocalRelation(relName) with PublicRelation{val url = vmUrl}
+  }
 
-  implicit def intToVariable(num:Int):Variable = Value(num)
-  implicit def strToVariable(str:String):Variable = Value(str)
+//  implicit def intToVariable(num:Int):Variable = ValueTerm(num)
+//  implicit def strToVariable(str:String):Variable = ValueTerm(str)
 
   @serializable
   class RemoteRelationImpl(val name:String,val url:URI) extends RemoteRelation{
@@ -78,10 +80,10 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
     override def notifyObservers(a: Atom){
       val subs = a.vars.map{
         v => getValue(v) match{
-          case value:Value[_] => (v, value)
+          case value:ValueTerm[_] => (v, value)
           case NoValue => (v,v)
         }
-      }
+      }.filterNot(_._1 == Undef)
 
       log(this.getClass,"notifyObservers"," subs= " + subs)
 

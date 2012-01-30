@@ -110,13 +110,13 @@ trait EqCHAM extends Cham{
     getSubsRec(List(hatom), solAtoms, List())
   }
 
-  def Eq(v1:Variable, v2:Variable):Guard = {
-    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,t,f)))
-  }
-
-  def NotEq(v1:Variable, v2:Variable):Guard = {
-    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,f,t)))
-  }
+//  def Eq(v1:Variable, v2:Variable):Guard = {
+//    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,t,f)))
+//  }
+//
+//  def NotEq(v1:Variable, v2:Variable):Guard = {
+//    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,f,t)))
+//  }
 
 }
 
