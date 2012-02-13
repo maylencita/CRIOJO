@@ -84,7 +84,7 @@ abstract class Rule extends RelationObserver{
         }
     }
 
-    getSubsRec(head.filter(_.isActive), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)})
+    getSubsRec(head.filter(_.isActive), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))})
   }
 
 //  def getHeadSubstitutions(hatom:Atom, solatom:Atom):List[Substitution] = {

@@ -27,8 +27,8 @@ case class Variable (name: String) extends Term{
 //    case _ => false
 //  }
 
-  def +(index:Any):Variable = {
-     new Variable(this.name+index)
+  def +(index:Any):IdTerm = {
+     new IdTerm(this.name+index)
   }
 
   override def hashCode = this.name.hashCode

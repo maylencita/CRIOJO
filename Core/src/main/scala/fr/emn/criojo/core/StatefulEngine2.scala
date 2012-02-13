@@ -72,7 +72,7 @@ trait StatefulEngine2 extends Engine{
     }
 
     def applyReaction(finalExecution:PartialExecution){
-      val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+"@"+i)}
+      val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
       val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
 //println("\tNew atoms: " + newAtoms.mkString(","))
       val removeAtoms = finalExecution.atoms

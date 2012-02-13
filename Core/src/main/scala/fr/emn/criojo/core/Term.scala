@@ -24,17 +24,17 @@ case class Function(name:String, params: List[Term]) extends Term{
   }
 
   override def toString =
-    name + (if(params.isEmpty) "" else params.mkString("(",",",")"))
+    name + (if(params.isEmpty) "" else params.mkString("(",",",")") )
 }
 
-//TODO Will become Value
-//case class ValueTerm(override val name:String) extends Function(name, List[Term]()){
-//  override def matches(that:Term) = that match{
-//    case ValueTerm(n) if(n == name) => true
-//    case _ => false
-//  }
-//}
+case class IdTerm(name:String) extends Term{
+  def matches(that:Term):Boolean = that match{
+    case IdTerm(n) => n == name
+    case _ => false
+  }
 
+  override def toString = name
+}
 
 
 
