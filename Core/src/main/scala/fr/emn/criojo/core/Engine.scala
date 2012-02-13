@@ -203,7 +203,7 @@ trait SimpleEngine extends Engine{
 
       def receiveUpdate(atom:Atom){
         if (atom.isActive){
-          val subs = scope.map{v => (v,v+"@"+Indexator.getIndex)}.union(getSubstitutions(this.terms, atom.terms))
+          val subs = scope.map{v => (v,v+("@"+Indexator.getIndex))}.union(getSubstitutions(this.terms, atom.terms))
           if(this.applySubstitutions(subs).matches(atom)){
             this.active = false
             atom.setActive(false)
