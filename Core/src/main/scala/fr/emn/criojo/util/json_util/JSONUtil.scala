@@ -20,7 +20,7 @@ object JSONUtil{
 
   /**
    * Deserializes objects from JSON byte array
-   * @val json JSON byte array
+   * @val json_util JSON byte array
    * @type T type of the deserialized object
    */
   def deserialize[T](json: Array[Byte])(implicit m: Manifest[T]): AnyRef =

@@ -8,6 +8,10 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * The Relation trait
+ * @define THIS Relation
+ */
 trait Relation{
 
   def name:String

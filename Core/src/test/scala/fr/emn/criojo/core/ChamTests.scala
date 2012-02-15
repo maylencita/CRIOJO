@@ -332,7 +332,7 @@ class ChamTests{
 
   @Test (timeout=1000)
   def simpleTest2(){
-    val sm = new Cham2{
+    val sm = new Cham{
       val A = Rel("A")
       val B = Rel("B")
       val C = Rel("C")

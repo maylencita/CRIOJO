@@ -10,7 +10,10 @@ package fr.emn.criojo.core
 
 import java.net.URI
 
-
+/**
+ * The RemoteRelation abstract class
+ * @define THIS RemoteRelation
+ */
 @serializable
 abstract class RemoteRelation extends Relation{
   def name:String
