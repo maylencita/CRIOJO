@@ -21,12 +21,12 @@ trait StatefulEngine2 extends Engine{
   }
 
   def introduceAtom(atom: Atom){
-//    solution.addAtom(atom)
+    solution.addAtom(atom)
     notifyRelationObservers(atom)
   }
 
   def removeAtom(atom: Atom){
-//    solution.remove(atom)
+    solution.remove(atom)
     atom.setActive(false)
     notifyRelationObservers(atom)
   }

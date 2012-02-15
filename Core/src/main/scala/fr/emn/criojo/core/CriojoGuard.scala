@@ -1,6 +1,9 @@
 package fr.emn.criojo.core
 
 import Criojo._
+import collection.mutable.ListBuffer
+import scala.collection.mutable.HashMap
+import fr.emn.criojo.lang.Molecule
 import fr.emn.criojo.util.Logger._
 
 /*
@@ -66,6 +69,105 @@ class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard
   }
   override def toString = "["+lguard +" v "+ rguard +"]"
 }
+
+// CUSTOM GUARDS
+
+class EqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
+  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+
+    var value1 : Term = null
+    var value2 : Term = null
+
+    term1 match {
+      case x:ValueTerm[_] => {
+        value1 = term1
+      }
+      case _ =>
+    }
+
+    term2 match {
+      case x:ValueTerm[_] => {
+        value2 = term2
+      }
+      case _ =>
+    }
+
+    subs.forall( s => {
+      s match{
+        case (x:Variable,v:Term) => {
+
+          if(value1 == null && term1 == x) {
+            value1 = v
+          }
+
+          if(value2 == null && term2 == x) {
+            value2 = v
+          }
+        }
+      }
+
+      !(value1!=null && value2!=null)
+    })
+
+    value1.equals(value2)
+  }
+  override def toString = atoms.mkString("Equals(", ",", ")")
+}
+
+class NotEqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
+  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+
+    var value1 : Term = null
+    var value2 : Term = null
+
+    term1 match {
+      case x:ValueTerm[_] => {
+        value1 = term1
+      }
+      case _ =>
+    }
+
+    term2 match {
+      case x:ValueTerm[_] => {
+        value2 = term2
+      }
+      case _ =>
+    }
+
+    subs.forall( s => {
+      s match{
+        case (x:Variable,v:Term) => {
+
+          if(value1 == null && term1 == x) {
+            value1 = v
+          }
+
+          if(value2 == null && term2 == x) {
+            value2 = v
+          }
+        }
+      }
+
+      !(value1!=null && value2!=null)
+    })
+
+    !(value1.equals(value2))
+  }
+  override def toString = atoms.mkString("Equals(", ",", ")")
+}
+
+class AllAreTrueGuard(guards:List[Guard]) extends CriojoGuard(List()){
+  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+
+    val allGuards = guards
+    allGuards.forall(g => {
+
+      g.eval(sol, subs)
+    })
+  }
+  override def toString = atoms.mkString("ForEachTrue(", ",", ")")
+}
+
 
 //class CriojoGuard(val starter:Atom, ruleDefs:List[RuleFactory => Rule], relList: List[Relation]) extends GuardCham with Guard{
 //

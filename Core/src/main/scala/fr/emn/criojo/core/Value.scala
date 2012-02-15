@@ -6,9 +6,11 @@ package fr.emn.criojo.core
  * Date: 07/11/11
  * Time: 15:19
  */
-trait Value[+T]
 
-case class ValueTerm[+T](value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
+// TODO: check if it is possible to remove the covariant aspect: It is useful to modify the value of a variable!
+trait Value[T]
+
+case class ValueTerm[T](var value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
   extends Function(if (value == null) "_" else value.toString, List[Term]()) with Value[T]{
 
   override def apply(params: List[Term]) = new ValueTerm(value)
@@ -27,6 +29,12 @@ case class ValueTerm[+T](value:T) //extends Variable(if (value == null) "_" else
     case s:String => "\"" + s + "\""
     case _ => value.toString
   }
+
+  /*
+  def setValue(newValue:T) {
+    value = newValue
+  }
+  */
 }
 
 object NoValue extends Value[Nothing]
