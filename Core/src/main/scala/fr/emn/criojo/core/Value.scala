@@ -7,7 +7,7 @@ package fr.emn.criojo.core
  * Time: 15:19
  */
 
-// TODO: check if it is possible to remove the covariant aspect: It is useful to modify the value of a variable!
+
 trait Value[+T] {
 
   def getValue():T = {return null.asInstanceOf[T]}
@@ -44,6 +44,7 @@ case class ValueTerm[+T](value:T) //extends Variable(if (value == null) "_" else
   */
 }
 
+// TODO: check if it is a good idea to have a MutableValueTerm
 case class MutableValueTerm[T](var value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
   extends Function(if (value == null) "_" else value.toString, List[Term]()) with Value[T]{
 
