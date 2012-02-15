@@ -31,7 +31,7 @@ class SierpinskiTests {
       zero = 0
 
       val Print = NativeRelation("Print") {
-        case ((Atom(_, (x: ValueTerm[Int]) :: (y: ValueTerm[Int]) :: (l: ValueTerm[Int]) :: _), _)) => {
+        case ((Atom(_, (x: Value[Int]) :: (y: Value[Int]) :: (l: Value[Int]) :: _), _)) => {
 
 
         }
@@ -41,8 +41,8 @@ class SierpinskiTests {
       val Div: UnstableRelation = ComputableRelation("Div")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
 
-          case (List((o, v1: ValueTerm[Int]), (p, v2: ValueTerm[Int])), List((q, v3: ValueTerm[Int]))) => {
-            v3.value = (v1.value / v2.value) // "q = o/p"
+          case (List((o, v1: Value[Int]), (p, v2: Value[Int])), List((q, v3: MutableValueTerm[Int]))) => {
+            v3.setValue((v1.getValue() / v2.getValue())) // "q = o/p"
           }
           case _ => throw new Exception("Bad arguments: need (Term*) -> (Term*) when evaluating \"Div\"")
         }
@@ -51,8 +51,8 @@ class SierpinskiTests {
       val Minus: UnstableRelation = ComputableRelation("Minus")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
 
-          case (List((o, v1: ValueTerm[Int]), (p, v2: ValueTerm[Int])), List((q, v3: ValueTerm[Int]))) => {
-            v3.value = (v1.value - v2.value) // "q = o-p"
+          case (List((o, v1: Value[Int]), (p, v2: Value[Int])), List((q, v3: MutableValueTerm[Int]))) => {
+            v3.setValue((v1.getValue() - v2.getValue())) // "q = o-p"
           }
           case _ => throw new Exception("Bad arguments: need (Term*) -> (Term*) when evaluating \"Minus\"")
         }
@@ -61,8 +61,8 @@ class SierpinskiTests {
       val Plus: UnstableRelation = ComputableRelation("Plus")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
 
-          case (List((o, v1: ValueTerm[Int]), (p, v2: ValueTerm[Int])), List((q, v3: ValueTerm[Int]))) => {
-            v3.value = (v1.value + v2.value) // "q = o+p"
+          case (List((o, v1: Value[Int]), (p, v2: Value[Int])), List((q, v3: MutableValueTerm[Int]))) => {
+            v3.setValue((v1.getValue() + v2.getValue())) // "q = o+p"
           }
           case _ => throw new Exception("Bad arguments: need (Term*) -> (Term*) when evaluating \"Plus\"")
         }
@@ -105,7 +105,7 @@ class SierpinskiTests {
     assert(cm.getSolution.size==2187)
   }
 
-
+  @Test
   def PaintSierpinskiTest() {
 
     var fw = new FileWriter("/Users/jonathan/Desktop/test.svg");
@@ -125,9 +125,9 @@ class SierpinskiTests {
       zero = 0
 
       val Print = NativeRelation("Print") {
-        case ((Atom(_, (x: ValueTerm[Int]) :: (y: ValueTerm[Int]) :: (l: ValueTerm[Int]) :: _), _)) => {
+        case ((Atom(_, (x: Value[Int]) :: (y: Value[Int]) :: (l: Value[Int]) :: _), _)) => {
 
-          fw.write("<polygon points=\"" + x.value + "," + y.value + " " + (x.value - l.value) + "," + (y.value - l.value) + " " + (x.value + l.value) + "," + (y.value - l.value) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
+          fw.write("<polygon points=\"" + x.getValue() + "," + y.getValue() + " " + (x.getValue() - l.getValue()) + "," + (y.getValue() - l.getValue()) + " " + (x.getValue() + l.getValue()) + "," + (y.getValue() - l.getValue()) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
         case _ => println("cannot match correct values")
       }
@@ -135,8 +135,8 @@ class SierpinskiTests {
       val Div: UnstableRelation = ComputableRelation("Div")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
 
-          case (List((o, v1: ValueTerm[Int]), (p, v2: ValueTerm[Int])), List((q, v3: ValueTerm[Int]))) => {
-            v3.value = (v1.value / v2.value) // "q = o/p"
+          case (List((o, v1: Value[Int]), (p, v2: Value[Int])), List((q, v3: MutableValueTerm[Int]))) => {
+            v3.setValue((v1.getValue() / v2.getValue())) // "q = o/p"
           }
           case _ => throw new Exception("Bad arguments: need (Term*) -> (Term*) when evaluating \"Div\"")
         }
@@ -145,8 +145,8 @@ class SierpinskiTests {
       val Minus: UnstableRelation = ComputableRelation("Minus")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
 
-          case (List((o, v1: ValueTerm[Int]), (p, v2: ValueTerm[Int])), List((q, v3: ValueTerm[Int]))) => {
-            v3.value = (v1.value - v2.value) // "q = o-p"
+          case (List((o, v1: Value[Int]), (p, v2: Value[Int])), List((q, v3: MutableValueTerm[Int]))) => {
+            v3.setValue((v1.getValue() - v2.getValue())) // "q = o-p"
           }
           case _ => throw new Exception("Bad arguments: need (Term*) -> (Term*) when evaluating \"Minus\"")
         }
@@ -155,8 +155,8 @@ class SierpinskiTests {
       val Plus: UnstableRelation = ComputableRelation("Plus")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
 
-          case (List((o, v1: ValueTerm[Int]), (p, v2: ValueTerm[Int])), List((q, v3: ValueTerm[Int]))) => {
-            v3.value = (v1.value + v2.value) // "q = o+p"
+          case (List((o, v1: Value[Int]), (p, v2: Value[Int])), List((q, v3: MutableValueTerm[Int]))) => {
+            v3.setValue((v1.getValue() + v2.getValue())) // "q = o+p"
           }
           case _ => throw new Exception("Bad arguments: need (Term*) -> (Term*) when evaluating \"Plus\"")
         }

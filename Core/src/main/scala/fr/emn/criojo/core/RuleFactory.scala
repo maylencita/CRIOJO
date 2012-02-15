@@ -8,6 +8,10 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * The RuleFactory trait
+ * @define THIS RuleFactory
+ */
 trait RuleFactory{
   type Body = List[Atom]
   type Head = List[Atom]
