@@ -2,6 +2,7 @@ package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
 import fr.emn.criojo.ext._
+import collection.mutable.Buffer
 
 /*
 * Created by IntelliJ IDEA.
@@ -10,9 +11,17 @@ import fr.emn.criojo.ext._
 * Time: 14:59
 */
 class Cham extends
-StatefulEngine2
+UnstableEngine
+//StatefulEngine2
 //SimpleEngine
 {
+
+  def ComputableRelation(name:String)(f:(Tuple2[Product,Product],Buffer[(Variable,Term)]) => Unit) = {
+    val unstableRel = new UnstableRelation(name,f)
+    addRelation(unstableRel)
+    unstableRel
+  }
+
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 

@@ -3,6 +3,8 @@ package fr.emn.criojo.core
 import org.junit.Test
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext._
+import collection.mutable.Buffer
+import java.io.FileWriter
 
 /*
  * Created by IntelliJ IDEA.
@@ -41,7 +43,10 @@ class StatesTests {
       val Result = Rel("Result")
       val Zero = Rel("Zero")
       val Print2 = NativeRelation("Print2"){
-        case ((Atom(_,x::_),_)) => print(" "+x)
+        case ((Atom(_,x::_),_)) => {
+          var t = x;
+          print(" "+x)
+        }
         case _ =>
       }
 
@@ -87,6 +92,7 @@ class StatesTests {
     cm.introduceMolecule(cm.Gcd(2,3))
     cm.executeRules()
 
+    println(cm.getSolution)
 //    println(cm.printRules)
   }
 }
