@@ -37,11 +37,6 @@ case class ValueTerm[+T](value:T) //extends Variable(if (value == null) "_" else
 
     return value
   }
-  /*
-  def setValue(newValue:T) {
-    value = newValue
-  }
-  */
 }
 
 // TODO: check if it is a good idea to have a MutableValueTerm
