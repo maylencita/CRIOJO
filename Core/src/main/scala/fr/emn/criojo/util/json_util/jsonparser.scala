@@ -16,7 +16,7 @@ package fr.emn.criojo.util.json
  * limitations under the License.
  */
 
-//package com.twitter.json
+//package com.twitter.json_util
 
 package jsonparser{
 

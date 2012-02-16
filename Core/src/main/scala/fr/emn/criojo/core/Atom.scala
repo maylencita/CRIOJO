@@ -10,6 +10,10 @@ import Criojo.Substitution
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * The Atom singleton
+ * @define THIS Atom
+ */
 @serializable
 object Atom{
   def apply(rn:String, lst:Term*):Atom = new Atom(rn, lst.toList)
@@ -20,13 +24,11 @@ object Atom{
   }
 }
 
+/**
+ * The Atom class
+ * @define THIS Atom
+ */
 case class Atom(relName:String, terms: List[Term]) {
-//  def this(relName:String, terms: List[Variable]){
-//    this(relName, List[Term](), terms)
-//  }
-//  def this(relName:String, terms: List[Term]){
-//    this(relName, terms, List[Variable]())
-//  }
 
   val vars = terms.map{case v:Variable => v; case _ => Undef}
 
@@ -46,9 +48,20 @@ case class Atom(relName:String, terms: List[Term]) {
 
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
-  
+
+  /** Returns the term at position n.
+   *
+   * @param n the position of the term
+   * @return the term at position n
+   */
   def apply(n:Int):Term = terms(n)
 
+
+  /** Applies the given substitutions to the atom.
+   *
+   * @param subs a List[ [[fr.emn.criojo.core.Term]] ]
+   * @return an [[fr.emn.criojo.core.Atom]]
+   */
   def applySubstitutions(subs:List[Substitution]):Atom = {
     val nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
       case Some(sub) => sub match{
@@ -62,22 +75,6 @@ case class Atom(relName:String, terms: List[Term]) {
       case Some(nv) => nv._2.name
       case _ => this.relName
     }
-
-//    def replace(variable:Variable):Variable = {
-//      val newVar = subs.find(s => s._1.name == variable.name)
-//      newVar match{
-//        case Some((v1:Variable,v2:Variable)) => v2//nv._2
-//        case _ =>
-//          variable match{
-//            case rv:RelVariable => if (rv.relation != null) rv else Undef
-//            case _ =>
-//              if (variable.name.startsWith("$"))
-//                variable
-//              else
-//                Undef
-//          }
-//      }
-//    }
 
     def applySubstitution(term:Term):Term = term match{
       case v:Variable => findSubstitution(v)
@@ -103,12 +100,22 @@ case class Atom(relName:String, terms: List[Term]) {
     newAtom
   }
 
+  /** Returns true if the given atom matches this atom.
+   *
+   * @param that an [[fr.emn.criojo.core.Atom]]
+   * @return true if the matching is positive
+   */
   def matches(that: Atom) : Boolean = {
     this.relName == that.relName &&
     this.arity == that.arity &&
     this.terms.zip(that.terms).forall(p => p._1.matches(p._2))
   }
 
+  /** Returns true if the given variable is in this atom.
+   *
+   * @param v a [[fr.emn.criojo.core.Variable]]
+   * @return true if the variable is in the list of terms
+   */
   def hasVariable(v: Variable): Boolean = {
     this.terms.contains(v)
   }

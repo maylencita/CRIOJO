@@ -8,6 +8,10 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * The RelationObserver trait
+ * @define THIS RelationObserver
+ */
 trait RelationObserver {
 
   def receiveUpdate(atom:Atom)
