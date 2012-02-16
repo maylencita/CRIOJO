@@ -14,25 +14,33 @@ trait IntegerCham extends EqCHAM{
   val Int_ask = Rel("Int_ask")
   val Int_print = Rel("$Int_print")
   val Add = Rel("Add")
-  val Subs = Rel("Subs")
+  val Sub = Rel("Subs")
   val Mod = Rel("Mod")
   val Leq_ask = Rel("Leq_ask")
   val Leq = Rel("Leq")
   private val Res = Rel("$Int.Res")
   private val LeqRes = Rel("$Int.LeqRes")
   private val mod = Rel("$Int.mod")
+  private val IntAdd2 = Rel("$Int.add2")
 
   val intEqClasses = new TypedEqClasses[Int](eqClasses,disjClasses)
   private val Declare = NativeRelation("$Declare"){ (a,s) => declare(a) }
   private val IntPrint = NativeRelation("$PrintInt"){(a,s) => println(a(0))}
+  private val IntSub2 = Rel("$IntSubs2")
 
-  private val IntAdd = NativeRelation("$IntAdd"){ //(a,s) => add(a) }
+  protected val IntAdd = NativeRelation("$IntAdd"){ //(a,s) => add(a) }
     case (Atom(_,x::y::z::_), _) =>
       (getValue(x),getValue(y),getValue(z)) match{
         case (Some(v1),Some(v2),_) => introduceAtom(IntVal(z,v1+v2))
-        case (None,Some(v1),Some(v2)) => introduceAtom(IntVal(x,v2-v1))
-        case (Some(v1),None,Some(v2)) => introduceAtom(IntVal(x,v2-v1))
-        case _ =>
+        case _ => introduceAtom(IntAdd2(x,y,z))
+      }
+    case _ =>
+  }
+  protected val IntSub = NativeRelation("$IntSubs"){
+    case (Atom(_,x::y::z::_), _) =>
+      (getValue(x),getValue(y)) match{
+        case (Some(v1),Some(v2)) => introduceAtom(IntVal(z,v1-v2))
+        case _ => introduceAtom(IntSub2(x,y,z))
       }
     case _ =>
   }
@@ -61,7 +69,7 @@ trait IntegerCham extends EqCHAM{
     val K = VarR("K+")
     val Zero = VarR("K0")
     val Err = VarR("Err")
-    val z,s,v = Var
+    val z,s,v,v1,v2 = Var
     val x,y,n = Var
     val X1 = Rel("$Int.$X1")
     val ModRes = Rel("$Int.ModRes")
@@ -73,8 +81,12 @@ trait IntegerCham extends EqCHAM{
 
       Add(s,x,y,K) --> Nu(z)(IntAdd(x,y,z) & Res(s,x,y,z,K)),
       (Res(s,x,y,z,K) & IntVal(z,v)) --> (K(s,x,y,v) & IntVal(z,v)),
+      (IntAdd2(x,y,z)  & IntVal(x,v1) & IntVal(y,v2) )-->
+        /*(Ex(IntVal(x,v1)) || Ex(IntVal(y,v2))) ?:*/ (IntAdd(v1,v2,z) & IntVal(x,v1) & IntVal(y,v2) ),
 
-      Subs(s,x,y,K) --> Nu(z)(IntAdd(z,y,x) & Res(s,x,y,z,K)),
+      Sub(s,x,y,K) --> Nu(z)(IntSub(x,y,z) & Res(s,x,y,z,K)),
+      (IntSub2(x,y,z) & IntVal(x,v1) & IntVal(y,v2)) -->
+        /*(Ex(IntVal(x,v1)) || Ex(IntVal(y,v2))) ?:*/ (IntSub(v1,v2,z)& IntVal(x,v1) & IntVal(y,v2)),
 
       Mod(s,x,y,K,Zero) --> Nu(z)(CalculeMod(x,y) & ModRes(s,x,y,K,Zero) & ModRes(s,y,x,K,Zero)),
       (ModRes(s,x,y,K,Zero) & mod(x,y,0)) --> Zero(s,y),
@@ -83,11 +95,49 @@ trait IntegerCham extends EqCHAM{
       Leq_ask(s,x,y,K) --> (CalculeLeq(x,y) & LeqRes(s,x,y,K) & LeqRes(s,y,x,K)),
       (LeqRes(s,x,y,K) & Leq(x,y)) --> K(s,x,y),
 
-      (Int_print(x) & IntVal(x,n)) --> IntPrint(n)
+      (Int_print(x) & IntVal(x,n)) --> (IntPrint(n) & IntVal(x,n))
     )
   }
 
-  def getIntValue(x:Variable):Option[Int]= intEqClasses getValue x
+  def Gr(t1:Term, t2:Term):CriojoGuard = {
+    val g = new CriojoGuard(List()){
+      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+        greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      }
+    }
+    g
+  }
+
+  def Leq(t1:Term, t2:Term):CriojoGuard = {
+    val g = new CriojoGuard(List()){
+      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+        lessThanOrEqual(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      }
+    }
+    g
+  }
+
+  def greaterThan(t1:Term, t2:Term):Boolean = {
+    (getValue(t1),getValue(t2)) match{
+      case (Some(v1),Some(v2)) => v1 > v2
+      case _ => false //no information
+    }
+  }
+
+  def lessThanOrEqual(t1:Term, t2:Term):Boolean = {
+    (getValue(t1),getValue(t2)) match{
+        case (Some(v1),Some(v2)) => v1 <= v2
+        case _ => false //No val
+      }
+  }
+
+  def getIntValue(x:Variable):Option[Int]= genEqClasses.getValue(x) match{
+    case Some(v) => v match {
+      case n:Int => Some(n)
+      case _ => None
+    }
+    case _ => None
+  } //intEqClasses getValue x
 
   implicit def num2fun(n:Int):Term = new ValueTerm[Int](n) //new IntTerm(n)
 
@@ -101,21 +151,10 @@ trait IntegerCham extends EqCHAM{
   }
 
   private def declare(a:Atom){ a match{
-      case Atom(_, (v:Variable)::(Function(n,_))::_) => intEqClasses add (n.toInt,v) //TODO ValueTerm instead of Function?
+      case Atom(_, (v:Variable)::(ValueTerm(n:Int))::_) => genEqClasses.add(n,v) //intEqClasses add (n.toInt,v)
       case _ => //Nothing, wrong format
     }
   }
-
-//  private def add(a:Atom){ a match{
-//    case Atom(_, IntTerm(v1)::IntTerm(v2)::v3::_) =>
-//      introduceAtom(IntVal(v3,v1 + v2))
-//    case Atom(_, (v1:Variable)::(v2:Variable)::v3::_) =>
-//      introduceAtom(Add2(v1,v2,v3))
-//    case Atom(_, v1::v2::v3::_) =>
-//      introduceAtom(Add3(v1,v2,v3))
-//    case _ =>
-//    }
-//  }
 
   case class IntTerm(n:Int) extends Function(n.toString,List[Term]()){
     override def apply(params: List[Term]) = new IntTerm(n)

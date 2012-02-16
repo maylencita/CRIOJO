@@ -27,8 +27,8 @@ case class Function(name:String, params: List[Term]) extends Term{
     name + (if(params.isEmpty) "" else params.mkString("(",",",")") )
 }
 
-case class IdTerm(name:String) extends Term{
-  def matches(that:Term):Boolean = that match{
+case class IdTerm(n:String) extends Variable(n){
+  override def matches(that:Term):Boolean = that match{
     case IdTerm(n) => n == name
     case _ => false
   }
