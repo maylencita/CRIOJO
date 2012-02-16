@@ -20,6 +20,7 @@ trait EqCHAM extends Cham{
   var eqClasses = new EqClassList
   var disjClasses = new EqClassList
 
+  val genEqClasses = new TypedEqClasses[Any](eqClasses,disjClasses)
   /**********************************************************************
   * CHM definition:
   */
@@ -30,6 +31,47 @@ trait EqCHAM extends Cham{
   //--Private:
   private val s,x,y,z = Var; private val K = VarR("K")
   /***********************************************************************/
+
+  def Eq(t1:Term, t2:Term):CriojoGuard = {
+    val g = new CriojoGuard(List()){
+      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+        //TODO complete, see NotEq below
+        false
+      }
+    }
+    g
+  }
+  def NotEq(t1:Term, t2:Term):CriojoGuard = {
+    val g = new CriojoGuard(List()){
+
+      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+        existsNotEqual(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      }
+
+    }
+    g
+  }
+
+        //TODO applySubstitution() should be in class Term
+        //TODO findSubstitution() should be in a class called Substitutions
+        //TODO transform type Criojo.Substitutions into a separate class
+  def findSubstitution(variable:Variable,subs: List[Criojo.Substitution]):Term =
+    subs.find(s => s._1.name == variable.name) match{
+      case Some((v,t)) => t
+      case _ =>
+        variable match{
+          case rv:RelVariable if (rv.relation != null) => rv
+          case rv:RelVariable if (rv.relation == null) => Undef
+          case _ => Undef
+        }
+  }
+
+  def applySubstitution(term:Term,subs: List[Criojo.Substitution]):Term = term match{
+    case v:Variable => findSubstitution(v,subs)
+    case v:ValueTerm[_] => v
+    case f@Function(n, plst) => f(plst.map(p => applySubstitution(p,subs)))
+    case _ => term
+  }
 
   private val f = new RelVariable("false")
   private val t = new RelVariable("true")
@@ -91,6 +133,34 @@ trait EqCHAM extends Cham{
           }
       case _ => //Nothing
     }
+  }
+
+  //TODO maybe move this somewhere else, like a utility class or something
+  private def equalsOp(op:Option[Any],value:Any):Boolean = op match{
+    case Some(s) => s == value
+    case _ => false
+  }
+
+  protected def existsEqual(t1:Term, t2:Term):Boolean = (t1,t2) match{
+        case (ValueTerm(v1),ValueTerm(v2)) => v1 == v2
+        case (v1:Variable,v2:Variable) => (v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
+        case (x:Variable,ValueTerm(v)) => equalsOp(genEqClasses.getValue(x),v)
+        case (ValueTerm(v),x:Variable) => equalsOp(genEqClasses.getValue(x),v)
+        case _ => false //No information
+  }
+
+  protected def existsNotEqual(t1:Term, t2:Term):Boolean = (t1,t2) match{
+        case (ValueTerm(v1),ValueTerm(v2)) => v1 != v2
+        case (v1:Variable,v2:Variable) =>
+          (disjClasses.find(v1), disjClasses.find(v2)) match{
+          case (Some(e1),Some(e2)) if e1 != e2 =>
+            //They are different
+            true
+          case _ => false //No enough information to answer
+          }
+        case (x:Variable,ValueTerm(v)) => !equalsOp(genEqClasses.getValue(x),v)
+        case (ValueTerm(v),x:Variable) => !equalsOp(genEqClasses.getValue(x),v)
+        case _ => false
   }
 
   def askEquivalence(x:Variable, y:Variable, s:Solution):Boolean = {
