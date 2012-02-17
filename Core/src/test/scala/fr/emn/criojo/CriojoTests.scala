@@ -20,7 +20,7 @@ import Assert._;
  */
 object CriojoTests{
 //  def suite: Test = {
-//      val suite = new TestSuite(classOf[SolutionTest]);
+//      val suite = new TestSuite(classOf[SolutionTests]);
 //      suite
 //  }
 //

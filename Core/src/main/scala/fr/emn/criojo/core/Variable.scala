@@ -21,6 +21,7 @@ case class Variable (name: String) extends Term{
 //    case Undef => true
 //    case _ => this.equals(that)
 //  }
+
   def matches(that:Term) = true
 //    that match{
 //    case Variable(n) if(n == name) => true

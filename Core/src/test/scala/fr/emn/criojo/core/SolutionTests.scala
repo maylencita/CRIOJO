@@ -11,9 +11,9 @@ package fr.emn.criojo.core
 import org.junit._
 import Assert._
 
-//object SolutionTest{
+//object SolutionTests{
 //  def suite: Test = {
-//      val suite = new TestSuite(classOf[SolutionTest]);
+//      val suite = new TestSuite(classOf[SolutionTests]);
 //      suite
 //  }
 //
@@ -114,4 +114,41 @@ class SolutionTest {
     assertTrue("<R(x1),R(y1)>" == solution.toString)
   }
 
+  @Test (timeout=1000)
+  def EmptySolutionTest{
+
+    var emptySol = EmptySolution
+    assertTrue(emptySol.size==0)
+    emptySol.reverse()
+    assertTrue(emptySol.size==0)
+  }
+
+  @Test (timeout=1000)
+  def SolutionImplTest{
+
+    var solImpl = new SolutionImpl()
+    assertTrue(solImpl.size==0)
+
+    val solution = new StandAloneSolution()
+    val r = new LocalRelation("R")
+    val a = Atom(r, Variable("x1"))
+    val a2 = Atom(r, Variable("x1"))
+
+    assertTrue(solImpl.isEmpty)
+    solution.addAtom(a)
+    solution.addAtom(a2)
+
+    assertTrue(solution.contains(a))
+
+    solImpl.reverse()
+    solImpl.update(solution)
+    assertTrue(solImpl.size==2)
+
+    solImpl.remove(a)
+    assertTrue(solImpl.size==1)
+    assertTrue(!solImpl.contains(a))
+
+    solImpl.addAtom(a)
+    assertTrue(solImpl.size==2)
+  }
 }

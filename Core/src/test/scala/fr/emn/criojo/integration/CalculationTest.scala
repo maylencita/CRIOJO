@@ -1,8 +1,10 @@
-package fr.emn.criojo.core
+package fr.emn.criojo.integration
 
 import org.junit.Test
 import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.lang.{Nu, Cham}
+import fr.emn.criojo.core._
+import collection.mutable.Buffer
 
 /*
 * Created by IntelliJ IDEA.
@@ -10,8 +12,12 @@ import fr.emn.criojo.lang.{Nu, Cham}
 * Date: 15/02/12
 * Time: 15:10
 */
+
+
 class CalculationTest {
-  @Test (timeout=3000)
+
+
+  @Test /*(timeout=3000)*/
   def fibonacciTest{
     val fCham = new Cham with IntegerCham{
       val fib = Rel("fib")
@@ -23,6 +29,8 @@ class CalculationTest {
       }
 
       val n,n1,n2,r,r1,r2,v,x = Var
+
+
       rules(
         fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
         (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v) & IntVal(n,v)),
@@ -34,7 +42,8 @@ class CalculationTest {
     import fCham.{num2fun,fib}
     fCham.introduceMolecule(fib(4))
     fCham.executeRules()
-//    println(fCham.printRules)
-  }
+    // println(fCham.printRules)
 
+    println(fCham.getSolution)
+  }
 }

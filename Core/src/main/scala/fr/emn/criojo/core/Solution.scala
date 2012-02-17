@@ -67,31 +67,6 @@ trait Solution{
   /**
    * Finds atoms matching a conjunction (set of atoms), after applying an initial set of substitutions
    */
-  def findMatches(conjunction:List[Atom], substitutions:List[Substitution]):List[Atom] = {
-    def findMatchesRec(c:List[Atom], subs:List[Substitution], acum:List[Atom]):List[Atom] = c match{
-      case List() => acum
-      case h :: rest =>
-        val matches = findMatches(h, subs)
-        if (matches.isEmpty)
-          List()
-        else{
-          var results = List[Atom]()
-          val i = matches.iterator
-          while (i.hasNext && results.isEmpty){
-            val m = i.next
-            inactivate(m)
-            results = findMatchesRec(rest, subs.union(h.vars.zip(m.terms)), acum :+ m)
-            if(results.isEmpty)
-              activate(m)
-          }
-          results
-        }
-    }
-
-    findMatchesRec(conjunction, substitutions, List())
-  }
-
-  def copy(newOwner:Engine):Solution
 
   protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
     if (subs.isEmpty){
@@ -124,7 +99,7 @@ class SolutionImpl(owner:Engine, var elems:List[Atom]) extends Solution{
 
   def remove(a:Atom) { elems = elems.filterNot(_ == a)}
   def clear() {   elems = List[Atom]()  }
-  def copy(newOwner:Engine):Solution = new SolutionImpl(newOwner,elems.map(a => a.clone))
+
   def addAtom(atom:Atom){
     elems :+= atom
     notifyCHAM(atom)

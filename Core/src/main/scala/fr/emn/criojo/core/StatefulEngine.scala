@@ -86,7 +86,7 @@ trait StatefulEngine extends Engine{
       removeAtoms.foreach{a => removeAtom(a)}
       newAtoms.foreach(a => introduceAtom(a))
 
-      executeRules()
+      //executeRules()
 
       true
     }
@@ -143,8 +143,6 @@ class HashSolution extends Solution{
   def inactivate(a: Atom){}
 
   def activate(a: Atom){}
-
-  def copy(newOwner: Engine) = null
 
   def notifyCHAM(newAtom: Atom){}
 }
