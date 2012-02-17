@@ -11,16 +11,18 @@ import collection.mutable.Buffer
 * Time: 14:59
 */
 class Cham extends
-UnstableEngine
-//StatefulEngine
+//UnstableEngine
+StatefulEngine
 //SimpleEngine
 {
 
+  /*
   def ComputableRelation(name:String)(f:(Tuple2[Product,Product],Buffer[(Variable,Term)]) => Unit) = {
     val unstableRel = new UnstableRelation(name,f)
     addRelation(unstableRel)
     unstableRel
   }
+  */
 
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule

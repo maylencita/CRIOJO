@@ -25,9 +25,10 @@ trait EqCHAM extends Cham{
   * CHM definition:
   */
   //--Public:
-  val EQ = NativeRelation("Eq"){ (a,s) => if (a.terms.size == 2) addEquivalence(a.vars(0),a.vars(1),s) }
-  val EQ_ask = NativeRelation("Eq_ask")(askEq)
-  val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a.vars(0),a.vars(1),s)}
+  //val EQ = NativeRelation("Eq"){ (a,s) => if (a.terms.size == 2) addEquivalence(a.vars(0),a.vars(1),s) }
+  //val EQ_ask = NativeRelation("Eq_ask")(askEq)
+  //val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a.vars(0),a.vars(1),s)}
+
   //--Private:
   private val s,x,y,z = Var; private val K = VarR("K")
   /***********************************************************************/
@@ -36,7 +37,8 @@ trait EqCHAM extends Cham{
     val g = new CriojoGuard(List()){
       def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
         //TODO complete, see NotEq below
-        false
+        existsEqual(applySubstitution(t1,subs),applySubstitution(t2,subs))
+
       }
     }
     g
@@ -83,6 +85,7 @@ trait EqCHAM extends Cham{
       disjClasses.contains(e1) && disjClasses.contains(e2)
   }
 
+  /*
   // Native
   private def addEquivalence(v1:Variable, v2:Variable, s:Solution) =
   (eqClasses.find(v1),eqClasses.find(v2)) match{
@@ -99,7 +102,9 @@ trait EqCHAM extends Cham{
       //Add a new EqClass
       eqClasses add HashSet(v1,v2)
   }
+  */
 
+  /*
   private def addNotEqual(v1:Variable, v2:Variable, s:Solution){
     if(v1 == v2)
       throw new InvalidStateError("Illegal operation: " + v1 + " == " + v2)
@@ -116,7 +121,9 @@ trait EqCHAM extends Cham{
         eqClasses add e2
     }
   }
+  */
 
+  /*
   private def askEq(a:Atom, sol:Solution){
     a match{
       case Atom(_, i::(v1:Variable)::(v2:Variable)::kpls::kmin::_) =>
@@ -134,6 +141,7 @@ trait EqCHAM extends Cham{
       case _ => //Nothing
     }
   }
+  */
 
   //TODO maybe move this somewhere else, like a utility class or something
   private def equalsOp(op:Option[Any],value:Any):Boolean = op match{

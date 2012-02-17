@@ -1,10 +1,11 @@
-package fr.emn.criojo.core
+package fr.emn.criojo.integration
 
 import org.junit.Test
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext._
 import collection.mutable.Buffer
 import java.io.FileWriter
+import fr.emn.criojo.core._
 
 /*
  * Created by IntelliJ IDEA.
@@ -12,14 +13,13 @@ import java.io.FileWriter
  * Date: 24/11/11
  * Time: 14:41
  */
-class SierpinskiTests {
+class SierpinskiTest {
+
 
   @Test
   def SierpinskiTest() {
 
-    val cm = new Cham with IntegerCham {
-
-      //implicit def int2fun(integer:Int):Term = new ValueTerm[Int](integer)
+    val cm = new UnstableCham with IntegerCham {
 
       val DIVIDE = Rel("DIVIDE")
       val RESULT = Rel("RESULT")
@@ -37,6 +37,7 @@ class SierpinskiTests {
         }
         case _ => println("cannot match correct values")
       }
+
 
       val Div: UnstableRelation = ComputableRelation("Div")((exp: Tuple2[Product, Product], subs: Buffer[(Variable, Term)]) => {
         exp match {
@@ -84,10 +85,6 @@ class SierpinskiTests {
             & Sierpinski(xp2, yp, lp, np)
             )
 
-        //,(DIVIDE(x,y) & Div((x,y) -> (z)) & Div((x,one) ->(lp)) ) --> RESULT(x,y,z,lp) // simple case
-        //,(DIVIDE(x,y) & Div((x,y) -> (z)) & Div((x,z) -> (c)) ) --> RESULT(x,y,z,c) // more complex case
-        //,(DIVIDE(x,y) & Div((x,y) -> (z)) & Div((x,z) -> (c)) & Div((k,k) -> (k)) ) --> RESULT(x,y,z,c) // there is a cycle
-
       )
 
       implicit def str2fun(str: String): Term = new ValueTerm[String](str)
@@ -96,13 +93,10 @@ class SierpinskiTests {
 
     import cm.num2fun
 
-    //cm.introduceMolecule(cm.DIVIDE(6,3))
     cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 7))
     cm.executeRules()
 
-    //println(cm.getSolution)
-    //println(cm.getSolution.size)
-    assert(cm.getSolution.size==2187)
+    assert(cm.getSolution.size == 2187)
   }
 
   @Test
@@ -111,7 +105,7 @@ class SierpinskiTests {
     var fw = new FileWriter("/Users/jonathan/Desktop/test.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
-    val cm = new Cham with IntegerCham {
+    val cm = new UnstableCham with IntegerCham {
 
       //implicit def int2fun(integer:Int):Term = new ValueTerm[Int](integer)
 
@@ -162,6 +156,7 @@ class SierpinskiTests {
         }
       })
 
+
       rules(
         Sierpinski(x, y, l, n) --> Equal(n, zero) ?: Print(x, y, l),
 
@@ -178,26 +173,17 @@ class SierpinskiTests {
             & Sierpinski(xp2, yp, lp, np)
             )
 
-        //,(DIVIDE(x,y) & Div((x,y) -> (z)) & Div((x,one) ->(lp)) ) --> RESULT(x,y,z,lp) // simple case
-        //,(DIVIDE(x,y) & Div((x,y) -> (z)) & Div((x,z) -> (c)) ) --> RESULT(x,y,z,c) // more complex case
-        //,(DIVIDE(x,y) & Div((x,y) -> (z)) & Div((x,z) -> (c)) & Div((k,k) -> (k)) ) --> RESULT(x,y,z,c) // there is a cycle
-
       )
-
-      implicit def str2fun(str: String): Term = new ValueTerm[String](str)
 
     }
 
     import cm.num2fun
 
-    //cm.introduceMolecule(cm.DIVIDE(6,3))
     cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 7))
     cm.executeRules()
-
-    println(cm.getSolution)
-    println(cm.getSolution.size)
 
     fw.write("</svg>\n")
     fw.close()
   }
+
 }

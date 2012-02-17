@@ -10,6 +10,7 @@ import fr.emn.criojo.core._
  * To change this template use File | Settings | File Templates.
  */
 
+
 import fr.emn.criojo.lang.ChamGuard
 import fr.emn.criojo.lang.{CrjAtom, Molecule}
 import collection.mutable.{Buffer}
@@ -21,7 +22,8 @@ import fr.emn.criojo.core._
  * @define THIS UnstableEngine
  * @define PARENT StatefulEngine
  */
-class UnstableEngine extends StatefulEngine {
+@deprecated
+trait UnstableEngine extends StatefulEngine {
 
   def Equal(term1: Term, term2: Term): Guard = new EqualsGuard(term1, term2) with ChamGuard
   def NotEqual(term1: Term, term2: Term): Guard = new NotEqualsGuard(term1, term2) with ChamGuard
@@ -113,7 +115,7 @@ class UnstableEngine extends StatefulEngine {
         }
         newAtoms.foreach(a => introduceAtom(a))
 
-        // TODO : check if it is the cause of the reccursive bug!
+        // should comment next line if no call to executeRules when during atoms insertion
         //executeRules()
 
         true

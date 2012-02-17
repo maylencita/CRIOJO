@@ -43,20 +43,26 @@ abstract class ExtendedCHAM extends Cham with IntegerCham with StrCHAM with Null
     }
   }
 
+  /*
   def getPrintVariable(v:Variable):Term = getValue(v) match{
     case value:ValueTerm[_] => value
     case NoValue => v
   }
+  */
 
+  /*
   def prettyPrint:String = {
     solution.filter(! _.relName.startsWith("$")).
             map(a => new Atom(a.relName, a.vars.map(getPrintVariable(_)))).mkString("<",",",">")
   }
-  
+  */
+
+  /*
   private def printAtom(a:Atom)= a match{
     case Atom("Print", vars) => println( a.vars.map(v => getPrintVariable(v)).mkString(""," ","") )
     case _ => //Nothing
   }
+  */
 
   def generateValAtom(value:Any , variable: Variable): Atom = value match{
     case n:Int => Atom(IntVal.name, variable, n) //IntVal(variable,n) //IntAtom(n, variable)
