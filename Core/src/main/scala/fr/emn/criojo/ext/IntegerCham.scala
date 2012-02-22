@@ -25,8 +25,18 @@ trait IntegerCham extends EqCHAM{
 
   val intEqClasses = new TypedEqClasses[Int](eqClasses,disjClasses)
   private val Declare = NativeRelation("$Declare"){ (a,s) => declare(a) }
-  private val IntPrint = NativeRelation("$PrintInt"){(a,s) => println(a(0))}
+  private val IntPrint = NativeRelation("$PrintInt"){
+    (a,s) => {
+      var t = (a, s)
+      println(a(0))
+    }
+//    case x => {
+//      var t = x
+//      println(x)
+//    }
+  }
   private val IntSub2 = Rel("$IntSubs2")
+  private val IntDiv2 = Rel("$IntDivs2")
 
   protected val IntAdd = NativeRelation("$IntAdd"){ //(a,s) => add(a) }
     case (Atom(_,x::y::z::_), _) =>
@@ -41,6 +51,15 @@ trait IntegerCham extends EqCHAM{
       (getValue(x),getValue(y)) match{
         case (Some(v1),Some(v2)) => introduceAtom(IntVal(z,v1-v2))
         case _ => introduceAtom(IntSub2(x,y,z))
+      }
+    case _ =>
+  }
+
+  protected val IntDiv = NativeRelation("$IntDivs"){
+    case (Atom(_,x::y::z::_), _) =>
+      (getValue(x),getValue(y)) match{
+        case (Some(v1),Some(v2)) => introduceAtom(IntVal(z,v1/v2))
+        case _ => introduceAtom(IntDiv2(x,y,z))
       }
     case _ =>
   }
@@ -108,6 +127,15 @@ trait IntegerCham extends EqCHAM{
     g
   }
 
+  def Less(t1:Term, t2:Term):CriojoGuard = {
+    val g = new CriojoGuard(List()){
+      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+        lessThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      }
+    }
+    g
+  }
+
   def Leq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
       def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
@@ -120,6 +148,13 @@ trait IntegerCham extends EqCHAM{
   def greaterThan(t1:Term, t2:Term):Boolean = {
     (getValue(t1),getValue(t2)) match{
       case (Some(v1),Some(v2)) => v1 > v2
+      case _ => false //no information
+    }
+  }
+
+  def lessThan(t1:Term, t2:Term):Boolean = {
+    (getValue(t1),getValue(t2)) match{
+      case (Some(v1),Some(v2)) => v1 < v2
       case _ => false //no information
     }
   }
@@ -142,7 +177,7 @@ trait IntegerCham extends EqCHAM{
   implicit def num2fun(n:Int):Term = new ValueTerm[Int](n) //new IntTerm(n)
 
   private def getValue(t:Term):Option[Int] = t match{
-    case ValueTerm(v:Int) => Some(v)
+    case v:Value[Int] => Some(v.getValue())
     case vr:Variable => getIntValue(vr) match{
       case Some(v) => Some(v)
       case _ => None

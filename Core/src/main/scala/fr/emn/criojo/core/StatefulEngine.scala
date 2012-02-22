@@ -65,30 +65,44 @@ trait StatefulEngine extends Engine{
       var executed = false
       if(ready){
         val finalState = states(size - 1)
+        // TODO: check if this is a good patch (2/2) a)
+        var consumedAtoms:List[Atom] = List()
+
         finalState.executions.foreach{pe =>
-          if(guard.eval(getSolution,pe.subs)){
-//println("Executed: "+ this)
-            ready = false
-            applyReaction(pe)
-            executed = true
-          }
+//        finalState.executions.forall{pe => {
+          //scala.util.Random.shuffle(finalState.executions).forall{pe =>
+            if(guard.eval(getSolution,pe.subs) && pe.atoms.intersect(consumedAtoms).isEmpty){
+  //println("Executed: "+ this)
+              ready = false
+              applyReaction(pe)
+              /*
+              applyReaction(pe).foreach(a => {
+                consumedAtoms = a :: consumedAtoms
+              })
+              */
+              pe.atoms.foreach(a => {
+                consumedAtoms = a :: consumedAtoms
+              })
+              executed = true
+            }
+//            !executed }
+          // TODO: check if this is a good patch (2/2) b)
+          //!executed
         }
       }
       executed
     }
 
-    def applyReaction(finalExecution:PartialExecution){
+    def applyReaction(finalExecution:PartialExecution) {
       val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
       val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
 //println("\tNew atoms: " + newAtoms.mkString(","))
-      val removeAtoms = finalExecution.atoms
+      val removeAtoms:Array[Atom] = finalExecution.atoms
 
       removeAtoms.foreach{a => removeAtom(a)}
       newAtoms.foreach(a => introduceAtom(a))
 
       //executeRules()
-
-      true
     }
 
     def notifyCham(atom: Atom){}

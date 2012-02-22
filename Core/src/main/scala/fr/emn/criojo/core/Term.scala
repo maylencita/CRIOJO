@@ -8,9 +8,12 @@ import Criojo.Substitution
  * Date: 26/10/11
  * Time: 15:30
  */
+
 trait Term {
   def name:String
   def matches(that:Term):Boolean
+
+
 }
 
 case class Function(name:String, params: List[Term]) extends Term{
