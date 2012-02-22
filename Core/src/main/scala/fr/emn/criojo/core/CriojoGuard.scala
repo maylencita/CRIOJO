@@ -5,6 +5,7 @@ import collection.mutable.ListBuffer
 import scala.collection.mutable.HashMap
 import fr.emn.criojo.lang.Molecule
 import fr.emn.criojo.util.Logger._
+import statemachine.StateMachine
 
 /*
  * Created by IntelliJ IDEA.
@@ -24,7 +25,6 @@ abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine
   def onFinalState(){}
 
   def receiveUpdate(atom: Atom){
-//println("Guard updated with: " + atom)
     if (atom.isActive)
       addExecution(atom)
     else
@@ -39,7 +39,6 @@ class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
     finalState.executions.exists{pe =>
       newAtoms.forall(na=>pe.atoms.exists(a=>a.matches(na)))
     }
-//    newAtoms.forall(sol.contains(_))
   }
   override def toString = atoms.mkString("Exst(", ",", ")")
 }
@@ -49,7 +48,6 @@ class AbsGuard(atoms:List[Atom]) extends ExistGuard(atoms){
     val finalState = states(size - 1)
     finalState.executions.isEmpty ||
       ! super.eval(sol,subs)
-//    newAtoms.forall{a => !sol.contains(a)}
   }
 
   override def toString = atoms.mkString("Abs(", ",", ")")

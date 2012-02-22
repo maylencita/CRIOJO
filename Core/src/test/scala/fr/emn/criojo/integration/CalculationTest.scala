@@ -33,17 +33,45 @@ class CalculationTest {
 
       rules(
         fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
-        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v) & IntVal(n,v)),
+        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v) /*& IntVal(n,v)*/),
         Fib(n,r) -->
           Gr(n, 1) ?: Nu(n1,n2,r1,r2)(
             IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
       )
     }
     import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fib(4))
+    fCham.introduceMolecule(fib(10))
     fCham.executeRules()
     // println(fCham.printRules)
+  }
 
-    println(fCham.getSolution)
+  @Test /*(timeout=3000)*/
+  def fibonacciWithMemTest{
+    val fCham = new Cham with IntegerCham{
+      val fib = Rel("fib")
+      val Fib = Rel("Fib")
+      val FEq = Rel("FEq")
+
+      val MPrint = NativeRelation("2"){
+        case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
+        case _ =>
+      }
+
+      val n,n1,n2,r,r1,r2,x = Var
+      val v,v1,v2 = Var
+
+      rules(
+        fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
+        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v)),
+        (Fib(n,r1) & Fib(n,r2) & IntVal(r1,v)) --> (IntVal(r2,v) & IntVal(r1,v)),
+        Fib(n,r) -->
+          (Abs(Fib(n,v)) && Gr(n, 1)) ?: Nu(n1,n2,r1,r2)(
+            IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
+      )
+    }
+    import fCham.{num2fun,fib}
+    fCham.introduceMolecule(fib(10))
+    fCham.executeRules()
+    // println(fCham.printRules)
   }
 }

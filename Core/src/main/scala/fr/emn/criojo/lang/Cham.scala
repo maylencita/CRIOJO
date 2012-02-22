@@ -45,28 +45,15 @@ StatefulEngine
     natRel
   }
 
-//  def guard(sttr:Atom, ruleDefs:(RuleFactory => Rule)*):Guard = new CriojoGuard(sttr, ruleDefs.toList, this.relations)
-//
-//  def If(sttr:Atom, ruleDefs:(RuleFactory => Rule)*)(body: => Molecule):RuleBody = {
-//    val guard = new CriojoGuard(sttr, ruleDefs.toList, this.relations)
-//    new RuleBody(body, guard)
-//  }
-
   def If(guard: Guard)(body: => Molecule):RuleBody = {
     new RuleBody(body, guard)
   }
 
-  def Abs(atoms:Atom*):Guard =  new AbsGuard(atoms.toList) with ChamGuard
+  def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
 
-  def Ex(atoms:Atom*):Guard =  new ExistGuard(atoms.toList) with ChamGuard
-
-//    new CriojoGuard(new Top(atom.terms), List((atom &: new CrjAtom(Top.relName, atom.terms)) --> F()), this.relations)
+  def Ex(atoms:Atom*):ChamGuard =  new ExistGuard(atoms.toList) with ChamGuard
 
   def when(head:Molecule)(body: RuleBody):RuleDef = {
-//    if(body.guard == EmptyGuard)
-//      initRule(head --> body.conj)
-//    else
-//      initRule(head --> (body.guard, body.conj))
     val ruleDef =
       if(body.guard == EmptyGuard)
         head --> body.conj
