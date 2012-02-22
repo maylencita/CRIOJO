@@ -6,9 +6,9 @@ package fr.emn.criojo.core
  * Date: 24/11/11
  * Time: 10:05
  */
-import collection.mutable.HashMap
 import fr.emn.criojo.core.Criojo._
 import collection.immutable.HashSet
+import statemachine.{StateMachine, PartialExecution}
 
 /**
  * The StatefulEngine trait
@@ -27,12 +27,10 @@ trait StatefulEngine extends Engine{
   }
 
   def introduceAtom(atom: Atom){
-    solution.addAtom(atom)
     notifyRelationObservers(atom)
   }
 
   def removeAtom(atom: Atom){
-    solution.remove(atom)
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
@@ -46,63 +44,34 @@ trait StatefulEngine extends Engine{
 
     init(head.toArray)
 
-    def onFinalState(){
-//println("\t\tReady!")
-      this.ready = true
-//      this.execute()
-    }
-
     def receiveUpdate(atom: Atom){
-//println("Updated: " +this+ " with " +atom )
       if (atom.isActive)
         addExecution(atom)
       else
         removeExecution(atom)
-//println("\tNew solution: " +solution)
     }
 
     def execute(subs: List[Substitution]) = {
       var executed = false
-      if(ready){
-        val finalState = states(size - 1)
-        // TODO: check if this is a good patch (2/2) a)
-        var consumedAtoms:List[Atom] = List()
-
-        finalState.executions.foreach{pe =>
-//        finalState.executions.forall{pe => {
-          //scala.util.Random.shuffle(finalState.executions).forall{pe =>
-            if(guard.eval(getSolution,pe.subs) && pe.atoms.intersect(consumedAtoms).isEmpty){
-  //println("Executed: "+ this)
-              ready = false
-              applyReaction(pe)
-              /*
-              applyReaction(pe).foreach(a => {
-                consumedAtoms = a :: consumedAtoms
-              })
-              */
-              pe.atoms.foreach(a => {
-                consumedAtoms = a :: consumedAtoms
-              })
-              executed = true
-            }
-//            !executed }
-          // TODO: check if this is a good patch (2/2) b)
-          //!executed
+      val finalState = states(size - 1)
+      if(finalState.hasExecutions){
+        finalState.removeExecution(pe => guard.eval(getSolution,pe.subs)) match{
+          case Some(pe:PartialExecution) => applyReaction(pe); executed = true
+          case _ => //Skip
         }
       }
       executed
     }
 
-    def applyReaction(finalExecution:PartialExecution) {
+    def applyReaction(finalExecution:PartialExecution){
       val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
       val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
-//println("\tNew atoms: " + newAtoms.mkString(","))
-      val removeAtoms:Array[Atom] = finalExecution.atoms
+      val removeAtoms = finalExecution.atoms
 
       removeAtoms.foreach{a => removeAtom(a)}
       newAtoms.foreach(a => introduceAtom(a))
 
-      //executeRules()
+      true
     }
 
     def notifyCham(atom: Atom){}

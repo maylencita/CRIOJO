@@ -15,6 +15,7 @@ import fr.emn.criojo.lang.ChamGuard
 import fr.emn.criojo.lang.{CrjAtom, Molecule}
 import collection.mutable.{Buffer}
 import fr.emn.criojo.core._
+import fr.emn.criojo.core.statemachine.PartialExecution
 
 
 /**

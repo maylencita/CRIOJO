@@ -16,6 +16,17 @@ import fr.emn.criojo.core.{Term, Atom, Variable}
  */
 class StatesTest {
 
+  // Some useful objects
+  //-------------------------------------------------------
+  trait PrintableCham extends Cham{
+    val Print = NativeRelation("Print") {
+      case ((Atom(_,terms), _)) => print(terms.mkString(","))
+      case _ =>
+    }
+  }
+
+  implicit def num2fun(n:Int):Term = new ValueTerm[Int](n) //new IntTerm(n)
+
   @Test(timeout = 1000)
   def simpleTest1() {
     val sm = new Cham {
@@ -25,6 +36,7 @@ class StatesTest {
       val D = Rel("D")
       val K = Rel("K")
       val x, y, z = Var
+
 
       rules(
         (A(x, y) & B(y, z)) --> Abs(D(y)) ?: (D(y) & A(x, y) & B(y, z))
@@ -41,6 +53,49 @@ class StatesTest {
 
     println("[simpleTest1] Solution: " + sm.getSolution)
     assert(sm.getSolution.size == 4)
+  }
+
+  @Test (timeout=1000)
+  def oneHeadTest{
+    val cham = new Cham with PrintableCham{
+      val R = Rel("R")
+      val x,y = Var
+
+      rules(
+        R(x,y) --> Print(x,y)
+      )
+    }
+    import cham.R
+    cham.introduceMolecule(R(1,2))
+    cham.executeRules()
+  }
+
+  @Test (timeout=1000)
+  def repeatedHeadTest{
+    val sm = new Cham{
+      val H = Rel("H")
+      val H3 = Rel("H3")
+      val O = Rel("O")
+      val x,y,z = Var
+
+      val Print = NativeRelation("Print2") {
+        case ((Atom(_, x :: y :: z :: _), _)) => print("H3(" + x + "," + y + "," + z + ")")
+        case _ =>
+      }
+
+      rules(
+        (H(x) & H(y) & H(z) & O()) --> H3(x,y,z),
+        H3(x,y,z) --> Print(x,y,z)
+      )
+    }
+
+    import sm.H
+    sm.introduceMolecule(H(1))
+    sm.introduceMolecule(H(2))
+    sm.introduceMolecule(H(3))
+    sm.executeRules()
+//    println(sm.printRules)
+
   }
 
   //def RelVariable(rel: this.type#ApplicableRel): Term
