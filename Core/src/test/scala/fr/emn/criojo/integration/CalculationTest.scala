@@ -40,7 +40,7 @@ class CalculationTest {
       )
     }
     import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fib(10))
+    fCham.introduceMolecule(fib(5))
     fCham.executeRules()
     // println(fCham.printRules)
   }
@@ -70,7 +70,7 @@ class CalculationTest {
       )
     }
     import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fib(10))
+    fCham.introduceMolecule(fib(5))
     fCham.executeRules()
     // println(fCham.printRules)
   }

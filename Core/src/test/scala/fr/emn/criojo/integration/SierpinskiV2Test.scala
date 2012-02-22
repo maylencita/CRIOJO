@@ -163,8 +163,8 @@ class SierpinskiV2Test {
     cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 3))
     cm.executeRules()
 
-    println(cm.getSolution.size)
-    println(cm.getSolution)
+    //println(cm.getSolution.size)
+    //println(cm.getSolution)
 
     //cmDraw.introduceMolecule(cmDraw.Sierpinski(300, 300, 100, 3))
     //val tr = cmDraw.getSolution
@@ -179,8 +179,8 @@ class SierpinskiV2Test {
 
     cmDraw.executeRules()
 
-    println(cmDraw.getSolution.size)
-    println(cmDraw.getSolution)
+    //println(cmDraw.getSolution.size)
+    //println(cmDraw.getSolution)
 
     fw.write("</svg>\n")
     fw.close()

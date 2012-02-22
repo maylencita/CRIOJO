@@ -61,7 +61,7 @@ class ChamTest {
     machine.introduceMolecule(machine.OneBonbon(2))
     machine.executeRules()
     assert(machine.getSolution.size==1)
-    println(machine.getSolution)
+    //println(machine.getSolution)
   }
 
   @Test
@@ -88,8 +88,10 @@ class ChamTest {
     machine.introduceMolecule(machine.H("4"))
     machine.introduceMolecule(machine.O("1"))
     machine.executeRules()
-    println(machine.getSolution.size)
-    println(machine.getSolution)
+
+    assert(machine.getSolution.size==1)
+    //println(machine.getSolution.size)
+    //println(machine.getSolution)
   }
 
   @Test(timeout=1000)
