@@ -1,23 +1,22 @@
-package fr.emn.criojo.core
+package fr.emn.criojo.core.statemachine
 
 import fr.emn.criojo.core.Criojo._
-import collection.mutable.HashMap
+import fr.emn.criojo.core.Atom
+import collection.mutable.{Queue, HashMap, MultiMap, Set}
 
 /*
- * Created by IntelliJ IDEA.
- * User: mayleen
- * Date: 29/11/11
- * Time: 14:17
- */
+* Created by IntelliJ IDEA.
+* User: mayleen
+* Date: 29/11/11
+* Time: 14:17
+*/
 trait StateMachine {
 
-  protected var size = 0 //math.pow(2,pattern.length).intValue
-  protected var states:Array[State] = null //initStates
-  protected var transitions:HashMap[Atom,Array[Transition]] = null //initTransitions
+  protected var size = 0
+  protected var states:Array[State] = null
+  protected var transitions:HashMap[Atom,Array[Transition]] = null
 
   var pattern:Array[Atom] = null
-
-  def onFinalState()
 
   def init(pattern:Array[Atom]){
     this.pattern = pattern
@@ -26,6 +25,13 @@ trait StateMachine {
   }
 
   def addExecution(atom:Atom){
+    /*
+    A temporal map to hold new executions, to differentiate
+    the previous general-state from the current general-state
+     */
+    val newExecutions:MultiMap[State,PartialExecution] =
+      new HashMap[State,Set[PartialExecution]] with MultiMap[State,PartialExecution]
+
     if(pattern != null){
       for(a <- pattern){
         if (a.relName == atom.relName && a.arity == atom.arity && a.matches(atom)){
@@ -33,38 +39,33 @@ trait StateMachine {
           transitions(a).foreach{transition=>
             if(transition.ini.stateZero){
               val pExec = new PartialExecution(atom,Array[Atom](),subs)
-              transition.fin.addPExecution(pExec)
-//println("\tT."+a+ "{" +transition.ini +"-->"+ transition.fin + "} with " +atom+ " : ")
-//println("\t\tNew p.exec: " +pExec + " Subs: " + pExec.subs)
-
-              if(transition.fin == size-1 ){
-                onFinalState()
-              }
+              newExecutions.addBinding(transition.fin,pExec)
             }else
               transition.ini.executions.foreach{pe =>
                 if(a.applySubstitutions(pe.subs).matches(atom)){
                   val pExec = new PartialExecution(atom,pe.atoms,pe.subs.union(subs))
-                  transition.fin.addPExecution(pExec)
-//println("\tT."+a+ "{" +transition.ini +"-->"+ transition.fin + "} with " +atom+ " : ")
-//println("\t\tNew p.exec: " +pExec + " Subs: " + pExec.subs)
-                  if(transition.fin == size-1 ){
-                    onFinalState()
-                  }
+                  newExecutions.addBinding(transition.fin,pExec)
                 }
               }
           }
         }
       }
+      updateStates(newExecutions)
     }
   }
 
+  private def updateStates(newExecutions:MultiMap[State,PartialExecution]){
+    newExecutions.foreach{
+      case (state,exSet) => states(state.id).addExecutions(exSet)
+    }
+  }
 
   def removeExecution(atom:Atom){
     if(pattern != null){
       for(a <- pattern){
         if (a.relName == atom.relName && a.arity == atom.arity){
           transitions(a).foreach{t=>
-            t.fin.removePExecution(atom)
+            t.fin.removeExecutions(atom)
           }
         }
       }
@@ -112,25 +113,6 @@ trait StateMachine {
 
 class Transition(val ini:State,val fin:State){
   override def toString=ini +"-->"+ fin
-}
-
-class State(val id:Int){
-  var executions:List[PartialExecution] = List()
-
-  def addPExecution(pe:PartialExecution){
-    executions :+= pe
-  }
-  def removePExecution(atom:Atom){
-    executions = executions.filterNot(ex => ex.atoms.contains(atom))
-  }
-  def stateZero = (id == 0)
-
-  override def equals(that:Any) = that match{
-    case num:Int => num == id
-    case s:State => s.id == this.id
-    case _ => false
-  }
-  override def toString = "("+id.toBinaryString+")"
 }
 
 class PartialExecution(newAtom:Atom, prevAtoms:Array[Atom], val subs:List[Substitution]){
