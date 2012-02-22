@@ -27,10 +27,12 @@ trait StatefulEngine extends Engine{
   }
 
   def introduceAtom(atom: Atom){
+    solution.addAtom(atom)
     notifyRelationObservers(atom)
   }
 
   def removeAtom(atom: Atom){
+    solution.remove(atom)
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
