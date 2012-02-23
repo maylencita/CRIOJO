@@ -16,6 +16,9 @@ class State(val id:Int){
 
   def executions = qExecutions
 
+  def hasExecution(p:(PartialExecution)=>Boolean):Boolean = {
+    qExecutions.exists(p)
+  }
   def addExecutions(exLst:Iterable[PartialExecution]){
     for(ex <- exLst){
       qExecutions.enqueue(ex)
