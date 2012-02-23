@@ -185,5 +185,4 @@ class SierpinskiTest {
 //    fw.write("</svg>\n")
 //    fw.close()
 //  }
-
-}
+//}

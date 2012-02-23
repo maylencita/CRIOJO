@@ -36,9 +36,9 @@ class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
   def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
     val newAtoms = atoms.map(_.applySubstitutions(subs))
     val finalState = states(size - 1)
-    finalState.executions.exists{pe =>
-      newAtoms.forall(na=>pe.atoms.exists(a=>a.matches(na)))
-    }
+    finalState.hasExecution(ex =>
+      newAtoms.forall(nat=>ex.atoms.exists(exat=>exat.matches(nat)))
+    )
   }
   override def toString = atoms.mkString("Exst(", ",", ")")
 }
@@ -46,8 +46,7 @@ class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
 class AbsGuard(atoms:List[Atom]) extends ExistGuard(atoms){
   override def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
     val finalState = states(size - 1)
-    finalState.executions.isEmpty ||
-      ! super.eval(sol,subs)
+    !finalState.hasExecutions || !super.eval(sol,subs)
   }
 
   override def toString = atoms.mkString("Abs(", ",", ")")

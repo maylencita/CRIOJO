@@ -63,15 +63,13 @@ trait StatefulEngine extends Engine{
       executed
     }
 
-    def applyReaction(finalExecution:PartialExecution){
+    def applyReaction(finalExecution:PartialExecution) {
       val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
       val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
       val removeAtoms = finalExecution.atoms
 
       removeAtoms.foreach{a => removeAtom(a)}
       newAtoms.foreach(a => introduceAtom(a))
-
-      true
     }
 
     def notifyCham(atom: Atom){}
