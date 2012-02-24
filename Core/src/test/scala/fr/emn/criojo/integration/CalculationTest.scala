@@ -97,8 +97,35 @@ class CalculationTest {
       )
     }
     import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fib(10))
+    fCham.introduceMolecule(fib(5))
     fCham.executeRules()
     // println(fCham.printRules)
+  }
+
+  @Test /*(timeout=3000)*/
+  def gcdTest{
+    val fCham = new Cham with IntegerCham{
+      val gcd = Rel("gcd")
+      val Result = Rel("Resultat")
+
+      val MPrint = NativeRelation("2"){
+        case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
+        case _ =>
+      }
+
+      val n,n1,n2,r,r1,r2,v,x,y,xNew = Var
+
+
+      rules(
+        gcd(x,y) --> Less(x,y) ?: gcd(y,x),
+        gcd(x,y) --> Gr(x,y) ?: Nu(xNew)(IntSub(x,y,xNew) & gcd(xNew,y)),
+        gcd(x,y) --> Eq(x,y) ?: Result(y)
+      )
+    }
+    import fCham.{num2fun,gcd}
+    fCham.introduceMolecule(gcd(8,2))
+    fCham.executeRules()
+    // println(fCham.printRules)
+
   }
 }

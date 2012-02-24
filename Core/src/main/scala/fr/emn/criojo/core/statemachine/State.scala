@@ -1,7 +1,8 @@
 package fr.emn.criojo.core.statemachine
 
 import fr.emn.criojo.core.Atom
-import collection.mutable.Queue
+import scala.collection.mutable.Queue
+import scala._
 
 /*
 * Created by IntelliJ IDEA.
@@ -38,7 +39,7 @@ class State(val id:Int){
 
   //Removes all executions associated to atom `atom
   def removeExecutions(atom:Atom){
-    qExecutions.dequeueAll(ex => ex.atoms.contains(atom))
+    qExecutions.dequeueAll(ex => ex.containsAtom(atom))
   }
 
   def stateZero = (id == 0)
@@ -50,7 +51,6 @@ class State(val id:Int){
   }
   override def toString = "("+id.toBinaryString+")"
 }
-
 
 
 

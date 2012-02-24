@@ -42,8 +42,6 @@ trait StatefulEngine extends Engine{
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:List[Variable])
     extends Rule with StateMachine{
 
-    var ready:Boolean = false
-
     init(head.toArray)
 
     def receiveUpdate(atom: Atom){
@@ -68,7 +66,9 @@ trait StatefulEngine extends Engine{
     def applyReaction(finalExecution:PartialExecution) {
       val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
       val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
-      val removeAtoms = finalExecution.atoms
+      val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
+        finalExecution.atom(i)
+      }
 
       removeAtoms.foreach{a => removeAtom(a)}
       newAtoms.foreach(a => introduceAtom(a))

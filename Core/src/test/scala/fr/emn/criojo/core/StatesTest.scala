@@ -27,7 +27,7 @@ class StatesTest {
     }
     val Passed = NativeRelation("Passed"){(s,a) =>
       passed += 1
-  }
+    }
   }
 
   implicit def num2term(n:Int):Term = new ValueTerm[Int](n)
@@ -57,6 +57,29 @@ class StatesTest {
     sm.executeRules()
 
     assertEquals(1,sm.passed)
+  }
+
+  @Test (timeout=1000)
+  def persistenceTest{
+    val cham = new Cham with TestCham{
+      val A = Rel("A")
+      val B = Rel("B")
+      val C = Rel("C")
+      val D = Rel("D")
+
+      val x,y,z = Var
+      rules(
+        (!A(x,y) & B(y,z)) --> (Print(x,z,"\n") & Passed()),
+        (A(x,y) & D(y,z)) --> (Print(x,z,"\n") & Passed())
+      )
+    }
+
+    import cham.{A,B,D}
+
+    cham.introduceMolecule(A(1,2) & D(2,3) & B(2,4))
+    cham.executeRules()
+
+    assertEquals(2,cham.passed)
   }
 
   @Test (timeout=1000)

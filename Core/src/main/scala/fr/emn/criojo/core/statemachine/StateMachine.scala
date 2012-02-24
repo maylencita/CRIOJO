@@ -33,17 +33,18 @@ trait StateMachine {
       new HashMap[State,Set[PartialExecution]] with MultiMap[State,PartialExecution]
 
     if(pattern != null){
-      for(a <- pattern){
+      for(i <- 0 until pattern.length){
+        val a = pattern(i)
         if (a.relName == atom.relName && a.arity == atom.arity && a.matches(atom)){
           val subs = getSubstitutions(a.terms,atom.terms)
           transitions(a).foreach{transition=>
             if(transition.ini.stateZero){
-              val pExec = new PartialExecution(atom,Array[Atom](),subs)
+              val pExec = new PartialExecution(i,atom,subs)
               newExecutions.addBinding(transition.fin,pExec)
             }else
               transition.ini.executions.foreach{pe =>
                 if(a.applySubstitutions(pe.subs).matches(atom)){
-                  val pExec = new PartialExecution(atom,pe.atoms,pe.subs.union(subs))
+                  val pExec = pe.newExecution(i,atom,subs)
                   newExecutions.addBinding(transition.fin,pExec)
                 }
               }
@@ -115,7 +116,3 @@ class Transition(val ini:State,val fin:State){
   override def toString=ini +"-->"+ fin
 }
 
-class PartialExecution(newAtom:Atom, prevAtoms:Array[Atom], val subs:List[Substitution]){
-  def atoms:Array[Atom] = newAtom +: prevAtoms
-  override def toString = atoms.mkString("{",",","}")
-}

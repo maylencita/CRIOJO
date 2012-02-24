@@ -10,6 +10,11 @@ import fr.emn.criojo.core._
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * The Molecule singleton
+ * @define THIS Atom
+ */
+
 object Molecule{
   def apply(lst:List[Atom]):Molecule = lst match{
     case List() => Empty
@@ -22,6 +27,15 @@ object Molecule{
   }
 }
 
+/**
+ * Molecule objects implement a recursive representation for a conjunction of atoms,
+ * which are used in the construction of rules.
+ * Thus, a molecule is defined as:
+ *  m := atom | m & m
+ * And a rule is:
+ *  r := m --> guard ? m
+ * @define THIS A
+ */
 trait Molecule{
   def empty:Boolean
   def head:Atom
@@ -29,13 +43,15 @@ trait Molecule{
 
   var scope = List[Variable]()
 
-  def &: (a:Atom) = { //new &: (a, this)
+  def unary_! : CrjAtom
+
+  def &: (a:Atom) = {
     val molecule = new &: (a, this)
     molecule.scope = this.scope
     molecule
   }
 
-  def & (a:Molecule) = {//new &: (a, this)
+  def & (a:Molecule) = {
     val newList = this.toList ++ a.toList
     Molecule(this.scope ++ a.scope, newList)
   }
@@ -63,7 +79,7 @@ trait Molecule{
   }
 
   def --> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
-    case (g:Guard, conj:Molecule) => //getRuleBuilder(g,conj)
+    case (g:Guard, conj:Molecule) =>
       (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
     case _ => null
   }
@@ -75,6 +91,11 @@ trait Molecule{
 
 }
 
+/**
+ * The class CrjAtom that is an atom and molecule at the same time
+ * @define THIS CrjAtom
+ */
+
 class CrjAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) with Molecule {
   def empty:Boolean = false
 
@@ -82,9 +103,18 @@ class CrjAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) wi
 
   def tail:Molecule = Empty
 
-//  override def toString = relName + vars.mkString("(",",",")")
+  def unary_! : CrjAtom = {
+    val newAtom = new CrjAtom(relName,terms)
+    newAtom.persistent = true
+    newAtom
+  }
+
 }
 
+/**
+ * A helper class to define new free variables in a molecule
+ * @param varLst : The list of new variables
+ */
 case class Nu(varLst:Variable*){
   val scope = varLst.toList
 
@@ -94,23 +124,27 @@ case class Nu(varLst:Variable*){
   }
 }
 
-case object Empty extends Molecule{//Conjunction{
+/**
+ * An empty molecule
+ */
+case object Empty extends Molecule{
   def empty = true
   def head = throw new NoSuchElementException("head of empty conjunction")
   def tail = throw new NoSuchElementException("tail of empty conjunction")
   scope = List()
+  def unary_! : CrjAtom = throw new NoSuchElementException("Bang of empty molecule")
 
   override def toList = List()
   override def toString = ""
 }
 
-//final case class &: (hd:Atom, tl:Conjunction) extends Conjunction{
 final case class &: (hd:Atom, tl:Molecule) extends Molecule{
   def head = hd
   def tail = tl
   def empty = false
   scope = List()
 
+  def unary_! : CrjAtom = throw new NoSuchElementException("Bang of empty molecule")
   override def toString = head + (if (tail.empty) "" else  " & " + tail)
 
 }
