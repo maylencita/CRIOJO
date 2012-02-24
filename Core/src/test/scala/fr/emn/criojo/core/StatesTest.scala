@@ -6,7 +6,7 @@ import fr.emn.criojo.ext._
 import collection.mutable.Buffer
 import java.io.FileWriter
 import fr.emn.criojo.core.Variable._
-import fr.emn.criojo.core.{ValueTerm, Term, Atom, Variable}
+import fr.emn.criojo.core.{Term, Atom, Variable}
 
 /*
  * Created by IntelliJ IDEA.

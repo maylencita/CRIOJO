@@ -68,8 +68,9 @@ trait UnstableEngine extends StatefulEngine {
      * Check if every variable is available. If so, apply the rule
      * @param finalExecution the execution context
      */
-    override def applyReaction(finalExecution: PartialExecution) {
+    override def applyReaction(finalExecution: PartialExecution)  {
     // since the introduction of UnstableRule, some parts of the algorithm needs specific code
+
       try {
         val scopeSubs = scope.map {
           v => val i = Indexator.getIndex; (v, v + ("@" + i))
@@ -118,8 +119,6 @@ trait UnstableEngine extends StatefulEngine {
 
         // should comment next line if no call to executeRules when during atoms insertion
         //executeRules()
-
-        true
 
       } catch {
 

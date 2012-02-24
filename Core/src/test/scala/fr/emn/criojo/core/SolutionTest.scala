@@ -42,7 +42,7 @@ class SolutionTest {
     solution.addAtom(a)
     solution.addAtom(a2)
 
-    println("[testMultiRel] Solution= " + solution)
+    //println("[testMultiRel] Solution= " + solution)
     assertTrue("<R(x1),R(x1)>" == solution.toString)
   }
 
@@ -74,7 +74,7 @@ class SolutionTest {
     assertTrue(solution.toString == sol2.toString)
 
     sol2.addAtom(Atom(r, Variable("x2")))
-    println("[testClone] Solution, sol2:" + solution + ", " + sol2)
+    //println("[testClone] Solution, sol2:" + solution + ", " + sol2)
 
     assertFalse(solution.toString == sol2.toString)
   }
@@ -85,13 +85,13 @@ class SolutionTest {
     val sol1 = StandAloneSolution(List(a,b))
     val sol2 = StandAloneSolution(List(a,b))
 
-    println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
+    //println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
 
     assertTrue(sol1 == sol2)
 
     sol2.addAtom(Atom(r, Variable("x3")))
 
-    println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
+    //println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
 
     assertFalse(sol1 == sol2)
   }
@@ -106,7 +106,7 @@ class SolutionTest {
     sol2.addAtom(Atom(r, Variable("y1")))
     sol2.cleanup
 
-    println("[testUpdate] Solution, sol2: " + solution + ", " + sol2)
+    //println("[testUpdate] Solution, sol2: " + solution + ", " + sol2)
     assertFalse(solution == sol2)
 
     solution.update(sol2)

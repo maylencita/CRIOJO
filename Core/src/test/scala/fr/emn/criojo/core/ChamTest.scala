@@ -39,6 +39,61 @@ class ChamTest {
     assert(machine.getRelation("Z").name == "Undefined")
   }
 
+  @Test
+  def BonbonstestRelations {
+
+    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+      val x,y,z = Var
+      val OneBonbon = Rel("OneBonbon")
+      val TwoBonbons = Rel("TwoBonbons")
+
+      rules(
+        (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x,y)
+      )
+    }
+
+    import machine.num2fun
+
+    machine.introduceMolecule(machine.OneBonbon(1))
+    assert(machine.getSolution.size==1)
+    machine.executeRules()
+
+    machine.introduceMolecule(machine.OneBonbon(2))
+    machine.executeRules()
+    assert(machine.getSolution.size==1)
+    //println(machine.getSolution)
+  }
+
+  @Test
+  def H4ORelations {
+
+    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+      val a,b,x,y,z = Var
+      val H = Rel("H")
+      val O = Rel("O")
+      val H4O = Rel("H4O")
+
+      rules(
+        (H(x) &: H(y) &: H(a) &: H(b) &: O(z)) --> H4O(x,y,a,b,z)
+      )
+    }
+
+    import machine.num2fun
+
+    implicit def str2fun(n:String):Term = new ValueTerm[String](n) //new IntTerm(n)
+
+    machine.introduceMolecule(machine.H("1"))
+    machine.introduceMolecule(machine.H("2"))
+    machine.introduceMolecule(machine.H("3"))
+    machine.introduceMolecule(machine.H("4"))
+    machine.introduceMolecule(machine.O("1"))
+    machine.executeRules()
+
+    assert(machine.getSolution.size==1)
+    //println(machine.getSolution.size)
+    //println(machine.getSolution)
+  }
+
   @Test(timeout=1000)
   def testAtomInsertion{
 
