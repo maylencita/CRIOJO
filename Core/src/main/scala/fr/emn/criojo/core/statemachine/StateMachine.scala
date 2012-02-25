@@ -41,12 +41,8 @@ trait StateMachine {
               val pExec = new PartialExecution(atom,Array[Atom](),subs)
               newExecutions.addBinding(transition.fin,pExec)
             }else
-              transition.ini.executions.foreach{pe =>{
-                var truc = pe
-                var bidule = pe.atoms
-                // TODO: check if this is a good patch (1/2)
-                //if(a.applySubstitutions(pe.subs).matches(atom)){
-                if(!(pe.atoms.contains(atom)) && a.applySubstitutions(pe.subs).matches(atom)){
+              transition.ini.executions.foreach{pe =>
+                if(a.applySubstitutions(pe.subs).matches(atom)){
                   val pExec = new PartialExecution(atom,pe.atoms,pe.subs.union(subs))
                   newExecutions.addBinding(transition.fin,pExec)
                 }
@@ -54,7 +50,6 @@ trait StateMachine {
               }
           }
         }
-      }
       updateStates(newExecutions)
     }
   }
