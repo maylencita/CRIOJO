@@ -1,6 +1,7 @@
 package fr.emn.criojo.core
 
-import org.junit.Test
+import org.junit._
+import Assert._
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext._
 import collection.mutable.Buffer
@@ -18,18 +19,23 @@ class StatesTest {
 
   // Some useful objects
   //-------------------------------------------------------
-  trait PrintableCham extends Cham{
+  trait TestCham extends Cham{
+    var passed = 0
     val Print = NativeRelation("Print") {
       case ((Atom(_,terms), _)) => print(terms.mkString(","))
       case _ =>
     }
+    val Passed = NativeRelation("Passed"){(s,a) =>
+      passed += 1
+  }
   }
 
-  implicit def num2fun(n:Int):Term = new ValueTerm[Int](n) //new IntTerm(n)
+  implicit def num2term(n:Int):Term = new ValueTerm[Int](n)
+  implicit def str2term(str:String):Term = new ValueTerm[String](str)
 
   @Test(timeout = 1000)
-  def simpleTest1() {
-    val sm = new Cham {
+  def terminationTest() {
+    val sm = new Cham with TestCham{
       val A = Rel("A")
       val B = Rel("B")
       val C = Rel("C")
@@ -37,9 +43,8 @@ class StatesTest {
       val K = Rel("K")
       val x, y, z = Var
 
-
       rules(
-        (A(x, y) & B(y, z)) --> Abs(D(y)) ?: (D(y) & A(x, y) & B(y, z))
+        (A(x, y) & B(y, z)) --> Abs(D(y)) ?: (D(y) & A(x, y) & B(y, z) & Print(x,y,z) & Passed())
       )
     }
 
@@ -51,41 +56,36 @@ class StatesTest {
     sm.introduceMolecule(sm.B(c, a))
     sm.executeRules()
 
-    println("[simpleTest1] Solution: " + sm.getSolution)
-    assert(sm.getSolution.size == 4)
+    assertEquals(1,sm.passed)
   }
 
   @Test (timeout=1000)
   def oneHeadTest{
-    val cham = new Cham with PrintableCham{
+    val cham = new Cham with TestCham{
       val R = Rel("R")
       val x,y = Var
 
       rules(
-        R(x,y) --> Print(x,y)
+        R(x,y) --> (Print(x,y) & Passed())
       )
     }
     import cham.R
     cham.introduceMolecule(R(1,2))
     cham.executeRules()
+
+    assertEquals(1,cham.passed)
   }
 
   @Test (timeout=1000)
   def repeatedHeadTest{
-    val sm = new Cham{
+    val sm = new Cham with TestCham{
       val H = Rel("H")
       val H3 = Rel("H3")
-      val O = Rel("O")
       val x,y,z = Var
 
-      val Print = NativeRelation("Print2") {
-        case ((Atom(_, x :: y :: z :: _), _)) => print("H3(" + x + "," + y + "," + z + ")")
-        case _ =>
-      }
-
       rules(
-        (H(x) & H(y) & H(z) & O()) --> H3(x,y,z),
-        H3(x,y,z) --> Print(x,y,z)
+        (H(x) & H(y) & H(z)) --> H3(x,y,z),
+        H3(x,y,z) --> (Print(x,y,z) & Passed())
       )
     }
 
@@ -96,67 +96,69 @@ class StatesTest {
     sm.executeRules()
 //    println(sm.printRules)
 
+    assertEquals(1,sm.passed)
   }
 
   //def RelVariable(rel: this.type#ApplicableRel): Term
 
-  @Test //(timeout=1000)
-  def intTest() {
-    val cm = new Cham with IntegerCham {
-      val Result = Rel("Result")
-      val Zero = Rel("Zero")
-      val Print2 = NativeRelation("Print2") {
-        case ((Atom(_, x :: _), _)) => {
-          var t = x;
-          //print(" "+x)
-        }
-        case _ =>
-      }
+  //TODO These are more complex tests. Should go into integration package
+//  @Test //(timeout=1000)
+//  def intTest() {
+//    val cm = new Cham with IntegerCham {
+//      val Result = Rel("Result")
+//      val Zero = Rel("Zero")
+//      val Print2 = NativeRelation("Print2") {
+//        case ((Atom(_, x :: _), _)) => {
+//          var t = x;
+//          //print(" "+x)
+//        }
+//        case _ =>
+//      }
+//
+//      val s, x, y, z = Var
+//
+//      rules(
+//        Result(s, x, y, z) --> Print2(z)
+//      )
+//    }
+//    import cm.num2fun
+//    val s = Variable("s")
+//    cm.introduceMolecule(cm.Mod(s, 4, 3, RelVariable(cm.Result), RelVariable(cm.Zero)))
+//    cm.executeRules()
+//
+//    println("[intTest] Solution: " + cm.getSolution)
+//    assert(cm.getSolution.size == 3)
+//  }
 
-      val s, x, y, z = Var
-
-      rules(
-        Result(s, x, y, z) --> Print2(z)
-      )
-    }
-    import cm.num2fun
-    val s = Variable("s")
-    cm.introduceMolecule(cm.Mod(s, 4, 3, RelVariable(cm.Result), RelVariable(cm.Zero)))
-    cm.executeRules()
-
-    println("[intTest] Solution: " + cm.getSolution)
-    assert(cm.getSolution.size == 3)
-  }
-
-  @Test(timeout = 2000)
-  def gcd() {
-    val cm = new Cham with IntegerCham {
-      val Gcd = Rel("Gcd")
-      val mod = Rel("mod")
-      val zero = Rel("zero")
-      val n, m, l, x, y, z, s = Var
-      val sp = Fun("sp")
-
-      val Print = Rel("Print")
-      val Print2 = NativeRelation("Print2") {
-        case ((Atom(_, x :: _), _)) => /*print(" "+x)*/
-        case _ =>
-      }
-
-      rules(
-        Gcd(x, y) --> Nu(s)(Mod(s, x, y, mod, zero)),
-        mod(s, x, y, z) --> (Gcd(y, z) & Print2(y) & Print2(z) & Print2("")),
-        zero(s, x) --> Print2(x)
-      )
-
-      implicit def str2fun(str: String): Term = new ValueTerm[String](str)
-    }
-
-    import cm.num2fun
-    cm.introduceMolecule(cm.Gcd(2, 3))
-    cm.executeRules()
-
-    println("[gcd] Solution: " + cm.getSolution)
-    assert(cm.getSolution.size == 8)
-  }
+//  @Test(timeout = 2000)
+//  def gcd() {
+//    val cm = new Cham with IntegerCham {
+//      val Gcd = Rel("Gcd")
+//      val mod = Rel("mod")
+//      val zero = Rel("zero")
+//      val n, m, l, x, y, z, s = Var
+//      val sp = Fun("sp")
+//
+//      val Print = Rel("Print")
+//      val Print2 = NativeRelation("Print2") {
+//        case ((Atom(_, x :: _), _)) => /*print(" "+x)*/
+//        case _ =>
+//      }
+//
+//      rules(
+//        Gcd(x, y) --> Nu(s)(Mod(s, x, y, mod, zero)),
+//        mod(s, x, y, z) --> (Gcd(y, z) & Print2(y) & Print2(z) & Print2("")),
+//        zero(s, x) --> Print2(x)
+//      )
+//
+//      implicit def str2fun(str: String): Term = new ValueTerm[String](str)
+//    }
+//
+//    import cm.num2fun
+//    cm.introduceMolecule(cm.Gcd(2, 3))
+//    cm.executeRules()
+//
+//    println("[gcd] Solution: " + cm.getSolution)
+//    assert(cm.getSolution.size == 8)
+//  }
 }
