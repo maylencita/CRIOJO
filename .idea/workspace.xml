@@ -2,77 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="934e7264-2972-4c97-a4fd-501741dcbe0f" name="Default" comment="" />
-    <list default="true" id="32ff1f7e-485c-46e2-9e7a-aa395565673c" name="TO_COMMIT" comment="Core changes:&#10;- New syntax for guard declaration in CHAMs&#10;- Special guards: Abs, Null, NotNull, Eq, NotEq&#10;- Complete support for integers with Sum and Print predicates&#10;- NotEQ predicated in EqVM&#10;- New package distribution">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/CRIOJO_plan_2011.pdf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/Chronologie-demande-soutenance.doc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/Procedure-depot-these-BU.rtf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/NativeRelation.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/BoolCHAM.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/EqClass.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/LocalCHAM.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/StrTests.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BPMN20.cmof" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BPMN20.xsd.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BPMN20.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BPMNDI.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BPMNParser.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess_DF.wsdl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess_DF.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/Bpmn2Criojo.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/DC.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/DI.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/Semantic.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/sparser/CriojoParserCombinators.scala" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/LocalVM.scala" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Creole.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Criojo.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/EqVM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/EqCHAM.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntVM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntCHAM.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/RemoteRelation.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/RemoteRelation.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/StringVM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/StrCHAM.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/VirtualMachine.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/StandardCHAM.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/net/ConnectedVM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/net/ConnectedCHAM.scala" />
+    <list default="true" id="32ff1f7e-485c-46e2-9e7a-aa395565673c" name="TO_COMMIT" comment="Stable v12.02.29&#10;&#10;Ready to create a functioning working space in Idea 11.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CRIOJO_Server/CRIOJO_Server.iml" afterPath="$PROJECT_DIR$/CRIOJO_Server/CRIOJO_Server.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/AbstractMachine.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/AbstractMachine.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CHAM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CHAM.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Conjunction.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Conjunction.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Guard.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Guard.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/LocalRelation.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/LocalRelation.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Rule.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Rule.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/RuleFactory.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/RuleFactory.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Solution.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Solution.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/ExtendedCHAM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/ExtendedCHAM.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/NullCHAM.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/NullCHAM.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/StandardSolution.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/StandardSolution.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/TypedAtom.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/TypedAtom.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/net/CriojoClient.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/net/CriojoClient.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/util/json/Json2Criojo.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/util/json/Json2Criojo.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/ChamTests.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/ChamTests.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/SolutionTest.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/SolutionTest.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/EqTests.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/EqTests.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExtTests.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExtTests.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/IntTests.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/IntTests.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/VirtualMachineTests.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/VirtualMachineTests.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser/src/main/scala/fr/emn/criojo/parser/tree/CHRTree.scala" afterPath="$PROJECT_DIR$/Parser/src/main/scala/fr/emn/criojo/parser/tree/CHRTree.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/Core.iml" afterPath="$PROJECT_DIR$/Core/Core.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parser/Parser.iml" afterPath="$PROJECT_DIR$/Parser/Parser.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PiVot/PiVot.iml" afterPath="$PROJECT_DIR$/PiVot/PiVot.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/interpreter/Interpreter.scala" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/interpreter/Interpreter.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/loader/ScriptLoader.scala" afterPath="$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/loader/ScriptLoader.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PiVot/src/test/scala/fr/emn/criojo/ext/PivotTests.scala" afterPath="$PROJECT_DIR$/PiVot/src/test/scala/fr/emn/criojo/ext/PivotTests.scala" />
     </list>
-    <list id="2e64f69f-582f-462d-bc33-99a9b8505092" name="New Console Project" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Console/Console.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Console/criojo.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Console/pom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Console/src/main/scala/fr/emn/criojo/console/CriojoConsole.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-    </list>
+    <list id="2e64f69f-582f-462d-bc33-99a9b8505092" name="New Console Project" comment="" />
     <ignored path="CREOLE.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="$PROJECT_DIR$/pom.xml" changelist="32ff1f7e-485c-46e2-9e7a-aa395565673c" time="1300280987106" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +30,6 @@
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
-    <option name="REVERSE_PATCH" value="false" />
   </component>
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
@@ -137,64 +76,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BPMNParser.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BPMNParser.scala">
+      <file leaf-file-name="StatesTest.scala" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/StatesTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="84" selection-start="3524" selection-end="3524" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Bpmn2Criojo.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/Bpmn2Criojo.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="35" selection-start="1206" selection-end="1206" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Interpreter.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/interpreter/Interpreter.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="31" selection-start="342" selection-end="355" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wsdl.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Preferences/IntelliJIdea10CE/xstructure/default/wsdl.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="34" selection-start="942" selection-end="942" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bpmn_2_0_simple.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Preferences/IntelliJIdea10CE/xstructure/default/bpmn_2_0_simple.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="42" selection-start="922" selection-end="922" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BookProcess_DF.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess_DF.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="57" selection-start="1682" selection-end="1705" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BookProcess_DF.wsdl" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess_DF.wsdl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="61" selection-start="767" selection-end="767" vertical-scroll-proportion="0.3206751">
+            <state line="17" column="6" selection-start="356" selection-end="356" vertical-scroll-proportion="-3.8614318">
               <folding />
             </state>
           </provider>
@@ -345,6 +230,11 @@
     <option name="LAST_EDITED_MODULE_NAME" />
     <option name="LAST_EDITED_TAB_NAME" />
   </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
+    <option name="height" value="774" />
+  </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
@@ -402,7 +292,7 @@
       <sortByType ProjectPane="true" />
     </navigator>
     <panes>
-      <pane id="Favorites" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -421,78 +311,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="CRIOJO" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="CRIOJO" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PiVot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="CRIOJO" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="CRIOJO" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PiVot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="CRIOJO" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="CRIOJO" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PiVot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="criojo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="true" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
@@ -507,11 +335,11 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.43592814" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.43592814" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -536,29 +364,7 @@
       <recent name="fr.emn.creole.test" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Parsing">
-    <configuration default="false" name="MiscTexts.testPrint" type="JUnit" factoryName="JUnit" temporary="true">
-      <module name="Core" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="fr.emn.criojo.ext" />
-      <option name="MAIN_CLASS_NAME" value="fr.emn.criojo.ext.MiscTexts" />
-      <option name="METHOD_NAME" value="testPrint" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.fr.emn.criojo in Core">
     <configuration default="false" name="CriojoParserDemo" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="fr.emn.criojo.sparser.CriojoParserDemo" />
       <option name="VM_PARAMETERS" />
@@ -629,20 +435,42 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
+    <configuration default="false" name="fr.emn.criojo in Core" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="Core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="fr.emn.criojo" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
     <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings">
           <MavenGeneralSettings>
             <option name="checksumPolicy" value="FAIL" />
             <option name="failureBehavior" value="FAST" />
+            <option name="localRepository" value="" />
             <option name="mavenHome" value="/usr/share/java/maven-2.2.0" />
-            <option name="mavenSettingsFile" value="" />
             <option name="nonRecursive" value="false" />
-            <option name="overriddenLocalRepository" value="" />
             <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
             <option name="printErrorStackTraces" value="false" />
             <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
             <option name="usePluginRegistry" value="false" />
+            <option name="userSettingsFile" value="" />
             <option name="workOffline" value="false" />
           </MavenGeneralSettings>
         </option>
@@ -679,8 +507,9 @@
     </configuration>
     <configuration default="true" type="ScalaScriptConsoleRunConfiguration" factoryName="Scala Console">
       <module name="" />
-      <setting name="vmparams" value="" />
+      <setting name="vmparams4" value=" -Djline.terminal=NONE" />
       <setting name="consoleArgs" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -719,6 +548,25 @@
         <option name="SBT.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+        <option name="SBT.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -744,25 +592,6 @@
       <envs />
       <properties />
       <listeners />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="SBT.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -823,8 +652,10 @@
       <setting name="package" value="" />
       <setting name="vmparams" value="" />
       <setting name="params" value="" />
-      <setting name="version" value="false" />
       <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -1145,14 +976,14 @@
           <MavenGeneralSettings>
             <option name="checksumPolicy" value="FAIL" />
             <option name="failureBehavior" value="FAST" />
+            <option name="localRepository" value="" />
             <option name="mavenHome" value="/usr/share/java/maven-2.2.0" />
-            <option name="mavenSettingsFile" value="" />
             <option name="nonRecursive" value="false" />
-            <option name="overriddenLocalRepository" value="" />
             <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
             <option name="printErrorStackTraces" value="false" />
             <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
             <option name="usePluginRegistry" value="false" />
+            <option name="userSettingsFile" value="" />
             <option name="workOffline" value="false" />
           </MavenGeneralSettings>
         </option>
@@ -1191,14 +1022,14 @@
           <MavenGeneralSettings>
             <option name="checksumPolicy" value="FAIL" />
             <option name="failureBehavior" value="FAST" />
+            <option name="localRepository" value="" />
             <option name="mavenHome" value="/usr/share/java/maven-2.2.0" />
-            <option name="mavenSettingsFile" value="" />
             <option name="nonRecursive" value="false" />
-            <option name="overriddenLocalRepository" value="" />
             <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
             <option name="printErrorStackTraces" value="false" />
             <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
             <option name="usePluginRegistry" value="false" />
+            <option name="userSettingsFile" value="" />
             <option name="workOffline" value="false" />
           </MavenGeneralSettings>
         </option>
@@ -1234,29 +1065,29 @@
       <method />
     </configuration>
     <list size="23">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.MiscTexts.testPrint" />
-      <item index="1" class="java.lang.String" itemvalue="Application.CriojoParserDemo" />
-      <item index="2" class="java.lang.String" itemvalue="Application.BPMNParser" />
-      <item index="3" class="java.lang.String" itemvalue="Application.Parsing" />
-      <item index="4" class="java.lang.String" itemvalue="Application.TestinTransformation" />
-      <item index="5" class="java.lang.String" itemvalue="Application.ANTLR_Tool" />
-      <item index="6" class="java.lang.String" itemvalue="Application.Gen CREOLE" />
-      <item index="7" class="java.lang.String" itemvalue="Application.ParserTest" />
-      <item index="8" class="java.lang.String" itemvalue="Application.InterpreterTest" />
-      <item index="9" class="java.lang.String" itemvalue="Application.GuardTest" />
-      <item index="10" class="java.lang.String" itemvalue="Application.DuplicateEliminationTest" />
-      <item index="11" class="java.lang.String" itemvalue="Application.SecondOrderTest" />
-      <item index="12" class="java.lang.String" itemvalue="Application.Gen CREOLE-X" />
-      <item index="13" class="java.lang.String" itemvalue="Application.TranslateTest" />
-      <item index="14" class="java.lang.String" itemvalue="Application.PhotoTest" />
-      <item index="15" class="java.lang.String" itemvalue="Application.GrizzlyDeploy" />
-      <item index="16" class="java.lang.String" itemvalue="Application.SjsonTests" />
-      <item index="17" class="java.lang.String" itemvalue="Application.TestClient" />
-      <item index="18" class="java.lang.String" itemvalue="Application.CreoleClient" />
-      <item index="19" class="java.lang.String" itemvalue="JUnit.PivotTests.testInt2" />
-      <item index="20" class="java.lang.String" itemvalue="JUnit.ExtTests.testStr" />
-      <item index="21" class="java.lang.String" itemvalue="Maven.Compile" />
-      <item index="22" class="java.lang.String" itemvalue="Maven.Pack" />
+      <item index="0" class="java.lang.String" itemvalue="Application.CriojoParserDemo" />
+      <item index="1" class="java.lang.String" itemvalue="Application.BPMNParser" />
+      <item index="2" class="java.lang.String" itemvalue="Application.Parsing" />
+      <item index="3" class="java.lang.String" itemvalue="Application.TestinTransformation" />
+      <item index="4" class="java.lang.String" itemvalue="Application.ANTLR_Tool" />
+      <item index="5" class="java.lang.String" itemvalue="Application.Gen CREOLE" />
+      <item index="6" class="java.lang.String" itemvalue="Application.ParserTest" />
+      <item index="7" class="java.lang.String" itemvalue="Application.InterpreterTest" />
+      <item index="8" class="java.lang.String" itemvalue="Application.GuardTest" />
+      <item index="9" class="java.lang.String" itemvalue="Application.DuplicateEliminationTest" />
+      <item index="10" class="java.lang.String" itemvalue="Application.SecondOrderTest" />
+      <item index="11" class="java.lang.String" itemvalue="Application.Gen CREOLE-X" />
+      <item index="12" class="java.lang.String" itemvalue="Application.TranslateTest" />
+      <item index="13" class="java.lang.String" itemvalue="Application.PhotoTest" />
+      <item index="14" class="java.lang.String" itemvalue="Application.GrizzlyDeploy" />
+      <item index="15" class="java.lang.String" itemvalue="Application.SjsonTests" />
+      <item index="16" class="java.lang.String" itemvalue="Application.TestClient" />
+      <item index="17" class="java.lang.String" itemvalue="Application.CreoleClient" />
+      <item index="18" class="java.lang.String" itemvalue="JUnit.PivotTests.testInt2" />
+      <item index="19" class="java.lang.String" itemvalue="JUnit.ExtTests.testStr" />
+      <item index="20" class="java.lang.String" itemvalue="Maven.Compile" />
+      <item index="21" class="java.lang.String" itemvalue="Maven.Pack" />
+      <item index="22" class="java.lang.String" itemvalue="JUnit.fr.emn.criojo in Core" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1330,35 +1161,49 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1600" height="1174" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="774" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29791272" sideWeight="0.7936815" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2977099" sideWeight="0.7936815" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16408338" sideWeight="0.64611006" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35673624" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33776093" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922202" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33587787" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32777777" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18117344" sideWeight="0.20398483" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18955512" sideWeight="0.7267552" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27597404" sideWeight="0.2167939" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18912338" sideWeight="0.7267552" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39886272" sideWeight="0.66413665" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18117344" sideWeight="0.49051234" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20967741" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27597404" sideWeight="0.47480917" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5206107" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven-2 Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.7712963" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27609107" sideWeight="0.7936815" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21631879" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven-2 Build Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922202" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
     <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
     <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
@@ -1370,8 +1215,15 @@
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Server changes: package and services redistribution" />
+    <option name="LAST_COMMIT_MESSAGE" value="Stable v12.02.29&#10;&#10;Ready to create a functioning working space in Idea 11." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1404,6 +1256,7 @@
     <MESSAGE value="Stable project version for IntellijIDEA 10 CE and Maven" />
     <MESSAGE value="Core changes:&#10;- New syntax for guard declaration in CHAMs&#10;- Special guards: Abs, Null, NotNull, Eq, NotEq&#10;- Complete support for integers with Sum and Print predicates&#10;- NotEQ predicated in EqVM&#10;- New package distribution" />
     <MESSAGE value="Server changes: package and services redistribution" />
+    <MESSAGE value="Stable v12.02.29&#10;&#10;Ready to create a functioning working space in Idea 11." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1430,6 +1283,7 @@
       <treeView value="true" />
       <verbose value="true" />
       <viewClosedWhenNoErrors value="false" />
+      <expanded value="true" />
     </buildFile>
   </component>
   <component name="editorHistoryManager">
@@ -1451,11 +1305,6 @@
     <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="106" selection-start="1894" selection-end="1894" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CRIOJO_Server/src/test/scala/fr/emn/criojo/ServerTests.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="181" column="7" selection-start="4783" selection-end="4783" vertical-scroll-proportion="0.5594758" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Parser/src/main/scala/fr/emn/criojo/parser/tree/CHRTree.scala">
@@ -1510,7 +1359,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PiVot/src/main/scala/fr/emn/criojo/bpmn/BookProcess_DF.wsdl">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="61" selection-start="767" selection-end="767" vertical-scroll-proportion="0.3206751">
+        <state line="12" column="61" selection-start="767" selection-end="767" vertical-scroll-proportion="0.030254778">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/StatesTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="6" selection-start="356" selection-end="356" vertical-scroll-proportion="-3.8614318">
           <folding />
         </state>
       </provider>
@@ -1518,9 +1374,81 @@
   </component>
   <component name="masterDetails">
     <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
       <state key="Copyright.UI">
         <settings>
           <splitter-proportions />
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Scala</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>scala-compiler-2.8.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Scala|Core</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.1969697" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
         </settings>
       </state>
       <state key="ScopeChooserConfigurable.UI">
