@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import Criojo.Valuation
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -15,18 +17,12 @@ package fr.emn.criojo.core
 @serializable
 case class Variable (name: String) extends Term{
 
-//  def name:String = this.n
-
-//  def matches(that:Variable):Boolean = that match{
-//    case Undef => true
-//    case _ => this.equals(that)
-//  }
+  def applyValuation(valuation:Valuation):Term = {
+    //TODO Implement
+    this
+  }
 
   def matches(that:Term) = true
-//    that match{
-//    case Variable(n) if(n == name) => true
-//    case _ => false
-//  }
 
   def +(index:Any):IdTerm = {
      new IdTerm(this.name+index)
@@ -56,31 +52,8 @@ class RelVariable(name:String) extends Variable(name){
   @transient
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 
-//  def apply(vlst:Variable*):Atom = {
-//    val at = new Atom(this.name, vlst.toList)
-//    at.relation = this.relation
-//    at
-//  }
-
   override def toString = if (relation == null) this.name else relation.toString
 }
-
-//trait ValueVariable[+T]
-
-//@serializable
-//case class Value[+T](value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
-//  extends Function(if (value == null) "_" else value.toString) with ValueVariable[T]{
-//
-//  override def equals(that: Any) = that match{
-//    case v:Value[_] => this.value == v.value
-//    case _ => false
-//  }
-//
-//  override def toString = value match{
-//    case s:String => "\"" + s + "\""
-//    case _ => value.toString
-//  }
-//}
 
 object Undef extends Variable("_"){
   //Undef matches anything

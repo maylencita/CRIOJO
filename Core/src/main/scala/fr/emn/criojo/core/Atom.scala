@@ -1,6 +1,6 @@
 package fr.emn.criojo.core
 
-import Criojo.Substitution
+import Criojo.{Substitution,Valuation}
 
 /**
  * Created by IntelliJ IDEA.
@@ -57,6 +57,21 @@ case class Atom(relName:String, terms: List[Term]) {
    */
   def apply(n:Int):Term = terms(n)
 
+  //TODO replaces applySubstitutions
+  def applyValuation(valuation:Valuation):Atom = {
+    val nuRel:Relation = valuation.find(s => s._1.name == this.relName) match{
+      case Some(sub) => sub match{
+        case (_, rv:RelVariable) => rv.relation
+        case _ => this.relation
+      }
+      case _ => this.relation
+    }
+    val newTerms = terms.map(_.applyValuation(valuation))
+
+    val newAtom = new Atom(nuRel.name, newTerms)
+    newAtom.relation = nuRel
+    newAtom
+  }
 
   /** Applies the given substitutions to the atom.
    *

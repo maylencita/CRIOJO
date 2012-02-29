@@ -26,7 +26,7 @@ case class WebVariable(name:String, typ:String, value:String, @JSONTypeHint(clas
   private def this() = this(null,null,null,null)
 
   def this(variable:Term) =
-    this(variable.name,
+    this(variable.toString,
       variable match{
         case NullVal => "Null"
         case ValueTerm(i:Int) => "Int"

@@ -191,8 +191,4 @@ trait IntegerCham extends EqCHAM{
     }
   }
 
-  case class IntTerm(n:Int) extends Function(n.toString,List[Term]()){
-    override def apply(params: List[Term]) = new IntTerm(n)
-  }
-
 }
