@@ -1,7 +1,10 @@
 package fr.emn.criojo.ext.expressions
 
-import fr.emn.criojo.core.Criojo._
-import fr.emn.criojo.core.{Variable, ValueTerm, Term}
+import fr.emn.criojo.lang.{ComposableWithBinaryExpression}
+import fr.emn.criojo.lang.CompositionOperators
+
+import fr.emn.criojo.core.{Variable, Term, Criojo}
+import fr.emn.criojo.core.Criojo.Valuation
 
 /*
  * Created by IntelliJ IDEA.
@@ -9,24 +12,20 @@ import fr.emn.criojo.core.{Variable, ValueTerm, Term}
  * Date: 29/02/12
  * Time: 21:33
  */
-trait Expression extends Term {
+trait Expression extends Term with ComposableWithBinaryExpression with CompositionOperators {
 
-  def eval(): Expression
+  def eval():Expression
 
-  //TODO This is syntactic sugar: move to package lang
-
-  //  def + (that:Expression):Expression = new BinaryExpression("+", this, that)
-  //  def - (that:Expression):Expression = new BinaryExpression("-", this, that)
-  //  def * (that:Expression):Expression = new BinaryExpression("*", this, that)
-  //  def / (that:Expression):Expression = new BinaryExpression("/", this, that)
-  //  //def == (that:Expression):Expression = new BinaryExpression("==", this, that)
-  //  def > (that:Expression):Expression = new BinaryExpression(">", this, that)
-  //  def < (that:Expression):Expression = new BinaryExpression("<", this, that)
-
+  def eval(valuation:Valuation):Expression = {
+    this.applyValuation(valuation) match {
+      case e:Expression => e.eval()
+      case _ => UndefinedExpression
+    }
+  }
 }
 
 trait TerminalExpr extends Expression {
-  def eval(): Expression = this
+  override def eval():Expression = this
 }
 
 class VarExpression(name: String) extends Variable(name) with TerminalExpr

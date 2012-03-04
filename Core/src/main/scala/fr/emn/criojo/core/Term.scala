@@ -22,7 +22,7 @@ trait Term {
  * @param name Name of the function
  * @param params Parameters of the function
  */
-case class Function(name:String, params: List[Term]) extends Term{
+case class Function(name:String, params: List[Term]) extends Term {
 
   def applyValuation(valuation:Valuation):Term = {
     //TODO Implement
@@ -46,7 +46,7 @@ case class Function(name:String, params: List[Term]) extends Term{
  * Ids are needed for session management.
  * @param name String identifier
  */
-case class IdTerm(name:String) extends Term{
+case class IdTerm(name:String) extends Term {
   override def matches(that:Term):Boolean = that match{
     case IdTerm(n) => n == name
     case _ => false

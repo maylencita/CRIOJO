@@ -80,16 +80,16 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
     }
 
     override def notifyObservers(a: Atom){
-      val subs = a.vars.map{
+      val vals:Valuation = a.vars.map{
         v => getValue(v) match{
           case value:ValueTerm[_] => (v, value)
           case NoValue => (v,v)
         }
-      }.filterNot(_._1 == Undef)
+      }.filterNot(_._1 == Undef).toSet
 
-      log(this.getClass,"notifyObservers"," subs= " + subs)
+      log(this.getClass,"notifyObservers"," subs= " + vals)
 
-      val newAtom = a.applySubstitutions(subs)
+      val newAtom = a.applySubstitutions(vals)
 
       if (observers.isEmpty){
         exportAtom(newAtom)

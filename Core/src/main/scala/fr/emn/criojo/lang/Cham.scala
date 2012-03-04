@@ -74,9 +74,9 @@ StatefulEngine
       val rule = rdf(this)
       val newrule =
         if(prevTok == null)
-          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope)
+          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
         else
-          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope)
+          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
 
       processRuleBody(processRuleHead(newrule), newrule)
       addRule(newrule)
@@ -161,9 +161,6 @@ StatefulEngine
   }
 }
 
-trait ChamGuard extends CriojoGuard{
+trait ChamGuard extends CriojoGuard {
 
-  def && (guard:CriojoGuard):CriojoGuard = new AndGuard(this, guard)
-
-  def || (guard:CriojoGuard):CriojoGuard = new OrGuard(this, guard)
 }

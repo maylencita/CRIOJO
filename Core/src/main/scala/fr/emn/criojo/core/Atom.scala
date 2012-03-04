@@ -68,26 +68,8 @@ case class Atom(relName:String, terms: List[Term]) {
     }
     val newTerms = terms.map(_.applyValuation(valuation))
 
-    val newAtom = new Atom(nuRel.name, newTerms)
-    newAtom.relation = nuRel
-    newAtom
-  }
-
-  /** Applies the given substitutions to the atom.
-   *
-   * @param subs a List[ [[fr.emn.criojo.core.Term]] ]
-   * @return an [[fr.emn.criojo.core.Atom]]
-   */
-  def applySubstitutions(subs:List[Substitution]):Atom = {
-    val nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
-      case Some(sub) => sub match{
-        case (_, rv:RelVariable) => rv.relation
-        case _ => this.relation
-      }
-      case _ => this.relation
-    }
-
-    val nuRelName:String = subs.find(s => s._1.name == this.relName) match{
+    // todo : maybe not good <begin>
+    val nuRelName:String = valuation.find(s => s._1.name == this.relName) match{
       case Some(nv) => nv._2.name
       case _ => this.relName
     }
@@ -99,7 +81,50 @@ case class Atom(relName:String, terms: List[Term]) {
       case _ => Undef
     }
     def findSubstitution(variable:Variable) =
-      subs.find(s => s._1.name == variable.name) match{
+      valuation.find(s => s._1.name == variable.name) match{
+        case Some((v,t)) => t
+        case _ =>
+          variable match{
+            case rv:RelVariable if (rv.relation != null) => rv
+            case rv:RelVariable if (rv.relation == null) => Undef
+            case _ => Undef
+          }
+      }
+
+    // todo : maybe not good <end>
+
+    val newAtom = new Atom(nuRelName, newTerms)
+    newAtom.relation = nuRel
+    newAtom
+  }
+
+  /** Applies the given substitutions to the atom.
+   *
+   * @param vals a Valuation
+   * @return an [[fr.emn.criojo.core.Atom]]
+   */
+  def applySubstitutions(vals:Valuation):Atom = {
+    val nuRel:Relation = vals.find(s => s._1.name == this.relName) match{
+      case Some(sub) => sub match{
+        case (_, rv:RelVariable) => rv.relation
+        case _ => this.relation
+      }
+      case _ => this.relation
+    }
+
+    val nuRelName:String = vals.find(s => s._1.name == this.relName) match{
+      case Some(nv) => nv._2.name
+      case _ => this.relName
+    }
+
+    def applySubstitution(term:Term):Term = term match{
+      case v:Variable => findSubstitution(v)
+      case v:ValueTerm[_] => v
+      case f@Function(n, plst) => f(plst.map(p => applySubstitution(p)))
+      case _ => Undef
+    }
+    def findSubstitution(variable:Variable) =
+      vals.find(s => s._1.name == variable.name) match{
         case Some((v,t)) => t
         case _ =>
           variable match{

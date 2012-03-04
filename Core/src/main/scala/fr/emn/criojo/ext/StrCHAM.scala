@@ -45,7 +45,7 @@ trait StrCHAM extends EqCHAM{
   /***********************************************************************/
 
   def getStrValue(x:Variable):Option[String]= strEqClasses getValue x
-  
+
   //Native
   private def declare(a:Atom){
     a match{

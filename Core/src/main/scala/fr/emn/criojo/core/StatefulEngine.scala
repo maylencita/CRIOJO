@@ -18,7 +18,7 @@ import statemachine.{StateMachine, PartialExecution}
  */
 trait StatefulEngine extends Engine{
 
-  def createRule(h: Head, b: Body, g: Guard, scope: List[Variable]) = new StatefulRule(h,b,g,scope)
+  def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
   def initSolution = new HashSolution()
 
@@ -39,7 +39,7 @@ trait StatefulEngine extends Engine{
 
   def getSolution = this.solution //EmptySolution
 
-  class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:List[Variable])
+  class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
     extends Rule with StateMachine{
 
     init(head.toArray)
@@ -51,11 +51,11 @@ trait StatefulEngine extends Engine{
         removeExecution(atom)
     }
 
-    def execute(subs: List[Substitution]) = {
+    def execute(vals: Valuation) = {
       var executed = false
       val finalState = states(size - 1)
       if(finalState.hasExecutions){
-        finalState.removeExecution(pe => guard.eval(getSolution,pe.subs)) match{
+        finalState.removeExecution(pe => guard.eval(getSolution,pe.vals)) match{
           case Some(pe:PartialExecution) => applyReaction(pe); executed = true
           case _ => //Skip
         }
@@ -65,7 +65,10 @@ trait StatefulEngine extends Engine{
 
     def applyReaction(finalExecution:PartialExecution) {
       val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
-      val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
+
+      //val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
+      val newAtoms = this.body.map(_.applyValuation(finalExecution.vals.union(scopeSubs.toSet)))
+
       val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
         finalExecution.atom(i)
       }

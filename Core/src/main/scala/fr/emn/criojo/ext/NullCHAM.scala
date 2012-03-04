@@ -9,6 +9,7 @@ package fr.emn.criojo.ext
  */
 import fr.emn.criojo.core._
 import EqClass._
+import fr.emn.criojo.core.Criojo.Valuation
 
 import collection.mutable.HashSet
 import fr.emn.criojo.lang.{ChamGuard, Molecule}
@@ -54,8 +55,8 @@ trait NullCHAM extends EqCHAM{
   }
 
   case class NotNul(override val variable:Variable) extends Nul(variable){
-    override def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-      ! super.eval(sol, subs)
+    override def eval(sol: Solution, vals: Valuation) = {
+      ! super.eval(sol, vals)
     }
 //    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, f, t))
   }

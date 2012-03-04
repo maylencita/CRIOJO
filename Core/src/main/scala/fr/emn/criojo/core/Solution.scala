@@ -1,5 +1,6 @@
 package fr.emn.criojo.core
 
+import Criojo.Valuation
 import Criojo.Substitution
 import collection.mutable.MutableList
 
@@ -68,11 +69,11 @@ trait Solution{
    * Finds atoms matching a conjunction (set of atoms), after applying an initial set of substitutions
    */
 
-  protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
-    if (subs.isEmpty){
+  protected def findMatches(atom:Atom, vals:Valuation): List[Atom] = {
+    if (vals.isEmpty){
       filter(_.relName == atom.relName).toList
     }else{
-      val test = atom.applySubstitutions(subs)
+      val test = atom.applySubstitutions(vals)
 //      filter(a => a.isActive && a.matches(test)).toList
       filter(a => a.isActive && test.matches(a)).toList
     }

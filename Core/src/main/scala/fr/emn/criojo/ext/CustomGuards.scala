@@ -7,6 +7,7 @@ import fr.emn.criojo.core.Variable
 import fr.emn.criojo.core.ValueTerm
 import fr.emn.criojo.core.Solution
 import fr.emn.criojo.core.Criojo
+import fr.emn.criojo.core.Criojo.Valuation
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +18,8 @@ import fr.emn.criojo.core.Criojo
  */
 
 class EqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+
+  def eval(sol: Solution, vals: Valuation) = {
 
     var value1 : Term = null
     var value2 : Term = null
@@ -36,7 +38,7 @@ class EqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
       case _ =>
     }
 
-    subs.forall( s => {
+    vals.forall( s => {
       s match{
         case (x:Variable,v:Term) => {
 
@@ -59,7 +61,7 @@ class EqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
 }
 
 class NotEqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+  def eval(sol: Solution, vals: Valuation) = {
 
     var value1 : Term = null
     var value2 : Term = null
@@ -78,7 +80,7 @@ class NotEqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
       case _ =>
     }
 
-    subs.forall( s => {
+    vals.forall( s => {
       s match{
         case (x:Variable,v:Term) => {
 
@@ -101,12 +103,12 @@ class NotEqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
 }
 
 class AllAreTrueGuard(guards:List[Guard]) extends CriojoGuard(List()){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+  def eval(sol: Solution, vals: Valuation) = {
 
     val allGuards = guards
     allGuards.forall(g => {
 
-      g.eval(sol, subs)
+      g.eval(sol, vals)
     })
   }
   override def toString = atoms.mkString("ForEachTrue(", ",", ")")

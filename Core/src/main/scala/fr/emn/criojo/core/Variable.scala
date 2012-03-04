@@ -1,6 +1,7 @@
 package fr.emn.criojo.core
 
 import Criojo.Valuation
+import fr.emn.criojo.ext.expressions._
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,16 +16,27 @@ import Criojo.Valuation
 //}
 
 @serializable
-case class Variable (name: String) extends Term{
+case class Variable (name: String) extends Expression {
 
   def applyValuation(valuation:Valuation):Term = {
-    //TODO Implement
-    this
+    var value:Term = UndefinedExpression
+    valuation.forall(v => {
+      if(v._1.equals(this)) {
+        value = v._2
+        false
+      }
+      else {
+        true
+      }
+    })
+    value
   }
+
+  def eval():Expression = UndefinedExpression
 
   def matches(that:Term) = true
 
-  def +(index:Any):IdTerm = {
+  def +(index:String):IdTerm = {
      new IdTerm(this.name+index)
   }
 
