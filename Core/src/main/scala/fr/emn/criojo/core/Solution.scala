@@ -73,7 +73,8 @@ trait Solution{
     if (vals.isEmpty){
       filter(_.relName == atom.relName).toList
     }else{
-      val test = atom.applySubstitutions(vals)
+      val test = atom.applyValuation(vals)
+      //val test = atom.applySubstitutions(vals)
 //      filter(a => a.isActive && a.matches(test)).toList
       filter(a => a.isActive && test.matches(a)).toList
     }
