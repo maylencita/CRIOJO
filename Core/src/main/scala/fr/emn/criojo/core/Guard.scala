@@ -23,7 +23,10 @@ trait Guard {
 //    (this,conj)
 //  }
 
+  @deprecated ("use: eval(Valuation)")
   def eval(sol:Solution, subs:List[Substitution]):Boolean
+
+  def eval(valuation:Valuation):Boolean
 
 }
 
