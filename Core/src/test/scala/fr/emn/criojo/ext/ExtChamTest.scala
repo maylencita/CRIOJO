@@ -47,6 +47,8 @@ class ExtChamTest {
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List()).size==0)
+
+      DEBUG_MODE = true
     }
 
     import sm.{num2fun}
@@ -118,6 +120,8 @@ class ExtChamTest {
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List()).size==0)
+
+      DEBUG_MODE = true
     }
 
     import sm.{num2fun}

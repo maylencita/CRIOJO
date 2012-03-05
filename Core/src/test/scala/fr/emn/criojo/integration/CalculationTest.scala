@@ -249,7 +249,7 @@ class CalculationTest {
         Sierpinski(x, y, l, n)
           --> Gr(n, 0) ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
       )
-
+      //DEBUG_MODE = true
     }
 
     import cm.num2fun

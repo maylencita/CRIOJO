@@ -50,6 +50,8 @@ class ChamTest {
       rules(
         (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x,y)
       )
+
+      DEBUG_MODE = true
     }
 
     import machine.num2fun
@@ -76,6 +78,8 @@ class ChamTest {
       rules(
         (H(x) &: H(y) &: H(a) &: H(b) &: O(z)) --> H4O(x,y,a,b,z)
       )
+
+      DEBUG_MODE = true
     }
 
     import machine.num2fun
@@ -106,6 +110,8 @@ class ChamTest {
         (R(x,y) &: R(y,z)) --> R(x,z),
         S(x,y) --> R(x,y)
       )
+
+      DEBUG_MODE = true
     }
 
     val a1 = Atom("R", Variable("a"),Variable("b"))
@@ -139,6 +145,8 @@ class ChamTest {
       rules(
         R(s,x,y) --> Abs(X1(s)) ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
       )
+
+      DEBUG_MODE = true
     }
     info (this.getClass, "testGuard", "m2: " + m2.printRules)
 
@@ -172,6 +180,8 @@ class ChamTest {
       rules{
         S(x) ==> Nu(y,z)(R(x,y,z))
       }
+
+      DEBUG_MODE = true
     }
     info (this.getClass, "testNu", "vm: " + vm.printRules)
 
@@ -207,6 +217,8 @@ class ChamTest {
         S(x,y) ==> R(x,y,RespVar),
         R(x,y,Cont) ==> Cont(x,y)
       )
+
+      DEBUG_MODE = true
     }
 
     val atom1 = Atom("S", a, b)
@@ -231,6 +243,8 @@ class ChamTest {
         (A() & B() & C()) --> D(),
         (D() & C()) --> A()
       )
+
+      DEBUG_MODE = true
     }
 
     import sm.{num2fun}

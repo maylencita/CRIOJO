@@ -18,6 +18,9 @@ import statemachine.{StateMachine, PartialExecution}
  */
 trait StatefulEngine extends Engine{
 
+  var DEBUG_MODE:Boolean = false
+  var DEBUG_TRACE:List[String] = List()
+
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
   def initSolution = new HashSolution()
@@ -27,12 +30,16 @@ trait StatefulEngine extends Engine{
   }
 
   def introduceAtom(atom: Atom){
-    solution.addAtom(atom)
+
+    if(DEBUG_MODE)
+      solution.addAtom(atom)
+
     notifyRelationObservers(atom)
   }
 
   def removeAtom(atom: Atom){
-    solution.remove(atom)
+    if(DEBUG_MODE)
+      solution.remove(atom)
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
