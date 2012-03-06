@@ -9,6 +9,7 @@ package fr.emn.criojo.core
 import fr.emn.criojo.core.Criojo._
 import collection.immutable.HashSet
 import statemachine.{StateMachine, PartialExecution}
+import collection.mutable.ListBuffer
 
 /**
  * The StatefulEngine trait
@@ -19,7 +20,11 @@ import statemachine.{StateMachine, PartialExecution}
 trait StatefulEngine extends Engine{
 
   var DEBUG_MODE:Boolean = false
-  var DEBUG_TRACE:List[String] = List()
+  var DEBUG_TRACE:ListBuffer[String] = ListBuffer()
+
+  def printTrace() {
+    DEBUG_TRACE.foreach(t => println(t))
+  }
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
@@ -63,7 +68,23 @@ trait StatefulEngine extends Engine{
       val finalState = states(size - 1)
       if(finalState.hasExecutions){
         finalState.removeExecution(pe => guard.eval(getSolution,pe.vals)) match{
-          case Some(pe:PartialExecution) => applyReaction(pe); executed = true
+          case Some(pe:PartialExecution) => {
+            applyReaction(pe)
+            
+            if(DEBUG_MODE) {
+              var valuatedHead = this.head.map({a => a.applyValuation(pe.vals)})
+              var valuatedBody = this.body.map({a => a.applyValuation(pe.vals)})
+
+              var valuatedHeadString = valuatedHead.toString()
+              var valuatedBodyString = valuatedBody.toString()
+              valuatedHeadString = valuatedHeadString.substring(5,valuatedHeadString.length()-1)
+              valuatedBodyString = valuatedBodyString.substring(5,valuatedBodyString.length()-1)
+
+              DEBUG_TRACE += valuatedHeadString+" --> "+valuatedBodyString
+            }
+
+            executed = true
+          }
           case _ => //Skip
         }
       }
