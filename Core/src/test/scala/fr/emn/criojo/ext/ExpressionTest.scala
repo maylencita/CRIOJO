@@ -350,12 +350,14 @@ class ExpressionTest {
     import machine.num2fun
 
     machine.introduceMolecule(machine.A(1,2))
-    machine.introduceMolecule(machine.A(1,2))
-    //machine.introduceMolecule(machine.B(3))
+    machine.introduceMolecule(machine.A(1,4))
+    machine.introduceMolecule(machine.B(3))
+    machine.introduceMolecule(machine.B(4))
 
     machine.executeRules()
     //assert(machine.getSolution.size==1)
     println(machine.getSolution)
+    machine.printTrace()
     //println(machine.printRules)
   }
 }
