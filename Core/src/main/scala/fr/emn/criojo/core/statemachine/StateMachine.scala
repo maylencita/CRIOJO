@@ -37,20 +37,26 @@ trait StateMachine {
         val a = pattern(i)
         if (a.relName == atom.relName && a.arity == atom.arity && a.matches(atom)){
           val subs = getSubstitutions(a.terms,atom.terms)
-          transitions(a).foreach{transition=>
-            if(transition.ini.stateZero){
-              val pExec = new PartialExecution(i,atom,subs)
-              newExecutions.addBinding(transition.fin,pExec)
-            }else
-              transition.ini.executions.foreach{pe =>
-                if(a.applySubstitutions(pe.subs).matches(atom)){
-                  val pExec = pe.newExecution(i,atom,subs)
-                  newExecutions.addBinding(transition.fin,pExec)
+          transitions(a).foreach{
+            transition=> {
+              if(transition.ini.stateZero) {
+                val pExec = new PartialExecution(i,atom,subs.toSet)
+                newExecutions.addBinding(transition.fin,pExec)
+              }
+              else {
+                transition.ini.executions.foreach {
+                  pe => {
+                    if(a.applySubstitutions(pe.vals).matches(atom)){
+                      val pExec = pe.newExecution(i,atom,subs.toSet)
+                      newExecutions.addBinding(transition.fin,pExec)
+                    }
+                  }
                 }
               }
-              }
+            }
           }
         }
+      }
       updateStates(newExecutions)
     }
   }

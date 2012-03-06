@@ -36,7 +36,7 @@ object Molecule{
  *  r := m --> guard ? m
  * @define THIS A
  */
-trait Molecule{
+trait Molecule {
   def empty:Boolean
   def head:Atom
   def tail:Molecule
@@ -64,12 +64,12 @@ trait Molecule{
 
   @Deprecated
   def ==> (c2:Molecule): RuleFactory => Rule ={
-    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope)
+    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)
     f
   }
 
   def --> (c2:Molecule): RuleFactory => Rule ={
-    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope)
+    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)
     f
   }
   @Deprecated
@@ -80,12 +80,12 @@ trait Molecule{
 
   def --> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
     case (g:Guard, conj:Molecule) =>
-      (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
+      (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     case _ => null
   }
 
   def getRuleBuilder (g:Guard,conj:Molecule): RuleFactory => Rule = {
-    val f = (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
+    val f = (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     f
   }
 

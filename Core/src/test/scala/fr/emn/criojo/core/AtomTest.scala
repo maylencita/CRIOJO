@@ -76,7 +76,7 @@ class AtomTest {
 
     val listOfSubstitutions:List[(Variable, Term)] = List((x1,vx1),(y1,vy1))
 
-    val atom2:Atom = atom.applySubstitutions(listOfSubstitutions)
+    val atom2:Atom = atom.applySubstitutions(listOfSubstitutions.toSet)
 
     assert(atom2.apply(0)==vx1)
     assert(atom2.apply(1)==vy1)

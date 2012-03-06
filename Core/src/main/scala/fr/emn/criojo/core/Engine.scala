@@ -29,8 +29,10 @@ trait Engine extends RuleFactory{
       atom.relation.notifyObservers(atom)
     else
       findRelation(atom.relName) match{
-        case Some(relation) =>
+        case Some(relation) => {
+          var r = relation
           relation.notifyObservers(atom)
+        }
         case _ => log(WARNING, this.getClass, "notifyCham", "Undefined relation " + atom.relName)
       }
   }

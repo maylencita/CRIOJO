@@ -13,7 +13,12 @@ import statemachine.StateMachine
  * Date: 05/10/11
  * Time: 13:31
  */
-abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine with RelationObserver{
+abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine with RelationObserver {
+
+  def && (guard:CriojoGuard):CriojoGuard = new AndGuard(this, guard)
+
+  def || (guard:CriojoGuard):CriojoGuard = new OrGuard(this, guard)
+
   val starter = null
 
   init(atoms.toArray)
@@ -38,8 +43,8 @@ abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine
 }
 
 class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    val newAtoms = atoms.map(_.applySubstitutions(subs))
+  def eval(sol: Solution, vals: Valuation) = {
+    val newAtoms = atoms.map(_.applySubstitutions(vals))
     val finalState = states(size - 1)
     finalState.hasExecution(ex =>
       newAtoms.forall(nat=>ex.atoms.exists(exat=>exat.matches(nat)))
@@ -50,25 +55,25 @@ class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
 }
 
 class AbsGuard(atoms:List[Atom]) extends ExistGuard(atoms){
-  override def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
+  override def eval(sol: Solution, vals: Valuation) = {
     val finalState = states(size - 1)
-    !finalState.hasExecutions || !super.eval(sol,subs)
+    !finalState.hasExecutions || !super.eval(sol,vals)
   }
 
   override def toString = atoms.mkString("Abs(", ",", ")")
 }
 
 class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard.atoms ++ rguard.atoms){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    lguard.eval(sol,subs) && rguard.eval(sol,subs)
+  def eval(sol: Solution, vals: Valuation) = {
+    lguard.eval(sol,vals) && rguard.eval(sol,vals)
   }
 
   override def toString = "["+lguard +" ^ "+ rguard +"]"
 }
 
 class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard.atoms ++ rguard.atoms){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    lguard.eval(sol,subs) || rguard.eval(sol,subs)
+  def eval(sol: Solution, vals:Valuation) = {
+    lguard.eval(sol,vals) || rguard.eval(sol,vals)
   }
   override def toString = "["+lguard +" v "+ rguard +"]"
 }

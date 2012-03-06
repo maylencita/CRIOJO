@@ -1,6 +1,6 @@
 package fr.emn.criojo.core
 
-import Criojo.Substitution
+import Criojo.{Substitution,Valuation}
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +16,9 @@ import Criojo.Substitution
  */
 @serializable
 object Atom{
+  
+  var NextHashCode:Int = 0
+  
   def apply(rn:String, lst:Term*):Atom = new Atom(rn, lst.toList)
   def apply(rel:Relation, lst:Term*):Atom = {
     val a = new Atom(rel.name, lst.toList)
@@ -29,6 +32,17 @@ object Atom{
  * @define THIS Atom
  */
 case class Atom(relName:String, terms: List[Term]) {
+
+  // todo: the reason why 2 identical atoms could not be in the same solution was the way hashCode was implemented.
+  // now we increment a variable that will be used to differentiate two identical atoms.
+  val hashCodeId = {
+    Atom.NextHashCode = Atom.NextHashCode + 1
+
+    if (relation != null && relation.isMultiRel)
+      super.hashCode+Atom.NextHashCode
+    else
+      toString.hashCode+Atom.NextHashCode
+  }
 
   val vars = terms.map{case v:Variable => v; case _ => Undef}
 
@@ -57,22 +71,19 @@ case class Atom(relName:String, terms: List[Term]) {
    */
   def apply(n:Int):Term = terms(n)
 
-
-  /** Applies the given substitutions to the atom.
-   *
-   * @param subs a List[ [[fr.emn.criojo.core.Term]] ]
-   * @return an [[fr.emn.criojo.core.Atom]]
-   */
-  def applySubstitutions(subs:List[Substitution]):Atom = {
-    val nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
+  //TODO replaces applySubstitutions
+  def applyValuation(valuation:Valuation):Atom = {
+    val nuRel:Relation = valuation.find(s => s._1.name == this.relName) match{
       case Some(sub) => sub match{
         case (_, rv:RelVariable) => rv.relation
         case _ => this.relation
       }
       case _ => this.relation
     }
+    val newTerms = terms.map(_.applyValuation(valuation))
 
-    val nuRelName:String = subs.find(s => s._1.name == this.relName) match{
+    // todo : maybe not good <begin>
+    val nuRelName:String = valuation.find(s => s._1.name == this.relName) match{
       case Some(nv) => nv._2.name
       case _ => this.relName
     }
@@ -84,7 +95,50 @@ case class Atom(relName:String, terms: List[Term]) {
       case _ => Undef
     }
     def findSubstitution(variable:Variable) =
-      subs.find(s => s._1.name == variable.name) match{
+      valuation.find(s => s._1.name == variable.name) match{
+        case Some((v,t)) => t
+        case _ =>
+          variable match{
+            case rv:RelVariable if (rv.relation != null) => rv
+            case rv:RelVariable if (rv.relation == null) => Undef
+            case _ => Undef
+          }
+      }
+
+    // todo : maybe not good <end>
+
+    val newAtom = new Atom(nuRelName, newTerms)
+    newAtom.relation = nuRel
+    newAtom
+  }
+
+  /** Applies the given substitutions to the atom.
+   *
+   * @param vals a Valuation
+   * @return an [[fr.emn.criojo.core.Atom]]
+   */
+  def applySubstitutions(vals:Valuation):Atom = {
+    val nuRel:Relation = vals.find(s => s._1.name == this.relName) match{
+      case Some(sub) => sub match{
+        case (_, rv:RelVariable) => rv.relation
+        case _ => this.relation
+      }
+      case _ => this.relation
+    }
+
+    val nuRelName:String = vals.find(s => s._1.name == this.relName) match{
+      case Some(nv) => nv._2.name
+      case _ => this.relName
+    }
+
+    def applySubstitution(term:Term):Term = term match{
+      case v:Variable => findSubstitution(v)
+      case v:ValueTerm[_] => v
+      case f@Function(n, plst) => f(plst.map(p => applySubstitution(p)))
+      case _ => Undef
+    }
+    def findSubstitution(variable:Variable) =
+      vals.find(s => s._1.name == variable.name) match{
         case Some((v,t)) => t
         case _ =>
           variable match{
@@ -121,11 +175,8 @@ case class Atom(relName:String, terms: List[Term]) {
     this.terms.contains(v)
   }
 
-  override def hashCode =
-    if (relation != null && relation.isMultiRel)
-      super.hashCode
-    else
-      toString.hashCode
+  // constant hashcode
+  override def hashCode = hashCodeId
 
   override def equals(that: Any):Boolean = that match{
     case a:Atom =>

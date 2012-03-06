@@ -37,18 +37,18 @@ abstract class Rule extends RelationObserver{
 
   def toList:List[Rule] = List(this)
   
-  def execute():Boolean =  execute(List())
+  def execute():Boolean =  execute(Set())
 
-  def execute (subs:List[Substitution]):Boolean
+  def execute (vals:Valuation):Boolean
 
   def notifyCham(atom:Atom)
 
-  protected def applyReaction(solution:Solution, subs:List[Substitution]):Boolean = {
+  protected def applyReaction(solution:Solution, vals:Valuation):Boolean = {
     val newSolution = solution.clone
-    Logger.log("[Rule.applyReaction] Substitutions: " + subs)
+    Logger.log("[Rule.applyReaction] Substitutions: " + vals)
 
     var newAtoms = this.body.map{
-      a => val newA = a.applySubstitutions(subs)
+      a => val newA = a.applySubstitutions(vals)
       newA
     }
     newAtoms = if(newAtoms.contains(False)) List() else newAtoms

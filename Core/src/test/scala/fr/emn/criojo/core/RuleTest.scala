@@ -35,11 +35,11 @@ class RuleTest {
 
     val listOfSubstitutions:List[(Variable, Term)] = List((x1,vx1),(y1,vy1))
 
-    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, List())
+    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
 
     rule.addExecution(new Atom("A", listOfTerms))
 
-    assert(rule.execute(listOfSubstitutions))
+    assert(rule.execute(listOfSubstitutions.toSet))
   }
 
   @Test
@@ -62,9 +62,9 @@ class RuleTest {
 
     val listOfSubstitutions:List[(Variable, Term)] = List((x1,vx1),(y1,vy1))
 
-    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, List())
-    val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, List())
-    val rule3 = cm.createRule(List(new Atom("B", listOfTerms)), List(new Atom("C", listOfTerms)), EmptyGuard, List())
+    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
+    val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
+    val rule3 = cm.createRule(List(new Atom("B", listOfTerms)), List(new Atom("C", listOfTerms)), EmptyGuard, Set())
 
     assert(rule.equals(rule2))
     assert(!rule.equals(rule3))
@@ -91,9 +91,9 @@ class RuleTest {
 
     val listOfSubstitutions:List[(Variable, Term)] = List((x1,vx1),(y1,vy1))
 
-    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, List())
-    val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, List())
-    val rule3 = cm.createRule(List(new Atom("B", listOfTerms)), List(new Atom("C", listOfTerms)), EmptyGuard, List())
+    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
+    val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
+    val rule3 = cm.createRule(List(new Atom("B", listOfTerms)), List(new Atom("C", listOfTerms)), EmptyGuard, Set())
 
     var result = rule.getHeadSubstitutions(List(new Atom("A", listOfTerms),new Atom("B", listOfTerms)))
 

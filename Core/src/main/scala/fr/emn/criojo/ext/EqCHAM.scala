@@ -35,30 +35,31 @@ trait EqCHAM extends Cham{
 
   def Eq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-        //TODO complete, see NotEq below
-        existsEqual(applySubstitution(t1,subs),applySubstitution(t2,subs))
 
+      def eval(sol: Solution, vals: Valuation) = {
+        //TODO complete, see NotEq below
+        existsEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+
     }
     g
   }
   def NotEq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
 
-      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-        existsNotEqual(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      def eval(sol: Solution, vals: Valuation) = {
+        existsNotEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
 
     }
     g
   }
 
-        //TODO applySubstitution() should be in class Term
-        //TODO findSubstitution() should be in a class called Substitutions
-        //TODO transform type Criojo.Substitutions into a separate class
-  def findSubstitution(variable:Variable,subs: List[Criojo.Substitution]):Term =
-    subs.find(s => s._1.name == variable.name) match{
+  //TODO applySubstitution() should be in class Term
+  //TODO findSubstitution() should be in a class called Substitutions
+  //TODO transform type Criojo.Substitutions into a separate class
+  def findSubstitution(variable:Variable, vals: Valuation):Term =
+    vals.find(s => s._1.name == variable.name) match{
       case Some((v,t)) => t
       case _ =>
         variable match{
@@ -68,10 +69,10 @@ trait EqCHAM extends Cham{
         }
   }
 
-  def applySubstitution(term:Term,subs: List[Criojo.Substitution]):Term = term match{
-    case v:Variable => findSubstitution(v,subs)
+  def applySubstitution(term:Term,vals: Valuation):Term = term match{
+    case v:Variable => findSubstitution(v,vals)
     case v:ValueTerm[_] => v
-    case f@Function(n, plst) => f(plst.map(p => applySubstitution(p,subs)))
+    case f@Function(n, plst) => f(plst.map(p => p.applyValuation(vals)))
     case _ => term
   }
 
@@ -151,10 +152,11 @@ trait EqCHAM extends Cham{
 
   protected def existsEqual(t1:Term, t2:Term):Boolean = (t1,t2) match{
         case (ValueTerm(v1),ValueTerm(v2)) => v1 == v2
-        case (v1:Variable,v2:Variable) => (v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
+        case (v1:Variable,v2:Variable) => (v1.equals(v2) || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
         case (x:Variable,ValueTerm(v)) => equalsOp(genEqClasses.getValue(x),v)
         case (ValueTerm(v),x:Variable) => equalsOp(genEqClasses.getValue(x),v)
-        case _ => false //No information
+        case (IdTerm(v1),IdTerm(v2)) => v1==v2
+        case (v1,v2) => v1==v2
   }
 
   protected def existsNotEqual(t1:Term, t2:Term):Boolean = (t1,t2) match{
@@ -168,11 +170,12 @@ trait EqCHAM extends Cham{
           }
         case (x:Variable,ValueTerm(v)) => !equalsOp(genEqClasses.getValue(x),v)
         case (ValueTerm(v),x:Variable) => !equalsOp(genEqClasses.getValue(x),v)
-        case _ => false
+        case (IdTerm(v1),IdTerm(v2)) => v1!=v2
+        case (v1,v2) => v1!=v2
   }
 
   def askEquivalence(x:Variable, y:Variable, s:Solution):Boolean = {
-    x == y ||
+    x.equals(y) ||
     eqClasses.exists(ec => ec.contains(x) && ec.contains(y))
   }
 
@@ -182,7 +185,7 @@ trait EqCHAM extends Cham{
       case ra :: rest =>
         satoms match{
           case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms).filterNot(_._1 == Undef)))
+          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms).filterNot(_._1 == Undef).toSeq)) // todo: quick'n dirty fix ".toSeq"
         }
     }
     getSubsRec(List(hatom), solAtoms, List())

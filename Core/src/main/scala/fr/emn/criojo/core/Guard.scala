@@ -1,6 +1,7 @@
 package fr.emn.criojo.core
 
 import Criojo.Substitution
+import Criojo.Valuation
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,7 +34,7 @@ trait Guard {
 object EmptyGuard extends Guard{
   val starter = Top()
   override def empty = true
-  override def eval(sol:Solution, subs:List[Substitution]):Boolean = true
+  override def eval(sol:Solution, vals:Valuation):Boolean = true
 
   def initRelations(){}
 }
@@ -61,7 +62,7 @@ object False extends Atom ("false", List()){
   override def isTrue:Boolean = false
   override def isFalse:Boolean = true
 
-  override def applySubstitutions(subs:List[Substitution]) = this
+  override def applySubstitutions(vals:Valuation) = this
   override def hashCode = "false".hashCode
   override def clone = this
 }

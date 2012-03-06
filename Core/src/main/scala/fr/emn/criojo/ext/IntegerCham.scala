@@ -1,7 +1,9 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.lang._
+import fr.emn.criojo.ext.expressions.IntExpression
 import fr.emn.criojo.core._
+import fr.emn.criojo.core.Criojo.Valuation
 
 /*
  * Created by IntelliJ IDEA.
@@ -120,8 +122,9 @@ trait IntegerCham extends EqCHAM{
 
   def Gr(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-        greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      def eval(sol: Solution, vals: Valuation) = {
+        //greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
+        greaterThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
     }
     g
@@ -129,8 +132,8 @@ trait IntegerCham extends EqCHAM{
 
   def Less(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-        lessThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      def eval(sol: Solution, vals: Valuation) = {
+        lessThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
     }
     g
@@ -138,8 +141,8 @@ trait IntegerCham extends EqCHAM{
 
   def Leq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-        lessThanOrEqual(applySubstitution(t1,subs),applySubstitution(t2,subs))
+      def eval(sol: Solution, vals: Valuation) = {
+        lessThanOrEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
     }
     g
@@ -174,7 +177,7 @@ trait IntegerCham extends EqCHAM{
     case _ => None
   } //intEqClasses getValue x
 
-  implicit def num2fun(n:Int):Term = new ValueTerm[Int](n) //new IntTerm(n)
+  implicit def num2fun(n:Int):Term = new IntExpression(n) //new IntTerm(n)
 
   private def getValue(t:Term):Option[Int] = t match{
     case v:Value[Int] => Some(v.getValue())
@@ -189,10 +192,6 @@ trait IntegerCham extends EqCHAM{
       case Atom(_, (v:Variable)::(ValueTerm(n:Int))::_) => genEqClasses.add(n,v) //intEqClasses add (n.toInt,v)
       case _ => //Nothing, wrong format
     }
-  }
-
-  case class IntTerm(n:Int) extends Function(n.toString,List[Term]()){
-    override def apply(params: List[Term]) = new IntTerm(n)
   }
 
 }

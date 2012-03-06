@@ -14,7 +14,7 @@ import fr.emn.criojo.util.Logger._
 import org.junit._
 import Assert._
 import fr.emn.criojo.lang.{Cham, Nu}
-import fr.emn.criojo.ext.{StringAtom, LocalCHAM, IntegerCham, StrCHAM}
+import fr.emn.criojo.ext.{LocalCHAM, IntegerCham, StrCHAM}
 
 object ExtTests {
 
@@ -81,31 +81,6 @@ class MiscTexts {
 
   }
   */
-
-  @Test(timeout = 1000)
-  def testPrint {
-    logLevel = DEBUG
-    val machine = new LocalCHAM {
-      val x = Var;
-      val y = Variable("$y")
-      val X = Rel("X")
-
-      rules(
-        X(x) ==> Nu(y)(StringAtom("x=", y) &: Print(y, x))
-      )
-
-      //      def newRemoteRelation(remoteName:String,url:String):RemoteRelation = null
-    }
-    info(this.getClass, "testPrint", "rules: " + machine.printRules)
-
-    machine.introduceAtom(Atom("X", Variable("SomeVariable")))
-    machine.introduceAtom(Atom("X", ValueTerm("Mayleen")))
-    machine.introduceAtom(Atom("X", ValueTerm(24)))
-
-    //    info(this.getClass, "testPrint", "solution: " + machine.solution)
-    info(this.getClass, "testPrint", "intEqClasses: " + machine.intEqClasses)
-    info(this.getClass, "testPrint", "strEqClasses:" + machine.strEqClasses)
-  }
 
 
 }

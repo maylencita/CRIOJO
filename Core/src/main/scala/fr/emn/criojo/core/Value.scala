@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import Criojo.Valuation
+
 /*
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -10,13 +12,15 @@ package fr.emn.criojo.core
 
 trait Value[+T] {
 
-  def getValue():T = {return null.asInstanceOf[T]}
+  def getValue():T = {null.asInstanceOf[T]}
 }
 
-case class ValueTerm[+T](value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
-  extends Function(if (value == null) "_" else value.toString, List[Term]()) with Value[T]{
+case class ValueTerm[+T](value:T) extends Term with Value[T]{
 
-  override def apply(params: List[Term]) = new ValueTerm(value)
+  def name = value.toString
+
+  //Values are constants so: c[x/y] = c
+  def applyValuation(valuation:Valuation):Term = this
 
   override def matches(that:Term) = that match{
     case ValueTerm(n) if(n == value) => true
@@ -34,39 +38,7 @@ case class ValueTerm[+T](value:T) //extends Variable(if (value == null) "_" else
   }
 
   override def getValue():T = {
-
-    return value
-  }
-}
-
-// TODO: check if it is a good idea to have a MutableValueTerm
-case class MutableValueTerm[T](var value:T) //extends Variable(if (value == null) "_" else value.toString) with ValueVariable[T]{
-  extends Function(if (value == null) "_" else value.toString, List[Term]()) with Value[T]{
-
-  override def apply(params: List[Term]) = new ValueTerm(value)
-
-  override def matches(that:Term) = that match{
-    case ValueTerm(n) if(n == value) => true
-    case _ => false
-  }
-
-  override def equals(that: Any) = that match{
-    case v:ValueTerm[_] => this.value == v.value
-    case _ => false
-  }
-
-  override def toString = value match{
-    case s:String => "\"" + s + "\""
-    case _ => value.toString
-  }
-
-  override def getValue():T = {
-
-    return value
-  }
-
-  def setValue(newValue:T) {
-    value = newValue
+    value
   }
 }
 

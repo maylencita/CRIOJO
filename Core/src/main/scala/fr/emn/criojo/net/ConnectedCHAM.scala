@@ -7,6 +7,8 @@ package fr.emn.criojo.net
  * Time: 2:48:32 PM
  * To change this template use File | Settings | File Templates.
  */
+
+// TODO Needs update
 import fr.emn.criojo.core._
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.util.json._
@@ -19,7 +21,7 @@ import java.util.logging.Level
 
 import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.config.DefaultClientConfig
-import fr.emn.criojo.ext.{IntAtom, ExtendedCHAM}
+import fr.emn.criojo.ext.{ExtendedCHAM}
 
 trait PublicRelation extends Relation{
   def url:URI
@@ -32,23 +34,23 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
   val logger = Logger.getLogger(this.getClass.getName)
 
   def addAtom(a:Atom){
-    var nuAtoms = List[Atom]()
-    var nuVars = List[Term]()
-    a.terms foreach{
-      case ValueTerm(v) =>
-        val nuVar = Variable("y@"+newId)
-        nuVars :+= nuVar
-        v match{
-          case n:Int => nuAtoms :+= IntAtom(n, nuVar) //Atom(IntRel.name, Variable(n.toString), nuVar)
-          case s:String => nuAtoms :+= Atom(StrVal.name, Variable(s), nuVar)
-          case null => nuAtoms :+= Atom(NullRel.name, nuVar )
-        }
-      case v => nuVars :+= v
-    }
-    val a2=new Atom(a.relName, nuVars); a2.relation = a.relation
-
-    nuAtoms.foreach(introduceAtom(_))
-    introduceAtom(a2)
+//    var nuAtoms = List[Atom]()
+//    var nuVars = List[Term]()
+//    a.terms foreach{
+//      case ValueTerm(v) =>
+//        val nuVar = Variable("y@"+newId)
+//        nuVars :+= nuVar
+//        v match{
+//          case n:Int => nuAtoms :+= IntAtom(n, nuVar) //Atom(IntRel.name, Variable(n.toString), nuVar)
+//          case s:String => nuAtoms :+= Atom(StrVal.name, Variable(s), nuVar)
+//          case null => nuAtoms :+= Atom(NullRel.name, nuVar )
+//        }
+//      case v => nuVars :+= v
+//    }
+//    val a2=new Atom(a.relName, nuVars); a2.relation = a.relation
+//
+//    nuAtoms.foreach(introduceAtom(_))
+//    introduceAtom(a2)
   }
 
   override def newLocalRelation(name:String,public:Boolean):LocalRelation = {
@@ -78,16 +80,16 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
     }
 
     override def notifyObservers(a: Atom){
-      val subs = a.vars.map{
+      val vals:Valuation = a.vars.map{
         v => getValue(v) match{
           case value:ValueTerm[_] => (v, value)
           case NoValue => (v,v)
         }
-      }.filterNot(_._1 == Undef)
+      }.filterNot(_._1 == Undef).toSet
 
-      log(this.getClass,"notifyObservers"," subs= " + subs)
+      log(this.getClass,"notifyObservers"," subs= " + vals)
 
-      val newAtom = a.applySubstitutions(subs)
+      val newAtom = a.applySubstitutions(vals)
 
       if (observers.isEmpty){
         exportAtom(newAtom)
@@ -98,27 +100,27 @@ class ConnectedCHAM(val vmUrl:URI) extends ExtendedCHAM{
     }
 
     def exportAtom(atom:Atom){
-      val myservice = myclient.resource(url).path(atom.relName)
-      val content = JSONUtil.serialize(new AtomList("", List(atom)))
-
-      try{
-        logger.info("Sending: " + content)
-        val resp:String = myservice.
-                header("X-Client-URL", vmUrl.toString).
-                entity(content.getBytes, MediaType.APPLICATION_JSON_TYPE).
-                post(classOf[String])
-        logger.info("Response: " + resp)
-        if (resp.startsWith("{\"atoms\"")){
-          Json2Criojo(owner).parseAtomList(new String(resp)) match{
-            case lst:List[Atom] =>
-              lst.foreach(addAtom(_))
-            case _ => log(WARNING, this.getClass, "exportAtom", "Received empty list.")
-          }
-        }
-      }catch{
-        case e =>
-          logger.log(Level.SEVERE, "Error exportin atom: " + e)
-      }
+//      val myservice = myclient.resource(url).path(atom.relName)
+//      val content = JSONUtil.serialize(new AtomList("", List(atom)))
+//
+//      try{
+//        logger.info("Sending: " + content)
+//        val resp:String = myservice.
+//                header("X-Client-URL", vmUrl.toString).
+//                entity(content.getBytes, MediaType.APPLICATION_JSON_TYPE).
+//                post(classOf[String])
+//        logger.info("Response: " + resp)
+//        if (resp.startsWith("{\"atoms\"")){
+//          Json2Criojo(owner).parseAtomList(new String(resp)) match{
+//            case lst:List[Atom] =>
+//              lst.foreach(addAtom(_))
+//            case _ => log(WARNING, this.getClass, "exportAtom", "Received empty list.")
+//          }
+//        }
+//      }catch{
+//        case e =>
+//          logger.log(Level.SEVERE, "Error exportin atom: " + e)
+//      }
     }
 
     def copy(sol:Solution) = new RemoteRelationImpl(name, url)

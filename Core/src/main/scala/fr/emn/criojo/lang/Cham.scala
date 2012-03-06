@@ -1,6 +1,7 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
+import fr.emn.criojo.core.Criojo.Valuation
 import fr.emn.criojo.ext._
 import collection.mutable.Buffer
 
@@ -73,9 +74,9 @@ StatefulEngine
       val rule = rdf(this)
       val newrule =
         if(prevTok == null)
-          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope)
+          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
         else
-          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope)
+          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
 
       processRuleBody(processRuleHead(newrule), newrule)
       addRule(newrule)
@@ -136,6 +137,7 @@ StatefulEngine
 
   // A variable of type Relation
   case class VarR(override val name:String) extends RelVariable(name){
+
     def apply(tlst:Term*):CrjAtom = {
       val at = new CrjAtom(this.name, tlst.toList)
       at.relation = this.relation
@@ -159,9 +161,6 @@ StatefulEngine
   }
 }
 
-trait ChamGuard extends CriojoGuard{
+trait ChamGuard extends CriojoGuard {
 
-  def && (guard:CriojoGuard):CriojoGuard = new AndGuard(this, guard)
-
-  def || (guard:CriojoGuard):CriojoGuard = new OrGuard(this, guard)
 }

@@ -1,7 +1,9 @@
 package fr.emn.criojo.core
 
+import Criojo.Valuation
 import Criojo.Substitution
 import collection.mutable.MutableList
+import fr.emn.criojo.lang.Molecule
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,6 +22,7 @@ object EmptySolution extends SolutionImpl(null, List[Atom]())
 class InvalidStateError(msg:String) extends Exception(msg)
 
 trait Solution{
+
   def createBackUp()
   def reverse()
 
@@ -34,6 +37,22 @@ trait Solution{
   def isEmpty = elems.isEmpty
 
   def contains(a:Atom) = elems.contains(a)
+
+  def containsAtom(a:Atom, n:Int):Boolean = {
+    return (elems.count(atom => atom.matches(a)) == n)
+  }
+
+  def containsAtom(a:LocalRelation, n:Int):Boolean = {
+    return (elems.count(atom => a.name==atom.relName) == n)
+  }
+
+  def containsMolecule(m:Molecule):Boolean = {
+    containsMolecule(m, 1)
+  }
+
+  def containsMolecule(m:Molecule, n:Int):Boolean = {
+    containsAtom(m.head, n)
+  }
 
   def isTrue:Boolean = !elems.exists(_.isFalse) && elems.exists(_.isTrue)
 
@@ -68,11 +87,12 @@ trait Solution{
    * Finds atoms matching a conjunction (set of atoms), after applying an initial set of substitutions
    */
 
-  protected def findMatches(atom:Atom, subs:List[Substitution]): List[Atom] = {
-    if (subs.isEmpty){
+  protected def findMatches(atom:Atom, vals:Valuation): List[Atom] = {
+    if (vals.isEmpty){
       filter(_.relName == atom.relName).toList
     }else{
-      val test = atom.applySubstitutions(subs)
+      val test = atom.applyValuation(vals)
+      //val test = atom.applySubstitutions(vals)
 //      filter(a => a.isActive && a.matches(test)).toList
       filter(a => a.isActive && test.matches(a)).toList
     }
