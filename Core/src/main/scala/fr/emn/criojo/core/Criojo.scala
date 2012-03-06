@@ -14,8 +14,9 @@ package fr.emn.criojo.core
  */
 object Criojo{
   var id = 0
-  //TODO Valuation replaces List[Substitution]
   type Valuation = Set[Pair[Variable,Term]]
+
+  @deprecated("Use: Valuation")
   type Substitution = Pair[Variable, Term]//Variable]
 
   /** Increments and returns an Id
