@@ -120,8 +120,8 @@ trait IntegerCham extends EqCHAM{
     )
   }
 
-  def Gr(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
+  def Gr(t1:Term, t2:Term):ChamGuard = {
+    val g = new CriojoGuard(List()) with ChamGuard {
       def eval(sol: Solution, vals: Valuation) = {
         //greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
         greaterThan(t1.applyValuation(vals), t2.applyValuation(vals))
@@ -130,8 +130,8 @@ trait IntegerCham extends EqCHAM{
     g
   }
 
-  def Less(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
+  def Less(t1:Term, t2:Term):ChamGuard = {
+    val g = new CriojoGuard(List()) with ChamGuard {
       def eval(sol: Solution, vals: Valuation) = {
         lessThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
@@ -139,8 +139,8 @@ trait IntegerCham extends EqCHAM{
     g
   }
 
-  def Leq(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
+  def Leq(t1:Term, t2:Term):ChamGuard = {
+    val g = new CriojoGuard(List()) with ChamGuard {
       def eval(sol: Solution, vals: Valuation) = {
         lessThanOrEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
