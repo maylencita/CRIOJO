@@ -51,7 +51,8 @@ case class Atom(relName:String, terms: List[Term]) {
   @transient
   var relation:Relation = _
 
-  def isTrue:Boolean = false     //TODO ??
+  //TODO Remove this
+  def isTrue:Boolean = false
   def isFalse:Boolean = false
 
   def arity = terms.size
@@ -71,7 +72,6 @@ case class Atom(relName:String, terms: List[Term]) {
    */
   def apply(n:Int):Term = terms(n)
 
-  //TODO replaces applySubstitutions
   def applyValuation(valuation:Valuation):Atom = {
     val nuRel:Relation = valuation.find(s => s._1.name == this.relName) match{
       case Some(sub) => sub match{
@@ -82,32 +82,7 @@ case class Atom(relName:String, terms: List[Term]) {
     }
     val newTerms = terms.map(_.applyValuation(valuation))
 
-    // todo : maybe not good <begin>
-    val nuRelName:String = valuation.find(s => s._1.name == this.relName) match{
-      case Some(nv) => nv._2.name
-      case _ => this.relName
-    }
-
-    def applySubstitution(term:Term):Term = term match{
-      case v:Variable => findSubstitution(v)
-      case v:ValueTerm[_] => v
-      case f@Function(n, plst) => f(plst.map(p => applySubstitution(p)))
-      case _ => Undef
-    }
-    def findSubstitution(variable:Variable) =
-      valuation.find(s => s._1.name == variable.name) match{
-        case Some((v,t)) => t
-        case _ =>
-          variable match{
-            case rv:RelVariable if (rv.relation != null) => rv
-            case rv:RelVariable if (rv.relation == null) => Undef
-            case _ => Undef
-          }
-      }
-
-    // todo : maybe not good <end>
-
-    val newAtom = new Atom(nuRelName, newTerms)
+    val newAtom = new Atom(nuRel.name, newTerms)
     newAtom.relation = nuRel
     newAtom
   }
@@ -117,6 +92,7 @@ case class Atom(relName:String, terms: List[Term]) {
    * @param vals a Valuation
    * @return an [[fr.emn.criojo.core.Atom]]
    */
+  @deprecated("use: applyValuation")
   def applySubstitutions(vals:Valuation):Atom = {
     val nuRel:Relation = vals.find(s => s._1.name == this.relName) match{
       case Some(sub) => sub match{

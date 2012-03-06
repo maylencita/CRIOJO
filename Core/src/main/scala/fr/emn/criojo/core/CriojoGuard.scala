@@ -1,10 +1,6 @@
 package fr.emn.criojo.core
 
 import Criojo._
-import collection.mutable.ListBuffer
-import scala.collection.mutable.HashMap
-import fr.emn.criojo.lang.Molecule
-import fr.emn.criojo.util.Logger._
 import statemachine.StateMachine
 
 /*
@@ -15,6 +11,7 @@ import statemachine.StateMachine
  */
 abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine with RelationObserver {
 
+  //TODO Move to criojo.lang
   def && (guard:CriojoGuard):CriojoGuard = new AndGuard(this, guard)
 
   def || (guard:CriojoGuard):CriojoGuard = new OrGuard(this, guard)
