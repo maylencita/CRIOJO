@@ -70,23 +70,23 @@ class ExtChamTest {
     assertTrue(sm.getSolution.size==1)
 
     // value x value
-    assertTrue(sm.Eq(sm.x,sm.x).eval(solution, Set((sm.x, 3),(sm.y, 2))))
-    assertTrue(!sm.Eq(sm.x,sm.y).eval(solution, Set((sm.x, 3),(sm.y, 2))))
+    assertTrue(sm.Eq(sm.x,sm.x).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
+    assertTrue(!sm.Eq(sm.x,sm.y).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
 
-    assertTrue(!sm.NotEq(sm.x,sm.x).eval(solution, Set((sm.x, 3),(sm.y, 2))))
-    assertTrue(sm.NotEq(sm.x,sm.y).eval(solution, Set((sm.x, 3),(sm.y, 2))))
+    assertTrue(!sm.NotEq(sm.x,sm.x).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
+    assertTrue(sm.NotEq(sm.x,sm.y).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
 
     // variable x variable
-    assertTrue(sm.Eq(sm.v,sm.v).eval(solution, Set((sm.x, 3),(sm.y, 2))))
-    assertTrue(!sm.NotEq(sm.v,sm.v).eval(solution, Set((sm.x, 3),(sm.y, 2))))
+    assertTrue(sm.Eq(sm.v,sm.v).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
+    assertTrue(!sm.NotEq(sm.v,sm.v).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
 
     // variable x value
-    assertTrue(!sm.Eq(sm.x,sm.v).eval(solution, Set((sm.x, 3),(sm.y, 2))))
-    assertTrue(sm.NotEq(sm.x,sm.v).eval(solution, Set((sm.x, 3),(sm.y, 2))))
+    assertTrue(!sm.Eq(sm.x,sm.v).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
+    assertTrue(sm.NotEq(sm.x,sm.v).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
 
     // value x variable
-    assertTrue(!sm.Eq(sm.v,sm.y).eval(solution, Set((sm.x, 3),(sm.y, 2))))
-    assertTrue(sm.NotEq(sm.v,sm.y).eval(solution, Set((sm.x, 3),(sm.y, 2))))
+    assertTrue(!sm.Eq(sm.v,sm.y).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
+    assertTrue(sm.NotEq(sm.v,sm.y).eval(Valuation(Map((sm.x, 3),(sm.y, 2)))))
   }
 
   @Test

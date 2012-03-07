@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import Criojo.Valuation
-
 /*
  * Created by IntelliJ IDEA.
  * User: mayleen

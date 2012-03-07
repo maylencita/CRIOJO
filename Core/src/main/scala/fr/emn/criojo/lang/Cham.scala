@@ -1,7 +1,7 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.core.Criojo.Valuation
+import fr.emn.criojo.core.Valuation
 import fr.emn.criojo.ext._
 import collection.mutable.Buffer
 

@@ -1,8 +1,5 @@
 package fr.emn.criojo.core
 
-import Criojo.Valuation
-import Criojo.Substitution
-import collection.mutable.MutableList
 import fr.emn.criojo.lang.Molecule
 
 /**

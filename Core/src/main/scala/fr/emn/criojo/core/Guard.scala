@@ -1,7 +1,6 @@
 package fr.emn.criojo.core
 
 import Criojo.Substitution
-import Criojo.Valuation
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,12 +19,8 @@ trait Guard {
 
   def initRelations()
 
-//  def ? (conj:Conjunction):(Guard,Conjunction)={
-//    (this,conj)
-//  }
-
   @deprecated ("use: eval(Valuation)")
-  def eval(sol:Solution, subs:List[Substitution]):Boolean
+  def eval(sol:Solution, subs:List[Substitution]):Boolean = false
 
   def eval(valuation:Valuation):Boolean
 
@@ -34,12 +29,12 @@ trait Guard {
 object EmptyGuard extends Guard{
   val starter = Top()
   override def empty = true
-  override def eval(sol:Solution, vals:Valuation):Boolean = true
+  override def eval(vals:Valuation):Boolean = true
 
   def initRelations(){}
 }
 
-
+// TODO Are these really necessary?
 object Top{
   def relName = "true"
   def apply():Top = new Top(List())

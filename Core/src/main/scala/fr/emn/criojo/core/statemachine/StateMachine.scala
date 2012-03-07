@@ -36,18 +36,18 @@ trait StateMachine {
       for(i <- 0 until pattern.length){
         val a = pattern(i)
         if (a.relName == atom.relName && a.arity == atom.arity && a.matches(atom)){
-          val subs = getSubstitutions(a.terms,atom.terms)
+          val vals = getValuation(a.terms,atom.terms)
           transitions(a).foreach{
             transition=> {
               if(transition.ini.stateZero) {
-                val pExec = new PartialExecution(i,atom,subs.toSet)
+                val pExec = new PartialExecution(i,atom,vals)
                 newExecutions.addBinding(transition.fin,pExec)
               }
               else {
                 transition.ini.executions.foreach {
                   pe => {
-                    if(a.applySubstitutions(pe.vals).matches(atom)){
-                      val pExec = pe.newExecution(i,atom,subs.toSet)
+                    if(a.applyValuation(pe.vals).matches(atom)){
+                      val pExec = pe.newExecution(i,atom,vals)
                       newExecutions.addBinding(transition.fin,pExec)
                     }
                   }

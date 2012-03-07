@@ -33,15 +33,11 @@ abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine
       removeExecution(atom)
   }
 
-  //TODO Implement in subclasses
-  def eval(valuation:Valuation):Boolean = {
-    eval(EmptySolution,valuation.toList)
-  }
 }
 
 class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
-  def eval(sol: Solution, vals: Valuation) = {
-    val newAtoms = atoms.map(_.applySubstitutions(vals))
+  def eval(vals: Valuation) = {
+    val newAtoms = atoms.map(_.applyValuation(vals))
     val finalState = states(size - 1)
     finalState.hasExecution(ex =>
       newAtoms.forall(nat=>ex.atoms.exists(exat=>exat.matches(nat)))
@@ -52,25 +48,25 @@ class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
 }
 
 class AbsGuard(atoms:List[Atom]) extends ExistGuard(atoms){
-  override def eval(sol: Solution, vals: Valuation) = {
+  override def eval(vals: Valuation) = {
     val finalState = states(size - 1)
-    !finalState.hasExecutions || !super.eval(sol,vals)
+    !finalState.hasExecutions || !super.eval(vals)
   }
 
   override def toString = atoms.mkString("Abs(", ",", ")")
 }
 
 class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard.atoms ++ rguard.atoms){
-  def eval(sol: Solution, vals: Valuation) = {
-    lguard.eval(sol,vals) && rguard.eval(sol,vals)
+  def eval(vals: Valuation) = {
+    lguard.eval(vals) && rguard.eval(vals)
   }
 
   override def toString = "["+lguard +" ^ "+ rguard +"]"
 }
 
 class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard.atoms ++ rguard.atoms){
-  def eval(sol: Solution, vals:Valuation) = {
-    lguard.eval(sol,vals) || rguard.eval(sol,vals)
+  def eval(vals:Valuation) = {
+    lguard.eval(vals) || rguard.eval(vals)
   }
   override def toString = "["+lguard +" v "+ rguard +"]"
 }

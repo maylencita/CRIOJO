@@ -37,7 +37,7 @@ abstract class Rule extends RelationObserver{
 
   def toList:List[Rule] = List(this)
   
-  def execute():Boolean =  execute(Set())
+  def execute():Boolean =  execute(Valuation())
 
   def execute (vals:Valuation):Boolean
 

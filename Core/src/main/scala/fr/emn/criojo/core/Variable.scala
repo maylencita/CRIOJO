@@ -1,6 +1,5 @@
 package fr.emn.criojo.core
 
-import Criojo.Valuation
 import fr.emn.criojo.ext.expressions._
 
 /**

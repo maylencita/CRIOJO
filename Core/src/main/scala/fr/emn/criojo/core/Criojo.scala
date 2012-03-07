@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import collection.immutable.HashMap
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -14,7 +16,6 @@ package fr.emn.criojo.core
  */
 object Criojo{
   var id = 0
-  type Valuation = Set[Pair[Variable,Term]]
 
   @deprecated("Use: Valuation")
   type Substitution = Pair[Variable, Term]//Variable]
@@ -28,12 +29,29 @@ object Criojo{
     id
   }
 
+  def getValuation(l1:List[Term], l2:List[Term]):Valuation = {
+    def getValuation2(t1:Term,t2:Term,acum:Valuation):Valuation =
+      t1 match{
+        case v:Variable => Valuation(HashMap(v->t2))
+        case f1@Function(n,params) => t2 match{
+          case f2:Function if(f2.params.size == f1.params.size) =>
+            getValuation(f1.params,f2.params)
+          case _ => Valuation()
+        }
+        case _ => Valuation()
+      }
+
+    l1.zip(l2).foldLeft(Valuation())((v,p)=>v union getValuation2(p._1,p._2,v))
+  }
+
+
   /** Builds a list of Substitution (Pair[ [[fr.emn.criojo.core.Variable]],[[fr.emn.criojo.core.ValueTerm]] ]) with two List[ [[fr.emn.criojo.core.Term]] ]
    *
    * @param l1 a List[ [[fr.emn.criojo.core.Term]] ], usually variables ([[fr.emn.criojo.core.Variable]])
    * @param l2 a List[ [[fr.emn.criojo.core.Term]] ], usually values ([[fr.emn.criojo.core.ValueTerm]])
    * @return a list of Substitution (Pair[ [[fr.emn.criojo.core.Variable]],[[fr.emn.criojo.core.ValueTerm]] ])
    */
+  @deprecated("Use: getValuation")
   def getSubstitutions(l1:List[Term], l2:List[Term]):List[Substitution] = {
     l1.zip(l2).flatMap(p=>getSubstitution(p._1,p._2))
   }

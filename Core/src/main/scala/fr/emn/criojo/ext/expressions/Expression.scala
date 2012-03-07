@@ -3,8 +3,7 @@ package fr.emn.criojo.ext.expressions
 import fr.emn.criojo.lang.{ComposableWithBinaryExpression}
 import fr.emn.criojo.lang.CompositionOperators
 
-import fr.emn.criojo.core.{Variable, Term, Criojo}
-import fr.emn.criojo.core.Criojo.Valuation
+import fr.emn.criojo.core.{Variable, Term, Valuation}
 
 /*
  * Created by IntelliJ IDEA.

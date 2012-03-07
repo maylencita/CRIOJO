@@ -1,7 +1,6 @@
 package fr.emn.criojo.core.statemachine
 
-import fr.emn.criojo.core.Criojo.Substitution
-import fr.emn.criojo.core.Criojo.Valuation
+import fr.emn.criojo.core.Valuation
 import fr.emn.criojo.core.Atom
 import scala._
 import collection.immutable.HashMap

@@ -3,7 +3,6 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext.expressions.IntExpression
 import fr.emn.criojo.core._
-import fr.emn.criojo.core.Criojo.Valuation
 
 /*
  * Created by IntelliJ IDEA.
@@ -122,7 +121,7 @@ trait IntegerCham extends EqCHAM{
 
   def Gr(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, vals: Valuation) = {
+      def eval(vals: Valuation) = {
         //greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
         greaterThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
@@ -132,7 +131,7 @@ trait IntegerCham extends EqCHAM{
 
   def Less(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, vals: Valuation) = {
+      def eval(vals: Valuation) = {
         lessThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
     }
@@ -141,7 +140,7 @@ trait IntegerCham extends EqCHAM{
 
   def Leq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard(List()){
-      def eval(sol: Solution, vals: Valuation) = {
+      def eval(vals: Valuation) = {
         lessThanOrEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
     }

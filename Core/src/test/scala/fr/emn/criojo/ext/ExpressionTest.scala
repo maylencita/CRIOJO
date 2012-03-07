@@ -90,7 +90,7 @@ class ExpressionTest {
     var x2 = Variable("x2")
     var x3 = Variable("x3")
 
-    var listOfSubs:Set[Pair[Variable,Term]] = Set((x1 -> x), (x2 -> y))
+    var listOfSubs = Valuation(Map((x1 -> x), (x2 -> y)))
 
     val result = x1+x2
     val result2 = result.eval()

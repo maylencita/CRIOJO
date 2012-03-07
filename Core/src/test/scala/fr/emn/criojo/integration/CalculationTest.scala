@@ -6,7 +6,6 @@ import fr.emn.criojo.lang.{Nu, Cham}
 import fr.emn.criojo.core._
 import collection.mutable.Buffer
 import java.io.FileWriter
-import Criojo.Valuation
 import fr.emn.criojo.ext.expressions.{UndefinedExpression, BooleanExpression, Expression, IntExpression}
 
 
@@ -174,7 +173,7 @@ class CalculationTest {
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard(List()){
-        def eval(sol: Solution, vals: Valuation) = {
+        def eval(vals: Valuation) = {
 
           val valuation = x.eval(vals)
           valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
