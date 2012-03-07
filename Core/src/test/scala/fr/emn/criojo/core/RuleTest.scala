@@ -33,7 +33,7 @@ class RuleTest {
     val vx1 = new ValueTerm[Int](1)
     val vy1 = new ValueTerm[Int](2)
 
-    val listOfSubstitutions = Valuation(Map((x1,vx1),(y1,vy1)))
+    val listOfSubstitutions = Valuation(x1->vx1,y1->vy1)
 
     val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
 

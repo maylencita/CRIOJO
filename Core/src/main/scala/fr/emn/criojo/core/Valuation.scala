@@ -11,7 +11,7 @@ import collection.immutable.HashMap
 
 object Valuation{
   def apply():Valuation = new Valuation(HashMap())
-  def apply(map:Map[Variable,Term]) = new Valuation(map)
+  def apply(elems: (Variable,Term)*) = new Valuation(Map(elems:_*))
 }
 
 class Valuation(kv:Map[Variable,Term]){
@@ -36,7 +36,7 @@ class Valuation(kv:Map[Variable,Term]){
    */
   def union(that:Valuation):Valuation = {
     val domIntersec = this.domain & that.domain
-    if (!domIntersec.isEmpty || domIntersec.forall(x => this(x) == that(x))){
+    if (domIntersec.isEmpty || domIntersec.forall(x => this(x) == that(x))){
       new Valuation(this.keyValues ++ that.keyValues)
     }else
       Valuation()
@@ -56,10 +56,15 @@ class Valuation(kv:Map[Variable,Term]){
    */
   def domain = keyValues.keySet
 
+  def sameElements(that:Valuation):Boolean = this.keyValues.sameElements(that.keyValues)
+
+  def isEmpty = keyValues.isEmpty
+
+  override def toString = keyValues.toString
+
   /*
   Methods to avoid compilation errors while Valuation is adopted in all the code
    */
-  def isEmpty = keyValues.isEmpty
   def find(p:((Variable,Term)) => Boolean) = keyValues.find(p)
   def forall(p:((Variable,Term)) => Boolean) = keyValues.forall(p)
   def toSet = keyValues.toSet

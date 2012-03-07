@@ -78,7 +78,7 @@ case class Atom(relName:String, terms: List[Term]) {
     }
     val newTerms = terms.map(_.applyValuation(valuation))
 
-    val newAtom = new Atom(nuRel.name, newTerms)
+    val newAtom = new Atom((if(nuRel !=null) nuRel.name else this.relName), newTerms)
     newAtom.relation = nuRel
     newAtom
   }

@@ -32,7 +32,7 @@ object Criojo{
   def getValuation(l1:List[Term], l2:List[Term]):Valuation = {
     def getValuation2(t1:Term,t2:Term,acum:Valuation):Valuation =
       t1 match{
-        case v:Variable => Valuation(HashMap(v->t2))
+        case v:Variable => Valuation(v->t2)
         case f1@Function(n,params) => t2 match{
           case f2:Function if(f2.params.size == f1.params.size) =>
             getValuation(f1.params,f2.params)

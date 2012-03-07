@@ -33,5 +33,7 @@ object UndefinedExpression extends TerminalExpr {
   val name = "_"
   //TODO Should throw an exception??
   def applyValuation(valuation: Valuation): Term = this
-  def matches(that:Term):Boolean = false
+
+  //Undef matches everything
+  def matches(that:Term):Boolean = true
 }

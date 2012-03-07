@@ -94,7 +94,7 @@ trait StatefulEngine extends Engine{
     def applyReaction(finalExecution:PartialExecution) {
       val finalValuation = scope.foldLeft(finalExecution.vals){(vals,sv) =>
         val i = Indexator.getIndex
-        vals union Valuation(Map((sv,sv+("@"+i))))
+        vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
       }
 
       val newAtoms = this.body.map(_.applyValuation(finalValuation))
