@@ -28,7 +28,7 @@ class StatesTest {
   implicit def num2term(n:Int):Term = new ValueTerm[Int](n)
   implicit def str2term(str:String):Term = new ValueTerm[String](str)
 
-  @Test(timeout = 1000)
+  @Test//(timeout = 1000)
   def terminationTest() {
     val sm = new Cham with TestCham{
       val A = Rel("A")
@@ -43,12 +43,10 @@ class StatesTest {
       )
     }
 
-    val a = Variable("a");
-    val b = Variable("b");
-    val c = Variable("c")
-    sm.introduceMolecule(sm.A(a, b))
-    sm.introduceMolecule(sm.A(b, c))
-    sm.introduceMolecule(sm.B(c, a))
+    import sm.{A,B}
+    sm.introduceMolecule(A(1, 2))
+    sm.introduceMolecule(A(2, 3))
+    sm.introduceMolecule(B(3, 4))
     sm.executeRules()
     sm.printTrace()
     println(sm.printRules)
