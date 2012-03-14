@@ -162,5 +162,7 @@ StatefulEngine
 }
 
 trait ChamGuard extends CriojoGuard {
+  def && (guard:CriojoGuard):ChamGuard = new AndGuard(this, guard) with ChamGuard
 
+  def || (guard:CriojoGuard):ChamGuard = new OrGuard(this, guard) with ChamGuard
 }

@@ -15,9 +15,7 @@ package fr.emn.criojo.core
  */
 @serializable
 object Atom{
-  
-  var NextHashCode:Int = 0
-  
+
   def apply(rn:String, lst:Term*):Atom = new Atom(rn, lst.toList)
   def apply(rel:Relation, lst:Term*):Atom = {
     val a = new Atom(rel.name, lst.toList)
@@ -31,17 +29,6 @@ object Atom{
  * @define THIS Atom
  */
 case class Atom(relName:String, terms: List[Term]) {
-
-  // todo: the reason why 2 identical atoms could not be in the same solution was the way hashCode was implemented.
-  // now we increment a variable that will be used to differentiate two identical atoms.
-  val hashCodeId = {
-    Atom.NextHashCode = Atom.NextHashCode + 1
-
-    if (relation != null && relation.isMultiRel)
-      super.hashCode+Atom.NextHashCode
-    else
-      toString.hashCode+Atom.NextHashCode
-  }
 
   val vars = terms.map{case v:Variable => v; case _ => Undef}
 
@@ -59,7 +46,7 @@ case class Atom(relName:String, terms: List[Term]) {
   @deprecated ("Use: setActive(false)")
   def inactivate(){
     active = false
-  }  
+  }
 
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
@@ -148,7 +135,7 @@ case class Atom(relName:String, terms: List[Term]) {
   }
 
   // constant hashcode
-  override def hashCode = hashCodeId
+  override def hashCode = super.hashCode()
 
   override def equals(that: Any):Boolean = that match{
     case a:Atom =>
