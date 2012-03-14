@@ -17,6 +17,7 @@ object Valuation{
 class Valuation(kv:Map[Variable,Term]){
 
   protected def keyValues = kv
+  var failed = false
 
   /**
    * Retrieves the value of the associated variable.
@@ -38,8 +39,12 @@ class Valuation(kv:Map[Variable,Term]){
     val domIntersec = this.domain & that.domain
     if (domIntersec.isEmpty || domIntersec.forall(x => this(x) == that(x))){
       new Valuation(this.keyValues ++ that.keyValues)
-    }else
-      Valuation()
+    }else {
+      var valuation = Valuation()
+      valuation.failed = true
+      valuation
+    }
+
   }
 
   /**

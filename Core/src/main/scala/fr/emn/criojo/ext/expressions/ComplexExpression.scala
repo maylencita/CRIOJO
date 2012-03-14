@@ -70,6 +70,17 @@ case class Min(lTerms:Term*) extends ComplexExpression {
     val valuatedList:Seq[Term] = lTerms.map(t => t.applyValuation(valuation))
     new Min(valuatedList:_*).eval()
   }
+
+  def getValuation(t:Term):Valuation = {
+    var valuation:Valuation = Valuation()
+
+    t match {
+      case m:Min => lTerms.zip(m.lTerms).foreach(pair => valuation = valuation union pair._1.getValuation(pair._2))
+      case _ =>
+    }
+
+    valuation
+  }
 }
 
 case class Max(lTerms:Term*) extends ComplexExpression {
@@ -116,5 +127,16 @@ case class Max(lTerms:Term*) extends ComplexExpression {
 
     val valuatedList:Seq[Term] = lTerms.map(t => t.applyValuation(valuation))
     new Max(valuatedList:_*).eval()
+  }
+
+  def getValuation(t:Term):Valuation = {
+    var valuation:Valuation = Valuation()
+
+    t match {
+      case m:Max => lTerms.zip(m.lTerms).foreach(pair => valuation = valuation union pair._1.getValuation(pair._2))
+      case _ =>
+    }
+
+    valuation
   }
 }

@@ -18,7 +18,7 @@ import fr.emn.criojo.ext.expressions._
 case class Variable (name: String) extends Expression {
 
   def applyValuation(valuation:Valuation):Term = {
-    var value:Term = UndefinedExpression
+    var value:Term = this
     valuation.forall(v => {
       if(v._1.equals(this)) {
         value = v._2
@@ -45,9 +45,13 @@ case class Variable (name: String) extends Expression {
     case v:Variable => this.name == v.name
     case _ => false
   }
+
   override def toString = name
 
   def toInt:Int = toString.toInt
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = Valuation(this->t)
 }
 
 object RelVariable{

@@ -7,10 +7,24 @@ package fr.emn.criojo.core
  * Time: 15:11
  */
 
-case class StandAloneSolution(var elems:List[Atom]) extends Solution{
+case class StandAloneSolution(var elems:List[Atom]) extends Solution {
   def this()= this(List[Atom]())
   def remove(a:Atom) { elems.filterNot(_==a)}
   def clear() {   elems = List[Atom]()  }
+
+  def displaySolution() {
+    var firstPrint:Boolean = true
+    print("<")
+    elems.foreach( a => {
+      if(a.relName.charAt(0)!='$') {
+        if(!firstPrint)
+          print(",")
+        print(a)
+        firstPrint = false
+      }
+    })
+    println(">")
+  }
 
   def addAtom(atom:Atom){
     elems :+= atom

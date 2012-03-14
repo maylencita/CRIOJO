@@ -20,6 +20,8 @@ class InvalidStateError(msg:String) extends Exception(msg)
 
 trait Solution{
 
+  def displaySolution()
+
   def createBackUp()
   def reverse()
 
@@ -112,6 +114,20 @@ trait Solution{
 class SolutionImpl(owner:Engine, var elems:List[Atom]) extends Solution{
   def this()= this(null, List[Atom]())
 
+  def displaySolution() {
+    var firstPrint:Boolean = true
+    print("<")
+    elems.foreach( a => {
+      if(a.relName.charAt(0)!='$') {
+        if(!firstPrint)
+          print(",")
+        print(a)
+        firstPrint = false
+      }
+    })
+    println(">")
+  }
+  
   private var oldElements:List[Atom] = List()
 
   def remove(a:Atom) { elems = elems.filterNot(_ == a)}

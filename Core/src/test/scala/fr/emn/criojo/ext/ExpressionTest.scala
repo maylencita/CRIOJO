@@ -242,6 +242,9 @@ class ExpressionTest {
     machine.introduceMolecule(machine.AskContain("gh", machine.OK, machine.NOTOK))
     machine.executeRules()
 
+    machine.printTrace()
+    println(machine.getSolution)
+    
     assert(machine.getSolution.containsMolecule(machine.OK("gg")))
     assert(machine.getSolution.containsMolecule(machine.NOTOK("gh")))
 
@@ -292,9 +295,11 @@ class ExpressionTest {
 
     val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
       val x,y,z,w,n,i,j = Var
-      val Equal = Rel("Equal")
-      val AreEqual = Rel("AreEqual")
-      val AskAreEqual = Rel("AskAreEqual")
+
+      val AreConnected = Rel("LeadsTo")
+      val AreInRelation = Rel("AreInRelation")
+      val IsItEquivalent = Rel("IsItEquivalent")
+
       val PUSH = Rel("PUSH")
       val POP = Rel("POP")
 
@@ -303,9 +308,9 @@ class ExpressionTest {
       }
 
       rules(
-        AskAreEqual(x,y) --> Nu(i)( AreEqual(x,y,i) ),
-        (AreEqual(x,w,n) &: Equal(x,y)) --> NotEq (x,w) ?: Nu(i)( (AreEqual(x,w,n) & PUSH(i,n,x) & AreEqual(y,w,i)) ),
-        AreEqual(x,y,n) --> Eq(x,y) ?: (PrintInt(x) & POP(n)),
+        IsItEquivalent(x,y) --> Nu(i)( AreInRelation(x,y,i) ),
+        (AreInRelation(x,w,n) &: AreConnected(x,y)) --> NotEq (x,w) ?: Nu(i)( (AreInRelation(x,w,n) & PUSH(i,n,x) & AreInRelation(y,w,i)) ),
+        AreInRelation(x,y,n) --> Eq(x,y) ?: (PrintInt(x) & POP(n)),
         (POP(j) &: PUSH(i,n,x)) --> Eq(i,j) ?: ( PrintInt(x) & POP(n))
       )
 
@@ -313,51 +318,19 @@ class ExpressionTest {
     }
 
     import machine.num2fun
+    
+    implicit def str2fun(s:String):Term = new StrExpression(s)
+    
+    machine.introduceMolecule(machine.AreConnected("A","B"))
+    machine.introduceMolecule(machine.AreConnected("B","C"))
+    machine.introduceMolecule(machine.AreConnected("C","D"))
+    machine.introduceMolecule(machine.AreConnected("D","E"))
+    machine.introduceMolecule(machine.AreConnected("B","D"))
+    machine.introduceMolecule(machine.AreConnected("D", "F"))
 
-    machine.introduceMolecule(machine.Equal(1,2))
-    machine.introduceMolecule(machine.Equal(2,3))
-    machine.introduceMolecule(machine.Equal(2,4))
-    machine.introduceMolecule(machine.Equal(4,7))
-    machine.introduceMolecule(machine.Equal(7,6))
-    machine.introduceMolecule(machine.Equal(6,4))
-    machine.introduceMolecule(machine.Equal(4,5))
-    machine.introduceMolecule(machine.Equal(7,8))
-
-    machine.introduceMolecule(machine.AskAreEqual(1,8))
+    machine.introduceMolecule(machine.IsItEquivalent("A","E"))
     machine.executeRules()
     //assert(machine.getSolution.size==1)
     println(machine.getSolution)
-  }
-
-
-  @Test
-  def PIcalculusTest {
-
-    val machine = new Cham with IntegerCham {
-
-      val x,y,z,w,n,i,j = Var
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-
-      rules(
-        (A(x,y) & B(z)) --> (C(x) & B(z))
-      )
-
-      DEBUG_MODE = true
-    }
-
-    import machine.num2fun
-
-    machine.introduceMolecule(machine.A(1,2))
-    machine.introduceMolecule(machine.A(1,4))
-    machine.introduceMolecule(machine.B(3))
-    machine.introduceMolecule(machine.B(4))
-
-    machine.executeRules()
-    //assert(machine.getSolution.size==1)
-    println(machine.getSolution)
-    machine.printTrace()
-    //println(machine.printRules)
   }
 }

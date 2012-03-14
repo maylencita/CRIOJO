@@ -18,6 +18,7 @@ trait CompositionOperators extends Term {
   def *(that: Term):Expression = new MultExpr(this, that)
   def /(that: Term):Expression = new DivExpr(this, that)
   def ==(that: Term):Expression = new EqualExpr(this, that)
+  def !=(that: Term):Expression = new NotEqualExpr(this, that)
   def >(that: Term):Expression = new GreaterThanExpr(this, that)
   def <(that: Term):Expression = new LessThanExpr(this, that)
 }

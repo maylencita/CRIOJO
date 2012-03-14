@@ -105,6 +105,87 @@ class CalculationTest {
     // println(fCham.printRules)
   }
 
+  @Test
+  def FibonnaciNewSyntaxTest() {
+
+    var fw = new FileWriter("etoile.svg");
+    fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
+
+    implicit def LazyGuard(x: => Expression):CriojoGuard = {
+      val g = new CriojoGuard(List()){
+        def eval(vals: Valuation) = {
+
+          val valuation = x.eval(vals)
+          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
+        }
+      }
+      g
+    }
+
+    implicit def LazyExpression(x: => Expression):Expression = {
+      val g = new Expression {
+
+        def name = x.name
+        def matches(that: Term): Boolean = false
+
+        def eval(): Expression = x.eval()
+
+        def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
+          case e:Expression => e
+          case _ => UndefinedExpression
+        }
+
+        def getValuation(t:Term):Valuation = x.getValuation(t)
+      }
+      g
+    }
+
+    val cm = new Cham with IntegerCham {
+
+      val fibo = Rel("fibo")
+      val Fibo = Rel("Fibo")
+      val WaitResult = Rel("WaitResult")
+      val Result = Rel("Result")
+      val Bingo = Rel("Bingo")
+
+      val n,n1,n2,r,r1,r2,x = Var
+      val v,v1,v2 = Var
+
+      val Sierpinski = Rel("Sierpinski")
+      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = Var
+
+      val Print = NativeRelation("Print3") {
+
+        case ((Atom(_, (x: IntExpression) :: (y: IntExpression) :: (l: IntExpression) :: _), _)) => {
+
+          fw.write("<polygon points=\"" + x.getValue() + "," + y.getValue() + " " + (x.getValue() - l.getValue()) + "," + (y.getValue() - l.getValue()) + " " + (x.getValue() + l.getValue()) + "," + (y.getValue() - l.getValue()) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
+        }
+      }
+
+      rules(
+        fibo(n) --> Nu(r)(Fibo(n,r) & WaitResult(r,n)),
+        Fibo(n,r) --> (Abs(Result(r,n)) && {n>1}) ?: (Fibo(n-1,r) & Fibo(n-2,r)),
+        (Result(n1,v1) & Result(n2,v2)) --> ({n1==(n2+1)}) ?: Result(n1+1,v1+v2),
+        Fibo(n,r) --> {n < num2fun(2)} ?: Result(n,1),
+        (WaitResult(r,n) & Result(n,v)) --> Bingo(v)
+      )
+
+      DEBUG_MODE = true
+    }
+
+    import cm.num2fun
+
+    cm.introduceMolecule(cm.fibo(14))
+    cm.executeRules()
+
+    cm.getSolution.displaySolution()
+    cm.printTrace()
+    
+    
+    fw.write("</svg>\n")
+    fw.close()
+  }
+
   @Test /*(timeout=3000)*/
   def fibonacciIterative{
     val fCham = new Cham with IntegerCham{
@@ -191,9 +272,11 @@ class CalculationTest {
         def eval(): Expression = x.eval()
 
         def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
-            case e:Expression => e
-            case _ => UndefinedExpression
-          }
+          case e:Expression => e
+          case _ => UndefinedExpression
+        }
+
+        def getValuation(t:Term):Valuation = x.getValuation(t)
       }
       g
     }
@@ -229,6 +312,35 @@ class CalculationTest {
     var fw = new FileWriter("etoile.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
+    implicit def LazyGuard(x: => Expression):CriojoGuard = {
+      val g = new CriojoGuard(List()){
+        def eval(vals: Valuation) = {
+
+          val valuation = x.eval(vals)
+          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
+        }
+      }
+      g
+    }
+
+    implicit def LazyExpression(x: => Expression):Expression = {
+      val g = new Expression {
+
+        def name = x.name
+        def matches(that: Term): Boolean = false
+
+        def eval(): Expression = x.eval()
+
+        def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
+          case e:Expression => e
+          case _ => UndefinedExpression
+        }
+
+        def getValuation(t:Term):Valuation = x.getValuation(t)
+      }
+      g
+    }
+
     val cm = new Cham with IntegerCham {
 
       val Sierpinski = Rel("Sierpinski")
@@ -243,10 +355,10 @@ class CalculationTest {
       }
 
       rules(
-        (Sierpinski(x, y, l, n)) --> Leq(n, 0) ?: Print(x,y,l),
+        (Sierpinski(x, y, l, n)) --> {n == num2fun(0)} ?: Print(x,y,l),
 
         Sierpinski(x, y, l, n)
-          --> Gr(n, 0) ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
+          --> {n>0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
       )
       //DEBUG_MODE = true
     }
