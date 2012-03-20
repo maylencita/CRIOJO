@@ -62,7 +62,7 @@
       </dependency>
       <dependency>
           <groupId>net.debasishg</groupId>
-          <artifactId>sjson</artifactId>
+          <artifactId>sjson_2.8.0</artifactId>
           <version>0.8</version>
       </dependency>
       <dependency>
