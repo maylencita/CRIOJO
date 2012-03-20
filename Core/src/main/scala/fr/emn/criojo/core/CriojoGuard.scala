@@ -63,6 +63,7 @@ class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard
   def eval(vals:Valuation) = {
     lguard.eval(vals) || rguard.eval(vals)
   }
+
   override def toString = "["+lguard +" v "+ rguard +"]"
 }
 

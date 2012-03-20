@@ -31,48 +31,11 @@ object Criojo{
 
   def getValuation(l1:List[Term], l2:List[Term]):Valuation = {
     def getVal(t1:Term, t2:Term):Valuation = {
-
-      var vals:Valuation = Valuation()
-
-
-        vals = t1.getValuation(t2)
-
-
-      vals
+      t1.getValuation(t2)
     }
 
     l1.zip(l2).foldLeft(Valuation())((v,p)=>v union getVal(p._1,p._2))
   }
-
-
-  /** Builds a list of Substitution (Pair[ [[fr.emn.criojo.core.Variable]],[[fr.emn.criojo.core.ValueTerm]] ]) with two List[ [[fr.emn.criojo.core.Term]] ]
-   *
-   * @param l1 a List[ [[fr.emn.criojo.core.Term]] ], usually variables ([[fr.emn.criojo.core.Variable]])
-   * @param l2 a List[ [[fr.emn.criojo.core.Term]] ], usually values ([[fr.emn.criojo.core.ValueTerm]])
-   * @return a list of Substitution (Pair[ [[fr.emn.criojo.core.Variable]],[[fr.emn.criojo.core.ValueTerm]] ])
-   */
-  @deprecated("Use: getValuation")
-  def getSubstitutions(l1:List[Term], l2:List[Term]):List[Substitution] = {
-    l1.zip(l2).flatMap(p=>getSubstitution(p._1,p._2))
-  }
-
-  /** Builds a Substitution (Pair[ [[fr.emn.criojo.core.Variable]],[[fr.emn.criojo.core.ValueTerm]] ])
-   *
-   * @param term1 a [[fr.emn.criojo.core.Term]]
-   * @param term2 a [[fr.emn.criojo.core.Term]]
-   * @return a Substitution (Pair[ [[fr.emn.criojo.core.Variable]],[[fr.emn.criojo.core.ValueTerm]] ])
-   */
-  def getSubstitution(term1:Term,term2:Term):List[Substitution] = term1 match{
-    case v:Variable => List((v,term2))
-    case f1@Function(n,params) => term2 match{
-      case f2:Function if(f2.params.size == f1.params.size) =>
-        getSubstitutions(f1.params,f2.params)
-//        f1.params.zip(f2.params).flatMap(p => getSubstitution(p._1,p._2))
-      case _ => (Undef,term2) :: Nil
-    }
-    case _ => (Undef,term2) :: Nil
-  }
-
 }
 
 /**
