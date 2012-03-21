@@ -86,8 +86,8 @@ trait StatefulEngine extends Engine{
 
 
             if(DEBUG_DIRECT_MODE) {
-              var valuatedHead = this.head.map({a => a.applyValuation(pe.vals)})
-              var valuatedBody = this.body.map({a => a.applyValuation(pe.vals)})
+              var valuatedHead = this.head.map({a => a.applyValuation(pe.valuation)})
+              var valuatedBody = this.body.map({a => a.applyValuation(pe.valuation)})
 
               var valuatedHeadString = valuatedHead.toString()
               var valuatedBodyString = valuatedBody.toString()
@@ -111,7 +111,7 @@ trait StatefulEngine extends Engine{
         vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
       }
 
-      if(!finalValuation.failed) {
+      if(!finalValuation.isEmpty) {
 
         val newAtoms = this.body.map(_.applyValuation(finalValuation))
 

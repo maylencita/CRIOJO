@@ -112,7 +112,7 @@ class CalculationTest {
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
-      val g = new CriojoGuard(List()){
+      val g = new CriojoGuard{
         def eval(vals: Valuation) = {
 
           val valuation = x.eval(vals)
@@ -253,7 +253,7 @@ class CalculationTest {
   def gcdTestExpCustomGuards{
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
-      val g = new CriojoGuard(List()){
+      val g = new CriojoGuard{
         def eval(vals: Valuation) = {
 
           val valuation = x.eval(vals)
@@ -313,7 +313,7 @@ class CalculationTest {
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
-      val g = new CriojoGuard(List()){
+      val g = new CriojoGuard{
         def eval(vals: Valuation) = {
 
           val valuation = x.eval(vals)

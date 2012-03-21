@@ -34,8 +34,7 @@ trait EqCHAM extends Cham{
   /***********************************************************************/
 
   def Eq(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
-
+    val g = new CriojoGuard{
       def eval(vals: Valuation) = {
         existsEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
@@ -44,8 +43,7 @@ trait EqCHAM extends Cham{
     g
   }
   def NotEq(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
-
+    val g = new CriojoGuard{
       def eval(vals: Valuation) = {
         existsNotEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }

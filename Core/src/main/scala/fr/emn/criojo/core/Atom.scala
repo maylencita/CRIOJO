@@ -59,13 +59,14 @@ case class Atom(relName:String, terms: List[Term]) {
   def apply(n:Int):Term = terms(n)
 
   def applyValuation(valuation:Valuation):Atom = {
-    val newName = Variable(this.relName).applyValuation(valuation) match{
-      case rv:RelVariable => rv.name
-      case _ => relName
+    val nuRel:Relation = valuation(Variable(this.relName)) match{
+      case rv:RelVariable => rv.relation
+      case _ => this.relation
     }
     val newTerms = terms.map(_.applyValuation(valuation))
 
-    val newAtom = new Atom(newName, newTerms)
+    val newAtom = new Atom((if(nuRel !=null) nuRel.name else this.relName), newTerms)
+    newAtom.relation = nuRel
     newAtom
   }
 
@@ -83,7 +84,6 @@ case class Atom(relName:String, terms: List[Term]) {
    * @return true if the matching is positive
    */
   def matches(that: Atom) : Boolean = {
-
     this.relName == that.relName &&
     this.arity == that.arity &&
     this.terms.zip(that.terms).forall(p => p._1.matches(p._2))

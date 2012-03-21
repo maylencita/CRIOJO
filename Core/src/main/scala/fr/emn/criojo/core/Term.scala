@@ -34,15 +34,12 @@ case class Function(name:String, params: List[Term]) extends Term {
     this
   }
 
-  def getValuation(t:Term):Valuation = {
-    var valuation:Valuation = Valuation()
-
-    t match {
-      case f:Function => params.zip(f.params).foreach(pair => valuation = valuation union pair._1.getValuation(pair._2))
-      case _ =>
-    }
-    
-    valuation
+  def getValuation(t:Term):Valuation = t match{
+    case f:Function if(this.params.size == f.params.size) =>
+      params.zip(f.params).foldLeft(Valuation()){(v,p) =>
+        v union p._1.getValuation(p._2)
+      }
+    case _ => Valuation()
   }
 
   //Inheriting classes must override this method

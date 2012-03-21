@@ -38,7 +38,8 @@ class GuardsTests {
     }
 
     import cham.{R,S}
-    cham.introduceMolecule(R(1,2) & S(2,3))
+    cham.introduceMolecule(R(1,2))
+    cham.introduceMolecule(S(2,3))
     cham.executeRules()
 
     assertTrue("\nExpected : Array(1,2)\n" +
@@ -47,8 +48,37 @@ class GuardsTests {
   }
 
   @Test
+  def presenceSansParamsTest{
+    var finalword = ""
+
+    val cham = new Cham with TestCham{
+      val R = Rel("R")
+      val S = Rel("S")
+      val X = Rel("X")
+      val x,y,z = Var
+
+      val Concat = NativeRelation("Concat"){
+        case ((Atom(_,ValueTerm(v) :: _), _)) => finalword += v
+        case _ =>
+      }
+
+      rules(
+        R() --> Prs(X()) ?: Concat("two"),
+        (!R() & S()) --> (Concat("one") & X())
+      )
+    }
+
+    import cham.{R,S}
+    cham.introduceMolecule(R())
+    cham.introduceMolecule(S())
+    cham.executeRules()
+
+    assertEquals("onetwo",finalword)
+  }
+
+  @Test
   def absenceTest{
-    var finalworld = ""
+    var finalword = ""
 
     //Clonning example
     val cham = new Cham with TestCham{
@@ -59,7 +89,7 @@ class GuardsTests {
       val S = Rel("S")
 
       val Concat = NativeRelation("Concat"){
-        case ((Atom(_,ValueTerm(v) :: _), _)) => finalworld += v
+        case ((Atom(_,ValueTerm(v) :: _), _)) => finalword += v
         case _ =>
       }
 
@@ -75,6 +105,6 @@ class GuardsTests {
     cham.introduceMolecule(One() & R())
     cham.executeRules()
 
-    println(finalworld)
+    assertEquals("onetwotwotwothree",finalword)
   }
 }

@@ -13,18 +13,8 @@ import expressions.VarExpression
 * Time: 14:59
 */
 class Cham extends
-//UnstableEngine
 StatefulEngine
-//SimpleEngine
 {
-
-  /*
-  def ComputableRelation(name:String)(f:(Tuple2[Product,Product],Buffer[(Variable,Term)]) => Unit) = {
-    val unstableRel = new UnstableRelation(name,f)
-    addRelation(unstableRel)
-    unstableRel
-  }
-  */
 
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
@@ -54,6 +44,8 @@ StatefulEngine
   def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
 
   def Ex(atoms:Atom*):ChamGuard =  new ExistGuard(atoms.toList) with ChamGuard
+
+  def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList) with ChamGuard
 
   def when(head:Molecule)(body: RuleBody):RuleDef = {
     val ruleDef =
@@ -91,7 +83,6 @@ StatefulEngine
 
   def axiom(fact:Molecule){
     val AxiomTok = Tok()
-//    initRule(Empty --> Abs(AxiomTok()) ?: (fact & AxiomTok()))
     ruleDefList :+= (Empty --> Abs(AxiomTok()) ?: (fact & AxiomTok()))
   }
 

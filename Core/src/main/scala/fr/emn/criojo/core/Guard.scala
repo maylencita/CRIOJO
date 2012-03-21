@@ -11,19 +11,11 @@ import Criojo.Substitution
  */
 
 trait Guard {
-  initRelations()
-
-  val starter:Atom
-
   def empty:Boolean
-
-  def initRelations()
-
   @deprecated ("use: eval(Valuation)")
   def eval(sol:Solution, subs:List[Substitution]):Boolean = false
 
   def eval(valuation:Valuation):Boolean
-
 }
 
 object EmptyGuard extends Guard{

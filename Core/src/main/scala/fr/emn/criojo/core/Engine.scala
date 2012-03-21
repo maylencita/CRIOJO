@@ -98,7 +98,7 @@ trait Engine extends RuleFactory{
 
   def processRuleBody(headVars:List[RelVariable], rule:Rule){
     rule.guard match{
-      case cg:CriojoGuard =>
+      case cg:PresenceGuard =>
         cg.atoms.foreach{a =>
           findRelation(a.relName) match{
             case Some(r) => r.addObserver(cg)

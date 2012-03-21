@@ -91,7 +91,7 @@ object TopValuation extends EmptyVal{
 
   def unary_! = BottomValuation
   def sameElements(that:Valuation):Boolean = false
-  def hasExtension(that:Valuation):Boolean = false
+  def hasExtension(that:Valuation):Boolean = true
 
   override def toString = "T"
 }
@@ -104,7 +104,7 @@ object BottomValuation extends EmptyVal{
 
   def unary_! = TopValuation
   def sameElements(that:Valuation):Boolean = false
-  def hasExtension(that:Valuation):Boolean = true
+  def hasExtension(that:Valuation):Boolean = false
 }
 
 class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
@@ -182,13 +182,16 @@ class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
  * @param beta the list of negative valuations
  */
 class ValGenerator(val alpha:Valuation, val beta:List[Valuation]){
+  def this(a:Valuation) = {
+    this(a,List())
+  }
   /**
    * Evaluates if the valuation valu, is consistent with this set of valuations:
    * valu is an extension of alpha and is not an extension of any of the betas
    * @param valu
    * @return
    */
-  def agrees(valu:Valuation):Boolean = {
+  def consistentWith(valu:Valuation):Boolean = {
     alpha.hasExtension(valu) && beta.forall(b => b.hasExtension(valu))
   }
 
@@ -213,6 +216,15 @@ class ValuationList(protected val vlist:List[ValGenerator]){
   }
 
   def isEmpty = vlist.isEmpty
+
+  /**
+   * Tests wheter the condition p holds for at least one of its elements
+   * @param p
+   * @return
+   */
+  def exists(p:(ValGenerator) => Boolean):Boolean = {
+    vlist.exists(p)
+  }
 
   def not:ValuationList = {
     if (this.isEmpty)
