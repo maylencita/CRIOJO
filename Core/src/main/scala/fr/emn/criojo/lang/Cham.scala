@@ -4,6 +4,7 @@ import fr.emn.criojo.core._
 import fr.emn.criojo.core.Valuation
 import fr.emn.criojo.ext._
 import collection.mutable.Buffer
+import expressions.VarExpression
 
 /*
 * Created by IntelliJ IDEA.
@@ -33,9 +34,9 @@ StatefulEngine
 
   var ruleDefList = List[RuleDef]()
 
-  def Var:Variable = {
+  def Var:VarExpression = {
     index += 1
-    new Variable("x"+index)
+    new VarExpression("x"+index)
   }
 
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }

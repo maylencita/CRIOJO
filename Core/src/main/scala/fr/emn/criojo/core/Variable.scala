@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import fr.emn.criojo.ext.expressions._
-
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -15,7 +13,7 @@ import fr.emn.criojo.ext.expressions._
 //}
 
 @serializable
-case class Variable (name: String) extends Expression {
+case class Variable (name: String) extends Term {
 
   def applyValuation(valuation:Valuation):Term = {
     var value:Term = this
@@ -31,7 +29,7 @@ case class Variable (name: String) extends Expression {
     value
   }
 
-  def eval():Expression = UndefinedExpression
+//  def eval():Expression = UndefinedExpression
 
   def matches(that:Term) = true
 

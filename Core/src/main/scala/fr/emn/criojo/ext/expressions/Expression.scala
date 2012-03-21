@@ -27,7 +27,7 @@ trait TerminalExpr extends Expression {
   override def eval():Expression = this
 }
 
-class VarExpression(name: String) extends Variable(name) with TerminalExpr
+case class VarExpression(n: String) extends Variable(n) with TerminalExpr {}
 
 object UndefinedExpression extends TerminalExpr {
   val name = "_"

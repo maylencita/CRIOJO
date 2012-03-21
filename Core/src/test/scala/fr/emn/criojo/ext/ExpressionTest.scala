@@ -86,9 +86,9 @@ class ExpressionTest {
     val x:Expression = 1
     val y:Expression = 2
 
-    var x1 = Variable("x1")
-    var x2 = Variable("x2")
-    var x3 = Variable("x3")
+    var x1 = VarExpression("x1")
+    var x2 = VarExpression("x2")
+    var x3 = VarExpression("x3")
 
     var listOfSubs = Valuation(x1 -> x, x2 -> y)
 
