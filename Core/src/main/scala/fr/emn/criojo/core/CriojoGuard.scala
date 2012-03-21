@@ -47,6 +47,13 @@ class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
   override def toString = atoms.mkString("Exst(", ",", ")")
 }
 
+class PresenceGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
+  def eval(vals: Valuation) = {
+    //TODO Implement
+    true
+  }
+}
+
 class AbsGuard(atoms:List[Atom]) extends ExistGuard(atoms){
   override def eval(vals: Valuation) = {
     val finalState = states(size - 1)

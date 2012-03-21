@@ -46,7 +46,7 @@ trait StateMachine {
               else {
                 transition.ini.executions.foreach {
                   pe => {
-                    if(a.applyValuation(pe.vals).matches(atom)){
+                    if(a.applyValuation(pe.valuation).matches(atom)){
                       val pExec = pe.newExecution(i,atom,vals)
                       newExecutions.addBinding(transition.fin,pExec)
                     }

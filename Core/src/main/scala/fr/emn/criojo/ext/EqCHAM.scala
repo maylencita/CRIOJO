@@ -54,30 +54,6 @@ trait EqCHAM extends Cham{
     g
   }
 
-  //TODO applySubstitution() should be in class Term
-  //TODO findSubstitution() should be in a class called Substitutions
-  //TODO transform type Criojo.Substitutions into a separate class
-  def findSubstitution(variable:Variable, vals: Valuation):Term =
-    vals.find(s => s._1.name == variable.name) match{
-      case Some((v,t)) => t
-      case _ =>
-        variable match{
-          case rv:RelVariable if (rv.relation != null) => rv
-          case rv:RelVariable if (rv.relation == null) => Undef
-          case _ => Undef
-        }
-  }
-
-  def applySubstitution(term:Term,vals: Valuation):Term = term match{
-    case v:Variable => findSubstitution(v,vals)
-    case v:ValueTerm[_] => v
-    case f@Function(n, plst) => f(plst.map(p => p.applyValuation(vals)))
-    case _ => term
-  }
-
-  private val f = new RelVariable("false")
-  private val t = new RelVariable("true")
-
   protected def disjointed(e1:EqClass, e2:EqClass):Boolean ={
     if (e1 == e2)
       false

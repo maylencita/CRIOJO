@@ -3,6 +3,7 @@ package fr.emn.criojo.core
 import org.junit._
 import Assert._
 import fr.emn.criojo.lang._
+import fr.emn.criojo.TestCham
 
 /*
  * Created by IntelliJ IDEA.
@@ -11,19 +12,6 @@ import fr.emn.criojo.lang._
  * Time: 14:41
  */
 class StatesTest {
-
-  // Some useful objects
-  //-------------------------------------------------------
-  trait TestCham extends Cham{
-    var passed = 0
-    val Print = NativeRelation("Print") {
-      case ((Atom(_,terms), _)) => print(terms.mkString(","))
-      case _ =>
-    }
-    val Passed = NativeRelation("Passed"){(s,a) =>
-      passed += 1
-    }
-  }
 
   implicit def num2term(n:Int):Term = new ValueTerm[Int](n)
   implicit def str2term(str:String):Term = new ValueTerm[String](str)

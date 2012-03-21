@@ -12,7 +12,7 @@ import collection.immutable.HashMap
 * Time: 14:17
 */
 
-class PartialExecution(atomMap:HashMap[Int,Atom],val vals:Valuation){
+class PartialExecution(atomMap:HashMap[Int,Atom],val valuation:Valuation){
   def this(pos:Int, atom:Atom, vals:Valuation)={
     this(HashMap(pos -> atom),vals)
   }
@@ -22,7 +22,7 @@ class PartialExecution(atomMap:HashMap[Int,Atom],val vals:Valuation){
   def atom(pos:Int) = atomMap(pos)
 
   def newExecution(pos:Int, newAtom:Atom, vals:Valuation): PartialExecution = {
-    new PartialExecution(this.atomMap + (pos -> newAtom), this.vals.union(vals))
+    new PartialExecution(this.atomMap + (pos -> newAtom), this.valuation.union(vals))
   }
 
   def containsAtom(atom:Atom): Boolean = atomMap.exists(p => p._2 == atom)

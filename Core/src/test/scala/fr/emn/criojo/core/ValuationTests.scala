@@ -71,4 +71,42 @@ class ValuationTests {
     assertTrue("Expected : " + expected + "\n" +
                "Actual   : " + newAtom, expected.matches(newAtom))
   }
+
+  @Test
+  def extensionTest{
+    val val1 = Valuation(x->2,y->2)
+    val val2 = Valuation(y->2,z->3,x->2)
+    val val3 = Valuation(x->3,y->2,z->1)
+
+    assertTrue(val1 + " !ext " + val2, val1.hasExtension(val2))
+    assertTrue(val2 + " ext " + val3, !val1.hasExtension(val3))
+  }
+
+  @Test
+  def normalFormTest(){
+    val vg = new ValGenerator(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil)
+    val vg2 = new ValGenerator(!Valuation(x->3,y->3),Valuation(z->4)::(!Valuation(z->5))::Nil)
+    assertTrue("Not a normal form: " + vg, vg.isNormalForm)
+    assertTrue("Not a normal form: " + vg2, !vg2.isNormalForm)
+  }
+
+  @Test
+  def notTest{
+    val lst = new ValuationList(List(
+      new ValGenerator(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil),
+      new ValGenerator(Valuation(x->3,y->4),(!Valuation(z->5))::(!Valuation(z->6))::Nil),
+      new ValGenerator(Valuation(x->6,y->6),(!Valuation(z->4))::(!Valuation(z->3))::Nil)
+    ))
+
+    val expected = "{(z=6) ^ (x!=2,y!=2)^(x!=6,y!=6)}," +
+      "{(z=5) ^ (x!=2,y!=2)^(x!=6,y!=6)}," +
+      "{T ^ (x!=2,y!=2)^(x!=3,y!=4)^(x!=6,y!=6)}," +
+      "{(z=4) ^ (x!=2,y!=2)^(x!=3,y!=4)}," +
+      "{(z=3) ^ (x!=2,y!=2)^(x!=3,y!=4)}," +
+      "{(z=3) ^ (x!=3,y!=4)^(x!=6,y!=6)}," +
+      "{(z=3) ^ (x!=3,y!=4)}," +
+      "{(z=4) ^ (x!=3,y!=4)^(x!=6,y!=6)}," +
+      "{(z=4) ^ (x!=3,y!=4)}"
+    assertEquals(expected, lst.not.mkString("",",",""))
+  }
 }

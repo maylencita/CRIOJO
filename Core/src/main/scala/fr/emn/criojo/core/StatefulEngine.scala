@@ -67,13 +67,13 @@ trait StatefulEngine extends Engine{
       var executed = false
       val finalState = states(size - 1)
       if(finalState.hasExecutions){
-        finalState.removeExecution(pe => guard.eval(pe.vals)) match{
+        finalState.removeExecution(pe => guard.eval(pe.valuation)) match{
           case Some(pe:PartialExecution) => {
             applyReaction(pe)
             
             if(DEBUG_MODE) {
-              var valuatedHead = this.head.map({a => a.applyValuation(pe.vals)})
-              var valuatedBody = this.body.map({a => a.applyValuation(pe.vals)})
+              var valuatedHead = this.head.map({a => a.applyValuation(pe.valuation)})
+              var valuatedBody = this.body.map({a => a.applyValuation(pe.valuation)})
 
               var valuatedHeadString = valuatedHead.toString()
               var valuatedBodyString = valuatedBody.toString()
@@ -92,7 +92,7 @@ trait StatefulEngine extends Engine{
     }
 
     def applyReaction(finalExecution:PartialExecution) {
-      val finalValuation = scope.foldLeft(finalExecution.vals){(vals,sv) =>
+      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
         val i = Indexator.getIndex
         vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
       }

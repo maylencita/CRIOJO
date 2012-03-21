@@ -89,43 +89,7 @@ case class Atom(relName:String, terms: List[Term]) {
    * @return an [[fr.emn.criojo.core.Atom]]
    */
   @deprecated("use: applyValuation")
-  def applySubstitutions(vals:Valuation):Atom = {
-    val nuRel:Relation = vals.find(s => s._1.name == this.relName) match{
-      case Some(sub) => sub match{
-        case (_, rv:RelVariable) => rv.relation
-        case _ => this.relation
-      }
-      case _ => this.relation
-    }
-
-    val nuRelName:String = vals.find(s => s._1.name == this.relName) match{
-      case Some(nv) => nv._2.name
-      case _ => this.relName
-    }
-
-    def applySubstitution(term:Term):Term = term match{
-      case v:Variable => findSubstitution(v)
-      case v:ValueTerm[_] => v
-      case f@Function(n, plst) => f(plst.map(p => applySubstitution(p)))
-      case _ => Undef
-    }
-    def findSubstitution(variable:Variable) =
-      vals.find(s => s._1.name == variable.name) match{
-        case Some((v,t)) => t
-        case _ =>
-          variable match{
-            case rv:RelVariable if (rv.relation != null) => rv
-            case rv:RelVariable if (rv.relation == null) => Undef
-            case _ => Undef
-          }
-    }
-
-    val newTerms = terms.map(applySubstitution(_))
-
-    val newAtom = new Atom(nuRelName, newTerms)
-    newAtom.relation = nuRel
-    newAtom
-  }
+  def applySubstitutions(vals:Valuation):Atom = this
 
   /** Returns true if the given atom matches this atom.
    *
