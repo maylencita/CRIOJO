@@ -20,6 +20,10 @@ case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Uni
       log("[Relation("+name+").notifyObservers] notified by " + a)
       f(a, solution)
       solution.inactivate(a)
+
+      // todo: remove a?
+      //solution.remove(a)
+
       solution.cleanup()
     case _ => super.notifyObservers(a)
   }

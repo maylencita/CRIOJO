@@ -31,10 +31,10 @@ trait IntegerCham extends EqCHAM{
       var t = (a, s)
       println(a(0))
     }
-//    case x => {
-//      var t = x
-//      println(x)
-//    }
+    //    case x => {
+    //      var t = x
+    //      println(x)
+    //    }
   }
   private val IntSub2 = Rel("$IntSubs2")
   private val IntDiv2 = Rel("$IntDivs2")
@@ -119,8 +119,8 @@ trait IntegerCham extends EqCHAM{
     )
   }
 
-  def Gr(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
+  def Gr(t1:Term, t2:Term):ChamGuard = {
+    val g = new CriojoGuard(List()) with ChamGuard {
       def eval(vals: Valuation) = {
         //greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
         greaterThan(t1.applyValuation(vals), t2.applyValuation(vals))
@@ -129,8 +129,8 @@ trait IntegerCham extends EqCHAM{
     g
   }
 
-  def Less(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
+  def Less(t1:Term, t2:Term):ChamGuard = {
+    val g = new CriojoGuard(List()) with ChamGuard {
       def eval(vals: Valuation) = {
         lessThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
@@ -138,8 +138,8 @@ trait IntegerCham extends EqCHAM{
     g
   }
 
-  def Leq(t1:Term, t2:Term):CriojoGuard = {
-    val g = new CriojoGuard(List()){
+  def Leq(t1:Term, t2:Term):ChamGuard = {
+    val g = new CriojoGuard(List()) with ChamGuard {
       def eval(vals: Valuation) = {
         lessThanOrEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
@@ -163,9 +163,9 @@ trait IntegerCham extends EqCHAM{
 
   def lessThanOrEqual(t1:Term, t2:Term):Boolean = {
     (getValue(t1),getValue(t2)) match{
-        case (Some(v1),Some(v2)) => v1 <= v2
-        case _ => false //No val
-      }
+      case (Some(v1),Some(v2)) => v1 <= v2
+      case _ => false //No val
+    }
   }
 
   def getIntValue(x:Variable):Option[Int]= genEqClasses.getValue(x) match{
@@ -188,9 +188,9 @@ trait IntegerCham extends EqCHAM{
   }
 
   private def declare(a:Atom){ a match{
-      case Atom(_, (v:Variable)::(ValueTerm(n:Int))::_) => genEqClasses.add(n,v) //intEqClasses add (n.toInt,v)
-      case _ => //Nothing, wrong format
-    }
+    case Atom(_, (v:Variable)::(ValueTerm(n:Int))::_) => genEqClasses.add(n,v) //intEqClasses add (n.toInt,v)
+    case _ => //Nothing, wrong format
+  }
   }
 
 }

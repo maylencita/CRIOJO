@@ -1,14 +1,14 @@
 package fr.emn.criojo.ext.expressions
 
-import fr.emn.criojo.core.{Term, ValueTerm}
+import fr.emn.criojo.core.{Valuation, PatternNotMatchingException, Term, ValueTerm}
 
 
 /*
- * Created by IntelliJ IDEA.
- * User: mayleen
- * Date: 01/03/12
- * Time: 00:21
- */
+* Created by IntelliJ IDEA.
+* User: mayleen
+* Date: 01/03/12
+* Time: 00:21
+*/
 
 //Define support for basic operations
 abstract class ValueExpression[+T](value: T) extends ValueTerm[T](value) with TerminalExpr {
@@ -39,6 +39,10 @@ case class IntExpression(num: Int) extends ValueExpression[Int](num) {
     case IntExpression(n) => new BooleanExpression(num == n)
   }
 
+  override def isNotEqual(that: Term): Expression = that match {
+    case IntExpression(n) => new BooleanExpression(num != n)
+  }
+
   override def greaterThan(that: Term): Expression = that match {
     case IntExpression(n) => new BooleanExpression(num > n)
   }
@@ -46,10 +50,26 @@ case class IntExpression(num: Int) extends ValueExpression[Int](num) {
   override def lessThan(that: Term): Expression = that match {
     case IntExpression(n) => new BooleanExpression(num < n)
   }
+
+  @throws(classOf[PatternNotMatchingException])
+  override def getValuation(t:Term):Valuation = t match {
+    case p:IntExpression => Valuation()
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
+  }
 }
 
 case class StrExpression(str: String) extends ValueExpression[String](str) {
   override def add(that: Term): Expression = StrExpression(str + that.toString)
+
+  @throws(classOf[PatternNotMatchingException])
+  override def getValuation(t:Term):Valuation = t match {
+    case p:StrExpression => Valuation()
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
+  }
 }
 
 case class BooleanExpression(bool: Boolean) extends ValueExpression[Boolean](bool) {
@@ -57,5 +77,13 @@ case class BooleanExpression(bool: Boolean) extends ValueExpression[Boolean](boo
     case BooleanExpression(b) => new BooleanExpression(b || bool)
     case IntExpression(n) => new BooleanExpression(bool || n>0)
     case _ => StrExpression(bool + that.toString)
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  override def getValuation(t:Term):Valuation = t match {
+    case p:BooleanExpression => Valuation()
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
   }
 }

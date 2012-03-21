@@ -2,8 +2,8 @@ package fr.emn.criojo.ext.expressions
 
 import fr.emn.criojo.lang.{ComposableWithBinaryExpression}
 import fr.emn.criojo.lang.CompositionOperators
+import fr.emn.criojo.core.{PatternNotMatchingException, Variable, Term, Valuation}
 
-import fr.emn.criojo.core.{Variable, Term, Valuation}
 
 /*
  * Created by IntelliJ IDEA.
@@ -27,7 +27,7 @@ trait TerminalExpr extends Expression {
   override def eval():Expression = this
 }
 
-class VarExpression(name: String) extends Variable(name) with TerminalExpr
+case class VarExpression(n: String) extends Variable(n) with TerminalExpr {}
 
 object UndefinedExpression extends TerminalExpr {
   val name = "_"
@@ -36,4 +36,7 @@ object UndefinedExpression extends TerminalExpr {
 
   //Undef matches everything
   def matches(that:Term):Boolean = true
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = Valuation()
 }

@@ -30,18 +30,18 @@ object Criojo{
   }
 
   def getValuation(l1:List[Term], l2:List[Term]):Valuation = {
-    def getValuation2(t1:Term,t2:Term,acum:Valuation):Valuation =
-      t1 match{
-        case v:Variable => Valuation(v->t2)
-        case f1@Function(n,params) => t2 match{
-          case f2:Function if(f2.params.size == f1.params.size) =>
-            getValuation(f1.params,f2.params)
-          case _ => Valuation()
-        }
-        case _ => Valuation()
-      }
+    def getVal(t1:Term, t2:Term):Valuation = {
 
-    l1.zip(l2).foldLeft(Valuation())((v,p)=>v union getValuation2(p._1,p._2,v))
+      var vals:Valuation = Valuation()
+
+
+        vals = t1.getValuation(t2)
+
+
+      vals
+    }
+
+    l1.zip(l2).foldLeft(Valuation())((v,p)=>v union getVal(p._1,p._2))
   }
 
 

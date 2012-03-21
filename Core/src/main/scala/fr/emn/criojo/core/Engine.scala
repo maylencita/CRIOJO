@@ -38,7 +38,9 @@ trait Engine extends RuleFactory{
   }
 
   def addRelation(relation:Relation) { relations :+= relation }
-  def addRule(rule:Rule) { rules :+= rule }
+  def addRule(rule:Rule) {
+    rules :+= rule
+  }
 
   /**
    * Searches for a relation. If found, Some[Relation] is returned.

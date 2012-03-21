@@ -11,11 +11,6 @@ import statemachine.StateMachine
  */
 abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine with RelationObserver {
 
-  //TODO Move to criojo.lang
-  def && (guard:CriojoGuard):CriojoGuard = new AndGuard(this, guard)
-
-  def || (guard:CriojoGuard):CriojoGuard = new OrGuard(this, guard)
-
   val starter = null
 
   init(atoms.toArray)

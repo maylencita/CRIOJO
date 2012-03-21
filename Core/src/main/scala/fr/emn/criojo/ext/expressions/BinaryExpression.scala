@@ -1,7 +1,7 @@
 package fr.emn.criojo.ext.expressions
 
-import fr.emn.criojo.core.Term
-import fr.emn.criojo.core.Valuation
+import fr.emn.criojo.core.{PatternNotMatchingException, Term, Valuation}
+
 
 /*
  * Created by IntelliJ IDEA.
@@ -25,7 +25,6 @@ abstract class BinaryExpression extends Expression {
   override def toString():String = eval().toString()
 }
 
-//TODO Create SubExpr, DivExpr...
 class SumExpr(val t1: Term, val t2: Term) extends BinaryExpression {
   def name = "+"
 
@@ -45,6 +44,14 @@ class SumExpr(val t1: Term, val t2: Term) extends BinaryExpression {
     (t1.applyValuation(valuation), t2.applyValuation(valuation)) match {
       case (e1: Expression, e2: Expression) => new SumExpr(e1, e2).eval()
       case _ => UndefinedExpression
+    }
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:SumExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
     }
   }
 }
@@ -70,6 +77,14 @@ class SubExpr(val t1: Term, val t2: Term) extends BinaryExpression {
       case _ => UndefinedExpression
     }
   }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:SubExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
+  }
 }
 
 class MultExpr(val t1: Term, val t2: Term) extends BinaryExpression {
@@ -91,6 +106,14 @@ class MultExpr(val t1: Term, val t2: Term) extends BinaryExpression {
     (t1.applyValuation(valuation), t2.applyValuation(valuation)) match {
       case (e1: Expression, e2: Expression) => new MultExpr(e1, e2).eval()
       case _ => UndefinedExpression
+    }
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:MultExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
     }
   }
 }
@@ -116,6 +139,14 @@ class DivExpr(val t1: Term, val t2: Term) extends BinaryExpression {
       case _ => UndefinedExpression
     }
   }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:DivExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
+  }
 }
 
 class EqualExpr(val t1: Term, val t2: Term) extends BinaryExpression {
@@ -137,6 +168,45 @@ class EqualExpr(val t1: Term, val t2: Term) extends BinaryExpression {
     (t1.applyValuation(valuation), t2.applyValuation(valuation)) match {
       case (e1: Expression, e2: Expression) => new EqualExpr(e1, e2).eval()
       case _ => UndefinedExpression
+    }
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:EqualExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
+  }
+}
+
+class NotEqualExpr(val t1: Term, val t2: Term) extends BinaryExpression {
+  def name = "!="
+
+  //If exp1 or exp2 are not well typed this should not work,
+  //and that is Ok
+  def eval():Expression = (t1, t2) match {
+    case (exp1:Expression, exp2:Expression) => {
+      (exp1.eval(), exp2.eval()) match {
+        case (v1: ValueExpression[_], v2: ValueExpression[_]) => v1.isNotEqual(v2)
+        case _ => UndefinedExpression
+      }
+    }
+    case _ => UndefinedExpression
+  }
+
+  def applyValuation(valuation: Valuation): Term = {
+    (t1.applyValuation(valuation), t2.applyValuation(valuation)) match {
+      case (e1: Expression, e2: Expression) => new NotEqualExpr(e1, e2).eval()
+      case _ => UndefinedExpression
+    }
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:EqualExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
     }
   }
 }
@@ -162,6 +232,14 @@ class GreaterThanExpr(val t1: Term, val t2: Term) extends BinaryExpression {
       case _ => UndefinedExpression
     }
   }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:GreaterThanExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
+  }
 }
 
 class LessThanExpr(val t1: Term, val t2: Term) extends BinaryExpression {
@@ -183,6 +261,14 @@ class LessThanExpr(val t1: Term, val t2: Term) extends BinaryExpression {
     (t1.applyValuation(valuation), t2.applyValuation(valuation)) match {
       case (e1: Expression, e2: Expression) => new LessThanExpr(e1, e2).eval()
       case _ => UndefinedExpression
+    }
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:LessThanExpr => t1.getValuation(p.t1).union(t2.getValuation(p.t2))
+    case _ => {
+      throw new PatternNotMatchingException()
     }
   }
 }

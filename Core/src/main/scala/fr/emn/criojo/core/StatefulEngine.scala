@@ -20,6 +20,7 @@ import collection.mutable.ListBuffer
 trait StatefulEngine extends Engine{
 
   var DEBUG_MODE:Boolean = false
+  var DEBUG_DIRECT_MODE:Boolean = false
   var DEBUG_TRACE:ListBuffer[String] = ListBuffer()
 
   def printTrace() {
@@ -49,7 +50,7 @@ trait StatefulEngine extends Engine{
     notifyRelationObservers(atom)
   }
 
-  def getSolution = this.solution //EmptySolution
+  def getSolution:Solution = this.solution //EmptySolution
 
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
     extends Rule with StateMachine{
@@ -83,6 +84,19 @@ trait StatefulEngine extends Engine{
               DEBUG_TRACE += valuatedHeadString+" --> "+valuatedBodyString
             }
 
+
+            if(DEBUG_DIRECT_MODE) {
+              var valuatedHead = this.head.map({a => a.applyValuation(pe.vals)})
+              var valuatedBody = this.body.map({a => a.applyValuation(pe.vals)})
+
+              var valuatedHeadString = valuatedHead.toString()
+              var valuatedBodyString = valuatedBody.toString()
+              valuatedHeadString = valuatedHeadString.substring(5,valuatedHeadString.length()-1)
+              valuatedBodyString = valuatedBodyString.substring(5,valuatedBodyString.length()-1)
+
+              println(valuatedHeadString+" --> "+valuatedBodyString)
+            }
+
             executed = true
           }
           case _ => //Skip
@@ -97,14 +111,17 @@ trait StatefulEngine extends Engine{
         vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
       }
 
-      val newAtoms = this.body.map(_.applyValuation(finalValuation))
+      if(!finalValuation.failed) {
 
-      val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
-        finalExecution.atom(i)
+        val newAtoms = this.body.map(_.applyValuation(finalValuation))
+
+        val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
+          finalExecution.atom(i)
+        }
+
+        removeAtoms.foreach{a => removeAtom(a)}
+        newAtoms.foreach(a => introduceAtom(a))
       }
-
-      removeAtoms.foreach{a => removeAtom(a)}
-      newAtoms.foreach(a => introduceAtom(a))
     }
 
     def notifyCham(atom: Atom){}
@@ -123,6 +140,27 @@ trait StatefulEngine extends Engine{
 
 class HashSolution extends Solution{
   var elements = new HashSet[Atom]()
+
+  def displaySolution() {
+    var firstPrint:Boolean = true
+    print("<")
+    
+    var cpt:Int = 0
+    
+    elements.foreach( a => {
+      if(a.relName.charAt(0)!='$') {
+        if(!firstPrint)
+          print(",")
+        cpt = (cpt+1)%10
+        if(cpt!=9)
+          print(a)
+        else
+          println(a)
+        firstPrint = false
+      }
+    })
+    println(">")
+  }
 
   def createBackUp() = null
 

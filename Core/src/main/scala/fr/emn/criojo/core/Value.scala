@@ -13,7 +13,7 @@ trait Value[+T] {
   def getValue():T = {null.asInstanceOf[T]}
 }
 
-case class ValueTerm[+T](value:T) extends Term with Value[T]{
+case class ValueTerm[+T](value:T) extends Term with Value[T] {
 
   def name = value.toString
 
@@ -37,6 +37,21 @@ case class ValueTerm[+T](value:T) extends Term with Value[T]{
 
   override def getValue():T = {
     value
+  }
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = t match {
+    case p:ValueTerm[T] => {
+      if(p.getValue().equals(getValue())) {
+        Valuation()
+      }
+      else {
+        throw new PatternNotMatchingException()
+      }
+    }
+    case _ => {
+      throw new PatternNotMatchingException()
+    }
   }
 }
 

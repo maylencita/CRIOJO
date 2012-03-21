@@ -19,6 +19,7 @@ trait ComposableWithBinaryExpression extends Term
   def mult(that:Term):Expression = new MultExpr(this, that)
   def div(that:Term):Expression = new DivExpr(this, that)
   def isEqual(that:Term):Expression = new EqualExpr(this, that)
+  def isNotEqual(that:Term):Expression = new NotEqualExpr(this, that)
   def greaterThan(that:Term):Expression = new GreaterThanExpr(this, that)
   def lessThan(that:Term):Expression = new LessThanExpr(this, that)
 }

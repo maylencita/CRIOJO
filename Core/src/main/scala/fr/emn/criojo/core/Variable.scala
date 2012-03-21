@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import fr.emn.criojo.ext.expressions._
-
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -15,10 +13,10 @@ import fr.emn.criojo.ext.expressions._
 //}
 
 @serializable
-case class Variable (name: String) extends Expression {
+case class Variable (name: String) extends Term {
 
   def applyValuation(valuation:Valuation):Term = {
-    var value:Term = UndefinedExpression
+    var value:Term = this
     valuation.forall(v => {
       if(v._1.equals(this)) {
         value = v._2
@@ -31,7 +29,7 @@ case class Variable (name: String) extends Expression {
     value
   }
 
-  def eval():Expression = UndefinedExpression
+//  def eval():Expression = UndefinedExpression
 
   def matches(that:Term) = true
 
@@ -45,9 +43,13 @@ case class Variable (name: String) extends Expression {
     case v:Variable => this.name == v.name
     case _ => false
   }
+
   override def toString = name
 
   def toInt:Int = toString.toInt
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation = Valuation(this->t)
 }
 
 object RelVariable{

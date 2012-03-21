@@ -11,6 +11,13 @@ trait Term {
   def name:String
   def matches(that:Term):Boolean
   def applyValuation(valuation:Valuation):Term
+
+  @throws(classOf[PatternNotMatchingException])
+  def getValuation(t:Term):Valuation
+}
+
+case class PatternNotMatchingException() extends Exception("not a good pattern") {
+
 }
 
 /**
@@ -25,6 +32,17 @@ case class Function(name:String, params: List[Term]) extends Term {
   def applyValuation(valuation:Valuation):Term = {
     //TODO Implement
     this
+  }
+
+  def getValuation(t:Term):Valuation = {
+    var valuation:Valuation = Valuation()
+
+    t match {
+      case f:Function => params.zip(f.params).foreach(pair => valuation = valuation union pair._1.getValuation(pair._2))
+      case _ =>
+    }
+    
+    valuation
   }
 
   //Inheriting classes must override this method
@@ -50,6 +68,8 @@ case class IdTerm(name:String) extends Term {
     case _ => false
   }
   def applyValuation(valuation:Valuation):Term = this
+
+  def getValuation(t:Term):Valuation = Valuation(Variable(this.name)->t)
 
   override def toString = name
 }

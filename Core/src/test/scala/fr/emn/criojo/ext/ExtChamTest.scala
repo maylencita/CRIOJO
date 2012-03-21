@@ -140,6 +140,7 @@ class ExtChamTest {
     solution.addAtom(a)
     solution.addAtom(a2)
 
+    println(sm.getSolution)
     assertTrue(sm.getSolution.size==5)
     
     assertTrue(sm.getValue(sm.x)!=null)

@@ -15,9 +15,7 @@ package fr.emn.criojo.core
  */
 @serializable
 object Atom{
-  
-  var NextHashCode:Int = 0
-  
+
   def apply(rn:String, lst:Term*):Atom = new Atom(rn, lst.toList)
   def apply(rel:Relation, lst:Term*):Atom = {
     val a = new Atom(rel.name, lst.toList)
@@ -31,17 +29,6 @@ object Atom{
  * @define THIS Atom
  */
 case class Atom(relName:String, terms: List[Term]) {
-
-  // todo: the reason why 2 identical atoms could not be in the same solution was the way hashCode was implemented.
-  // now we increment a variable that will be used to differentiate two identical atoms.
-  val hashCodeId = {
-    Atom.NextHashCode = Atom.NextHashCode + 1
-
-    if (relation != null && relation.isMultiRel)
-      super.hashCode+Atom.NextHashCode
-    else
-      toString.hashCode+Atom.NextHashCode
-  }
 
   val vars = terms.map{case v:Variable => v; case _ => Undef}
 
@@ -59,7 +46,7 @@ case class Atom(relName:String, terms: List[Term]) {
   @deprecated ("Use: setActive(false)")
   def inactivate(){
     active = false
-  }  
+  }
 
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
@@ -72,14 +59,13 @@ case class Atom(relName:String, terms: List[Term]) {
   def apply(n:Int):Term = terms(n)
 
   def applyValuation(valuation:Valuation):Atom = {
-    val nuRel:Relation = valuation(Variable(this.relName)) match{
-      case rv:RelVariable => rv.relation
-      case _ => this.relation
+    val newName = Variable(this.relName).applyValuation(valuation) match{
+      case rv:RelVariable => rv.name
+      case _ => relName
     }
     val newTerms = terms.map(_.applyValuation(valuation))
 
-    val newAtom = new Atom((if(nuRel !=null) nuRel.name else this.relName), newTerms)
-    newAtom.relation = nuRel
+    val newAtom = new Atom(newName, newTerms)
     newAtom
   }
 
@@ -97,6 +83,7 @@ case class Atom(relName:String, terms: List[Term]) {
    * @return true if the matching is positive
    */
   def matches(that: Atom) : Boolean = {
+
     this.relName == that.relName &&
     this.arity == that.arity &&
     this.terms.zip(that.terms).forall(p => p._1.matches(p._2))
@@ -112,14 +99,15 @@ case class Atom(relName:String, terms: List[Term]) {
   }
 
   // constant hashcode
-  override def hashCode = hashCodeId
+  override def hashCode = super.hashCode()
 
   override def equals(that: Any):Boolean = that match{
     case a:Atom =>
       if (relation != null && relation.isMultiRel)
         super.equals(a)
       else
-        this.relName == a.relName && this.terms.zip(a.terms).forall(p => p._1 == p._2)
+        this.relName == a.relName && this.terms.zip(a.terms).forall(p => p._1 eq  p._2)
+
     case _ => false
   }
 
