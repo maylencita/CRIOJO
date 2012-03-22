@@ -3,11 +3,18 @@
   <component name="ChangeListManager">
     <list id="934e7264-2972-4c97-a4fd-501741dcbe0f" name="Default" comment="" />
     <list default="true" id="32ff1f7e-485c-46e2-9e7a-aa395565673c" name="TO_COMMIT" comment="Stable v12.02.29&#10;&#10;Ready to create a functioning working space in Idea 11.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/Sketch3D.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicAtom.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicCham.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicCriojoAtom.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicsSketch.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/Core.iml" afterPath="$PROJECT_DIR$/Core/Core.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Criojo.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Criojo.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntegerCham.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntegerCham.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/lang/Cham.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/lang/Cham.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Engine.scala" afterPath="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Engine.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/CalculationTest.scala" afterPath="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/CalculationTest.scala" />
     </list>
     <list id="2e64f69f-582f-462d-bc33-99a9b8505092" name="New Console Project" comment="" />
     <ignored path="CREOLE.iws" />
@@ -101,10 +108,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CriojoGuard.scala" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CriojoGuard.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="18" selection-start="459" selection-end="459" vertical-scroll-proportion="0.414823">
+            <state line="36" column="79" selection-start="730" selection-end="730" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CalculationTest.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/CalculationTest.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="175" column="6" selection-start="5326" selection-end="5326" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PhysicCham.scala" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicCham.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="33" column="36" selection-start="1268" selection-end="1268" vertical-scroll-proportion="0.5944056">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExpressionTest.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExpressionTest.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="295" column="45" selection-start="9317" selection-end="9337" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -113,7 +147,7 @@
       <file leaf-file-name="IntegerCham.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntegerCham.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="111" column="72" selection-start="3656" selection-end="3656" vertical-scroll-proportion="0.0">
+            <state line="111" column="72" selection-start="3920" selection-end="3920" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -122,7 +156,16 @@
       <file leaf-file-name="Cham.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/lang/Cham.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="163" column="15" selection-start="3943" selection-end="3952" vertical-scroll-proportion="0.0">
+            <state line="10" column="46" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChamFactory.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/ChamFactory.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="2" selection-start="557" selection-end="766" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -142,7 +185,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/pi/PiTerm.scala" />
         <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/PiCalculusTest.scala" />
         <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/lang/ComposableWithBinaryExpression.scala" />
         <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/expressions/BinaryExpression.scala" />
@@ -152,12 +194,13 @@
         <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/StatefulEngine.scala" />
         <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/TermMatchingTest.scala" />
         <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/lang/Cham.scala" />
-        <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/CalculationTest.scala" />
         <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExpressionTest.scala" />
         <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExtChamTest.scala" />
         <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala" />
-        <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala" />
         <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntegerCham.scala" />
+        <option value="$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala" />
+        <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/CalculationTest.scala" />
+        <option value="$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicCham.scala" />
       </list>
     </option>
   </component>
@@ -336,7 +379,6 @@
       <sortByType ProjectPane="false" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -385,6 +427,196 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="integration" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="integration" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CalculationTest.scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="integration" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="physics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ext" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CRIOJO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="criojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -526,23 +758,24 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="true" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="preferences.general" />
+    <property name="options.lastSelected" value="reference.projectsettings.compiler.javacompiler" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../BPMN" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.side.proportion" value="0.13636364" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -576,33 +809,7 @@
       <recent name="fr.emn.creole.test" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CalculationTest.FibonnaciNewSyntaxTest">
-    <configuration default="false" name="PiCalculusTest.testPiExpression" type="JUnit" factoryName="JUnit" temporary="true">
-      <module name="Core" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="fr.emn.criojo.ext" />
-      <option name="MAIN_CLASS_NAME" value="fr.emn.criojo.ext.PiCalculusTest" />
-      <option name="METHOD_NAME" value="testPiExpression" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.CalculationTest.PhysicTest">
     <configuration default="false" name="ExpressionTest.DjikstraTest" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="Core" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -688,6 +895,32 @@
       <option name="PACKAGE_NAME" value="fr.emn.criojo.integration" />
       <option name="MAIN_CLASS_NAME" value="fr.emn.criojo.integration.CalculationTest" />
       <option name="METHOD_NAME" value="FibonnaciNewSyntaxTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CalculationTest.PhysicTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="Core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="fr.emn.criojo.integration" />
+      <option name="MAIN_CLASS_NAME" value="fr.emn.criojo.integration.CalculationTest" />
+      <option name="METHOD_NAME" value="PhysicTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -1333,11 +1566,11 @@
       <item index="15" class="java.lang.String" itemvalue="JUnit.ExtTests.testStr" />
       <item index="16" class="java.lang.String" itemvalue="Maven.Compile" />
       <item index="17" class="java.lang.String" itemvalue="Maven.Pack" />
-      <item index="18" class="java.lang.String" itemvalue="JUnit.PiCalculusTest.testPiExpression" />
-      <item index="19" class="java.lang.String" itemvalue="JUnit.ExpressionTest.DjikstraTest" />
-      <item index="20" class="java.lang.String" itemvalue="JUnit.CalculationTest.fibonacciWithMemTest" />
-      <item index="21" class="java.lang.String" itemvalue="JUnit.CalculationTest.fibonacciWithMemTest2" />
-      <item index="22" class="java.lang.String" itemvalue="JUnit.CalculationTest.FibonnaciNewSyntaxTest" />
+      <item index="18" class="java.lang.String" itemvalue="JUnit.ExpressionTest.DjikstraTest" />
+      <item index="19" class="java.lang.String" itemvalue="JUnit.CalculationTest.fibonacciWithMemTest" />
+      <item index="20" class="java.lang.String" itemvalue="JUnit.CalculationTest.fibonacciWithMemTest2" />
+      <item index="21" class="java.lang.String" itemvalue="JUnit.CalculationTest.FibonnaciNewSyntaxTest" />
+      <item index="22" class="java.lang.String" itemvalue="JUnit.CalculationTest.PhysicTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1351,6 +1584,8 @@
   <component name="SvnConfiguration" maxAnnotateRevisions="500">
     <option name="USER" value="" />
     <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
     <option name="LAST_MERGED_REVISION" />
     <option name="MERGE_DRY_RUN" value="false" />
     <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
@@ -1420,13 +1655,13 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2857143" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33727175" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3329753" sideWeight="0.0" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975295" sideWeight="0.0" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3329753" sideWeight="0.0" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32777777" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2720588" sideWeight="0.1944146" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18872549" sideWeight="0.62191194" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39886272" sideWeight="0.66413665" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31517747" sideWeight="0.70354456" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3139535" sideWeight="0.66702473" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26852846" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven-2 Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.7712963" order="2" side_tool="false" content_ui="tabs" />
@@ -1548,11 +1783,6 @@
         <state line="21" column="70" selection-start="673" selection-end="673" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/core/TermMatchingTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="2" selection-start="1598" selection-end="1598" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Variable.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="3" selection-start="928" selection-end="928" vertical-scroll-proportion="0.0" />
@@ -1578,58 +1808,57 @@
         <state line="94" column="40" selection-start="2812" selection-end="2812" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/PiCalculusTest.scala">
+    <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExtChamTest.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="57" selection-start="656" selection-end="656" vertical-scroll-proportion="0.5143805">
-          <folding />
-        </state>
+        <state line="125" column="18" selection-start="3208" selection-end="3208" vertical-scroll-proportion="0.5022124" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="13" selection-start="240" selection-end="240" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="79" selection-start="730" selection-end="730" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntegerCham.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="72" selection-start="3920" selection-end="3920" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExpressionTest.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="293" column="10" selection-start="8774" selection-end="8774" vertical-scroll-proportion="0.17508417">
+        <state line="295" column="45" selection-start="9317" selection-end="9337" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/CalculationTest.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="321" column="39" selection-start="8910" selection-end="8910" vertical-scroll-proportion="3.030303">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/ext/ExtChamTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="18" selection-start="3208" selection-end="3208" vertical-scroll-proportion="0.5022124">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/Atom.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="13" selection-start="240" selection-end="240" vertical-scroll-proportion="0.0">
+        <state line="175" column="6" selection-start="5326" selection-end="5326" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/lang/Cham.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="15" selection-start="3943" selection-end="3952" vertical-scroll-proportion="0.0">
+        <state line="10" column="46" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/ext/IntegerCham.scala">
+    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/ChamFactory.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="72" selection-start="3656" selection-end="3656" vertical-scroll-proportion="0.0">
+        <state line="27" column="2" selection-start="557" selection-end="766" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/src/main/scala/fr/emn/criojo/core/CriojoGuard.scala">
+    <entry file="file://$PROJECT_DIR$/Core/src/test/scala/fr/emn/criojo/integration/physics/PhysicCham.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="18" selection-start="459" selection-end="459" vertical-scroll-proportion="0.414823">
+        <state line="33" column="36" selection-start="1268" selection-end="1268" vertical-scroll-proportion="0.5944056">
           <folding />
         </state>
       </provider>
@@ -1668,7 +1897,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
-          <last-edited>scala-compiler-2.8.0</last-edited>
+          <last-edited>core</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1692,11 +1921,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Scala|Core</last-edited>
+          <last-edited>CRIOJO</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.1969697" />
+                <option value="0.13636364" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

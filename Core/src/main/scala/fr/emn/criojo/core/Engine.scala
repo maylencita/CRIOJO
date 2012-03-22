@@ -123,6 +123,5 @@ trait Engine extends RuleFactory {
   }
 
   def printRules: String = rules.mkString("","\n","")
-
 }
 

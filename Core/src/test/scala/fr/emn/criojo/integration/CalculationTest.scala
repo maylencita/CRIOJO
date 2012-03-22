@@ -1,13 +1,17 @@
 package fr.emn.criojo.integration
 
 import org.junit.Test
+import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.lang.{Nu, Cham}
 import fr.emn.criojo.core._
 import collection.mutable.Buffer
 import java.io.FileWriter
 import fr.emn.criojo.ext.expressions.{UndefinedExpression, BooleanExpression, Expression, IntExpression}
-import fr.emn.criojo.ext.{DebugCham, IntegerCham}
-
+import physics.PhysicCham
+import processing.core._
+import processing.opengl._
+import javax.media.opengl._
+import physics.PhysicsSketch;
 
 /*
 * Created by IntelliJ IDEA.
@@ -169,15 +173,13 @@ class CalculationTest {
         Fibo(n,r) --> {n < num2fun(2)} ?: Result(n,1),
         (WaitResult(r,n) & Result(n,v)) --> Bingo(v)
       )
+
     }
 
     import cm.num2fun
 
     cm.introduceMolecule(cm.fibo(14))
     cm.executeRules()
-
-    cm.getSolution.displaySolution()
-    
     
     fw.write("</svg>\n")
     fw.close()
@@ -278,7 +280,7 @@ class CalculationTest {
       g
     }
 
-    val chemicalMachine = new Cham with IntegerCham{
+    val chemicalMachine = new Cham with IntegerCham {
       val gcd = createAndAddRelation("gcd")
       val Result = createAndAddRelation("Resultat")
 
@@ -338,14 +340,10 @@ class CalculationTest {
       g
     }
 
-    val cm = new Cham with IntegerCham with DebugCham {
+    val cm = new Cham with IntegerCham {
 
       val Sierpinski = createAndAddRelation("Sierpinski")
       val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = createVariable()
-
-
-      implicit def intToExp(n:java.lang.Integer):Term = new IntExpression(n.intValue())
-      var yx:Term = (x == 0);
 
       val Print = NativeRelation("Print3") {
 
@@ -353,16 +351,17 @@ class CalculationTest {
 
           fw.write("<polygon points=\"" + x.getValue() + "," + y.getValue() + " " + (x.getValue() - l.getValue()) + "," + (y.getValue() - l.getValue()) + " " + (x.getValue() + l.getValue()) + "," + (y.getValue() - l.getValue()) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
-        case _ =>
       }
 
-
-
       rules(
-        (Sierpinski(x, y, l, n)) --> {n==0} ?: Print(x,y,l),
+        (Sierpinski(x, y, l, n)) --> {n == num2fun(0)} ?: Print(x,y,l),
 
         Sierpinski(x, y, l, n)
-          --> {n>0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
+          --> {n>0} ?: (
+                         Sierpinski(x, y, l/2, n-1)
+                       & Sierpinski(x-l/2, y-l/2, l/2, n-1)
+                       & Sierpinski(x+l/2, y-l/2, l/2, n-1)
+                      )
       )
       //DEBUG_MODE = true
     }
@@ -370,13 +369,164 @@ class CalculationTest {
     import cm.num2fun
 
     cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 8))
-
-    //cm.enableStreamingTrace()
-    //cm.enableSolutionTrace()
-
     cm.executeRules()
 
     fw.write("</svg>\n")
     fw.close()
   }
+
+  @Test
+  def PaintWithProcessingSierpinskiTest() {
+
+
+
+    implicit def LazyGuard(x: => Expression):CriojoGuard = {
+      val g = new CriojoGuard(List()){
+        def eval(vals: Valuation) = {
+
+          val valuation = x.eval(vals)
+          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
+        }
+      }
+      g
+    }
+
+    implicit def LazyExpression(x: => Expression):Expression = {
+      val g = new Expression {
+
+        def name = x.name
+        def matches(that: Term): Boolean = false
+
+        def eval(): Expression = x.eval()
+
+        def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
+          case e:Expression => e
+          case _ => UndefinedExpression
+        }
+
+        def getValuation(t:Term):Valuation = x.getValuation(t)
+      }
+      g
+    }
+
+
+    //CircleSketch.launch()
+    var container:ProcessingAppletContainer[CanDrawTriangle] = ProcessingAppletContainer(new Sketch3D())
+    container.launch()
+
+    val cm = new Cham with IntegerCham {
+
+      val Sierpinski = createAndAddRelation("Sierpinski")
+      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = createVariable()
+
+      val Print = NativeRelation("Print3") {
+
+        case ((Atom(_, (x: IntExpression) :: (y: IntExpression) :: (l: IntExpression) :: _), _)) => {
+
+          container.out.drawTriangle(x.getValue(), y.getValue(), l.getValue())
+        }
+      }
+
+      rules(
+        (Sierpinski(x, y, l, n)) --> {n == num2fun(0)} ?: Print(x,y,l),
+
+        Sierpinski(x, y, l, n)
+          --> {n>0} ?: (
+                        Sierpinski(x, y, l/2, n-1)
+                        &Sierpinski(x-l/2, y-l/2, l/2, n-1)
+                        &Sierpinski(x+l/2, y-l/2, l/2, n-1)
+                      )
+      )
+      //DEBUG_MODE = true
+    }
+
+    import cm.num2fun
+
+    cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 8))
+    cm.executeRules()
+
+    println("Done")
+    
+    while(!container.out.asInstanceOf[PApplet].finished) {
+
+      Thread.sleep(1000)
+    }
+  }
+
+  @Test
+  def PhysicTest() {
+
+    var sketch = new PhysicsSketch()
+    var container:ProcessingAppletContainer[PhysicsSketch] = ProcessingAppletContainer(sketch)
+    container.launch()
+
+    println("Done")
+
+    while(!container.out.asInstanceOf[PApplet].finished) {
+
+      Thread.sleep(1000)
+    }
+  }
+}
+
+trait ProcessingApplet {
+
+//  var instance:ProcessingApplet = null
+//
+//  def createInstance():ProcessingApplet
+//
+//  def getInstance():ProcessingApplet = {
+//    if(instance==null)
+//      instance = createInstance()
+//    instance
+//  }
+
+  def launch() {
+
+//    this match {
+//      case p:PApplet => PApplet.runSketch(Array("Test"), p)
+//      case _ => throw new Exception("type incorrect: I need a PApplet")
+//    }
+
+    this match {
+      case p:PApplet => PApplet.runSketch(Array("Test"), new Sketch3D())
+      case _ => throw new Exception("type incorrect: I need a PApplet")
+    }
+  }
+}
+
+
+trait CanDrawTriangle {
+
+  def drawTriangle(x:Int, y:Int, l:Int)
+}
+
+case class CircleSketch() extends PApplet with ProcessingApplet with CanDrawTriangle {
+
+  override def setup() {
+    size(640, 480);
+    smooth();
+    noStroke();
+  }
+
+  def drawTriangle(x:Int, y:Int, l:Int) {
+
+    triangle(x, y, x+l, y-l, x-l, y-l);
+  }
+  
+  override def draw() {
+  }
+}
+
+case class ProcessingAppletContainer[T](val instance:T) {
+
+  def launch() {
+
+    instance match {
+      case p:PApplet => PApplet.runSketch(Array("Test"), p)
+      case _ => throw new Exception("type incorrect: I need a PApplet")
+    }
+  }
+
+  def out:T = instance
 }
