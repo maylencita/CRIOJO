@@ -55,7 +55,6 @@ class GuardsTests {
       val R = Rel("R")
       val S = Rel("S")
       val X = Rel("X")
-      val x,y,z = Var
 
       val Concat = NativeRelation("Concat"){
         case ((Atom(_,ValueTerm(v) :: _), _)) => finalword += v
@@ -106,5 +105,45 @@ class GuardsTests {
     cham.executeRules()
 
     assertEquals("onetwotwotwothree",finalword)
+  }
+
+  @Test
+  def absenceTest2{
+    var finalword = ""
+
+    //Clonning example
+    val cham = new Cham with TestCham{
+      val One = Rel("One")
+      val Two = Rel("Two")
+      val Three = Rel("Three")
+      val R = Rel("R")
+      val S = Rel("S")
+      val Test1 = Rel("Test1")
+      val Test2 = Rel("Test2")
+      val x,y,z = Var
+
+      val Concat = NativeRelation("Concat"){
+        case ((Atom(_,ValueTerm(v) :: _), _)) => finalword += v
+        case _ =>
+      }
+
+      rules(
+        (One() & R()) --> (One() & S() & S() & Concat("one")),
+        (One() & Test2(x,y)) --> Abs(R(),Test1(x,y)) ?: (Two() & Concat("two")),
+        (Two() & S()) --> (Two() & R() & Concat("two")),
+        Two() --> Abs(S()) ?: (Three() & Concat("three"))
+      )
+    }
+
+    import cham.{One,R,Test2}
+    cham.introduceMolecule(One() & R() & Test2(1,2))
+    cham.executeRules()
+
+    assertEquals("onetwotwotwothree",finalword)
+  }
+
+  @Test
+  def notExistsTest{
+
   }
 }

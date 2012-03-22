@@ -71,32 +71,4 @@ class RuleTest {
     assert(!rule.equals(true))
   }
 
-  @Test
-  def GetHeadSubsTest {
-
-    val cm = new Cham with IntegerCham {
-
-    }
-
-    val x = new Variable("x")
-    val y = new Variable("y")
-
-    val listOfTerms:List[Term] = List(x, y)
-    var atom:Atom = new Atom("Carbon",listOfTerms)
-
-    val x1 = new Variable("x")
-    val y1 = new Variable("y")
-    val vx1 = new ValueTerm[Int](1)
-    val vy1 = new ValueTerm[Int](2)
-
-    val listOfSubstitutions:List[(Variable, Term)] = List((x1,vx1),(y1,vy1))
-
-    val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
-    val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
-    val rule3 = cm.createRule(List(new Atom("B", listOfTerms)), List(new Atom("C", listOfTerms)), EmptyGuard, Set())
-
-    var result = rule.getHeadSubstitutions(List(new Atom("A", listOfTerms),new Atom("B", listOfTerms)))
-
-    assert(result.size == 2)
-  }
 }

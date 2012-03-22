@@ -53,6 +53,8 @@ trait Valuation{
   def union(that:Valuation):Valuation
   def intersect(that:Valuation):Valuation
   def sameElements(that:Valuation):Boolean
+  def restrict(newDom:Set[Variable]):Valuation
+  def removeFromDomain(vars:Set[Variable]):Valuation
 
   /**
    * Evaluates if that is an extension of this Valuation
@@ -77,7 +79,8 @@ class EmptyVal extends Valuation
 
   override def apply(key:Variable) = Undef
   def get(key:Variable):Assignment = NullAssignment
-
+  def restrict(newDom:Set[Variable]):Valuation = this
+  def removeFromDomain(vars:Set[Variable]):Valuation = this
   def domain = Set()
 
   def keyValues = Set()
@@ -172,6 +175,17 @@ class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
 
   def isEmpty = keyValues.isEmpty
 
+  def restrict(newDom:Set[Variable]):Valuation = {
+    new MapValuation(
+      newDom.map(x => this.get(x))
+    )
+  }
+
+  def removeFromDomain(vars:Set[Variable]):Valuation = {
+    val newDom = this.domain &~ vars
+    restrict(newDom)
+  }
+
   override def toString = keyValues.mkString("(",",",")")
 }
 
@@ -181,10 +195,12 @@ class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
  * @param alpha the positive valuation
  * @param beta the list of negative valuations
  */
-class ValGenerator(val alpha:Valuation, val beta:List[Valuation]){
-  def this(a:Valuation) = {
-    this(a,List())
-  }
+object NormalForm{
+  def apply(alpha:Valuation, beta:List[Valuation]) = new NormalForm(alpha,beta)
+  def apply(alpha:Valuation) = new NormalForm(alpha, List())
+  def apply(beta:List[Valuation]) = new NormalForm(TopValuation,beta)
+}
+class NormalForm(val alpha:Valuation, val beta:List[Valuation]){
   /**
    * Evaluates if the valuation valu, is consistent with this set of valuations:
    * valu is an extension of alpha and is not an extension of any of the betas
@@ -195,9 +211,9 @@ class ValGenerator(val alpha:Valuation, val beta:List[Valuation]){
     alpha.hasExtension(valu) && beta.forall(b => b.hasExtension(valu))
   }
 
-  def intersect(that:ValGenerator):ValGenerator = {
+  def intersect(that:NormalForm):NormalForm = {
     //TODO apply validations
-    new ValGenerator(alpha.intersect(that.alpha), this.beta ++ that.beta)
+    new NormalForm(alpha.intersect(that.alpha), this.beta ++ that.beta)
   }
 
   def isNormalForm:Boolean = alpha.sign && beta.forall(!_.sign)
@@ -210,7 +226,7 @@ class ValGenerator(val alpha:Valuation, val beta:List[Valuation]){
  * multiple valuations
  * @param vlist
  */
-class ValuationList(protected val vlist:List[ValGenerator]){
+class ValuationList(protected val vlist:List[NormalForm]){
   def this() = {
     this(List())
   }
@@ -222,13 +238,13 @@ class ValuationList(protected val vlist:List[ValGenerator]){
    * @param p
    * @return
    */
-  def exists(p:(ValGenerator) => Boolean):Boolean = {
+  def exists(p:(NormalForm) => Boolean):Boolean = {
     vlist.exists(p)
   }
 
   def not:ValuationList = {
     if (this.isEmpty)
-      new ValuationList()
+      new ValuationList(NormalForm(TopValuation)::Nil)
     else{
       new ValuationList(recursiveNot(this.vlist))
     }
@@ -237,28 +253,31 @@ class ValuationList(protected val vlist:List[ValGenerator]){
   def or(that:ValuationList):ValuationList =
     new ValuationList(this.vlist ++ that.vlist)
 
+  def map(f:(NormalForm) => NormalForm):ValuationList =
+    new ValuationList(this.vlist.map(f))
+
   def mkString(i:String,m:String,f:String)=vlist.mkString(i,m,f)
 
-  private def recursiveNot(lst:List[ValGenerator]):List[ValGenerator] = lst match{
+  private def recursiveNot(lst:List[NormalForm]):List[NormalForm] = lst match{
     case head::tail =>
-      val hd = new ValGenerator(TopValuation, List(! head.alpha))
+      val hd = NormalForm(List(! head.alpha))
       val newBetas = for(b <- head.beta) yield{
-        new ValGenerator(!b,List())
+        NormalForm(!b,List())
       }
       val rec = recursiveNot(tail)
       intersect(hd,rec) ++ newBetas.flatMap(b => intersect(b,rec))
     case _ => List()
   }
 
-  private def intersect(vg:ValGenerator, lst:List[ValGenerator]):List[ValGenerator] = lst match{
+  private def intersect(vg:NormalForm, lst:List[NormalForm]):List[NormalForm] = lst match{
     case List() => List(vg)
     case _ =>
-      lst.foldLeft(List[ValGenerator]()){(l,g) =>
+      lst.foldLeft(List[NormalForm]()){(l,g) =>
         val alpha = vg.alpha.intersect(g.alpha)
         if(alpha.isEmpty)
           l
         else
-          new ValGenerator(alpha, vg.beta ++ g.beta) :: l
+          NormalForm(alpha, vg.beta ++ g.beta) :: l
       }
   }
 }

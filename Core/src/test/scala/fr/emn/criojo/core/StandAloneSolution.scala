@@ -36,7 +36,7 @@ case class StandAloneSolution(var elems:List[Atom]) extends Solution {
     elems = elems.filter(_.isActive)
   }
   def update(newsol: Solution){
-    if (newsol.contains(False) || newsol.isEmpty){
+    if (newsol.isEmpty){
       clear()
     }else{
       this.elems = newsol.elems

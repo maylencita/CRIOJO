@@ -43,66 +43,6 @@ abstract class Rule extends RelationObserver{
 
   def notifyCham(atom:Atom)
 
-  protected def applyReaction(solution:Solution, vals:Valuation):Boolean = {
-    val newSolution = solution.clone
-    Logger.log("[Rule.applyReaction] Substitutions: " + vals)
-
-    var newAtoms = this.body.map{
-      a => val newA = a.applySubstitutions(vals)
-      newA
-    }
-    newAtoms = if(newAtoms.contains(False)) List() else newAtoms
-
-//    Logger.log("[Rule.applyReaction] newAtoms=" + newAtoms)
-
-    newSolution.cleanup()
-    newSolution.addMolecule(newAtoms.filter(a=>a.relation.isInstanceOf[LocalRelation]))
-//    Logger.log("[Rule.applyReaction] solution = " + solution)
-//    Logger.log("[Rule.applyReaction] newSolution (after cleanup) = " + newSolution)
-
-    if (newSolution != solution){
-      solution.update(newSolution)
-
-      Logger.debug(this.getClass, "applyReaction", this.toString + " applied!")
-      Logger.debug(this.getClass, "applyReaction", "New solution=" + solution)
-      head.foreach(h => h.setActive(true))
-      newAtoms.foreach(a => notifyCham(a))
-      true
-    }else{
-      solution.revert()
-      false
-    }
-  }
-
-  def getHeadSubstitutions(solAtoms:List[Atom]):List[Substitution] = {
-    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
-      case List() => acum
-      case ra :: rest =>
-        satoms match{
-          case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms)))
-        }
-    }
-
-    getSubsRec(head.filter(_.isActive), solAtoms, scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))})
-  }
-
-//  def getHeadSubstitutions(hatom:Atom, solatom:Atom):List[Substitution] = {
-//    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
-//      case List() => acum
-//      case ra :: rest =>
-//        satoms match{
-//          case List() => acum
-//          case sa :: rest2 =>
-//            getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms).flatMap(p=>getSubstitution(p._1,p._2))))
-//        }
-//    }
-//
-//    getSubsRec(List(hatom), solAtoms, scope.map{v => (v,v+"@"+Indexator.getIndex)})
-
-//    scope.map{v => (v,v+"@"+Indexator.getIndex)}.union(getHeadSubstitutions(hatom.terms,solatom.terms))
-//  }
-
   override def equals(that:Any) = {
     def eq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.terms == a2.terms
     def eq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => eq2(a1,a2)))

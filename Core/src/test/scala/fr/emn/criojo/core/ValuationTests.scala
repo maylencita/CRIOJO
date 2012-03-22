@@ -84,8 +84,8 @@ class ValuationTests {
 
   @Test
   def normalFormTest(){
-    val vg = new ValGenerator(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil)
-    val vg2 = new ValGenerator(!Valuation(x->3,y->3),Valuation(z->4)::(!Valuation(z->5))::Nil)
+    val vg = new NormalForm(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil)
+    val vg2 = new NormalForm(!Valuation(x->3,y->3),Valuation(z->4)::(!Valuation(z->5))::Nil)
     assertTrue("Not a normal form: " + vg, vg.isNormalForm)
     assertTrue("Not a normal form: " + vg2, !vg2.isNormalForm)
   }
@@ -93,9 +93,9 @@ class ValuationTests {
   @Test
   def notTest{
     val lst = new ValuationList(List(
-      new ValGenerator(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil),
-      new ValGenerator(Valuation(x->3,y->4),(!Valuation(z->5))::(!Valuation(z->6))::Nil),
-      new ValGenerator(Valuation(x->6,y->6),(!Valuation(z->4))::(!Valuation(z->3))::Nil)
+      new NormalForm(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil),
+      new NormalForm(Valuation(x->3,y->4),(!Valuation(z->5))::(!Valuation(z->6))::Nil),
+      new NormalForm(Valuation(x->6,y->6),(!Valuation(z->4))::(!Valuation(z->3))::Nil)
     ))
 
     val expected = "{(z=6) ^ (x!=2,y!=2)^(x!=6,y!=6)}," +
