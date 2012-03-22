@@ -57,15 +57,9 @@ trait NullCHAM extends EqCHAM{
     override def eval(vals: Valuation) = {
       ! super.eval(vals)
     }
-//    guard (T(variable), T(x) ==> Abs(Null_ask())?: Null_ask(x, f, t))
   }
 
-  case class Nul(variable:Variable) extends ExistGuard(Atom("Null",variable)::Nil) with ChamGuard
+  case class Nul(variable:Variable) extends PresenceGuard(Atom("Null",variable)::Nil) with ChamGuard
 
 }
 
-//class NullGuard(owner:NullCHAM, sttr:Atom, ruleDefs:(RuleFactory => Rule)*) extends Guard(sttr) with NullCHAM{
-//  this.eqClasses = owner.eqClasses
-//  override val nullVars = owner.nullVars
-//  initRules(ruleDefs.toList)
-//}

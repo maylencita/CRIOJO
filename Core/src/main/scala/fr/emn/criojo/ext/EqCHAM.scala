@@ -35,19 +35,23 @@ trait EqCHAM extends Cham{
 
   def Eq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard{
-      def eval(vals: Valuation) = {
+      override def eval(vals: Valuation) = {
         existsEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
-
+      val valuations = new ValuationList()
+      val observed = Set[String]()
+      def receiveUpdate(atom: Atom){}
     }
     g
   }
   def NotEq(t1:Term, t2:Term):CriojoGuard = {
     val g = new CriojoGuard{
-      def eval(vals: Valuation) = {
+      override def eval(vals: Valuation) = {
         existsNotEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
-
+      val valuations = new ValuationList()
+      val observed = Set[String]()
+      def receiveUpdate(atom: Atom){}
     }
     g
   }
@@ -59,65 +63,6 @@ trait EqCHAM extends Cham{
       disjClasses.contains(e1) && disjClasses.contains(e2)
   }
 
-  /*
-  // Native
-  private def addEquivalence(v1:Variable, v2:Variable, s:Solution) =
-  (eqClasses.find(v1),eqClasses.find(v2)) match{
-    case (Some(e1),Some(e2)) if e1 != e2 =>
-      //Found two equivalent EqClasses
-      if(disjointed(e1,e2))
-        throw new InvalidStateError("Illegal operation: " + v1 + " != " + v2)
-      else
-        eqClasses.merge(e1,e2)
-    case (Some(e1),Some(e2)) => //They are already here, do nothing
-    case (Some(e), None) =>	e.add(v2)
-    case (None, Some(e)) =>	e.add(v1)
-    case _ =>
-      //Add a new EqClass
-      eqClasses add HashSet(v1,v2)
-  }
-  */
-
-  /*
-  private def addNotEqual(v1:Variable, v2:Variable, s:Solution){
-    if(v1 == v2)
-      throw new InvalidStateError("Illegal operation: " + v1 + " == " + v2)
-    (eqClasses.find(v1),eqClasses.find(v2)) match{
-      case (Some(e1), Some(e2)) if e1 == e2 =>
-        throw new InvalidStateError("Illegal operation: " + v1 + " == " + v2)
-      case (Some(e1), Some(e2)) if e1 != e2 =>
-        disjClasses.add(e1)
-        disjClasses.add(e2)
-      case (op1,op2) =>
-        val e1 = op1 match {case Some(e) => e; case None => HashSet(v1)}
-        val e2 = op2 match {case Some(e) => e; case None => HashSet(v2)}
-        eqClasses add e1
-        eqClasses add e2
-    }
-  }
-  */
-
-  /*
-  private def askEq(a:Atom, sol:Solution){
-    a match{
-      case Atom(_, i::(v1:Variable)::(v2:Variable)::kpls::kmin::_) =>
-        if(v1 == v2 || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2))){
-          //They are equal
-          sol.addAtom(Atom(kpls.toString, i,v1,v2))
-        }
-        else
-          (disjClasses.find(v1), disjClasses.find(v2)) match{
-            case (Some(e1),Some(e2)) if e1 != e2 =>
-              //They are different
-              sol.addAtom(Atom(kmin.toString, i,v1,v2))
-            case _ => //No enough information to answer
-          }
-      case _ => //Nothing
-    }
-  }
-  */
-
-  //TODO maybe move this somewhere else, like a utility class or something
   private def equalsOp(op:Option[Any],value:Any):Boolean = op match{
     case Some(s) => s == value
     case _ => false
@@ -151,26 +96,6 @@ trait EqCHAM extends Cham{
     x.equals(y) ||
     eqClasses.exists(ec => ec.contains(x) && ec.contains(y))
   }
-
-  def getSubstitutions(hatom:Atom, solAtoms:List[Atom]):List[Substitution] = {
-    def getSubsRec(ratoms:List[Atom], satoms:List[Atom], acum:List[Substitution]): List[Substitution] = ratoms match{
-      case List() => acum
-      case ra :: rest =>
-        satoms match{
-          case List() => acum
-          case sa :: rest2 => getSubsRec(rest, rest2, acum.union(ra.vars.zip(sa.terms).filterNot(_._1 == Undef).toSeq)) // todo: quick'n dirty fix ".toSeq"
-        }
-    }
-    getSubsRec(List(hatom), solAtoms, List())
-  }
-
-//  def Eq(v1:Variable, v2:Variable):Guard = {
-//    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,t,f)))
-//  }
-//
-//  def NotEq(v1:Variable, v2:Variable):Guard = {
-//    guard(T(v1,v2), T(x,y) --> Abs(EQ_ask()) ?: Nu(s)(EQ_ask(s,x,y,f,t)))
-//  }
 
 }
 

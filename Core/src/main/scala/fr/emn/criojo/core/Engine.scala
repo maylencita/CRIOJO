@@ -98,11 +98,11 @@ trait Engine extends RuleFactory{
 
   def processRuleBody(headVars:List[RelVariable], rule:Rule){
     rule.guard match{
-      case cg:PresenceGuard =>
-        cg.atoms.foreach{a =>
-          findRelation(a.relName) match{
+      case cg:CriojoGuard =>
+        cg.observed.foreach{relName =>
+          findRelation(relName) match{
             case Some(r) => r.addObserver(cg)
-            case _ => a.relation = new LocalRelation("Undefined")
+            case _ => //a.relation = new LocalRelation("Undefined")
           }
         }
       case _ =>

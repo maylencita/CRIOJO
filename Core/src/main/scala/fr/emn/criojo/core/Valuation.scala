@@ -16,26 +16,6 @@ object Valuation{
 
   implicit def pair2Assg(p:(Variable,Term)):Assignment = new Assignment(p._1,p._2)
 }
-
-class Assignment (val variable:Variable,val value:Term,s:Boolean) extends Pair(variable,value){
-  def this(x:Variable,v:Term)={
-    this(x,v,true)
-  }
-  def apply(v:Variable):Boolean = v == variable
-  def sign:Boolean = s
-  def unary_! : Assignment  = new Assignment(variable,value,!sign)
-
-  override def equals(that:Any):Boolean = that match{
-    case v2:Assignment => this.variable == v2.variable &&
-      this.sign == v2.sign &&
-      this.value == v2.value
-  }
-
-  override def toString =
-    variable+ (if(!s) "!=" else "=") +value.toString
-}
-object NullAssignment extends Assignment(Undef,Undef){}
-
 /**
  * valuation := Top
  *            | Bottom
@@ -69,6 +49,26 @@ Methods to avoid compilation errors while Valuation is adopted in all the code
   def forall(p:((Variable,Term)) => Boolean) = keyValues.forall(p)
   def toSet = Set()
 }
+
+class Assignment (val variable:Variable,val value:Term,s:Boolean) extends Pair(variable,value){
+  def this(x:Variable,v:Term)={
+    this(x,v,true)
+  }
+  def apply(v:Variable):Boolean = v == variable
+  def sign:Boolean = s
+  def unary_! : Assignment  = new Assignment(variable,value,!sign)
+
+  override def equals(that:Any):Boolean = that match{
+    case v2:Assignment => this.variable == v2.variable &&
+      this.sign == v2.sign &&
+      this.value == v2.value
+  }
+
+  override def toString =
+    variable+ (if(!s) "!=" else "=") +value.toString
+}
+object NullAssignment extends Assignment(Undef,Undef){}
+
 
 abstract
 class EmptyVal extends Valuation
@@ -145,7 +145,7 @@ class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
     if (domIntersec.isEmpty || domIntersec.forall(x => this.get(x) == that.get(x))){
       new MapValuation(this.keyValues ++ that.keyValues)
     }else
-      Valuation()
+      BottomValuation
   }
 
    /**
@@ -170,7 +170,7 @@ class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
 
   def hasExtension(that:Valuation):Boolean =
     this.domain.forall{ x =>
-      this.sign == (that.get(x) == this.get(x))
+      this.sign == (that(x) == this(x))
     }
 
   def isEmpty = keyValues.isEmpty
@@ -212,8 +212,13 @@ class NormalForm(val alpha:Valuation, val beta:List[Valuation]){
   }
 
   def intersect(that:NormalForm):NormalForm = {
-    //TODO apply validations
-    new NormalForm(alpha.intersect(that.alpha), this.beta ++ that.beta)
+    val newAlpha = alpha.intersect(that.alpha)
+    val newBeta = this.beta ++ that.beta
+
+    if (newBeta.forall(b => !(newAlpha union b).isEmpty))
+      new NormalForm(alpha.intersect(that.alpha), this.beta ++ that.beta)
+    else
+      new NormalForm(BottomValuation,List())
   }
 
   def isNormalForm:Boolean = alpha.sign && beta.forall(!_.sign)

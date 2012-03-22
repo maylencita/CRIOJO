@@ -121,28 +121,37 @@ trait IntegerCham extends EqCHAM{
 
   def Gr(t1:Term, t2:Term):ChamGuard = {
     val g = new CriojoGuard with ChamGuard {
-      def eval(vals: Valuation) = {
+      override def eval(vals: Valuation) = {
         //greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
         greaterThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+      val valuations = new ValuationList()
+      val observed = Set[String]()
+      def receiveUpdate(atom: Atom){}
     }
     g
   }
 
   def Less(t1:Term, t2:Term):ChamGuard = {
     val g = new CriojoGuard with ChamGuard {
-      def eval(vals: Valuation) = {
+      override def eval(vals: Valuation) = {
         lessThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+      val valuations = new ValuationList()
+      val observed = Set[String]()
+      def receiveUpdate(atom: Atom){}
     }
     g
   }
 
   def Leq(t1:Term, t2:Term):ChamGuard = {
     val g = new CriojoGuard with ChamGuard {
-      def eval(vals: Valuation) = {
+      override def eval(vals: Valuation) = {
         lessThanOrEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+      val valuations = new ValuationList()
+      val observed = Set[String]()
+      def receiveUpdate(atom: Atom){}
     }
     g
   }

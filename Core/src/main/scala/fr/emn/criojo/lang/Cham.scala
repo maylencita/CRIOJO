@@ -43,9 +43,11 @@ StatefulEngine
 
   def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
 
-  def Ex(atoms:Atom*):ChamGuard =  new ExistGuard(atoms.toList) with ChamGuard
+  def Ex(x:Variable,g:ChamGuard):ChamGuard =  new ExistsGuard(g,x) with ChamGuard
 
   def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList) with ChamGuard
+
+  def Not(g:ChamGuard):ChamGuard = new NotGuard(g) with ChamGuard
 
   def when(head:Molecule)(body: RuleBody):RuleDef = {
     val ruleDef =

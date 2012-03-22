@@ -143,7 +143,49 @@ class GuardsTests {
   }
 
   @Test
-  def notExistsTest{
+  def existsTest{
+    val cham = new Cham with TestCham{
+      val R = Rel("R")
+      val S = Rel("S")
+      val x,y,z = Var
 
+      rules(
+        R(x) --> Ex(y,Prs(S(x,y))) ?: Passed()
+      )
+    }
+
+    import cham.{R,S}
+    cham.introduceMolecule(S(1,2))
+    cham.introduceMolecule(R(1))
+    cham.executeRules
+
+    assertEquals(1,cham.passed)
+
+    cham.introduceMolecule(R(2))
+    cham.executeRules
+    assertEquals(1,cham.passed)
+  }
+
+  @Test//(timeout=1000)
+  def notExistsTest{
+    val cham = new Cham with TestCham{
+      val R = Rel("R")
+      val S = Rel("S")
+      val x,y,z = Var
+
+      rules(
+        R(x) --> Not(Ex(y,Prs(S(x,y)))) ?: Nu(y)(R(x) & S(x,y) & Passed())
+      )
+    }
+
+    import cham.{R,S}
+    cham.introduceMolecule(S(1,2))
+    cham.introduceMolecule(R(1))
+    cham.executeRules
+
+    assertEquals(0,cham.passed)
+
+//    cham.introduceMolecule(R(2))
+//    assertEquals(1,cham.passed)
   }
 }

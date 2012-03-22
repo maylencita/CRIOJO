@@ -113,11 +113,13 @@ class CalculationTest {
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard{
-        def eval(vals: Valuation) = {
-
+        override def eval(vals: Valuation) = {
           val valuation = x.eval(vals)
           valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
         }
+        val valuations = new ValuationList()
+        val observed = Set[String]()
+        def receiveUpdate(atom: Atom){}
       }
       g
     }
@@ -254,11 +256,13 @@ class CalculationTest {
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard{
-        def eval(vals: Valuation) = {
-
+        override def eval(vals: Valuation) = {
           val valuation = x.eval(vals)
           valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
         }
+        val valuations = new ValuationList()
+        val observed = Set[String]()
+        def receiveUpdate(atom: Atom){}
       }
       g
     }
@@ -314,11 +318,13 @@ class CalculationTest {
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard{
-        def eval(vals: Valuation) = {
-
+        override def eval(vals: Valuation) = {
           val valuation = x.eval(vals)
           valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
         }
+        val valuations = new ValuationList()
+        val observed = Set[String]()
+        def receiveUpdate(atom: Atom){}
       }
       g
     }
