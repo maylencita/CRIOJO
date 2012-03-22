@@ -1,6 +1,7 @@
 package fr.emn.criojo.ext.expressions
 
 import fr.emn.criojo.core.{Valuation, PatternNotMatchingException, Term, ValueTerm}
+import fr.emn.criojo.ext.expressions.Expression
 
 
 /*

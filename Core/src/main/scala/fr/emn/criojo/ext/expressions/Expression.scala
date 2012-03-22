@@ -3,6 +3,7 @@ package fr.emn.criojo.ext.expressions
 import fr.emn.criojo.lang.{ComposableWithBinaryExpression}
 import fr.emn.criojo.lang.CompositionOperators
 import fr.emn.criojo.core.{PatternNotMatchingException, Variable, Term, Valuation}
+import fr.emn.criojo.ext.expressions.{Expression, UndefinedExpression}
 
 
 /*
@@ -26,8 +27,6 @@ trait Expression extends Term with ComposableWithBinaryExpression with Compositi
 trait TerminalExpr extends Expression {
   override def eval():Expression = this
 }
-
-class VarExpression(name: String) extends Variable(name) with TerminalExpr
 
 object UndefinedExpression extends TerminalExpr {
   val name = "_"

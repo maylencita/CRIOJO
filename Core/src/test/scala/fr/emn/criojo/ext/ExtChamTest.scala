@@ -19,13 +19,13 @@ class ExtChamTest {
   @Test
   def EqChamTest {
 
-    val sm = new EqCHAM with IntegerCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
+    val sm = new EqCHAM with IntegerCham with DebugCham {
+      val A = createAndAddRelation("A")
+      val B = createAndAddRelation("B")
+      val C = createAndAddRelation("C")
+      val D = createAndAddRelation("D")
 
-      var x,y,v,z = Var
+      var x,y,v,z = createVariable()
       var vx:Term = 1
       var vy:Term = 2
 
@@ -47,11 +47,10 @@ class ExtChamTest {
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List()).size==0)
-
-      DEBUG_MODE = true
     }
 
     import sm.{num2fun}
+    sm.enableSolutionTrace()
 
     sm.introduceMolecule(sm.A())
     sm.introduceMolecule(sm.C())
@@ -92,13 +91,13 @@ class ExtChamTest {
   @Test
   def ExtendedChamTest {
 
-    val sm = new ExtendedCHAM with IntegerCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
+    val sm = new ExtendedCHAM with IntegerCham with DebugCham {
+      val A = createAndAddRelation("A")
+      val B = createAndAddRelation("B")
+      val C = createAndAddRelation("C")
+      val D = createAndAddRelation("D")
 
-      var x,y,v,z = Var
+      var x,y,v,z = createVariable()
       var vx:Term = 1
       var vy:Term = 2
 
@@ -120,11 +119,10 @@ class ExtChamTest {
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
       assertTrue(getSubstitutions(a2,List()).size==0)
-
-      DEBUG_MODE = true
     }
 
     import sm.{num2fun}
+    sm.enableSolutionTrace()
 
     sm.introduceMolecule(sm.A())
     sm.introduceMolecule(sm.C())

@@ -30,7 +30,7 @@ trait EqCHAM extends Cham{
   //val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a.vars(0),a.vars(1),s)}
 
   //--Private:
-  private val s,x,y,z = Var; private val K = VarR("K")
+  private val s,x,y,z = createVariable(); private val K = VarR("K")
   /***********************************************************************/
 
   def Eq(t1:Term, t2:Term):CriojoGuard = {

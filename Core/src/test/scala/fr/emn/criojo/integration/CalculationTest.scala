@@ -1,12 +1,12 @@
 package fr.emn.criojo.integration
 
 import org.junit.Test
-import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.lang.{Nu, Cham}
 import fr.emn.criojo.core._
 import collection.mutable.Buffer
 import java.io.FileWriter
 import fr.emn.criojo.ext.expressions.{UndefinedExpression, BooleanExpression, Expression, IntExpression}
+import fr.emn.criojo.ext.{DebugCham, IntegerCham}
 
 
 /*
@@ -23,15 +23,15 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def fibonacciTest{
     val fCham = new Cham with IntegerCham{
-      val fib = Rel("fib")
-      val Fib = Rel("Fib")
+      val fib = createAndAddRelation("fib")
+      val Fib = createAndAddRelation("Fib")
 
       val MPrint = NativeRelation("2"){
         case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,v,x = Var
+      val n,n1,n2,r,r1,r2,v,x = createVariable()
 
 
       rules(
@@ -52,15 +52,15 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def gcdTest{
     val fCham = new Cham with IntegerCham{
-      val gcd = Rel("gcd")
-      val Result = Rel("Resultat")
+      val gcd = createAndAddRelation("gcd")
+      val Result = createAndAddRelation("Resultat")
 
       val MPrint = NativeRelation("2"){
         case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,v,x,y,xNew = Var
+      val n,n1,n2,r,r1,r2,v,x,y,xNew = createVariable()
 
 
       rules(
@@ -78,17 +78,17 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def fibonacciWithMemTest{
     val fCham = new Cham with IntegerCham{
-      val fib = Rel("fib")
-      val Fib = Rel("Fib")
-      val FEq = Rel("FEq")
+      val fib = createAndAddRelation("fib")
+      val Fib = createAndAddRelation("Fib")
+      val FEq = createAndAddRelation("FEq")
 
       val MPrint = NativeRelation("2"){
         case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,x = Var
-      val v,v1,v2 = Var
+      val n,n1,n2,r,r1,r2,x = createVariable()
+      val v,v1,v2 = createVariable()
 
       rules(
         fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
@@ -142,17 +142,17 @@ class CalculationTest {
 
     val cm = new Cham with IntegerCham {
 
-      val fibo = Rel("fibo")
-      val Fibo = Rel("Fibo")
-      val WaitResult = Rel("WaitResult")
-      val Result = Rel("Result")
-      val Bingo = Rel("Bingo")
+      val fibo = createAndAddRelation("fibo")
+      val Fibo = createAndAddRelation("Fibo")
+      val WaitResult = createAndAddRelation("WaitResult")
+      val Result = createAndAddRelation("Result")
+      val Bingo = createAndAddRelation("Bingo")
 
-      val n,n1,n2,r,r1,r2,x = Var
-      val v,v1,v2 = Var
+      val n,n1,n2,r,r1,r2,x = createVariable()
+      val v,v1,v2 = createVariable()
 
-      val Sierpinski = Rel("Sierpinski")
-      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = Var
+      val Sierpinski = createAndAddRelation("Sierpinski")
+      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = createVariable()
 
       val Print = NativeRelation("Print3") {
 
@@ -169,8 +169,6 @@ class CalculationTest {
         Fibo(n,r) --> {n < num2fun(2)} ?: Result(n,1),
         (WaitResult(r,n) & Result(n,v)) --> Bingo(v)
       )
-
-      DEBUG_MODE = true
     }
 
     import cm.num2fun
@@ -179,7 +177,6 @@ class CalculationTest {
     cm.executeRules()
 
     cm.getSolution.displaySolution()
-    cm.printTrace()
     
     
     fw.write("</svg>\n")
@@ -189,10 +186,10 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def fibonacciIterative{
     val fCham = new Cham with IntegerCham{
-      val AskFib = Rel("AskFib")
-      val Rep = Rel("Rep")
-      val Fib = Rel("Fib")
-      val Res = Rel("Res")
+      val AskFib = createAndAddRelation("AskFib")
+      val Rep = createAndAddRelation("Rep")
+      val Fib = createAndAddRelation("Fib")
+      val Res = createAndAddRelation("Res")
 
       val MPrint = NativeRelation("MPrint"){
         case (Atom(_,x::_),_) => println(x)
@@ -202,8 +199,8 @@ class CalculationTest {
       val MPrint_var = VarR("MPrint_var")
 
       val K = VarR("K+")
-      val n,n1,n2,r,r1,r2,r3,s = Var
-      val v,v1,v2 = Var
+      val n,n1,n2,r,r1,r2,r3,s = createVariable()
+      val v,v1,v2 = createVariable()
 
       rules(
         AskFib(n,K) --> Nu(s)(Fib(s,0) & Fib(s,1) & Rep(s, n, K)),
@@ -227,14 +224,14 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def gcdTestExp{
     val chemicalMachine = new Cham with IntegerCham{
-      val gcd = Rel("gcd")
-      val Result = Rel("Resultat")
+      val gcd = createAndAddRelation("gcd")
+      val Result = createAndAddRelation("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
       }
 
-      val x,y = Var
+      val x,y = createVariable()
 
 
       rules(
@@ -282,14 +279,14 @@ class CalculationTest {
     }
 
     val chemicalMachine = new Cham with IntegerCham{
-      val gcd = Rel("gcd")
-      val Result = Rel("Resultat")
+      val gcd = createAndAddRelation("gcd")
+      val Result = createAndAddRelation("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
       }
 
-      val x,y = Var
+      val x,y = createVariable()
 
       rules(
         gcd(x,y) --> {x < y} ?: gcd(y,x),
@@ -341,10 +338,14 @@ class CalculationTest {
       g
     }
 
-    val cm = new Cham with IntegerCham {
+    val cm = new Cham with IntegerCham with DebugCham {
 
-      val Sierpinski = Rel("Sierpinski")
-      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = Var
+      val Sierpinski = createAndAddRelation("Sierpinski")
+      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = createVariable()
+
+
+      implicit def intToExp(n:java.lang.Integer):Term = new IntExpression(n.intValue())
+      var yx:Term = (x == 0);
 
       val Print = NativeRelation("Print3") {
 
@@ -352,10 +353,13 @@ class CalculationTest {
 
           fw.write("<polygon points=\"" + x.getValue() + "," + y.getValue() + " " + (x.getValue() - l.getValue()) + "," + (y.getValue() - l.getValue()) + " " + (x.getValue() + l.getValue()) + "," + (y.getValue() - l.getValue()) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
+        case _ =>
       }
 
+
+
       rules(
-        (Sierpinski(x, y, l, n)) --> {n == num2fun(0)} ?: Print(x,y,l),
+        (Sierpinski(x, y, l, n)) --> {n==0} ?: Print(x,y,l),
 
         Sierpinski(x, y, l, n)
           --> {n>0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
@@ -366,6 +370,10 @@ class CalculationTest {
     import cm.num2fun
 
     cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 8))
+
+    //cm.enableStreamingTrace()
+    //cm.enableSolutionTrace()
+
     cm.executeRules()
 
     fw.write("</svg>\n")

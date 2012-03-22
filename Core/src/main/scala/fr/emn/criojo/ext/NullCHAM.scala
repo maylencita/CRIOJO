@@ -15,7 +15,7 @@ import fr.emn.criojo.lang.{ChamGuard, Molecule}
 
 trait NullCHAM extends EqCHAM{
   val nullVars:EqClass = HashSet[Variable]()
-  private val x,y = Var
+  private val x,y = createVariable()
 
   /**********************************************************************
   * VM definition:

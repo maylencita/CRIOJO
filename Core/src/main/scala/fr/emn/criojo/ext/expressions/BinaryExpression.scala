@@ -1,14 +1,15 @@
 package fr.emn.criojo.ext.expressions
 
-import fr.emn.criojo.core.{PatternNotMatchingException, Term, Valuation}
+import fr.emn.criojo.core.{Variable, PatternNotMatchingException, Term, Valuation}
+import fr.emn.criojo.ext.expressions.{Expression, ValueExpression, UndefinedExpression}
 
 
 /*
- * Created by IntelliJ IDEA.
- * User: mayleen
- * Date: 01/03/12
- * Time: 00:22
- */
+* Created by IntelliJ IDEA.
+* User: mayleen
+* Date: 01/03/12
+* Time: 00:22
+*/
 
 // A generic binary expression allows to create custom binary expressions that extend BinaryExpression.
 // See SumExpr below
@@ -158,6 +159,9 @@ class EqualExpr(val t1: Term, val t2: Term) extends BinaryExpression {
     case (exp1:Expression, exp2:Expression) => {
       (exp1.eval(), exp2.eval()) match {
         case (v1: ValueExpression[_], v2: ValueExpression[_]) => v1.isEqual(v2)
+        case (v1: Variable, v2: ValueExpression[_]) => v1.isEqual(v2)
+        case (v1: ValueExpression[_], v2: Variable) => v1.isEqual(v2)
+        case (v1: Variable, v2: Variable) => v1.isEqual(v2)
         case _ => UndefinedExpression
       }
     }

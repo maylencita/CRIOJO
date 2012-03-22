@@ -23,15 +23,15 @@ trait BoolCHAM extends EqCHAM{
 
 trait BoolCHAM2 extends Cham{
 
-  val And = Rel("And")
-  val Or = Rel("Or")
-  val TrueRel = Rel("TrueRel")
-  val FalseRel = Rel("FalseRel")
+  val And = createAndAddRelation("And")
+  val Or = createAndAddRelation("Or")
+  val TrueRel = createAndAddRelation("TrueRel")
+  val FalseRel = createAndAddRelation("FalseRel")
   val trueFun = Fun("true")
   val falseFun = Fun("false")
   private val K = VarR("K")
-  private val Val = Rel("$Val")
-  private val s,x,y,v,v1,v2 = Var
+  private val Val = createAndAddRelation("$Val")
+  private val s,x,y,v,v1,v2 = createVariable()
 
   rules(
     And(s,true,true,K) --> K(s,true),

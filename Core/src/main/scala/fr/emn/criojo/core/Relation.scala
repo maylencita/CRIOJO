@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import fr.emn.criojo.lang.Molecule
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -24,3 +26,6 @@ trait Relation{
   override def toString = name
 }
 
+class ApplicableRel(name:String,f:List[Term] => Molecule) extends LocalRelation(name, true){
+  def apply(vars:Term*):Molecule = f(vars.toList)
+}

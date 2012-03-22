@@ -9,8 +9,7 @@ package fr.emn.criojo.core
 import Criojo._
 import fr.emn.criojo.util.Logger._
 
-trait Engine extends RuleFactory{
-  protected var index = 0
+trait Engine extends RuleFactory {
 
   protected var rules:List[Rule] = List()
   protected var relations:List[Relation] = List()

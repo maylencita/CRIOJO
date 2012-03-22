@@ -37,22 +37,6 @@ trait Solution{
 
   def contains(a:Atom) = elems.contains(a)
 
-  def containsAtom(a:Atom, n:Int):Boolean = {
-    return (elems.count(atom => atom.matches(a)) == n)
-  }
-
-  def containsAtom(a:LocalRelation, n:Int):Boolean = {
-    return (elems.count(atom => a.name==atom.relName) == n)
-  }
-
-  def containsMolecule(m:Molecule):Boolean = {
-    containsMolecule(m, 1)
-  }
-
-  def containsMolecule(m:Molecule, n:Int):Boolean = {
-    containsAtom(m.head, n)
-  }
-
   def isTrue:Boolean = !elems.exists(_.isFalse) && elems.exists(_.isTrue)
 
   def filter(p: (Atom) => Boolean) = elems.filter(p)

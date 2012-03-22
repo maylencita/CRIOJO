@@ -1,10 +1,10 @@
 package fr.emn.criojo.core
 
 import org.junit.Test
-import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.ext.expressions._
 import fr.emn.criojo.lang.{Nu, Cham}
-
+import fr.emn.criojo.ext.expressions.{Expression, UndefinedExpression}
+import fr.emn.criojo.ext.{DebugCham, IntegerCham}
 
 /**
  * Created by IntelliJ IDEA.
@@ -107,32 +107,33 @@ class ExpressionTest {
   @Test
   def BonbonstestRelations {
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
       implicit def string2Exp(n:String):Expression = StrExpression(n)
       implicit def int2term(n:Int):Expression = IntExpression(n)
 
-      val x,y,z = Var
-      val OneBonbon = Rel("OneBonbon")
-      val TwoBonbons = Rel("TwoBonbons")
+      val x,y,z = createVariable()
+      val OneBonbon = createAndAddRelation("OneBonbon")
+      val TwoBonbons = createAndAddRelation("TwoBonbons")
 
       rules(
         (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x+y+1)
       )
-
-      DEBUG_MODE = true
     }
 
     implicit def string2Exp(n:String):Expression = StrExpression(n)
     implicit def int2term(n:Int):Expression = IntExpression(n)
 
+    machine.enableSolutionTrace()
+
     machine.introduceMolecule(machine.OneBonbon(1))
-    assert(machine.getSolution.containsAtom(machine.OneBonbon, 1))
+
+    assert(machine.containsAtom(machine.OneBonbon, 1))
     machine.executeRules()
 
     machine.introduceMolecule(machine.OneBonbon(2))
     machine.executeRules()
-    assert(machine.getSolution.containsAtom(machine.TwoBonbons, 1))
-    assert(machine.getSolution.containsAtom(machine.OneBonbon, 0))
+    assert(machine.containsAtom(machine.TwoBonbons, 1))
+    assert(machine.containsAtom(machine.OneBonbon, 0))
     assert(machine.getSolution.size==1)
   }
 
@@ -141,23 +142,23 @@ class ExpressionTest {
 
 
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
-      val n1,n2,n3,n4,n5 = Var
-      val R1_COO_R2 = Rel("R1_COO_R2")
-      val R2_OH = Rel("R2_OH")
-      val R1_COOH = Rel("R1_COOH")
-      val H2O = Rel("H2O")
-      val COO = Rel("COO")
-      val R1 = Rel("R1")
-      val R2 = Rel("R2")
-      val C = Rel("C")
-      val O = Rel("O")
-      val H = Rel("H")
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
+      val n1,n2,n3,n4,n5 = createVariable()
+      val R1_COO_R2 = createAndAddRelation("R1_COO_R2")
+      val R2_OH = createAndAddRelation("R2_OH")
+      val R1_COOH = createAndAddRelation("R1_COOH")
+      val H2O = createAndAddRelation("H2O")
+      val COO = createAndAddRelation("COO")
+      val R1 = createAndAddRelation("R1")
+      val R2 = createAndAddRelation("R2")
+      val C = createAndAddRelation("C")
+      val O = createAndAddRelation("O")
+      val H = createAndAddRelation("H")
 
       implicit def int2term(n:Int):Expression = IntExpression(n)
 
-      val EXPLODE_R1_COO_R2 = Rel("EXPLODE_R1_COO_R2")
-      val EXPLODE_H2O = Rel("EXPLODE_H2O")
+      val EXPLODE_R1_COO_R2 = createAndAddRelation("EXPLODE_R1_COO_R2")
+      val EXPLODE_H2O = createAndAddRelation("EXPLODE_H2O")
 
       rules(
 
@@ -175,11 +176,10 @@ class ExpressionTest {
         (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> Gr(Min(n1,n2,n3), 0) ?: ( R2(n1-Min(n1,n2,n3)) & O(n2-Min(n1,n2,n3)) & H(n3-Min(n1,n2,n3)) & R2_OH(n4+Min(n1,n2,n3))),
         (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> Gr(Min(n1,n2,n3/2,n4), 0) ?: (R1_COOH(n5+Min(n1,n2,n3/2,n4)) & R1(n1-Min(n1,n2,n3/2,n4)) & C(n2-Min(n1,n2,n3/2,n4)) & O(n3-2*Min(n1,n2,n3/2,n4)) & H(n4-Min(n1,n2,n3/2,n4)))
       )
-
-      DEBUG_MODE = true
     }
 
     import machine.int2term
+    machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.R1_COO_R2(1))
     machine.introduceMolecule(machine.H2O(2))
@@ -193,9 +193,9 @@ class ExpressionTest {
     machine.introduceMolecule(machine.H(0))
     machine.executeRules()
 
-    assert(machine.getSolution.containsMolecule(machine.R1_COO_R2(0)))
-    assert(machine.getSolution.containsMolecule(machine.H2O(1)))
-    assert(machine.getSolution.containsMolecule(machine.R1_COOH(1)))
+    assert(machine.containsMolecule(machine.R1_COO_R2(0)))
+    assert(machine.containsMolecule(machine.H2O(1)))
+    assert(machine.containsMolecule(machine.R1_COOH(1)))
 
     println(machine.getSolution)
   }
@@ -203,15 +203,15 @@ class ExpressionTest {
   @Test
   def WordTest {
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
-      val w,kp,km = Var
-      val InsertWord = Rel("InsertWord")
-      val AskContain = Rel("AskContain")
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
+      val w,kp,km = createVariable()
+      val InsertWord = createAndAddRelation("InsertWord")
+      val AskContain = createAndAddRelation("AskContain")
       val Kp = VarR("Kp")
       val Km = VarR("Km")
       val OK = VarR("OK")
       val NOTOK = VarR("NOTOK")
-      val Clean = Rel("Clean")
+      val Clean = createAndAddRelation("Clean")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
@@ -222,12 +222,12 @@ class ExpressionTest {
         (AskContain(w,Kp,Km)) --> Abs(InsertWord(w)) ?: (Km(w) & Clean()),
         (Clean() &: InsertWord(w) ) --> Clean()
       )
-
-      DEBUG_MODE = true
     }
 
     import machine.num2fun
     implicit def stringToValue(s:String) = new StrExpression(s)
+
+    machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.InsertWord("aa"))
     machine.introduceMolecule(machine.InsertWord("bb"))
@@ -242,11 +242,10 @@ class ExpressionTest {
     machine.introduceMolecule(machine.AskContain("gh", machine.OK, machine.NOTOK))
     machine.executeRules()
 
-    machine.printTrace()
     println(machine.getSolution)
     
-    assert(machine.getSolution.containsMolecule(machine.OK("gg")))
-    assert(machine.getSolution.containsMolecule(machine.NOTOK("gh")))
+    assert(machine.containsMolecule(machine.OK("gg")))
+    assert(machine.containsMolecule(machine.NOTOK("gh")))
 
     //println(machine.printRules)
   }
@@ -255,9 +254,9 @@ class ExpressionTest {
   def MapReduceTest {
 
     val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
-      val z,w,n,i,j,kp,km = Var
-      val InsertWord = Rel("InsertWord")
-      val Count = Rel("Count")
+      val z,w,n,i,j,kp,km = createVariable()
+      val InsertWord = createAndAddRelation("InsertWord")
+      val Count = createAndAddRelation("Count")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
@@ -267,8 +266,6 @@ class ExpressionTest {
         InsertWord(n, w) --> Count(n, w, 1), // MAP
         (Count(n, w, i) & Count(z, w, j)) --> Count(n, w, i+j) // REDUCE
       )
-
-      DEBUG_MODE = true
     }
 
     import machine.num2fun
@@ -294,14 +291,14 @@ class ExpressionTest {
   def DjikstraTest {
 
     val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
-      val x,y,z,w,n,i,j = Var
+      val x,y,z,w,n,i,j = createVariable()
 
-      val AreConnected = Rel("LeadsTo")
-      val AreInRelation = Rel("AreInRelation")
-      val IsItEquivalent = Rel("IsItEquivalent")
+      val AreConnected = createAndAddRelation("LeadsTo")
+      val AreInRelation = createAndAddRelation("AreInRelation")
+      val IsItEquivalent = createAndAddRelation("IsItEquivalent")
 
-      val PUSH = Rel("PUSH")
-      val POP = Rel("POP")
+      val PUSH = createAndAddRelation("PUSH")
+      val POP = createAndAddRelation("POP")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
@@ -313,8 +310,6 @@ class ExpressionTest {
         AreInRelation(x,y,n) --> Eq(x,y) ?: (PrintInt(x) & POP(n)),
         (POP(j) &: PUSH(i,n,x)) --> Eq(i,j) ?: ( PrintInt(x) & POP(n))
       )
-
-      DEBUG_MODE = true
     }
 
     import machine.num2fun

@@ -2,6 +2,7 @@ package fr.emn.criojo.core
 
 import Criojo._
 import fr.emn.criojo.util.Logger
+import statemachine.PartialExecution
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,6 +43,10 @@ abstract class Rule extends RelationObserver{
   def execute (vals:Valuation):Boolean
 
   def notifyCham(atom:Atom)
+
+  def applyReaction(pe:PartialExecution) {
+
+  }
 
   protected def applyReaction(solution:Solution, vals:Valuation):Boolean = {
     val newSolution = solution.clone

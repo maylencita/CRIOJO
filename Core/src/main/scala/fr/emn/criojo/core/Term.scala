@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import fr.emn.criojo.ext.expressions.EqualExpr
+
 /*
  * Created by IntelliJ IDEA.
  * User: mayleen

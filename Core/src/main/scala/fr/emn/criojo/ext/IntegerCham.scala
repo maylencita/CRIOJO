@@ -2,6 +2,7 @@ package fr.emn.criojo.ext
 
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext.expressions.IntExpression
+import fr.emn.criojo.ext.expressions.Expression
 import fr.emn.criojo.core._
 
 /*
@@ -11,18 +12,18 @@ import fr.emn.criojo.core._
  * Time: 14:38
  */
 trait IntegerCham extends EqCHAM{
-  val IntVal = Rel("Int") //Like Val(x,n)
-  val Int_ask = Rel("Int_ask")
-  val Int_print = Rel("$Int_print")
-  val Add = Rel("Add")
-  val Sub = Rel("Subs")
-  val Mod = Rel("Mod")
-  val Leq_ask = Rel("Leq_ask")
-  val Leq = Rel("Leq")
-  private val Res = Rel("$Int.Res")
-  private val LeqRes = Rel("$Int.LeqRes")
-  private val mod = Rel("$Int.mod")
-  private val IntAdd2 = Rel("$Int.add2")
+  val IntVal = createAndAddRelation("Int") //Like Val(x,n)
+  val Int_ask = createAndAddRelation("Int_ask")
+  val Int_print = createAndAddRelation("$Int_print")
+  val Add = createAndAddRelation("Add")
+  val Sub = createAndAddRelation("Subs")
+  val Mod = createAndAddRelation("Mod")
+  val Leq_ask = createAndAddRelation("Leq_ask")
+  val Leq = createAndAddRelation("Leq")
+  private val Res = createAndAddRelation("$Int.Res")
+  private val LeqRes = createAndAddRelation("$Int.LeqRes")
+  private val mod = createAndAddRelation("$Int.mod")
+  private val IntAdd2 = createAndAddRelation("$Int.add2")
 
   val intEqClasses = new TypedEqClasses[Int](eqClasses,disjClasses)
   private val Declare = NativeRelation("$Declare"){ (a,s) => declare(a) }
@@ -36,8 +37,8 @@ trait IntegerCham extends EqCHAM{
     //      println(x)
     //    }
   }
-  private val IntSub2 = Rel("$IntSubs2")
-  private val IntDiv2 = Rel("$IntDivs2")
+  private val IntSub2 = createAndAddRelation("$IntSubs2")
+  private val IntDiv2 = createAndAddRelation("$IntDivs2")
 
   protected val IntAdd = NativeRelation("$IntAdd"){ //(a,s) => add(a) }
     case (Atom(_,x::y::z::_), _) =>
@@ -89,10 +90,10 @@ trait IntegerCham extends EqCHAM{
     val K = VarR("K+")
     val Zero = VarR("K0")
     val Err = VarR("Err")
-    val z,s,v,v1,v2 = Var
-    val x,y,n = Var
-    val X1 = Rel("$Int.$X1")
-    val ModRes = Rel("$Int.ModRes")
+    val z,s,v,v1,v2 = createVariable()
+    val x,y,n = createVariable()
+    val X1 = createAndAddRelation("$Int.$X1")
+    val ModRes = createAndAddRelation("$Int.ModRes")
 
     rules(
       IntVal(x,n) --> Abs(X1(x))?:(Declare(x,n) & IntVal(x,n) & X1(x)),
@@ -176,7 +177,7 @@ trait IntegerCham extends EqCHAM{
     case _ => None
   } //intEqClasses getValue x
 
-  implicit def num2fun(n:Int):Term = new IntExpression(n) //new IntTerm(n)
+  implicit def num2fun(n:Int):Expression = new IntExpression(n) //new IntTerm(n)
 
   private def getValue(t:Term):Option[Int] = t match{
     case v:Value[Int] => Some(v.getValue())

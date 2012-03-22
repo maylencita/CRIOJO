@@ -2,6 +2,7 @@ package fr.emn.criojo.ext.expressions
 
 import fr.emn.criojo.core.Term
 import fr.emn.criojo.core.Valuation
+import fr.emn.criojo.ext.expressions.Expression
 
 /**
  * Created by IntelliJ IDEA.

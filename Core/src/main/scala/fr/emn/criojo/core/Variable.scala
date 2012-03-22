@@ -31,6 +31,9 @@ case class Variable (name: String) extends Expression {
     value
   }
 
+  def ==(n:Int):Expression = new EqualExpr(this, new IntExpression(n))
+
+
   def eval():Expression = UndefinedExpression
 
   def matches(that:Term) = true

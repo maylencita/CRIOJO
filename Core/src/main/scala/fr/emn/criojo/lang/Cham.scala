@@ -1,9 +1,6 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.core.Valuation
-import fr.emn.criojo.ext._
-import collection.mutable.Buffer
 
 /*
 * Created by IntelliJ IDEA.
@@ -11,32 +8,20 @@ import collection.mutable.Buffer
 * Date: 30/09/11
 * Time: 14:59
 */
-class Cham extends
-//UnstableEngine
-StatefulEngine
-//SimpleEngine
-{
-
-  /*
-  def ComputableRelation(name:String)(f:(Tuple2[Product,Product],Buffer[(Variable,Term)]) => Unit) = {
-    val unstableRel = new UnstableRelation(name,f)
-    addRelation(unstableRel)
-    unstableRel
-  }
-  */
+class Cham extends StatefulEngine with StatefulFactory {
 
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
-  val T = Rel("true")
-  val F = Rel("false")
+  val T = createRelation("true")
+  val F = createRelation("false")
 
   var ruleDefList = List[RuleDef]()
 
-  def Var:Variable = {
-    index += 1
-    new Variable("x"+index)
-  }
+//  def Var:Variable = {
+//    index += 1
+//    new Variable("x"+index)
+//  }
 
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
@@ -98,28 +83,23 @@ StatefulEngine
     flst.toList.foreach{fact => axiom(fact)}
   }
 
-  def Rel:ApplicableRel = Rel("@R"+nextIndex)
+//  def createAndAddRelation:ApplicableRel = createAndAddRelation("@R"+nextIndex)
 
-  def Rel(n:String): ApplicableRel = {
-    val r = new ApplicableRel(n,
-      (terms:List[Term])=>new CrjAtom(n, terms.toList))
+  def createAndAddRelation(n:String): ApplicableRel = {
+    val r = createRelation(n,
+      (terms:List[Term])=>new CrjAtom(n, terms.toList)).asInstanceOf[ApplicableRel]
     addRelation(r)
     r
   }
 
-  def Rel(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
-    val r = new ApplicableRel(relName, f)
+  def createAndAddRelation(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
+    val r = createRelation(relName, f).asInstanceOf[ApplicableRel]
     addRelation(r)
     r
   }
 
   def introduceMolecule(molecule:Molecule){
     molecule.toList.foreach(introduceAtom(_))
-  }
-
-  def nextIndex:Int = {
-    index += 1
-    index
   }
 
   override def executeRules(){
@@ -155,10 +135,6 @@ StatefulEngine
   }
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
-
-  class ApplicableRel(name:String,f:List[Term] => Molecule) extends LocalRelation(name, true){
-    def apply(vars:Term*):Molecule = f(vars.toList)
-  }
 }
 
 trait ChamGuard extends CriojoGuard {
