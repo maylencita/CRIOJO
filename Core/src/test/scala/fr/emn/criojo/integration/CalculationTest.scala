@@ -4,13 +4,9 @@ import org.junit.Test
 import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.lang.{Nu, Cham}
 import fr.emn.criojo.core._
-import collection.mutable.Buffer
 import java.io.FileWriter
 import fr.emn.criojo.ext.expressions.{UndefinedExpression, BooleanExpression, Expression, IntExpression}
-import physics.PhysicCham
 import processing.core._
-import processing.opengl._
-import javax.media.opengl._
 import physics.PhysicsSketch;
 
 /*
