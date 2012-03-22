@@ -166,7 +166,7 @@ class GuardsTests {
     assertEquals(1,cham.passed)
   }
 
-  @Test//(timeout=1000)
+  @Test(timeout=1000)
   def notExistsTest{
     val cham = new Cham with TestCham{
       val R = Rel("R")
@@ -185,7 +185,40 @@ class GuardsTests {
 
     assertEquals(0,cham.passed)
 
-//    cham.introduceMolecule(R(2))
-//    assertEquals(1,cham.passed)
+    cham.introduceMolecule(R(2))
+    cham.executeRules
+
+    assertEquals(1,cham.passed)
+  }
+
+  @Test
+  def andTest{
+    var finalword = ""
+    val cham = new Cham with TestCham{
+      val R = Rel("R")
+      val X1 = Rel("X1")
+      val X2 = Rel("X2")
+
+      val Concat = NativeRelation("Concat"){
+        case ((Atom(_,ValueTerm(v) :: _), _)) => finalword += v
+        case _ =>
+      }
+
+      rules(
+        R() --> (Prs(X1()) && Abs(X2())) ?: (R() & X2() & Concat("123")),
+        (R() & X2()) --> Concat("456")
+      )
+    }
+
+    import cham.{R,X1}
+    cham.introduceMolecule(R())
+    cham.executeRules()
+
+    assertEquals("",finalword)
+
+    cham.introduceMolecule(X1())
+    cham.executeRules()
+
+    assertEquals("123456",finalword)
   }
 }

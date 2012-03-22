@@ -111,8 +111,7 @@ case class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{
 
   def observed = lguard.observed ++ rguard.observed
 
-  //TODO is there a more efficient way?
-  def valuations = (lguard.valuations.not or rguard.valuations.not).not
+  def valuations = lguard.valuations intersect rguard.valuations
 
   def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
 

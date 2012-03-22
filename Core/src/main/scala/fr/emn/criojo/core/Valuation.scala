@@ -258,6 +258,19 @@ class ValuationList(protected val vlist:List[NormalForm]){
   def or(that:ValuationList):ValuationList =
     new ValuationList(this.vlist ++ that.vlist)
 
+  def intersect(that:ValuationList):ValuationList =
+    new ValuationList(
+      this.vlist.foldLeft(List[NormalForm]()){(l,nf) =>
+        that.vlist.foldLeft(l){(l2,nf2) =>
+          val inters = nf.intersect(nf2)
+          if(inters.alpha != BottomValuation)
+            inters :: l2
+          else
+            l2
+        }
+      }
+    )
+
   def map(f:(NormalForm) => NormalForm):ValuationList =
     new ValuationList(this.vlist.map(f))
 
