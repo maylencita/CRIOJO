@@ -24,6 +24,19 @@ class PhysicCham(val view:PhysicsSketch) extends Cham with IntegerCham {
   override def createRelation(n: String): Relation = new ApplicableRel(n, (terms: List[Term]) => new PhysicCriojoAtom(n, terms.toList))
   override def createRelation(n: String, f:(List[Term]=>Molecule)): Relation = new ApplicableRel(n, f)
 
+  override def createAndAddRelation(n:String): ApplicableRel = {
+    val r = createRelation(n,
+      (terms:List[Term])=>new PhysicCriojoAtom(n, terms.toList)).asInstanceOf[ApplicableRel]
+    addRelation(r)
+    r
+  }
+
+  override def createAndAddRelation(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
+    val r = createRelation(relName, f).asInstanceOf[ApplicableRel]
+    addRelation(r)
+    r
+  }
+
   class PhysicRule(head:List[Atom], body:List[Atom],  guard:Guard, scope:Set[Variable])
     extends StatefulRule(head, body, guard, scope) {
 
