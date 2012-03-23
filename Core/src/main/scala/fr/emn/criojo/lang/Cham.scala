@@ -12,17 +12,15 @@ import expressions.VarExpression
 * Date: 30/09/11
 * Time: 14:59
 */
-class Cham extends
-StatefulEngine
-{
+class Cham extends StatefulEngine{
 
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
-  val T = Rel("true")
-  val F = Rel("false")
+//  val T = Rel("true")
+//  val F = Rel("false")
 
-  var ruleDefList = List[RuleDef]()
+//  var ruleDefList = List[RuleDef]()
 
   def Var:VarExpression = {
     index += 1
@@ -56,36 +54,32 @@ StatefulEngine
       else
         head --> (body.guard, body.conj)
 
-    ruleDefList :+= ruleDef
+//    ruleDefList :+= ruleDef
     ruleDef
   }
 
-  def seq(ruleDefs:RuleDef*){
-    var prevTok:Tok = null
-    ruleDefs.foreach{rdf =>
-      ruleDefList = ruleDefList.filterNot(_ == rdf)
-      val nextTok = Tok()
-      addRelation(new LocalRelation(nextTok.name))
-      val rule = rdf(this)
-      val newrule =
-        if(prevTok == null)
-          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
-        else
-          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
-
-      processRuleBody(processRuleHead(newrule), newrule)
-      addRule(newrule)
-      prevTok = nextTok
-    }
-  }
-
-  def Do(ruleDefs:RuleDef*){
-
-  }
+//  def seq(ruleDefs:RuleDef*){
+//    var prevTok:Tok = null
+//    ruleDefs.foreach{rdf =>
+//      ruleDefList = ruleDefList.filterNot(_ == rdf)
+//      val nextTok = Tok()
+//      addRelation(new LocalRelation(nextTok.name))
+//      val rule = rdf(this)
+//      val newrule =
+//        if(prevTok == null)
+//          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
+//        else
+//          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
+//
+//      processRuleBody(processRuleHead(newrule), newrule)
+//      addRule(newrule)
+//      prevTok = nextTok
+//    }
+//  }
 
   def axiom(fact:Molecule){
     val AxiomTok = Tok()
-    ruleDefList :+= (Empty --> Abs(AxiomTok()) ?: (fact & AxiomTok()))
+//    ruleDefList :+= (Empty --> Abs(AxiomTok()) ?: (fact & AxiomTok()))
   }
 
   def facts(flst:Molecule*){
@@ -95,14 +89,20 @@ StatefulEngine
   def Rel:ApplicableRel = Rel("@R"+nextIndex)
 
   def Rel(n:String): ApplicableRel = {
-    val r = new ApplicableRel(n,
-      (terms:List[Term])=>new CrjAtom(n, terms.toList))
+    val r = new LocalRelation(n) with ApplicableRel{
+      val function = (terms:List[Term])=>new CrjAtom(n, terms.toList)
+    }
+//    val r = new ApplicableRel(n,
+//      (terms:List[Term])=>new CrjAtom(n, terms.toList))
     addRelation(r)
     r
   }
 
   def Rel(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
-    val r = new ApplicableRel(relName, f)
+    val r = new LocalRelation(relName) with ApplicableRel{
+      val function = f
+    }
+//    val r = new ApplicableRel(relName, f)
     addRelation(r)
     r
   }
@@ -117,7 +117,7 @@ StatefulEngine
   }
 
   override def executeRules(){
-    ruleDefList.foreach(initRule(_))
+//    ruleDefList.foreach(initRule(_))
     super.executeRules()
   }
 
@@ -150,9 +150,11 @@ StatefulEngine
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
-  class ApplicableRel(name:String,f:List[Term] => Molecule) extends LocalRelation(name, true){
-    def apply(vars:Term*):Molecule = f(vars.toList)
-  }
+}
+
+trait ApplicableRel/*(name:String,f:List[Term] => Molecule)* extends LocalRelation(name, true)*/{
+  def function:(List[Term]) => Molecule
+  def apply(vars:Term*):Molecule = function(vars.toList)
 }
 
 trait ChamGuard extends CriojoGuard {
