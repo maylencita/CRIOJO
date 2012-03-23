@@ -14,7 +14,7 @@ import fr.emn.criojo.core._
  * To change this template use File | Settings | File Templates.
  */
 
-class ExtChamTest {
+class ExtChamTest /*{
 
   @Test
   def EqChamTest {
@@ -147,3 +147,4 @@ class ExtChamTest {
     assertTrue(sm.getValue(sm.v).isInstanceOf[Value[Nothing]])
   }
 }
+*/

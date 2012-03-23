@@ -1,9 +1,8 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
-import fr.emn.criojo.core.Valuation
+import factory.{DefaultFactory, RelationFactory}
 import fr.emn.criojo.ext._
-import collection.mutable.Buffer
 import expressions.VarExpression
 
 /*
@@ -12,15 +11,12 @@ import expressions.VarExpression
 * Date: 30/09/11
 * Time: 14:59
 */
-class Cham extends StatefulEngine{
+class Cham extends StatefulEngine with DefaultFactory{
+  //TODO to implement this it is necessary to change Cham where used
+//  this:RelationFactory =>
 
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
-
-//  val T = Rel("true")
-//  val F = Rel("false")
-
-//  var ruleDefList = List[RuleDef]()
 
   def Var:VarExpression = {
     index += 1
@@ -29,10 +25,18 @@ class Cham extends StatefulEngine{
 
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
+  //TODO replaced by NativeRel
   def NativeRelation(n:String)(f:(Atom,Solution) => Unit)= {
     val natRel = new NativeRelation(n,this.solution,f)
+//    val natRel = createNativeRelation(n,f)
     addRelation(natRel)
     natRel
+   }
+
+  def NativeRel(f:(List[Term]) => Unit) = {
+    val natRel = createNativeRelation("NR@"+nextIndex,f)
+    addRelation(natRel)
+    new ChamRel(natRel)
   }
 
   def If(guard: Guard)(body: => Molecule):RuleBody = {
@@ -54,57 +58,29 @@ class Cham extends StatefulEngine{
       else
         head --> (body.guard, body.conj)
 
-//    ruleDefList :+= ruleDef
     ruleDef
   }
 
-//  def seq(ruleDefs:RuleDef*){
-//    var prevTok:Tok = null
-//    ruleDefs.foreach{rdf =>
-//      ruleDefList = ruleDefList.filterNot(_ == rdf)
-//      val nextTok = Tok()
-//      addRelation(new LocalRelation(nextTok.name))
-//      val rule = rdf(this)
-//      val newrule =
-//        if(prevTok == null)
-//          createRule(rule.head, rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
-//        else
-//          createRule(rule.head :+ prevTok(), rule.body :+ nextTok(), rule.guard, rule.scope.toSet)
-//
-//      processRuleBody(processRuleHead(newrule), newrule)
-//      addRule(newrule)
-//      prevTok = nextTok
-//    }
-//  }
-
   def axiom(fact:Molecule){
     val AxiomTok = Tok()
-//    ruleDefList :+= (Empty --> Abs(AxiomTok()) ?: (fact & AxiomTok()))
   }
 
   def facts(flst:Molecule*){
     flst.toList.foreach{fact => axiom(fact)}
   }
 
-  def Rel:ApplicableRel = Rel("@R"+nextIndex)
+  def Rel:Applicable = Rel("@R"+nextIndex)
 
-  def Rel(n:String): ApplicableRel = {
-    val r = new LocalRelation(n) with ApplicableRel{
-      val function = (terms:List[Term])=>new CrjAtom(n, terms.toList)
-    }
-//    val r = new ApplicableRel(n,
-//      (terms:List[Term])=>new CrjAtom(n, terms.toList))
+  def Rel(n:String): ChamRel = {
+    val r = createLocalRelation(n)
     addRelation(r)
-    r
+    new ChamRel(r)
   }
 
-  def Rel(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
-    val r = new LocalRelation(relName) with ApplicableRel{
-      val function = f
-    }
-//    val r = new ApplicableRel(relName, f)
+  def Rel(relName:String, f:(List[Term]=>Molecule)): ChamRel = {
+    val r = createLocalRelation (relName)
     addRelation(r)
-    r
+    new ChamRel(r)
   }
 
   def introduceMolecule(molecule:Molecule){
@@ -114,11 +90,6 @@ class Cham extends StatefulEngine{
   def nextIndex:Int = {
     index += 1
     index
-  }
-
-  override def executeRules(){
-//    ruleDefList.foreach(initRule(_))
-    super.executeRules()
   }
 
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
@@ -152,7 +123,27 @@ class Cham extends StatefulEngine{
 
 }
 
-trait ApplicableRel/*(name:String,f:List[Term] => Molecule)* extends LocalRelation(name, true)*/{
+/**
+ * A wrapper for a relation that is also a variable
+ */
+class ChamRel(val delegate:Relation,val function:(List[Term]) => Molecule)
+  extends RelVariable(delegate.name) with Applicable{
+
+  this.relation = delegate
+
+  def this(del:Relation) = {
+    this(del,(terms:List[Term])=> {
+      val atom = new CrjAtom(del.name, terms.toList)
+      atom.relation = del
+      atom
+    })
+  }
+}
+
+/**
+ * An object of type Applicable applies a function to one or more Terms to obtain a Molecule
+ */
+trait Applicable/*(name:String,f:List[Term] => Molecule)* extends LocalRelation(name, true)*/{
   def function:(List[Term]) => Molecule
   def apply(vars:Term*):Molecule = function(vars.toList)
 }
