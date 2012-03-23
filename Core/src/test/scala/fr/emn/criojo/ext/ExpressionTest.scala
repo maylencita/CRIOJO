@@ -111,9 +111,9 @@ class ExpressionTest {
       implicit def string2Exp(n:String):Expression = StrExpression(n)
       implicit def int2term(n:Int):Expression = IntExpression(n)
 
-      val x,y,z = createVariable()
-      val OneBonbon = createAndAddRelation("OneBonbon")
-      val TwoBonbons = createAndAddRelation("TwoBonbons")
+      val x,y,z = Var()
+      val OneBonbon = Rel("OneBonbon")
+      val TwoBonbons = Rel("TwoBonbons")
 
       rules(
         (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x+y+1)
@@ -143,22 +143,22 @@ class ExpressionTest {
 
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val n1,n2,n3,n4,n5 = createVariable()
-      val R1_COO_R2 = createAndAddRelation("R1_COO_R2")
-      val R2_OH = createAndAddRelation("R2_OH")
-      val R1_COOH = createAndAddRelation("R1_COOH")
-      val H2O = createAndAddRelation("H2O")
-      val COO = createAndAddRelation("COO")
-      val R1 = createAndAddRelation("R1")
-      val R2 = createAndAddRelation("R2")
-      val C = createAndAddRelation("C")
-      val O = createAndAddRelation("O")
-      val H = createAndAddRelation("H")
+      val n1,n2,n3,n4,n5 = Var()
+      val R1_COO_R2 = Rel("R1_COO_R2")
+      val R2_OH = Rel("R2_OH")
+      val R1_COOH = Rel("R1_COOH")
+      val H2O = Rel("H2O")
+      val COO = Rel("COO")
+      val R1 = Rel("R1")
+      val R2 = Rel("R2")
+      val C = Rel("C")
+      val O = Rel("O")
+      val H = Rel("H")
 
       implicit def int2term(n:Int):Expression = IntExpression(n)
 
-      val EXPLODE_R1_COO_R2 = createAndAddRelation("EXPLODE_R1_COO_R2")
-      val EXPLODE_H2O = createAndAddRelation("EXPLODE_H2O")
+      val EXPLODE_R1_COO_R2 = Rel("EXPLODE_R1_COO_R2")
+      val EXPLODE_H2O = Rel("EXPLODE_H2O")
 
       rules(
 
@@ -204,14 +204,14 @@ class ExpressionTest {
   def WordTest {
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val w,kp,km = createVariable()
-      val InsertWord = createAndAddRelation("InsertWord")
-      val AskContain = createAndAddRelation("AskContain")
+      val w,kp,km = Var()
+      val InsertWord = Rel("InsertWord")
+      val AskContain = Rel("AskContain")
       val Kp = VarR("Kp")
       val Km = VarR("Km")
       val OK = VarR("OK")
       val NOTOK = VarR("NOTOK")
-      val Clean = createAndAddRelation("Clean")
+      val Clean = Rel("Clean")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
@@ -254,9 +254,9 @@ class ExpressionTest {
   def MapReduceTest {
 
     val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
-      val z,w,n,i,j,kp,km = createVariable()
-      val InsertWord = createAndAddRelation("InsertWord")
-      val Count = createAndAddRelation("Count")
+      val z,w,n,i,j,kp,km = Var()
+      val InsertWord = Rel("InsertWord")
+      val Count = Rel("Count")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
@@ -291,14 +291,14 @@ class ExpressionTest {
   def DjikstraTest {
 
     val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
-      val x,y,z,w,n,i,j = createVariable()
+      val x,y,z,w,n,i,j = Var()
 
-      val AreConnected = createAndAddRelation("LeadsTo")
-      val AreInRelation = createAndAddRelation("AreInRelation")
-      val IsItEquivalent = createAndAddRelation("IsItEquivalent")
+      val AreConnected = Rel("LeadsTo")
+      val AreInRelation = Rel("AreInRelation")
+      val IsItEquivalent = Rel("IsItEquivalent")
 
-      val PUSH = createAndAddRelation("PUSH")
-      val POP = createAndAddRelation("POP")
+      val PUSH = Rel("PUSH")
+      val POP = Rel("POP")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)

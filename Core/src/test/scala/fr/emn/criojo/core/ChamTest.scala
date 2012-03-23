@@ -25,9 +25,9 @@ class ChamTest {
   def testRelations {
 
     val machine = new Cham { //TestCham with DefaultCham{
-      val x,y,z = createVariable()
-      val R = createAndAddRelation("R")
-      val S = createAndAddRelation("S")
+      val x,y,z = Var()
+      val R = Rel("R")
+      val S = Rel("S")
 
       rules(
         (R(x,y) &: R(y,z)) --> R(x,z),
@@ -43,9 +43,9 @@ class ChamTest {
   def BonbonstestRelations {
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val x,y,z = createVariable()
-      val OneBonbon = createAndAddRelation("OneBonbon")
-      val TwoBonbons = createAndAddRelation("TwoBonbons")
+      val x,y,z = Var()
+      val OneBonbon = Rel("OneBonbon")
+      val TwoBonbons = Rel("TwoBonbons")
 
       rules(
         (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x,y)
@@ -69,10 +69,10 @@ class ChamTest {
   def H4ORelations {
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val a,b,x,y,z = createVariable()
-      val H = createAndAddRelation("H")
-      val O = createAndAddRelation("O")
-      val H4O = createAndAddRelation("H4O")
+      val a,b,x,y,z = Var()
+      val H = Rel("H")
+      val O = Rel("O")
+      val H4O = Rel("H4O")
 
       rules(
         (H(x) &: H(y) &: H(a) &: H(b) &: O(z)) --> H4O(x,y,a,b,z)
@@ -100,9 +100,9 @@ class ChamTest {
   def testAtomInsertion{
 
     val machine = new Cham with DebugCham { //TestCham with DefaultCham{
-      val x,y,z = createVariable()
-      val R = createAndAddRelation("R")
-      val S = createAndAddRelation("S")
+      val x,y,z = Var()
+      val R = Rel("R")
+      val S = Rel("S")
 
       rules(
         (R(x,y) &: R(y,z)) --> R(x,z),
@@ -135,9 +135,9 @@ class ChamTest {
     val d = Variable("d")
 
     val m2 = new Cham{
-      val s,x,y,z = createVariable()
-      val R = createAndAddRelation("R")
-      val X1 = createAndAddRelation("X1")
+      val s,x,y,z = Var()
+      val R = Rel("R")
+      val X1 = Rel("X1")
 
       rules(
         R(s,x,y) --> Abs(X1(s)) ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
@@ -165,8 +165,8 @@ class ChamTest {
     val b = Variable("b")
 
     val vm = new Cham{
-      val x,y,z,w = createVariable()
-      val S = createAndAddRelation("S")
+      val x,y,z,w = Var()
+      val S = Rel("S")
       val R = NativeRelation("R"){
         case (Atom("R", a::v2::v3::_),s) if (v2 != Undef && v3 != Undef) => result = true
         case at => fail("Expected: R(x1,x2,x3). Actual: " + at)
@@ -196,10 +196,10 @@ class ChamTest {
     var result = false
 
     val vm = new Cham {
-      val x,y,z,w = createVariable()
-      val Cont = createAndAddRelation("Cont")
+      val x,y,z,w = Var()
+      val Cont = Rel("Cont")
 
-      val R = createAndAddRelation("R"); val S = createAndAddRelation("S")
+      val R = Rel("R"); val S = Rel("S")
       val Resp = NativeRelation("Resp"){
         case (Atom("Resp", a::b::_),s) => result = true
         case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
@@ -225,10 +225,10 @@ class ChamTest {
   @Test //(timeout=1000)
   def simpleTest2(){
     val sm = new Cham with IntegerCham with DebugCham {
-      val A = createAndAddRelation("A")
-      val B = createAndAddRelation("B")
-      val C = createAndAddRelation("C")
-      val D = createAndAddRelation("D")
+      val A = Rel("A")
+      val B = Rel("B")
+      val C = Rel("C")
+      val D = Rel("D")
 
       rules(
         (A() & B() & C()) --> D(),

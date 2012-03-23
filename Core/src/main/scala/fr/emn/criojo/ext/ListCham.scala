@@ -9,18 +9,18 @@ import fr.emn.criojo.lang._
  * Time: 11:11
  */
 trait ListCham extends Cham{
-  val Cons = createAndAddRelation("Cons")
-  val IsNil = createAndAddRelation("IsNil")
-  private val Lst = createAndAddRelation("lst")
-  val Head = createAndAddRelation("Head")
-  val Tail = createAndAddRelation("Tail")
-  val Nil = createAndAddRelation("Nil")
-  private val Hd = createAndAddRelation("$Hd")
-  private val Tl = createAndAddRelation("$Tl")
+  val Cons = Rel("Cons")
+  val IsNil = Rel("IsNil")
+  private val Lst = Rel("lst")
+  val Head = Rel("Head")
+  val Tail = Rel("Tail")
+  val Nil = Rel("Nil")
+  private val Hd = Rel("$Hd")
+  private val Tl = Rel("$Tl")
   private val K = VarR("K")
   private val Kmin = VarR("K-")
   private val Err = VarR("Err")
-  private val a,l,l0,l1,l2,tl,r,x,s = createVariable()
+  private val a,l,l0,l1,l2,tl,r,x,s = Var()
   private val X,Y = Tok()
 
 

@@ -20,12 +20,12 @@ class ExtChamTest {
   def EqChamTest {
 
     val sm = new EqCHAM with IntegerCham with DebugCham {
-      val A = createAndAddRelation("A")
-      val B = createAndAddRelation("B")
-      val C = createAndAddRelation("C")
-      val D = createAndAddRelation("D")
+      val A = Rel("A")
+      val B = Rel("B")
+      val C = Rel("C")
+      val D = Rel("D")
 
-      var x,y,v,z = createVariable()
+      var x,y,v,z = Var()
       var vx:Term = 1
       var vy:Term = 2
 
@@ -92,12 +92,12 @@ class ExtChamTest {
   def ExtendedChamTest {
 
     val sm = new ExtendedCHAM with IntegerCham with DebugCham {
-      val A = createAndAddRelation("A")
-      val B = createAndAddRelation("B")
-      val C = createAndAddRelation("C")
-      val D = createAndAddRelation("D")
+      val A = Rel("A")
+      val B = Rel("B")
+      val C = Rel("C")
+      val D = Rel("D")
 
-      var x,y,v,z = createVariable()
+      var x,y,v,z = Var()
       var vx:Term = 1
       var vy:Term = 2
 

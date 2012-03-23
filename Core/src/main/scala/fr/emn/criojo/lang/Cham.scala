@@ -13,8 +13,8 @@ class Cham extends StatefulEngine with StatefulFactory {
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
-  val T = createRelation("true")
-  val F = createRelation("false")
+  val T = Rel("true")
+  val F = Rel("false")
 
   var ruleDefList = List[RuleDef]()
 
@@ -83,17 +83,15 @@ class Cham extends StatefulEngine with StatefulFactory {
     flst.toList.foreach{fact => axiom(fact)}
   }
 
-//  def createAndAddRelation:ApplicableRel = createAndAddRelation("@R"+nextIndex)
-
-  def createAndAddRelation(n:String): ApplicableRel = {
-    val r = createRelation(n,
+  override def Rel(n:String): ApplicableRel = {
+    val r = super.Rel(n,
       (terms:List[Term])=>new CrjAtom(n, terms.toList)).asInstanceOf[ApplicableRel]
     addRelation(r)
     r
   }
 
-  def createAndAddRelation(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
-    val r = createRelation(relName, f).asInstanceOf[ApplicableRel]
+  override def Rel(relName:String, f:(List[Term]=>Molecule)): ApplicableRel = {
+    val r = super.Rel(relName, f).asInstanceOf[ApplicableRel]
     addRelation(r)
     r
   }

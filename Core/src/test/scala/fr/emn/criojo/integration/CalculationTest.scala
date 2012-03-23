@@ -23,15 +23,15 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def fibonacciTest{
     val fCham = new Cham with IntegerCham{
-      val fib = createAndAddRelation("fib")
-      val Fib = createAndAddRelation("Fib")
+      val fib = Rel("fib")
+      val Fib = Rel("Fib")
 
       val MPrint = NativeRelation("2"){
         case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,v,x = createVariable()
+      val n,n1,n2,r,r1,r2,v,x = Var()
 
 
       rules(
@@ -52,15 +52,15 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def gcdTest{
     val fCham = new Cham with IntegerCham{
-      val gcd = createAndAddRelation("gcd")
-      val Result = createAndAddRelation("Resultat")
+      val gcd = Rel("gcd")
+      val Result = Rel("Resultat")
 
       val MPrint = NativeRelation("2"){
         case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,v,x,y,xNew = createVariable()
+      val n,n1,n2,r,r1,r2,v,x,y,xNew = Var()
 
 
       rules(
@@ -78,17 +78,17 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def fibonacciWithMemTest{
     val fCham = new Cham with IntegerCham{
-      val fib = createAndAddRelation("fib")
-      val Fib = createAndAddRelation("Fib")
-      val FEq = createAndAddRelation("FEq")
+      val fib = Rel("fib")
+      val Fib = Rel("Fib")
+      val FEq = Rel("FEq")
 
       val MPrint = NativeRelation("2"){
         case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,x = createVariable()
-      val v,v1,v2 = createVariable()
+      val n,n1,n2,r,r1,r2,x = Var()
+      val v,v1,v2 = Var()
 
       rules(
         fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
@@ -142,17 +142,17 @@ class CalculationTest {
 
     val cm = new Cham with IntegerCham {
 
-      val fibo = createAndAddRelation("fibo")
-      val Fibo = createAndAddRelation("Fibo")
-      val WaitResult = createAndAddRelation("WaitResult")
-      val Result = createAndAddRelation("Result")
-      val Bingo = createAndAddRelation("Bingo")
+      val fibo = Rel("fibo")
+      val Fibo = Rel("Fibo")
+      val WaitResult = Rel("WaitResult")
+      val Result = Rel("Result")
+      val Bingo = Rel("Bingo")
 
-      val n,n1,n2,r,r1,r2,x = createVariable()
-      val v,v1,v2 = createVariable()
+      val n,n1,n2,r,r1,r2,x = Var()
+      val v,v1,v2 = Var()
 
-      val Sierpinski = createAndAddRelation("Sierpinski")
-      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = createVariable()
+      val Sierpinski = Rel("Sierpinski")
+      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = Var()
 
       val Print = NativeRelation("Print3") {
 
@@ -186,10 +186,10 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def fibonacciIterative{
     val fCham = new Cham with IntegerCham{
-      val AskFib = createAndAddRelation("AskFib")
-      val Rep = createAndAddRelation("Rep")
-      val Fib = createAndAddRelation("Fib")
-      val Res = createAndAddRelation("Res")
+      val AskFib = Rel("AskFib")
+      val Rep = Rel("Rep")
+      val Fib = Rel("Fib")
+      val Res = Rel("Res")
 
       val MPrint = NativeRelation("MPrint"){
         case (Atom(_,x::_),_) => println(x)
@@ -199,8 +199,8 @@ class CalculationTest {
       val MPrint_var = VarR("MPrint_var")
 
       val K = VarR("K+")
-      val n,n1,n2,r,r1,r2,r3,s = createVariable()
-      val v,v1,v2 = createVariable()
+      val n,n1,n2,r,r1,r2,r3,s = Var()
+      val v,v1,v2 = Var()
 
       rules(
         AskFib(n,K) --> Nu(s)(Fib(s,0) & Fib(s,1) & Rep(s, n, K)),
@@ -224,14 +224,14 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def gcdTestExp{
     val chemicalMachine = new Cham with IntegerCham{
-      val gcd = createAndAddRelation("gcd")
-      val Result = createAndAddRelation("Resultat")
+      val gcd = Rel("gcd")
+      val Result = Rel("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
       }
 
-      val x,y = createVariable()
+      val x,y = Var()
 
 
       rules(
@@ -279,14 +279,14 @@ class CalculationTest {
     }
 
     val chemicalMachine = new Cham with IntegerCham{
-      val gcd = createAndAddRelation("gcd")
-      val Result = createAndAddRelation("Resultat")
+      val gcd = Rel("gcd")
+      val Result = Rel("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,x::_),_) => println(x)
       }
 
-      val x,y = createVariable()
+      val x,y = Var()
 
       rules(
         gcd(x,y) --> {x < y} ?: gcd(y,x),
@@ -340,8 +340,8 @@ class CalculationTest {
 
     val cm = new Cham with IntegerCham with DebugCham {
 
-      val Sierpinski = createAndAddRelation("Sierpinski")
-      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = createVariable()
+      val Sierpinski = Rel("Sierpinski")
+      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = Var()
 
 
       implicit def intToExp(n:java.lang.Integer):Term = new IntExpression(n.intValue())

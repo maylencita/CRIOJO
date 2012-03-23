@@ -31,12 +31,12 @@ class StatesTest {
   @Test//(timeout = 1000)
   def terminationTest() {
     val sm = new Cham with TestCham{
-      val A = createAndAddRelation("A")
-      val B = createAndAddRelation("B")
-      val C = createAndAddRelation("C")
-      val D = createAndAddRelation("D")
-      val K = createAndAddRelation("K")
-      val x, y, z = createVariable()
+      val A = Rel("A")
+      val B = Rel("B")
+      val C = Rel("C")
+      val D = Rel("D")
+      val K = Rel("K")
+      val x, y, z = Var()
 
       rules(
         (A(x, y) & B(y, z)) --> Abs(D(y)) ?: (D(y) & A(x, y) & B(y, z) & Print(x,y,z) & Passed())
@@ -57,12 +57,12 @@ class StatesTest {
   @Test (timeout=1000)
   def persistenceTest{
     val cham = new Cham with TestCham{
-      val A = createAndAddRelation("A")
-      val B = createAndAddRelation("B")
-      val C = createAndAddRelation("C")
-      val D = createAndAddRelation("D")
+      val A = Rel("A")
+      val B = Rel("B")
+      val C = Rel("C")
+      val D = Rel("D")
 
-      val x,y,z = createVariable()
+      val x,y,z = Var()
       rules(
         (!A(x,y) & B(y,z)) --> (Print(x,z,"\n") & Passed()),
         (A(x,y) & D(y,z)) --> (Print(x,z,"\n") & Passed())
@@ -80,8 +80,8 @@ class StatesTest {
   @Test (timeout=1000)
   def oneHeadTest{
     val cham = new Cham with TestCham{
-      val R = createAndAddRelation("R")
-      val x,y = createVariable()
+      val R = Rel("R")
+      val x,y = Var()
 
       rules(
         R(x,y) --> (Print(x,y) & Passed())
@@ -97,9 +97,9 @@ class StatesTest {
   @Test (timeout=1000)
   def repeatedHeadTest{
     val sm = new Cham with TestCham{
-      val H = createAndAddRelation("H")
-      val H3 = createAndAddRelation("H3")
-      val x,y,z = createVariable()
+      val H = Rel("H")
+      val H3 = Rel("H3")
+      val x,y,z = Var()
 
       rules(
         (H(x) & H(y) & H(z)) --> H3(x,y,z),

@@ -13,25 +13,25 @@ import fr.emn.criojo.lang.{Molecule, CrjAtom}
 
 trait ChamFactory {
 
-  def createRelation(n: String): Relation
-  def createRelation(n: String, f:(List[Term]=>Molecule)): Relation
+  def Rel(n: String): Relation
+  def Rel(n: String, f:(List[Term]=>Molecule)): Relation
 
-  def createChannel(n: String): Relation
-  def createChannel(n: String, f:(List[Term]=>Molecule)): Relation
+  def Chan(n: String): Relation
+  def Chan(n: String, f:(List[Term]=>Molecule)): Relation
 
-  def createVariable(): Variable
+  def Var(): Variable
 }
 
-trait StatefulFactory {
+trait StatefulFactory extends ChamFactory {
   var index: Int = 0
 
-  def createRelation(n: String): Relation = new ApplicableRel(n, (terms: List[Term]) => new CrjAtom(n, terms.toList))
-  def createRelation(n: String, f:(List[Term]=>Molecule)): Relation = new ApplicableRel(n, f)
+  def Rel(n: String): Relation = new ApplicableRel(n, (terms: List[Term]) => new CrjAtom(n, terms.toList))
+  def Rel(n: String, f:(List[Term]=>Molecule)): Relation = new ApplicableRel(n, f)
 
-  def createChannel(n: String): Relation = new ApplicableRel(n, (terms: List[Term]) => new CrjAtom(n, terms.toList))
-  def createChannel(n: String, f:(List[Term]=>Molecule)): Relation = new ApplicableRel(n, f)
+  def Chan(n: String): Relation = new ApplicableRel(n, (terms: List[Term]) => new CrjAtom(n, terms.toList))
+  def Chan(n: String, f:(List[Term]=>Molecule)): Relation = new ApplicableRel(n, f)
 
-  def createVariable(): Variable = {
+  def Var(): Variable = {
     index += 1; new Variable("x" + index)
   }
 }
