@@ -105,6 +105,7 @@ class CrjAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) wi
 
   def unary_! : CrjAtom = {
     val newAtom = new CrjAtom(relName,terms)
+    newAtom.relation = this.relation
     newAtom.persistent = true
     newAtom
   }

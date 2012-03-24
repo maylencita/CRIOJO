@@ -28,6 +28,7 @@ object Atom{
  * The Atom class
  * @define THIS Atom
  */
+//TODO pass relation as parameter in construction
 case class Atom(relName:String, terms: List[Term]) {
 
   val vars = terms.map{case v:Variable => v; case _ => Undef}

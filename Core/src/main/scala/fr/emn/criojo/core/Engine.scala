@@ -33,7 +33,7 @@ trait Engine extends RuleFactory{
           var r = relation
           relation.notifyObservers(atom)
         }
-        case _ => log(WARNING, this.getClass, "notifyCham", "Undefined relation " + atom.relName)
+        case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relName)
       }
   }
 
@@ -81,17 +81,25 @@ trait Engine extends RuleFactory{
     var headVars = List[RelVariable]()
 
     if (!rule.isAxiom)
-      rule.head.foreach{a =>
-        findRelation(a.relName) match{
-          case Some(r) => r.addObserver(rule)
-          case _ =>
-            log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
-            a.relation = new LocalRelation("Undefined")
-        }
-        a.terms.foreach{
-          case rv:RelVariable => headVars :+= rv
-          case _ =>
-        }
+      rule.head.foreach{
+        case a if(a.relation != null) => a.relation.addObserver(rule)
+          a.terms.foreach{
+            case rv:RelVariable => headVars :+= rv
+            case _ =>
+          }
+
+        case a => log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
+//--- We don't need this anymore because a comes with its relation!
+//        findRelation(a.relName) match{
+//          case Some(r) => r.addObserver(rule)
+//          case _ =>
+//            log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
+//            a.relation = new LocalRelation("Undefined")
+//        }
+//        a.terms.foreach{
+//          case rv:RelVariable => headVars :+= rv
+//          case _ =>
+//        }
       }
     headVars
   }
@@ -108,18 +116,19 @@ trait Engine extends RuleFactory{
       case _ =>
     }
     rule.body.foreach{a =>
-      a.relation = headVars.find(hv => hv.name == a.relName) match{
-        case Some(hv) => hv.relation
-        case _=> getRelation(a.relName)
-      }
-      a.terms.foreach{
-        case rv: RelVariable if(!headVars.contains(rv)) =>
-          findRelation(rv.name) match{
-            case Some(r) => rv.relation = r
-            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);
-          }
-        case _ =>
-      }
+//--- Normaly, not necessary
+//      a.relation = headVars.find(hv => hv.name == a.relName) match{
+//        case Some(hv) => hv.relation
+//        case _=> getRelation(a.relName)
+//      }
+//      a.terms.foreach{
+//        case rv: RelVariable if(!headVars.contains(rv)) =>
+//          findRelation(rv.name) match{
+//            case Some(r) => rv.relation = r
+//            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);
+//          }
+//        case _ =>
+//      }
     }
   }
 

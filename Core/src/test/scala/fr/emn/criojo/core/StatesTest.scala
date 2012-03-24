@@ -16,7 +16,7 @@ class StatesTest {
   implicit def num2term(n:Int):Term = new ValueTerm[Int](n)
   implicit def str2term(str:String):Term = new ValueTerm[String](str)
 
-  @Test//(timeout = 1000)
+  @Test(timeout = 1000)
   def terminationTest() {
     val sm = new Cham with TestCham{
       val A = Rel("A")
@@ -105,4 +105,30 @@ class StatesTest {
     assertEquals(1,sm.passed)
   }
 
+  @Test
+  def messagePassingTest{
+    var word = ""
+    val cham = new Cham with TestCham{
+      val A = Rel
+      val Start = Rel
+      val k = VarR("k")
+      val x = Var
+
+      val Concat = NativeRel{
+        case ValueTerm(first)::_ => word += first
+        case _ =>
+      }
+
+      rules(
+        A(x,k) --> k(x),
+        Start() --> A("passed!",Concat)
+      )
+    }
+
+    import cham.{Start}
+    cham.introduceMolecule(Start())
+    cham.executeRules()
+
+    assertEquals("passed!",word)
+  }
 }
