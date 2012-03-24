@@ -15,10 +15,10 @@ import fr.emn.criojo.core.impur.NativeRelation
 trait RelationFactory {
   def createLocalRelation(name:String):Relation
   def createRemoteRelation(name:String):Relation
-  def createNative(name:String, f:(List[Term]) => Unit):NativeRelation
+  def createNativeRelation(name:String, f:(List[Term]) => Unit):NativeRelation
 }
 
-trait DefaultFactory extends{
+trait DefaultFactory extends RelationFactory{
   def createLocalRelation(name:String):Relation = new LocalRelation(name)
 
   def createNativeRelation(name:String, f:(List[Term]) => Unit):NativeRelation = {
