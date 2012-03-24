@@ -1,3 +1,0 @@
-(public:PAlbum; private:Print,Session)
-!T => new(x) Session(x) |
-PAlbum(tok,id,title),Session(x) => Print(x,title)

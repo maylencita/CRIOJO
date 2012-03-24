@@ -1,8 +1,0 @@
-This folder contains the implementation of the ANTLR extension to genereate Scala classes from ANTLR grammars.
-Content description:
-
- - resources -> Scala templates (*.stg) to generate Scala parsers.
- - src -> Some wrap code
- - test_grammar -> Some test grammars
- - ANTLR_Scala.iml -> IntelliJ Module
- 
