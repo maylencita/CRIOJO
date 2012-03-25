@@ -13,6 +13,7 @@ import org.junit._
 import Assert._
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext.IntegerCham
+import fr.emn.criojo.ext.debug.DebugCham
 
 class ChamTest {
   import Criojo._
@@ -42,7 +43,7 @@ class ChamTest {
   @Test
   def BonbonstestRelations {
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
       val x,y,z = Var
       val OneBonbon = Rel("OneBonbon")
       val TwoBonbons = Rel("TwoBonbons")
@@ -50,11 +51,10 @@ class ChamTest {
       rules(
         (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x,y)
       )
-
-      DEBUG_MODE = true
     }
 
     import machine.num2fun
+    machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.OneBonbon(1))
     assert(machine.getSolution.size==1)
@@ -69,7 +69,7 @@ class ChamTest {
   @Test
   def H4ORelations {
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
       val a,b,x,y,z = Var
       val H = Rel("H")
       val O = Rel("O")
@@ -78,13 +78,12 @@ class ChamTest {
       rules(
         (H(x) &: H(y) &: H(a) &: H(b) &: O(z)) --> H4O(x,y,a,b,z)
       )
-
-      DEBUG_MODE = true
     }
 
     import machine.num2fun
 
     implicit def str2fun(n:String):Term = new ValueTerm[String](n) //new IntTerm(n)
+    machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.H("1"))
     machine.introduceMolecule(machine.H("2"))
@@ -101,7 +100,7 @@ class ChamTest {
   @Test(timeout=1000)
   def testAtomInsertion{
 
-    val machine = new Cham { //TestCham with DefaultCham{
+    val machine = new Cham with DebugCham { //TestCham with DefaultCham{
       val x,y,z = Var
       val R = Rel("R")
       val S = Rel("S")
@@ -110,13 +109,12 @@ class ChamTest {
         (R(x,y) &: R(y,z)) --> R(x,z),
         S(x,y) --> R(x,y)
       )
-
-      DEBUG_MODE = true
     }
 
     val a1 = Atom("R", Variable("a"),Variable("b"))
     val a2 = Atom("S", Variable("b"),Variable("c"))
     val a3 = Atom("R", Variable("a"),Variable("c"))
+    machine.enableSolutionTrace()
 
     machine.introduceAtom(a1)
     assertEquals(StandAloneSolution(List(a1)), machine.getSolution)
@@ -145,8 +143,6 @@ class ChamTest {
       rules(
         R(s,x,y) --> Abs(X1(s)) ?: (R(s,x,y) &: R(s,x,y) &: X1(s))
       )
-
-      DEBUG_MODE = true
     }
     info (this.getClass, "testGuard", "m2: " + m2.printRules)
 
@@ -180,8 +176,6 @@ class ChamTest {
       rules{
         S(x) ==> Nu(y,z)(R(x,y,z))
       }
-
-      DEBUG_MODE = true
     }
     info (this.getClass, "testNu", "vm: " + vm.printRules)
 
@@ -217,8 +211,6 @@ class ChamTest {
         S(x,y) ==> R(x,y,RespVar),
         R(x,y,Cont) ==> Cont(x,y)
       )
-
-      DEBUG_MODE = true
     }
 
     val atom1 = Atom("S", a, b)
@@ -233,7 +225,7 @@ class ChamTest {
 
   @Test //(timeout=1000)
   def simpleTest2(){
-    val sm = new Cham with IntegerCham {
+    val sm = new Cham with IntegerCham with DebugCham {
       val A = Rel("A")
       val B = Rel("B")
       val C = Rel("C")
@@ -243,11 +235,10 @@ class ChamTest {
         (A() & B() & C()) --> D(),
         (D() & C()) --> A()
       )
-
-      DEBUG_MODE = true
     }
 
     import sm.{num2fun}
+    sm.enableSolutionTrace()
 
     sm.introduceMolecule(sm.A())
     sm.introduceMolecule(sm.C())

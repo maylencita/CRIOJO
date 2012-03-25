@@ -2,6 +2,7 @@ package fr.emn.criojo.core
 
 import Criojo._
 import fr.emn.criojo.util.Logger
+import statemachine.PartialExecution
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,6 +43,10 @@ abstract class Rule extends RelationObserver{
   def execute (vals:Valuation):Boolean
 
   def notifyCham(atom:Atom)
+
+  def applyReaction(pe:PartialExecution) {
+    throw new IllegalAccessException("Method not implemented.")
+  }
 
   override def equals(that:Any) = {
     def eq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.terms == a2.terms

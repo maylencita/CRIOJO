@@ -1,12 +1,11 @@
 package fr.emn.criojo.integration
 
 import org.junit.Test
-import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.lang.{Nu, Cham}
 import fr.emn.criojo.core._
-import collection.mutable.Buffer
 import java.io.FileWriter
 import fr.emn.criojo.ext.expressions.{UndefinedExpression, BooleanExpression, Expression, IntExpression}
+import fr.emn.criojo.ext.IntegerCham
 
 
 /*
@@ -114,6 +113,7 @@ class CalculationTest {
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard{
         override def eval(vals: Valuation) = {
+
           val valuation = x.eval(vals)
           valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
         }
@@ -171,8 +171,6 @@ class CalculationTest {
         Fibo(n,r) --> {n < num2fun(2)} ?: Result(n,1),
         (WaitResult(r,n) & Result(n,v)) --> Bingo(v)
       )
-
-      DEBUG_MODE = true
     }
 
     import cm.num2fun
@@ -181,8 +179,7 @@ class CalculationTest {
     cm.executeRules()
 
     cm.getSolution.displaySolution()
-    cm.printTrace()
-    
+
     
     fw.write("</svg>\n")
     fw.close()
