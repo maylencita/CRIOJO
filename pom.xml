@@ -12,11 +12,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!--<module>ANTLR_Scala</module>-->
         <module>Core</module>
-        <module>Parser</module>
-        <module>Pivot</module>
-        <!--<module>CRIOJO_Server</module>-->
+        <module>Criojo_Actors</module>
     </modules>
 
     <build>

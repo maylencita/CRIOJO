@@ -14,7 +14,7 @@ import java.net.URI
  * The RemoteRelation abstract class
  * @define THIS RemoteRelation
  */
-@serializable
+@deprecated("Use: Channel")
 abstract class RemoteRelation extends Relation{
   def name:String
   def url:URI
