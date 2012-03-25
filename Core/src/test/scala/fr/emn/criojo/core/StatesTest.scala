@@ -36,7 +36,7 @@ class StatesTest {
     sm.introduceMolecule(A(2, 3))
     sm.introduceMolecule(B(3, 4))
     sm.executeRules()
-    sm.printTrace()
+
     println(sm.printRules)
 
     assertEquals(1,sm.passed)

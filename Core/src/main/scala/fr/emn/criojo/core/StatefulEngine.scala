@@ -19,14 +19,6 @@ import collection.mutable.ListBuffer
  */
 trait StatefulEngine extends Engine{
 
-  var DEBUG_MODE:Boolean = false
-  var DEBUG_DIRECT_MODE:Boolean = false
-  var DEBUG_TRACE:ListBuffer[String] = ListBuffer()
-
-  def printTrace() {
-    DEBUG_TRACE.foreach(t => println(t))
-  }
-
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
   def initSolution = new HashSolution()
@@ -37,15 +29,10 @@ trait StatefulEngine extends Engine{
 
   def introduceAtom(atom: Atom){
 
-    if(DEBUG_MODE)
-      solution.addAtom(atom)
-
     notifyRelationObservers(atom)
   }
 
   def removeAtom(atom: Atom){
-    if(DEBUG_MODE)
-      solution.remove(atom)
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
@@ -72,31 +59,6 @@ trait StatefulEngine extends Engine{
           case Some(pe:PartialExecution) => {
             applyReaction(pe)
             
-            if(DEBUG_MODE) {
-              var valuatedHead = this.head.map({a => a.applyValuation(pe.valuation)})
-              var valuatedBody = this.body.map({a => a.applyValuation(pe.valuation)})
-
-              var valuatedHeadString = valuatedHead.toString()
-              var valuatedBodyString = valuatedBody.toString()
-              valuatedHeadString = valuatedHeadString.substring(5,valuatedHeadString.length()-1)
-              valuatedBodyString = valuatedBodyString.substring(5,valuatedBodyString.length()-1)
-
-              DEBUG_TRACE += valuatedHeadString+" --> "+valuatedBodyString
-            }
-
-
-            if(DEBUG_DIRECT_MODE) {
-              var valuatedHead = this.head.map({a => a.applyValuation(pe.valuation)})
-              var valuatedBody = this.body.map({a => a.applyValuation(pe.valuation)})
-
-              var valuatedHeadString = valuatedHead.toString()
-              var valuatedBodyString = valuatedBody.toString()
-              valuatedHeadString = valuatedHeadString.substring(5,valuatedHeadString.length()-1)
-              valuatedBodyString = valuatedBodyString.substring(5,valuatedBodyString.length()-1)
-
-              println(valuatedHeadString+" --> "+valuatedBodyString)
-            }
-
             executed = true
           }
           case _ => //Skip
@@ -105,7 +67,7 @@ trait StatefulEngine extends Engine{
       executed
     }
 
-    def applyReaction(finalExecution:PartialExecution) {
+    override def applyReaction(finalExecution:PartialExecution) {
       val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
         val i = Indexator.getIndex
         vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))

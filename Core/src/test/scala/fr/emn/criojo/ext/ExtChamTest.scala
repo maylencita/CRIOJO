@@ -1,5 +1,6 @@
 package fr.emn.criojo.ext
 
+import debug.DebugCham
 import org.junit.Test
 import fr.emn.criojo.lang.Cham
 import org.junit.Assert._
@@ -19,7 +20,7 @@ class ExtChamTest /*{
   @Test
   def EqChamTest {
     //TODO Ameliorate this test
-    val sm = new EqCHAM with IntegerCham {
+    val sm = new EqCHAM with IntegerCham with DebugCham {
       val A = Rel("A")
       val B = Rel("B")
       val C = Rel("C")
@@ -47,11 +48,10 @@ class ExtChamTest /*{
 //      assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
 //      assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
 //      assertTrue(getSubstitutions(a2,List()).size==0)
-
-      DEBUG_MODE = true
     }
 
     import sm.{num2fun}
+    sm.enableSolutionTrace()
 
     sm.introduceMolecule(sm.A())
     sm.introduceMolecule(sm.C())
@@ -92,7 +92,7 @@ class ExtChamTest /*{
   @Test
   def ExtendedChamTest {
     //TODO Review ExtendedCham
-    val sm = new ExtendedCHAM{
+    val sm = new ExtendedCHAM with IntegerCham with DebugCham {
       val A = Rel("A")
       val B = Rel("B")
       val C = Rel("C")
@@ -120,11 +120,10 @@ class ExtChamTest /*{
 //      assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
 //      assertTrue(getSubstitutions(a2,List(a2,a22)).size>0)
 //      assertTrue(getSubstitutions(a2,List()).size==0)
-
-      DEBUG_MODE = true
     }
 
     import sm.{num2fun}
+    sm.enableSolutionTrace()
 
     sm.introduceMolecule(sm.A())
     sm.introduceMolecule(sm.C())
