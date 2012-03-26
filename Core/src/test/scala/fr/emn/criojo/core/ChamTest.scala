@@ -7,6 +7,8 @@ package fr.emn.criojo.core
  * Time: 7:45:45 PM
  * To change this template use File | Settings | File Templates.
  */
+
+import factory.DefaultFactory
 import fr.emn.criojo.util.Logger._
 
 import org.junit._
@@ -25,7 +27,7 @@ class ChamTest {
   @Test
   def testRelations {
 
-    val machine = new Cham { //TestCham with DefaultCham{
+    val machine = new Cham with DefaultFactory{ //TestCham with DefaultCham{
       val x,y,z = Var
       val R = Rel("R")
       val S = Rel("S")
@@ -100,7 +102,7 @@ class ChamTest {
   @Test(timeout=1000)
   def testAtomInsertion{
 
-    val machine = new Cham with DebugCham { //TestCham with DefaultCham{
+    val machine = new Cham with DebugCham with DefaultFactory{ //TestCham with DefaultCham{
       val x,y,z = Var
       val R = Rel("R")
       val S = Rel("S")
@@ -135,7 +137,7 @@ class ChamTest {
     val c = Variable("c")
     val d = Variable("d")
 
-    val m2 = new Cham{
+    val m2 = new Cham with DefaultFactory{
       val s,x,y,z = Var
       val R = Rel("R")
       val X1 = Rel("X1")
@@ -165,7 +167,7 @@ class ChamTest {
     val a = Variable("a")
     val b = Variable("b")
 
-    val vm = new Cham{
+    val vm = new Cham with DefaultFactory{
       val x,y,z,w = Var
       val S = Rel("S")
       val R = NativeRelation("R"){
@@ -196,7 +198,7 @@ class ChamTest {
     val b = Variable("b")
     var result = false
 
-    val vm = new Cham {
+    val vm = new Cham with DefaultFactory{
       val x,y,z,w = Var
       val Cont = Rel("Cont")
 

@@ -1,7 +1,12 @@
 package fr.emn.criojo.actors
 
-import fr.emn.criojo.core.factory.RelationFactory
 import fr.emn.criojo.core._
+import actors.Actor
+import factory.{DefaultFactory, RelationFactory}
+import scala.actors.remote.RemoteActor
+import scala.actors.remote.RemoteActor._
+import actors.remote.{Node, RemoteActor}
+import json_criojo.JSONUtil
 
 /*
  * Created by IntelliJ IDEA.
@@ -9,17 +14,40 @@ import fr.emn.criojo.core._
  * Date: 25/03/12
  * Time: 10:02
  */
-trait ActorRelationFactory extends RelationFactory{
-  def createLocalRelation(name: String) = new LocalRelation(name)
-
-  def createRemoteRelation(name: String) = null
-
-  def createNativeRelation(name: String, f: (List[Term]) => Unit) = null
+trait ActorRelationFactory extends DefaultFactory{
+  override def createChannel(name: String,location:String):Channel =
+    new ActorChannel(name,location)
 }
 
-class ActorChannel(name:String,location:String) extends Channel{
+class ActorChannel(val name:String,val location:String) extends Channel{
+
   def notifyObservers(a: Atom){
-    //Send atom to location
+    a.relation match{
+      case c:Channel =>
+        new Actor{
+          RemoteActor.classLoader = getClass().getClassLoader()
+          def act(){
+            val params = location.split(':')
+            val remote = select(Node(params(0),params(1).toInt),Symbol(params(2)))
+            link(remote)
+            val atom = new Atom(a.relation match{
+              case ch:Channel => ch.location + ":" + ch.name
+              case r => r.name
+            },a.terms)
+            remote ! JSONUtil.serialize(atom)
+println(name + " - Message sent!")
+            var answer = false
+            while(!answer){
+              react{
+                case msg =>
+println(name + " - Reponse: " + msg)
+                  answer = true
+              }
+            }
+          }
+        }.start()
+      case _ => println("Not a channel: " + a.relation)
+    }
   }
 
   def copy(sol: Solution) = {
@@ -27,4 +55,6 @@ class ActorChannel(name:String,location:String) extends Channel{
     this.observers.foreach(o => newChannel.addObserver(o))
     newChannel
   }
+
+  override def toString:String = name
 }

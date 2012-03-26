@@ -8,9 +8,10 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
+import factory.DefaultFactory
 import fr.emn.criojo.lang._
 
-trait StrCHAM extends EqCHAM{
+trait StrCHAM extends EqCHAM with DefaultFactory{
 
   val strEqClasses = new TypedEqClasses[String](eqClasses,disjClasses)
 

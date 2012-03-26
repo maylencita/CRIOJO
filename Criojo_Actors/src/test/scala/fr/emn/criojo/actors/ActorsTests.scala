@@ -7,6 +7,13 @@ import scala.actors.remote.RemoteActor
 import scala.actors.remote.RemoteActor._
 import actors.remote.Node
 
+import sjson.json._
+import DefaultProtocol._
+import JsonSerialization._
+import json_criojo.protocols.{JsonTerm, JsonAtom}
+import json_criojo.JSONUtil
+import fr.emn.criojo.core.{ValueTerm, Variable, Atom}
+
 /*
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -16,25 +23,12 @@ import actors.remote.Node
 
 class ActorsTests {
   @Test
-  def testConnection{
-    val cham = new ActorCham(9999,"Agent1")
-    cham.start()
+  def serializationTest{
+    import JSONUtil._
+    val atom = Atom("R",Variable("x"),ValueTerm(4),ValueTerm("Hola"))
+    val deserialized = deserialize(serialize(atom)).get
+
+    assertEquals(atom.toString,deserialized.toString)
   }
 }
 
-class TestActor(peer:Node,remoteName:String) extends Actor{
-  def act(){
-    RemoteActor.classLoader = getClass().getClassLoader()
-    val sink = select(peer, Symbol(remoteName))
-    link(sink)
-
-    sink ! "Hola"
-
-    while(true){
-      receive{
-        case msg => println("Response: " + msg)
-        exit()
-      }
-    }
-  }
-}

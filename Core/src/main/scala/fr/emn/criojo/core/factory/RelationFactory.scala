@@ -1,7 +1,7 @@
 package fr.emn.criojo.core.factory
 
-import fr.emn.criojo.core.{LocalRelation, Relation, Term}
 import fr.emn.criojo.core.impur.NativeRelation
+import fr.emn.criojo.core.{Channel, LocalRelation, Relation, Term}
 
 
 /**
@@ -14,7 +14,7 @@ import fr.emn.criojo.core.impur.NativeRelation
 
 trait RelationFactory {
   def createLocalRelation(name:String):Relation
-  def createRemoteRelation(name:String):Relation
+  def createChannel(name:String,location:String):Channel
   def createNativeRelation(name:String, f:(List[Term]) => Unit):NativeRelation
 }
 
@@ -25,7 +25,7 @@ trait DefaultFactory extends RelationFactory{
     new NativeRelation(name,f)
   }
 
-  def createRemoteRelation(name:String):Relation = {
-    throw new IllegalAccessException("Unimplemented method createRemoteRelation()")
+  def createChannel(name:String,location:String):Channel = {
+    throw new IllegalAccessException("Unimplemented method createChannel()")
   }
 }

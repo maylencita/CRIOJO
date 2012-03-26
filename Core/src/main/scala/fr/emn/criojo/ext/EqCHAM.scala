@@ -9,13 +9,14 @@ package fr.emn.criojo.ext
  */
 
 import fr.emn.criojo.core._
+import factory.DefaultFactory
 import fr.emn.criojo.lang._
 import Criojo._
 
 import collection.mutable.HashSet
 import EqClass._
 
-trait EqCHAM extends Cham{
+trait EqCHAM extends Cham with DefaultFactory{
 
   var eqClasses = new EqClassList
   var disjClasses = new EqClassList

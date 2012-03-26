@@ -8,9 +8,10 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 import fr.emn.criojo.core._
+import factory.DefaultFactory
 import fr.emn.criojo.lang.Cham
 
-trait BoolCHAM extends EqCHAM{
+trait BoolCHAM extends EqCHAM with DefaultFactory{
   val boolEqClasses = new TypedEqClasses[Boolean](eqClasses,disjClasses)
 
   /**********************************************************************
@@ -21,7 +22,7 @@ trait BoolCHAM extends EqCHAM{
 
 }
 
-trait BoolCHAM2 extends Cham{
+trait BoolCHAM2 extends Cham with DefaultFactory{
 
   val And = Rel("And")
   val Or = Rel("Or")

@@ -11,9 +11,10 @@ import expressions.VarExpression
 * Date: 30/09/11
 * Time: 14:59
 */
-class Cham extends StatefulEngine with DefaultFactory{
-  //TODO to implement this it is necessary to change Cham where used
-//  this:RelationFactory =>
+class Cham extends StatefulEngine //with DefaultFactory
+{
+  //TODO change Cham where used
+  this:RelationFactory =>
 
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
@@ -94,11 +95,11 @@ class Cham extends StatefulEngine with DefaultFactory{
 
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
   implicit def mol2atom(mol:Molecule):Atom = mol.head
-  implicit def relToVar(r:Relation):RelVariable = {
-    val vr = new RelVariable(r.name)
-    vr.relation = r
-    vr
-  }
+//  implicit def relToVar(r:Relation):RelVariable = {
+//    val vr = new RelVariable(r.name)
+//    vr.relation = r
+//    vr
+//  }
 
   // A variable of type Relation
   case class VarR(override val name:String) extends RelVariable(name){

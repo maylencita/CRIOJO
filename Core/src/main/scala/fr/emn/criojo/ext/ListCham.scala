@@ -1,6 +1,7 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.lang._
+import fr.emn.criojo.core.factory.DefaultFactory
 
 /*
  * Created by IntelliJ IDEA.
@@ -8,7 +9,7 @@ import fr.emn.criojo.lang._
  * Date: 21/10/11
  * Time: 11:11
  */
-trait ListCham extends Cham{
+trait ListCham extends Cham with DefaultFactory{
   val Cons = Rel("Cons")
   val IsNil = Rel("IsNil")
   private val Lst = Rel("lst")

@@ -3,6 +3,7 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.lang._
 import fr.emn.criojo.ext.expressions.IntExpression
 import fr.emn.criojo.core._
+import factory.DefaultFactory
 
 /*
  * Created by IntelliJ IDEA.
@@ -10,7 +11,7 @@ import fr.emn.criojo.core._
  * Date: 02/11/11
  * Time: 14:38
  */
-trait IntegerCham extends EqCHAM{
+trait IntegerCham extends EqCHAM with DefaultFactory{
   val IntVal = Rel("Int") //Like Val(x,n)
   val Int_ask = Rel("Int_ask")
   val Int_print = Rel("$Int_print")

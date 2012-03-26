@@ -1,6 +1,7 @@
 package fr.emn.criojo
 
 import core.Atom
+import core.factory.DefaultFactory
 import lang.Cham
 
 /**
@@ -11,7 +12,7 @@ import lang.Cham
  * To change this template use File | Settings | File Templates.
  */
 
-trait TestCham extends Cham{
+trait TestCham extends Cham with DefaultFactory{
   var passed = 0
   val Print = NativeRelation("Print") {
     case ((Atom(_,terms), _)) => print(terms.mkString(","))

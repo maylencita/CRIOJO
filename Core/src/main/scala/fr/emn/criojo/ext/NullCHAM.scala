@@ -11,9 +11,10 @@ import fr.emn.criojo.core._
 import EqClass._
 
 import collection.mutable.HashSet
+import factory.DefaultFactory
 import fr.emn.criojo.lang.{ChamGuard, Molecule}
 
-trait NullCHAM extends EqCHAM{
+trait NullCHAM extends EqCHAM with DefaultFactory{
   val nullVars:EqClass = HashSet[Variable]()
   private val x,y = Var
 
