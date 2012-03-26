@@ -1,4 +1,0 @@
-(public:Ping,Pong; private:Stop)
-Ping(x,P) => P(x,Pong)
-|
-Pong(x) => Stop

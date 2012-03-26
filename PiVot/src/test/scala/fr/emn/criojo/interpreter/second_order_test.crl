@@ -1,3 +1,0 @@
-(public:NewRel,B;private:_)
-true => new(a,b) NewRel(B,a,b)
-NewRel(R,x,y) => R(x,y)

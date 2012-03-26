@@ -1,5 +1,0 @@
-(public:Login,AlbumCloning;private:Album,Session)
-
-!T => new(null) Album(34,"Italia 2009"), Album(null,null);
-AlbumCloning(tok,user,A),Album(id,title) => A(tok,id,title)
-

@@ -1,10 +1,4 @@
-This folder correspond to the project CREOLE that contains the following modules:
+This folder correspond to the project CRIOJO that contains the following folders/files:
 
- - ANTLR_Scala => ANTLR extension to compile into Scala
- - Core => CREOLE core implementation
- - PiVot => CREOLE parser and interpreter
- - LEGACY => The old implementation
- - thirdparty => External libraries needed to run CREOLE
-
- - .git -> Git repository
- - .idea -> IntelliJ Project
+ - Core => Folder with the source of CRIOJO core implementation 
+ - pom.xml => Maven configuration file of the project
