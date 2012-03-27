@@ -12,11 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!--<module>ANTLR_Scala</module>-->
         <module>Core</module>
-        <module>Parser</module>
-        <module>Pivot</module>
-        <!--<module>CRIOJO_Server</module>-->
     </modules>
 
     <build>
