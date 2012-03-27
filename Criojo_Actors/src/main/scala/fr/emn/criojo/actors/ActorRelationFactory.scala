@@ -35,12 +35,10 @@ class ActorChannel(val name:String,val location:String) extends Channel{
               case r => r.name
             },a.terms)
             remote ! JSONUtil.serialize(atom)
-println(name + " - Message sent!")
             var answer = false
             while(!answer){
               react{
                 case msg =>
-println(name + " - Reponse: " + msg)
                   answer = true
               }
             }

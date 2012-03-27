@@ -57,7 +57,7 @@ class CommunicationSpec extends Specification{
         val x = Var
 
         val Pass = NativeRel{a =>
-          println(this + " -Pass: " + a)
+          println(this + " - Pass: " + a)
           passed = true
         }
 
@@ -66,7 +66,7 @@ class CommunicationSpec extends Specification{
           pong(x) --> Pass(x)
         )
       }
-      val agent2 = new ActorCham("localhost",9090,"Agent2") with DebugCham{
+      val agent2 = new ActorCham("localhost",9090,"Agent2") with ActorDebugger{
         DEBUG_DIRECT_MODE = true
         val ping = Rel("ping")
         val x = Var
@@ -77,7 +77,7 @@ class CommunicationSpec extends Specification{
         )
       }
       agent2.start()
-//      agent1.start()
+      agent1.start()
       agent1.introduceMolecule(agent1.Send(ValueTerm(1234)))
       agent1.executeRules()
 

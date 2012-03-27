@@ -14,35 +14,40 @@ import fr.emn.criojo.lang.{Applicable, ChamRel, Cham}
  * Date: 24/03/12
  * Time: 11:24
  */
+trait MessageHandler{
+  def handleMessage(msg:String) {}
+}
 
-class ActorCham(host:String,port:Int,name:String) extends Cham with ActorRelationFactory with Actor{
+class ActorCham(host:String,port:Int,name:String) extends Cham
+with ActorRelationFactory with Actor with MessageHandler{
   val chamLocation = host+":"+port+":"+name
   RemoteActor.classLoader = getClass().getClassLoader()
 
   def act(){
     alive(port)
     register(Symbol(name),this)
-println("ActorCham Listening...")
 
     loop{
       react{
         case msg:String =>
-println(this.toString + " - Message received: " + msg)
-          deserialize(msg) match{
-            case Some(a:Atom) => a
-              val atom = processAtom(a)
-println(this.toString + " - Atom received: " + atom)
-              findRelation(atom.relName) match{
-                case Some(r) => atom.relation = r
-                  introduceAtom(atom)
-                  executeRules()
-                case _ => sender ! "Unsupported operation " + a
-              }
-            case _ => println("Unknown format: " + msg)
-              sender ! "ERROR"
-          }
+          handleMessage(msg)
         case _ => sender ! "Unknown format"
       }
+    }
+  }
+
+  override def handleMessage(msg:String){
+    deserialize(msg) match{
+      case Some(a:Atom) => a
+      val atom = processAtom(a)
+      findRelation(atom.relName) match{
+        case Some(r) => atom.relation = r
+        introduceAtom(atom)
+        executeRules()
+        case _ => sender ! "Unsupported operation " + a
+      }
+      case _ => println(this + " - Unknown format: " + msg)
+      sender ! "ERROR: Unknown format"
     }
   }
 
@@ -55,8 +60,10 @@ println(this.toString + " - Atom received: " + atom)
   def processAtom(a:Atom):Atom = {
     new Atom(a.relName, a.terms.map{
       case rv:RelVariable =>
-        val nameloc = rv.name.splitAt(rv.name.lastIndexOf(':'))
-        val channel = createChannel(rv.name,nameloc._1)
+        val params = rv.name.split(":")
+        val loc = params(0)+":"+params(1)+":"+params(2)
+        val relName = params(3)
+        val channel = createChannel(relName,loc)
         val newRv = RelVariable(channel)
         newRv
       case t => t
