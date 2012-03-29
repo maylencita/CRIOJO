@@ -15,7 +15,7 @@ abstract class CriojoGuard extends Guard with RelationObserver{
    * The set of valuations that satisfy this guard
    * @return
    */
-  def valuations:ValuationList
+  def valuations(valuation:Valuation):ValuationList = new ValuationList()
 
   /**
    * Returns the list of ids of observed relations
@@ -24,7 +24,12 @@ abstract class CriojoGuard extends Guard with RelationObserver{
   def observed:Set[String]
 
   def eval(valuation: Valuation) = {
-    valuations.exists(v => v.consistentWith(valuation))
+    valuations(valuation:Valuation).exists(v => v.consistentWith(valuation))
+  }
+
+  implicit def valuationToValuationList(valuation:Valuation):ValuationList = {
+
+     new ValuationList(List(new NormalForm(valuation, List())))
   }
 }
 
@@ -44,7 +49,7 @@ case class PresenceGuard(val atoms:List[Atom]) extends CriojoGuard with StateMac
       removeExecution(atom)
   }
 
-  def valuations:ValuationList =
+  override def valuations(valuation:Valuation):ValuationList =
     new ValuationList(finalState.executions.map{ex =>
       if(ex.valuation.isEmpty)
         NormalForm(TopValuation)
@@ -56,7 +61,8 @@ case class PresenceGuard(val atoms:List[Atom]) extends CriojoGuard with StateMac
 }
 
 case class AbsGuard(override val atoms:List[Atom]) extends PresenceGuard(atoms){
-  override def valuations = super.valuations.not
+  override def valuations(valuation:Valuation) = super.valuations(valuation:Valuation).not
+
   override def toString = atoms.mkString("Abs(", ",", ")")
 }
 
@@ -64,7 +70,7 @@ case class NotGuard(guard:CriojoGuard) extends CriojoGuard{
 
   def observed = guard.observed
 
-  def valuations = guard.valuations.not
+  override def valuations(valuation:Valuation) = guard.valuations(valuation).not
 
   def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
 }
@@ -85,7 +91,7 @@ case class ExistsGuard(guard:CriojoGuard, x:Variable) extends CriojoGuard{
     }
   }
 
-  def valuations = guard.valuations.map(v => gamma(v))
+  override def valuations(valuation:Valuation) = guard.valuations(valuation).map(v => gamma(v))
 
   def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
 
@@ -93,14 +99,14 @@ case class ExistsGuard(guard:CriojoGuard, x:Variable) extends CriojoGuard{
 }
 
 class ForAllGuard(guard:CriojoGuard, x:Variable) extends ExistsGuard(NotGuard(guard),x){
-  override def valuations = super.valuations.not
+  override def valuations(valuation:Valuation) = super.valuations(valuation).not
 }
 
 case class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{
 
   def observed = lguard.observed ++ rguard.observed
 
-  def valuations = lguard.valuations or rguard.valuations
+  override def valuations(valuation:Valuation) = lguard.valuations(valuation) or rguard.valuations(valuation)
 
   def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
 
@@ -111,7 +117,7 @@ case class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{
 
   def observed = lguard.observed ++ rguard.observed
 
-  def valuations = lguard.valuations intersect rguard.valuations
+  override def valuations(valuation:Valuation) = lguard.valuations(valuation) intersect rguard.valuations(valuation)
 
   def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
 

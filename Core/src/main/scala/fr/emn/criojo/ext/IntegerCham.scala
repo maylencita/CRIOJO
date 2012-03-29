@@ -125,6 +125,16 @@ trait IntegerCham extends EqCHAM{
         //greaterThan(applySubstitution(t1,subs),applySubstitution(t2,subs))
         greaterThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+
+      def valuation(valuation:Valuation) = {
+        if(greaterThan(t1.applyValuation(valuation), t2.applyValuation(valuation))) {
+          valuation
+        }
+        else {
+          new ValuationList()
+        }
+      }
+
       val valuations = new ValuationList()
       val observed = Set[String]()
       def receiveUpdate(atom: Atom){}
@@ -137,6 +147,16 @@ trait IntegerCham extends EqCHAM{
       override def eval(vals: Valuation) = {
         lessThan(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+
+      def valuation(valuation:Valuation) = {
+        if(lessThan(t1.applyValuation(valuation), t2.applyValuation(valuation))) {
+          valuation
+        }
+        else {
+          new ValuationList()
+        }
+      }
+
       val valuations = new ValuationList()
       val observed = Set[String]()
       def receiveUpdate(atom: Atom){}
@@ -149,6 +169,16 @@ trait IntegerCham extends EqCHAM{
       override def eval(vals: Valuation) = {
         lessThanOrEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
+
+      def valuation(valuation:Valuation) = {
+        if(lessThanOrEqual(t1.applyValuation(valuation), t2.applyValuation(valuation))) {
+          valuation
+        }
+        else {
+          new ValuationList()
+        }
+      }
+
       val valuations = new ValuationList()
       val observed = Set[String]()
       def receiveUpdate(atom: Atom){}

@@ -38,7 +38,14 @@ trait EqCHAM extends Cham{
       override def eval(vals: Valuation) = {
         existsEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
-      val valuations = new ValuationList()
+      override def valuations(valuation:Valuation):ValuationList = {
+        if(existsEqual(t1.applyValuation(valuation), t2.applyValuation(valuation))) {
+          valuation
+        }
+        else {
+          new ValuationList()
+        }
+      }
       val observed = Set[String]()
       def receiveUpdate(atom: Atom){}
     }
@@ -49,7 +56,14 @@ trait EqCHAM extends Cham{
       override def eval(vals: Valuation) = {
         existsNotEqual(t1.applyValuation(vals), t2.applyValuation(vals))
       }
-      val valuations = new ValuationList()
+      override def valuations(valuation:Valuation):ValuationList = {
+        if(existsNotEqual(t1.applyValuation(valuation), t2.applyValuation(valuation))) {
+          valuation
+        }
+        else {
+          new ValuationList()
+        }
+      }
       val observed = Set[String]()
       def receiveUpdate(atom: Atom){}
     }
