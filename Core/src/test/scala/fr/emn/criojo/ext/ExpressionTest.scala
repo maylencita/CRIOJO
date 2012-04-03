@@ -130,13 +130,13 @@ class ExpressionTest {
 
     machine.introduceMolecule(machine.OneBonbon(1))
 
-//    assert(machine.containsAtom(machine.OneBonbon, 1))
+//    assert(machine.containsRelation(machine.OneBonbon, 1))
     machine.executeRules()
 
     machine.introduceMolecule(machine.OneBonbon(2))
     machine.executeRules()
-//    assert(machine.containsAtom(machine.TwoBonbons, 1))
-//    assert(machine.containsAtom(machine.OneBonbon, 0))
+//    assert(machine.containsRelation(machine.TwoBonbons, 1))
+//    assert(machine.containsRelation(machine.OneBonbon, 0))
     assert(machine.getSolution.size==1)
   }
 
@@ -199,8 +199,6 @@ class ExpressionTest {
     assert(machine.containsMolecule(machine.R1_COO_R2(0)))
     assert(machine.containsMolecule(machine.H2O(1)))
     assert(machine.containsMolecule(machine.R1_COOH(1)))
-
-    println(machine.getSolution)
   }
 
   @Test
@@ -282,5 +280,10 @@ class ExpressionTest {
     machine.executeRules()
 
     assert(machine.containsMolecule(machine.PrintInt("A")))
+    assert(machine.containsMolecule(machine.PrintInt("B")))
+    assert(machine.containsMolecule(machine.PrintInt("D")))
+    assert(machine.containsMolecule(machine.PrintInt("E")))
+
+    //assert(machine.containsMolecule(machine.PrintInt("C"), 0)) // C is not in the shortest, but it can appear in the solution
   }
 }

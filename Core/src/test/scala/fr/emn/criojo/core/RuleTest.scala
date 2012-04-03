@@ -33,13 +33,13 @@ class RuleTest {
     val vx1 = new ValueTerm[Int](1)
     val vy1 = new ValueTerm[Int](2)
 
-    val listOfSubstitutions = Valuation(x1->vx1,y1->vy1)
+    val valuations = Valuation(x1->vx1,y1->vy1)
 
     val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
 
     rule.addExecution(new Atom("A", listOfTerms))
 
-    assert(rule.execute(listOfSubstitutions))
+    assert(rule.execute(valuations))
   }
 
   @Test
@@ -59,8 +59,6 @@ class RuleTest {
     val y1 = new Variable("y")
     val vx1 = new ValueTerm[Int](1)
     val vy1 = new ValueTerm[Int](2)
-
-    val listOfSubstitutions:List[(Variable, Term)] = List((x1,vx1),(y1,vy1))
 
     val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
     val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())

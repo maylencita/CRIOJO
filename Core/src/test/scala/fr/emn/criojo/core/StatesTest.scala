@@ -18,7 +18,7 @@ class StatesTest {
 
   @Test(timeout = 1000)
   def terminationTest() {
-    val sm = new Cham with TestCham{
+    val sm = new Cham with TestCham {
       val A = Rel("A")
       val B = Rel("B")
       val C = Rel("C")
@@ -27,7 +27,7 @@ class StatesTest {
       val x, y, z = Var
 
       rules(
-        (A(x, y) & B(y, z)) --> Abs(D(y)) ?: (D(y) & A(x, y) & B(y, z) & Print(x,y,z) & Passed())
+        (A(x, y) & B(y, z)) --> Abs(D(y)) ?: (D(y) & A(x, y) & B(y, z) & Passed())
       )
     }
 
@@ -36,8 +36,6 @@ class StatesTest {
     sm.introduceMolecule(A(2, 3))
     sm.introduceMolecule(B(3, 4))
     sm.executeRules()
-
-    println(sm.printRules)
 
     assertEquals(1,sm.passed)
   }
