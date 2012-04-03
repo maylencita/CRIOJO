@@ -204,59 +204,9 @@ class ExpressionTest {
   }
 
   @Test
-  def WordTest {
-
-    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val w,kp,km = Var
-      val InsertWord = Rel("InsertWord")
-      val AskContain = Rel("AskContain")
-      val Kp = VarR("Kp")
-      val Km = VarR("Km")
-      val OK = VarR("OK")
-      val NOTOK = VarR("NOTOK")
-      val Clean = Rel("Clean")
-
-      val PrintInt = NativeRelation("PrintInt"){
-        case (Atom(_,x::_),_) => println(x)
-      }
-
-      rules(
-        (AskContain(w,Kp,Km) &: InsertWord(w)) --> (Kp(w) & Clean()),
-        (AskContain(w,Kp,Km)) --> Abs(InsertWord(w)) ?: (Km(w) & Clean()),
-        (Clean() &: InsertWord(w) ) --> Clean()
-      )
-    }
-
-    import machine.num2fun
-    implicit def stringToValue(s:String) = new StrExpression(s)
-
-    machine.enableSolutionTrace()
-
-    machine.introduceMolecule(machine.InsertWord("aa"))
-    machine.introduceMolecule(machine.InsertWord("bb"))
-    machine.introduceMolecule(machine.InsertWord("cc"))
-    machine.introduceMolecule(machine.InsertWord("dd"))
-    machine.introduceMolecule(machine.InsertWord("dd"))
-    machine.introduceMolecule(machine.InsertWord("ee"))
-    machine.introduceMolecule(machine.InsertWord("ff"))
-    machine.introduceMolecule(machine.InsertWord("gg"))
-
-    machine.introduceMolecule(machine.AskContain("gg", machine.OK, machine.NOTOK))
-    machine.introduceMolecule(machine.AskContain("gh", machine.OK, machine.NOTOK))
-    machine.executeRules()
-
-    println(machine.getSolution)
-    
-    assert(machine.containsMolecule(machine.OK("gg")))
-    assert(machine.containsMolecule(machine.NOTOK("gh")))
-
-    //println(machine.printRules)
-  }
-
-  @Test
   def MapReduceTest {
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
       val z,w,n,i,j,kp,km = Var
       val InsertWord = Rel("InsertWord")
       val Count = Rel("Count")
@@ -266,34 +216,34 @@ class ExpressionTest {
       }
 
       rules(
-        InsertWord(n, w) --> Count(n, w, 1), // MAP
-        (Count(n, w, i) & Count(z, w, j)) --> Count(n, w, i+j) // REDUCE
+        InsertWord(w) --> Count(w, 1), // MAP
+        (Count(w, i) & Count(w, j)) --> Count(w, i+j) // REDUCE
       )
     }
 
     import machine.num2fun
     implicit def stringToValue(s:String) = StrExpression(s)
 
-    machine.introduceMolecule(machine.InsertWord(1,"aa"))
-    machine.introduceMolecule(machine.InsertWord(2,"aa"))
-    machine.introduceMolecule(machine.InsertWord(3,"bb"))
-    machine.introduceMolecule(machine.InsertWord(4,"bb"))
-    machine.introduceMolecule(machine.InsertWord(5,"cc"))
-    machine.introduceMolecule(machine.InsertWord(6,"aa"))
-    machine.introduceMolecule(machine.InsertWord(7,"bb"))
-    machine.introduceMolecule(machine.InsertWord(8,"dd"))
-    machine.executeRules()
+    machine.enableSolutionTrace()
 
-    println(machine.getSolution)
+    machine.introduceMolecule(machine.InsertWord("aa"))
+    machine.introduceMolecule(machine.InsertWord("aa"))
+    machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("cc"))
+    machine.introduceMolecule(machine.InsertWord("aa"))
+    machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("dd"))
+    machine.executeRules()
     
-    //assert(machine.getSolution.containsMolecule(machine.Count(7,"bb",3)))
-    //assert(machine.getSolution.containsMolecule(machine.Count(8,"dd",1)))
+    assert(machine.getSolution.containsMolecule(machine.Count("aa",3)))
+    assert(machine.getSolution.containsMolecule(machine.Count("cc",1)))
   }
 
   @Test
   def DjikstraTest {
 
-    val machine = new Cham with IntegerCham { //TestCham with DefaultCham{
+    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
       val x,y,z,w,n,i,j = Var
 
       val AreConnected = Rel("LeadsTo")
@@ -304,7 +254,7 @@ class ExpressionTest {
       val POP = Rel("POP")
 
       val PrintInt = NativeRelation("PrintInt"){
-        case (Atom(_,x::_),_) => println(x)
+        case (Atom(_,x::_),_) => /*println(x)*/
       }
 
       rules(
@@ -318,7 +268,9 @@ class ExpressionTest {
     import machine.num2fun
     
     implicit def str2fun(s:String):Term = new StrExpression(s)
-    
+
+    machine.enableSolutionTrace()
+
     machine.introduceMolecule(machine.AreConnected("A","B"))
     machine.introduceMolecule(machine.AreConnected("B","C"))
     machine.introduceMolecule(machine.AreConnected("C","D"))
@@ -328,7 +280,7 @@ class ExpressionTest {
 
     machine.introduceMolecule(machine.IsItEquivalent("A","E"))
     machine.executeRules()
-    //assert(machine.getSolution.size==1)
-    println(machine.getSolution)
+
+    assert(machine.containsMolecule(machine.PrintInt("A")))
   }
 }

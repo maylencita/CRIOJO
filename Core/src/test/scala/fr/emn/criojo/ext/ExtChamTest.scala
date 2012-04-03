@@ -140,7 +140,7 @@ class ExtChamTest /*{
     solution.addAtom(a2)
 
     println(sm.getSolution)
-    assertEquals(5,sm.getSolution.size)
+    assertTrue(sm.containsMolecule(sm.D()))
     
     assertTrue(sm.getValue(sm.x)!=null)
     assertTrue(sm.getValue(sm.v).isInstanceOf[Value[Nothing]])
