@@ -10,6 +10,7 @@ import org.junit._
 import Assert._
 import fr.emn.criojo.lang._
 import fr.emn.criojo.TestCham
+import fr.emn.criojo.ext.debug.DebugCham
 
 class GuardsTests {
 
@@ -22,7 +23,7 @@ class GuardsTests {
     var i = 1
 
     //Sequence example
-    val cham = new Cham with TestCham{
+    val machine = new Cham with TestCham with DebugCham {
       val R = Rel("R")
       val S = Rel("S")
       val X = Rel("X")
@@ -37,10 +38,12 @@ class GuardsTests {
       )
     }
 
-    import cham.{R,S}
-    cham.introduceMolecule(R(1,2))
-    cham.introduceMolecule(S(2,3))
-    cham.executeRules()
+    machine.enableStreamingTrace()
+
+    import machine.{R,S}
+    machine.introduceMolecule(R(1,2))
+    machine.introduceMolecule(S(2,3))
+    machine.executeRules()
 
     assertTrue("\nExpected : Array(1,2)\n" +
                "Actual   : " + result.mkString("Array(",",",")"),

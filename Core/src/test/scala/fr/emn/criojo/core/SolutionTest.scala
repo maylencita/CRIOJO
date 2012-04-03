@@ -11,17 +11,6 @@ package fr.emn.criojo.core
 import org.junit._
 import Assert._
 
-//object SolutionTests{
-//  def suite: Test = {
-//      val suite = new TestSuite(classOf[SolutionTests]);
-//      suite
-//  }
-//
-//  def main(args : Array[String]) {
-//      junit.textui.TestRunner.run(suite);
-//  }
-//}
-
 class SolutionTest {
 
   val solution = new StandAloneSolution()
@@ -29,20 +18,11 @@ class SolutionTest {
   val a = Atom(r, Variable("x1"))
   val a2 = Atom(r, Variable("x1"))
 
-//  @Test
-//  def testAdd2Times{
-//    solution.addAtom(a)
-//    solution.addAtom(a)
-//
-//    assertTrue("<R(x1)>" == solution.toString)
-//  }
-
   @Test (timeout=1000)
   def testMultiRel{
     solution.addAtom(a)
     solution.addAtom(a2)
 
-    //println("[testMultiRel] Solution= " + solution)
     assertTrue("<R(x1),R(x1)>" == solution.toString)
   }
 
@@ -74,7 +54,6 @@ class SolutionTest {
     assertTrue(solution.toString == sol2.toString)
 
     sol2.addAtom(Atom(r, Variable("x2")))
-    //println("[testClone] Solution, sol2:" + solution + ", " + sol2)
 
     assertFalse(solution.toString == sol2.toString)
   }
@@ -85,13 +64,9 @@ class SolutionTest {
     val sol1 = StandAloneSolution(List(a,b))
     val sol2 = StandAloneSolution(List(a,b))
 
-    //println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
-
     assertTrue(sol1 == sol2)
 
     sol2.addAtom(Atom(r, Variable("x3")))
-
-    //println("[testEquals] sol1, sol2:" + sol1 + ", " + sol2)
 
     assertFalse(sol1 == sol2)
   }
@@ -106,7 +81,6 @@ class SolutionTest {
     sol2.addAtom(Atom(r, Variable("y1")))
     sol2.cleanup
 
-    //println("[testUpdate] Solution, sol2: " + solution + ", " + sol2)
     assertFalse(solution == sol2)
 
     solution.update(sol2)
