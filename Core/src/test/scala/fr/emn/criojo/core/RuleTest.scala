@@ -16,7 +16,7 @@ import fr.emn.criojo.lang.Cham
 class RuleTest {
 
   @Test
-  def ApplyReactionTest {
+  def ApplyReactionTest() {
 
     val cm = new Cham with IntegerCham {
 
@@ -43,7 +43,7 @@ class RuleTest {
   }
 
   @Test
-  def EqualTest {
+  def EqualTest() {
 
     val cm = new Cham with IntegerCham {
 

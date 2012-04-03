@@ -19,7 +19,7 @@ class SolutionTest {
   val a2 = Atom(r, Variable("x1"))
 
   @Test (timeout=1000)
-  def testMultiRel{
+  def testMultiRel(){
     solution.addAtom(a)
     solution.addAtom(a2)
 
@@ -27,25 +27,25 @@ class SolutionTest {
   }
 
   @Test (timeout=1000)
-  def testCleanup{
+  def testCleanup(){
     solution.addAtom(a)
     a.setActive(false)
-    solution.cleanup
+    solution.cleanup()
 
     assertTrue("<>" == solution.toString)
   }
 
   @Test (timeout=1000)
-  def testRevert{
+  def testRevert(){
     solution.addAtom(a)
     a.setActive(false)
-    solution.revert
+    solution.revert()
 
     assertTrue("<R(x1)>" == solution.toString)
   }
 
   @Test  (timeout=1000)
-  def testClone{
+  def testClone(){
     solution.addAtom(a)
     solution.addAtom(a2)
 
@@ -59,7 +59,7 @@ class SolutionTest {
   }
 
   @Test (timeout=1000)
-  def testEquals{
+  def testEquals(){
     val b = Atom(r, Variable("y1"))
     val sol1 = StandAloneSolution(List(a,b))
     val sol2 = StandAloneSolution(List(a,b))
@@ -72,14 +72,14 @@ class SolutionTest {
   }
 
   @Test (timeout=1000)
-  def testUpdate{
+  def testUpdate(){
     solution.addAtom(a); solution.addAtom(a2)
 
     val sol2 = solution.clone
 
     a.setActive(false)
     sol2.addAtom(Atom(r, Variable("y1")))
-    sol2.cleanup
+    sol2.cleanup()
 
     assertFalse(solution == sol2)
 
@@ -89,7 +89,7 @@ class SolutionTest {
   }
 
   @Test (timeout=1000)
-  def EmptySolutionTest{
+  def EmptySolutionTest(){
 
     var emptySol = EmptySolution
     assertTrue(emptySol.size==0)
@@ -98,7 +98,7 @@ class SolutionTest {
   }
 
   @Test (timeout=1000)
-  def SolutionImplTest{
+  def SolutionImplTest(){
 
     var solImpl = new SolutionImpl()
     assertTrue(solImpl.size==0)

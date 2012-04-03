@@ -41,46 +41,46 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
   private val IntDiv2 = Rel("$IntDivs2")
 
   protected val IntAdd = NativeRelation("$IntAdd"){ //(a,s) => add(a) }
-    case (Atom(_,x::y::z::_), _) =>
-      (getValue(x),getValue(y),getValue(z)) match{
-        case (Some(v1),Some(v2),_) => introduceAtom(IntVal(z,v1+v2))
-        case _ => introduceAtom(IntAdd2(x,y,z))
+    case (Atom(_,a::b::c::_), _) =>
+      (getValue(a),getValue(b),getValue(c)) match{
+        case (Some(v1),Some(v2),_) => introduceAtom(IntVal(c,v1+v2))
+        case _ => introduceAtom(IntAdd2(a,b,c))
       }
     case _ =>
   }
   protected val IntSub = NativeRelation("$IntSubs"){
-    case (Atom(_,x::y::z::_), _) =>
-      (getValue(x),getValue(y)) match{
-        case (Some(v1),Some(v2)) => introduceAtom(IntVal(z,v1-v2))
-        case _ => introduceAtom(IntSub2(x,y,z))
+    case (Atom(_,a::b::c::_), _) =>
+      (getValue(a),getValue(b)) match{
+        case (Some(v1),Some(v2)) => introduceAtom(IntVal(c,v1-v2))
+        case _ => introduceAtom(IntSub2(a,b,c))
       }
     case _ =>
   }
 
   protected val IntDiv = NativeRelation("$IntDivs"){
-    case (Atom(_,x::y::z::_), _) =>
-      (getValue(x),getValue(y)) match{
-        case (Some(v1),Some(v2)) => introduceAtom(IntVal(z,v1/v2))
-        case _ => introduceAtom(IntDiv2(x,y,z))
+    case (Atom(_,a::b::c::_), _) =>
+      (getValue(a),getValue(b)) match{
+        case (Some(v1),Some(v2)) => introduceAtom(IntVal(c,v1/v2))
+        case _ => introduceAtom(IntDiv2(a,b,c))
       }
     case _ =>
   }
 
   private val CalculeLeq = NativeRelation("$CalculeLeq"){
-    case (Atom(_,x::y::_), _) =>
-      (getValue(x),getValue(y)) match{
-        case (Some(v1),Some(v2)) if(v1 <= v2) => introduceAtom(Leq(x,y))
-        case (Some(v1),Some(v2)) if(v1 > v2) => introduceAtom(Leq(y,x))
+    case (Atom(_,a::b::_), _) =>
+      (getValue(a),getValue(b)) match{
+        case (Some(v1),Some(v2)) if(v1 <= v2) => introduceAtom(Leq(a,b))
+        case (Some(v1),Some(v2)) if(v1 > v2) => introduceAtom(Leq(b,a))
         case _ => //Err
       }
     case _ =>
   }
 
   private val CalculeMod = NativeRelation("$CalculeMod"){
-    case (Atom(_,x::y::_), _) =>
-      (getValue(x),getValue(y)) match{
-        case (Some(v1),Some(v2)) if(v1 >= v2) => introduceAtom(mod(x,y,v1 % v2))
-        case (Some(v1),Some(v2)) if(v1 < v2) => introduceAtom(mod(y,x,v2 % v1))
+    case (Atom(_,a::b::_), _) =>
+      (getValue(a),getValue(b)) match{
+        case (Some(v1),Some(v2)) if(v1 >= v2) => introduceAtom(mod(a,b,v1 % v2))
+        case (Some(v1),Some(v2)) if(v1 < v2) => introduceAtom(mod(b,a,v2 % v1))
         case _ => //No val
       }
     case _ =>
@@ -214,12 +214,12 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
       case _ => None
     }
     case _ => None
-  } //intEqClasses getValue x
+  }
 
   implicit def num2fun(n:Int):Term = new IntExpression(n) //new IntTerm(n)
 
   private def getValue(t:Term):Option[Int] = t match{
-    case v:Value[Int] => Some(v.getValue())
+    case v:Value[Int] => Some(v.getValue)
     case vr:Variable => getIntValue(vr) match{
       case Some(v) => Some(v)
       case _ => None

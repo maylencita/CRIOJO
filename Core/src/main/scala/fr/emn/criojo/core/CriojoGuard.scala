@@ -33,7 +33,7 @@ abstract class CriojoGuard extends Guard with RelationObserver{
   }
 }
 
-case class PresenceGuard(val atoms:List[Atom]) extends CriojoGuard with StateMachine{
+case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard with StateMachine{
   init(atoms.toArray)
 
   val finalState = states(size - 1)

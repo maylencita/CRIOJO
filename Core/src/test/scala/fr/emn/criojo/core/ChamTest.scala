@@ -25,7 +25,7 @@ class ChamTest {
 
 
   @Test
-  def testRelations {
+  def testRelations() {
 
     val machine = new IntegerCham with DebugCham {
       val x,y,z = Var
@@ -34,7 +34,7 @@ class ChamTest {
       val Z = Rel("S")
 
       rules(
-        (R(x,y) & R(y,z)) --> R(x,z),
+        (R(x,y) &: R(y,z)) --> R(x,z),
         S(x,y) --> R(x,y)
       )
     }
@@ -54,7 +54,7 @@ class ChamTest {
 
 
   @Test
-  def BonbonsTestRelations {
+  def BonbonsTestRelations() {
 
     val machine = new Cham with IntegerCham with DebugCham {
       val x,y,z = Var
@@ -62,7 +62,7 @@ class ChamTest {
       val TwoBonbons = Rel("TwoBonbons")
 
       rules(
-        (OneBonbon() & OneBonbon()) --> TwoBonbons()
+        (OneBonbon() &: OneBonbon()) --> TwoBonbons()
       )
     }
 
@@ -85,7 +85,7 @@ class ChamTest {
   }
 
   @Test
-  def H4ORelations {
+  def H4ORelations() {
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
       val a,b,x,y,z = Var
@@ -117,7 +117,7 @@ class ChamTest {
   }
 
   @Test(timeout=1000)
-  def testAtomInsertion{
+  def testAtomInsertion(){
 
     val machine = new Cham with DebugCham with DefaultFactory {
       val x,y,z = Var
@@ -153,7 +153,7 @@ class ChamTest {
   }
 
   @Test (timeout=1000)
-  def testGuardSubs{
+  def testGuardSubs(){
 
     logLevel = DEBUG
     val a = Variable("a")
@@ -188,7 +188,7 @@ class ChamTest {
   }
 
   @Test (timeout=1000)
-  def testNu{
+  def testNu(){
 
     logLevel = DEBUG
 
@@ -200,7 +200,7 @@ class ChamTest {
       val x,y,z,w = Var
       val S = Rel("S")
       val R = NativeRelation("R"){
-        case (Atom("R", a::v2::v3::_),s) if (v2 != Undef && v3 != Undef) => result = true
+        case (Atom("R", o::v2::v3::_),s) if (v2 != Undef && v3 != Undef) => result = true
         case at => fail("Expected: R(x1,x2,x3). Actual: " + at)
       }
 
@@ -216,7 +216,7 @@ class ChamTest {
   }
 
   @Test (timeout=1000)
-  def testHORelation{
+  def testHORelation(){
 
     logLevel = DEBUG
 
@@ -230,7 +230,7 @@ class ChamTest {
 
       val R = Rel("R"); val S = Rel("S")
       val Resp = NativeRelation("Resp"){
-        case (Atom("Resp", a::b::_),s) => result = true
+        case (Atom("Resp", o::p::_),s) => result = true
         case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
       }
       val RespVar = RelVariable(Resp)

@@ -14,7 +14,7 @@ import org.junit.Test
 class AtomTest {
 
   @Test
-  def TermListTest {
+  def TermListTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")
@@ -27,7 +27,7 @@ class AtomTest {
   }
 
   @Test
-  def MatchesTest {
+  def MatchesTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")
@@ -61,7 +61,7 @@ class AtomTest {
   }
 
   @Test
-  def ApplyValuationTest {
+  def ApplyValuationTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")
@@ -83,7 +83,7 @@ class AtomTest {
   }
 
   @Test
-  def cloneTest {
+  def cloneTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")

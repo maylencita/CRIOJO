@@ -22,7 +22,7 @@ class ValuationTests {
   val z = Variable("z")
 
   @Test
-  def unionTest{
+  def unionTest(){
 
     val v1 = Valuation(x->1, z->3)
     val v2 = Valuation(y->2)
@@ -39,7 +39,7 @@ class ValuationTests {
   }
 
   @Test
-  def emptyUnionTest{
+  def emptyUnionTest(){
 
     val v1 = Valuation(x->1, z->3)
     val v2 = Valuation(y->2, x->2)
@@ -50,7 +50,7 @@ class ValuationTests {
   }
 
   @Test
-  def getValuationTest{
+  def testGetValuationTest(){
 
     val termLst1 = List(x,y,z)
     val termLst2 = List[Term](1,2,3)
@@ -62,7 +62,7 @@ class ValuationTests {
   }
 
   @Test
-  def applyValuationTest{
+  def applyValuationTest(){
     val atom = Atom("A",x,y,z)
     val valuation = Valuation(x->1,y->2,z->3)
     val newAtom = atom.applyValuation(valuation)
@@ -73,7 +73,7 @@ class ValuationTests {
   }
 
   @Test
-  def extensionTest{
+  def extensionTest(){
     val val1 = Valuation(x->2,y->2)
     val val2 = Valuation(y->2,z->3,x->2)
     val val3 = Valuation(x->3,y->2,z->1)
@@ -91,7 +91,7 @@ class ValuationTests {
   }
 
   @Test
-  def notTest{
+  def notTest(){
     val lst = new ValuationList(List(
       new NormalForm(Valuation(x->2,y->2),(!Valuation(z->3))::(!Valuation(z->4))::Nil),
       new NormalForm(Valuation(x->3,y->4),(!Valuation(z->5))::(!Valuation(z->6))::Nil),

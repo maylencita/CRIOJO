@@ -1,7 +1,6 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
-import Criojo.Substitution
 import fr.emn.criojo.util.Logger
 
 /**

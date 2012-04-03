@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import Criojo.Substitution
-
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -12,9 +10,6 @@ import Criojo.Substitution
 
 trait Guard {
   def empty:Boolean
-  @deprecated ("use: eval(Valuation)")
-  def eval(sol:Solution, subs:List[Substitution]):Boolean = false
-
   def eval(valuation:Valuation):Boolean
 }
 

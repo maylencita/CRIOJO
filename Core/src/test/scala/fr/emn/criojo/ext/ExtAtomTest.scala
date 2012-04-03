@@ -15,7 +15,7 @@ import fr.emn.criojo.core.{Atom, Term, Variable}
 class ExtAtomTest {
 
   @Test
-  def cloneTest {
+  def cloneTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")

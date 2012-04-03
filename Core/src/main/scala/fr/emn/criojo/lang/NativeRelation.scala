@@ -15,16 +15,18 @@ case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Uni
 
   override def copy(sol:Solution) = new NativeRelation(rn, sol, f)
 
-  override def notifyObservers(a:Atom)= a match{
-    case Atom(this.name, _) =>
-      log("[Relation("+name+").notifyObservers] notified by " + a)
-      f(a, solution)
-      solution.inactivate(a)
+  override def notifyObservers(a:Atom) {
+    a match {
+      case Atom(this.name, _) =>
+        log("[Relation(" + name + ").notifyObservers] notified by " + a)
+        f(a, solution)
+        solution.inactivate(a)
 
-      // todo: remove a?
-      //solution.remove(a)
+        // todo: remove a?
+        //solution.remove(a)
 
-      solution.cleanup()
-    case _ => super.notifyObservers(a)
+        solution.cleanup()
+      case _ => super.notifyObservers(a)
+    }
   }
 }

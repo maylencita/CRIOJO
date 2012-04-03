@@ -64,11 +64,11 @@ trait DebugCham extends StatefulEngine {
   }
 
   def containsAtom(a:Atom, n:Int):Boolean = {
-    return (solution.elems.count(atom => atom.matches(a)) == n)
+    (solution.elems.count(atom => atom.matches(a)) == n)
   }
 
   def containsRelation(a:ChamRel, n:Int):Boolean = {
-    return (solution.elems.count(atom => a.name==atom.relName) == n)
+    (solution.elems.count(atom => a.name==atom.relName) == n)
   }
 
   def containsMolecule(m:Molecule):Boolean = {

@@ -10,7 +10,7 @@ package fr.emn.criojo.core
 
 trait Value[+T] {
 
-  def getValue():T = {null.asInstanceOf[T]}
+  def getValue:T = {null.asInstanceOf[T]}
 }
 
 case class ValueTerm[+T](value:T) extends Term with Value[T] {
@@ -35,14 +35,14 @@ case class ValueTerm[+T](value:T) extends Term with Value[T] {
     case _ => value.toString
   }
 
-  override def getValue():T = {
+  override def getValue:T = {
     value
   }
 
   @throws(classOf[PatternNotMatchingException])
   def getValuation(t:Term):Valuation = t match {
     case p:ValueTerm[T] => {
-      if(p.getValue().equals(getValue())) {
+      if(p.getValue.equals(getValue)) {
         Valuation()
       }
       else {

@@ -18,7 +18,7 @@ class GuardsTests {
   implicit def str2term(str:String):Term = new ValueTerm[String](str)
 
   @Test
-  def presenceTest{
+  def presenceTest(){
     val result = new Array[Int](2)
     var i = 1
 
@@ -51,7 +51,7 @@ class GuardsTests {
   }
 
   @Test
-  def presenceSansParamsTest{
+  def presenceSansParamsTest(){
     var finalword = ""
 
     val cham = new Cham with TestCham{
@@ -79,7 +79,7 @@ class GuardsTests {
   }
 
   @Test
-  def absenceTest{
+  def absenceTest(){
     var finalword = ""
 
     //Clonning example
@@ -111,7 +111,7 @@ class GuardsTests {
   }
 
   @Test
-  def absenceTest2{
+  def absenceTest2(){
     var finalword = ""
 
     //Clonning example
@@ -146,7 +146,7 @@ class GuardsTests {
   }
 
   @Test
-  def existsTest{
+  def existsTest(){
     val cham = new Cham with TestCham{
       val R = Rel("R")
       val S = Rel("S")
@@ -160,17 +160,17 @@ class GuardsTests {
     import cham.{R,S}
     cham.introduceMolecule(S(1,2))
     cham.introduceMolecule(R(1))
-    cham.executeRules
+    cham.executeRules()
 
     assertEquals(1,cham.passed)
 
     cham.introduceMolecule(R(2))
-    cham.executeRules
+    cham.executeRules()
     assertEquals(1,cham.passed)
   }
 
   @Test(timeout=1000)
-  def notExistsTest{
+  def notExistsTest(){
     val cham = new Cham with TestCham{
       val R = Rel("R")
       val S = Rel("S")
@@ -184,18 +184,18 @@ class GuardsTests {
     import cham.{R,S}
     cham.introduceMolecule(S(1,2))
     cham.introduceMolecule(R(1))
-    cham.executeRules
+    cham.executeRules()
 
     assertEquals(0,cham.passed)
 
     cham.introduceMolecule(R(2))
-    cham.executeRules
+    cham.executeRules()
 
     assertEquals(1,cham.passed)
   }
 
   @Test
-  def andTest{
+  def andTest(){
     var finalword = ""
     val cham = new Cham with TestCham{
       val R = Rel("R")

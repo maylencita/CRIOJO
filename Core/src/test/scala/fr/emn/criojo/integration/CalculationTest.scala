@@ -20,17 +20,17 @@ class CalculationTest {
 
 
   @Test /*(timeout=3000)*/
-  def fibonacciTest{
+  def fibonacciTest(){
     val fCham = new Cham with IntegerCham{
       val fib = Rel("fib")
       val Fib = Rel("Fib")
 
       val MPrint = NativeRelation("2"){
-        case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
+        case (Atom(_, a :: b :: c ::_),_) => println(a + "," + b + "," + c)
         case _ =>
       }
 
-      val n,n1,n2,r,r1,r2,v,x = Var
+      val n,n1,n2,r,r1,r2,v,x,y,z = Var
 
 
       rules(
@@ -49,13 +49,13 @@ class CalculationTest {
 
 
   @Test /*(timeout=3000)*/
-  def gcdTest{
+  def gcdTest(){
     val fCham = new Cham with IntegerCham{
       val gcd = Rel("gcd")
       val Result = Rel("Resultat")
 
       val MPrint = NativeRelation("2"){
-        case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
+        case (Atom(_,a::b::c::_),_) => println(a + "," + b + "," + c)
         case _ =>
       }
 
@@ -75,14 +75,14 @@ class CalculationTest {
   }
 
   @Test /*(timeout=3000)*/
-  def fibonacciWithMemTest{
+  def fibonacciWithMemTest(){
     val fCham = new Cham with IntegerCham{
       val fib = Rel("fib")
       val Fib = Rel("Fib")
       val FEq = Rel("FEq")
 
       val MPrint = NativeRelation("2"){
-        case (Atom(_,x::y::z::_),_) => println(x + "," + y + "," + z)
+        case (Atom(_,a::b::c::_),_) => println(a + "," + b + "," + c)
         case _ =>
       }
 
@@ -115,7 +115,7 @@ class CalculationTest {
         override def eval(vals: Valuation) = {
 
           val valuation = x.eval(vals)
-          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
+          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
         }
         val valuations = new ValuationList()
         val observed = Set[String]()
@@ -157,11 +157,10 @@ class CalculationTest {
       val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = Var
 
       val Print = NativeRelation("Print3") {
-
         case ((Atom(_, (x: IntExpression) :: (y: IntExpression) :: (l: IntExpression) :: _), _)) => {
-
-          fw.write("<polygon points=\"" + x.getValue() + "," + y.getValue() + " " + (x.getValue() - l.getValue()) + "," + (y.getValue() - l.getValue()) + " " + (x.getValue() + l.getValue()) + "," + (y.getValue() - l.getValue()) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
+          fw.write("<polygon points=\"" + x.getValue + "," + y.getValue + " " + (x.getValue - l.getValue) + "," + (y.getValue - l.getValue) + " " + (x.getValue + l.getValue) + "," + (y.getValue - l.getValue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
+        case _ =>
       }
 
       rules(
@@ -186,7 +185,7 @@ class CalculationTest {
   }
 
   @Test /*(timeout=3000)*/
-  def fibonacciIterative{
+  def fibonacciIterative(){
     val fCham = new Cham with IntegerCham{
       val AskFib = Rel("AskFib")
       val Rep = Rel("Rep")
@@ -194,7 +193,7 @@ class CalculationTest {
       val Res = Rel("Res")
 
       val MPrint = NativeRelation("MPrint"){
-        case (Atom(_,x::_),_) => println(x)
+        case (Atom(_,a::_),_) => println(a)
         case _ =>
       }
 
@@ -224,13 +223,14 @@ class CalculationTest {
   }
 
   @Test /*(timeout=3000)*/
-  def gcdTestExp{
+  def gcdTestExp(){
     val chemicalMachine = new Cham with IntegerCham{
       val gcd = Rel("gcd")
       val Result = Rel("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
-        case (Atom(_,x::_),_) => println(x)
+        case (Atom(_,a::_),_) => println(a)
+        case _ =>
       }
 
       val x,y = Var
@@ -249,13 +249,13 @@ class CalculationTest {
   }
 
   @Test /*(timeout=3000)*/
-  def gcdTestExpCustomGuards{
+  def gcdTestExpCustomGuards(){
 
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard{
         override def eval(vals: Valuation) = {
           val valuation = x.eval(vals)
-          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
+          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
         }
         val valuations = new ValuationList()
         val observed = Set[String]()
@@ -287,7 +287,8 @@ class CalculationTest {
       val Result = Rel("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
-        case (Atom(_,x::_),_) => println(x)
+        case (Atom(_,a::_),_) => println(a)
+        case _ =>
       }
 
       val x,y = Var
@@ -317,7 +318,7 @@ class CalculationTest {
       val g = new CriojoGuard{
         override def eval(vals: Valuation) = {
           val valuation = x.eval(vals)
-          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue()
+          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
         }
         val valuations = new ValuationList()
         val observed = Set[String]()
@@ -352,9 +353,9 @@ class CalculationTest {
       val Print = NativeRelation("Print3") {
 
         case ((Atom(_, (x: IntExpression) :: (y: IntExpression) :: (l: IntExpression) :: _), _)) => {
-
-          fw.write("<polygon points=\"" + x.getValue() + "," + y.getValue() + " " + (x.getValue() - l.getValue()) + "," + (y.getValue() - l.getValue()) + " " + (x.getValue() + l.getValue()) + "," + (y.getValue() - l.getValue()) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
+          fw.write("<polygon points=\"" + x.getValue + "," + y.getValue + " " + (x.getValue - l.getValue) + "," + (y.getValue - l.getValue) + " " + (x.getValue + l.getValue) + "," + (y.getValue - l.getValue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
+        case _ =>
       }
 
       rules(

@@ -13,7 +13,7 @@ import org.junit.Test
 class FunctionTest {
 
   @Test
-  def MatchesTest {
+  def MatchesTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")
@@ -48,7 +48,7 @@ class FunctionTest {
   }
 
   @Test
-  def ApplyTest {
+  def ApplyTest() {
 
     val x = new Variable("x")
     val y = new Variable("y")

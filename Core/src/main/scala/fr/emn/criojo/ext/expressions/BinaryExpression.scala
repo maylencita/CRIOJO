@@ -22,7 +22,7 @@ abstract class BinaryExpression extends Expression {
     case _ => false
   }
 
-  override def toString():String = eval().toString()
+  override def toString:String = eval().toString
 }
 
 class SumExpr(val t1: Term, val t2: Term) extends BinaryExpression {

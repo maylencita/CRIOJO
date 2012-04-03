@@ -124,9 +124,13 @@ class HashSolution extends Solution{
     println(">")
   }
 
-  def createBackUp() = null
+  def createBackUp() {
+    null
+  }
 
-  def reverse() = null
+  def reverse() {
+    null
+  }
 
   def elems = elements.toList
 

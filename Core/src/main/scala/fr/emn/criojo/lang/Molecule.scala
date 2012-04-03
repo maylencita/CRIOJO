@@ -73,12 +73,12 @@ trait Molecule {
     f
   }
   @Deprecated
-  def ==> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
+  def ==> (gc: (_, _)):RuleFactory => Rule = gc match {
     case (g:Guard, conj:Molecule) => getRuleBuilder(g,conj)
     case _ => null
   }
 
-  def --> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
+  def --> (gc: (_, _)):RuleFactory => Rule = gc match {
     case (g:Guard, conj:Molecule) =>
       (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     case _ => null

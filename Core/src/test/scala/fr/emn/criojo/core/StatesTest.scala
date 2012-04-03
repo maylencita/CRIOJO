@@ -41,7 +41,7 @@ class StatesTest {
   }
 
   @Test (timeout=1000)
-  def persistenceTest{
+  def persistenceTest(){
     val cham = new Cham with TestCham{
       val A = Rel("A")
       val B = Rel("B")
@@ -64,7 +64,7 @@ class StatesTest {
   }
 
   @Test (timeout=1000)
-  def oneHeadTest{
+  def oneHeadTest(){
     val cham = new Cham with TestCham{
       val R = Rel("R")
       val x,y = Var
@@ -81,7 +81,7 @@ class StatesTest {
   }
 
   @Test (timeout=1000)
-  def repeatedHeadTest{
+  def repeatedHeadTest(){
     val sm = new Cham with TestCham{
       val H = Rel("H")
       val H3 = Rel("H3")
@@ -104,7 +104,7 @@ class StatesTest {
   }
 
   @Test
-  def messagePassingTest{
+  def messagePassingTest(){
     var word = ""
     val cham = new Cham with TestCham{
       val A = Rel

@@ -79,7 +79,7 @@ trait EqCHAM extends Cham with DefaultFactory{
   }
 
   private def equalsOp(op:Option[Any],value:Any):Boolean = op match{
-    case Some(s) => s == value
+    case Some(v) => v == value
     case _ => false
   }
 
