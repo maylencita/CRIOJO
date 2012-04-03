@@ -153,15 +153,7 @@ class CalculationTest {
       val n,n1,n2,r,r1,r2,x = Var
       val v,v1,v2 = Var
 
-      val Sierpinski = Rel("Sierpinski")
       val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = Var
-
-      val Print = NativeRelation("Print3") {
-        case ((Atom(_, (x: IntExpression) :: (y: IntExpression) :: (l: IntExpression) :: _), _)) => {
-          fw.write("<polygon points=\"" + x.getValue + "," + y.getValue + " " + (x.getValue - l.getValue) + "," + (y.getValue - l.getValue) + " " + (x.getValue + l.getValue) + "," + (y.getValue - l.getValue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
-        }
-        case _ =>
-      }
 
       rules(
         fibo(n) --> Nu(r)(Fibo(n,r) & WaitResult(r,n)),

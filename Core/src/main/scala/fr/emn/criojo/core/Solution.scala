@@ -38,11 +38,11 @@ trait Solution{
   def contains(a:Atom) = elems.contains(a)
 
   def containsAtom(a:Atom, n:Int):Boolean = {
-    (elems.count(atom => atom.matches(a)) == n)
+    return (elems.count(atom => atom.matches(a)) == n)
   }
 
   def containsAtom(a:LocalRelation, n:Int):Boolean = {
-    (elems.count(atom => a.name==atom.relName) == n)
+    return (elems.count(atom => a.name==atom.relName) == n)
   }
 
   def containsMolecule(m:Molecule):Boolean = {
@@ -127,7 +127,7 @@ class SolutionImpl(owner:Engine, var elems:List[Atom]) extends Solution{
     })
     println(">")
   }
-  
+
   private var oldElements:List[Atom] = List()
 
   def remove(a:Atom) { elems = elems.filterNot(_ == a)}

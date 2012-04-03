@@ -26,20 +26,12 @@ class RuleTest {
     val y = new Variable("y")
 
     val listOfTerms:List[Term] = List(x, y)
-    var atom:Atom = new Atom("Carbon",listOfTerms)
-
-    val x1 = new Variable("x")
-    val y1 = new Variable("y")
-    val vx1 = new ValueTerm[Int](1)
-    val vy1 = new ValueTerm[Int](2)
-
-    val valuations = Valuation(x1->vx1,y1->vy1)
 
     val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
 
     rule.addExecution(new Atom("A", listOfTerms))
 
-    assert(rule.execute(valuations))
+    assert(rule.execute())
   }
 
   @Test
@@ -53,12 +45,6 @@ class RuleTest {
     val y = new Variable("y")
 
     val listOfTerms:List[Term] = List(x, y)
-    var atom:Atom = new Atom("Carbon",listOfTerms)
-
-    val x1 = new Variable("x")
-    val y1 = new Variable("y")
-    val vx1 = new ValueTerm[Int](1)
-    val vy1 = new ValueTerm[Int](2)
 
     val rule = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())
     val rule2 = cm.createRule(List(new Atom("A", listOfTerms)), List(new Atom("B", listOfTerms)), EmptyGuard, Set())

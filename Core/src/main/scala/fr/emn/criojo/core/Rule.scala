@@ -38,9 +38,7 @@ abstract class Rule extends RelationObserver{
 
   def toList:List[Rule] = List(this)
   
-  def execute():Boolean =  execute(Valuation())
-
-  def execute (vals:Valuation):Boolean
+  def execute():Boolean
 
   def notifyCham(atom:Atom)
 

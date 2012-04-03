@@ -51,7 +51,7 @@ trait StatefulEngine extends Engine{
         removeExecution(atom)
     }
 
-    def execute(vals: Valuation) = {
+    def execute() = {
       var executed = false
       val finalState = states(size - 1)
       if(finalState.hasExecutions){
