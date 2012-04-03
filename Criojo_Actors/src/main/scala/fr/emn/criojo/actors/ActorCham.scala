@@ -18,7 +18,7 @@ trait MessageHandler{
   def handleMessage(msg:String) {}
 }
 
-class ActorCham(host:String,port:Int,name:String) extends Cham
+abstract class ActorCham(host:String,port:Int,name:String) extends Cham
 with ActorRelationFactory with Actor with MessageHandler{
   val chamLocation = host+":"+port+":"+name
   RemoteActor.classLoader = getClass().getClassLoader()
@@ -35,6 +35,9 @@ with ActorRelationFactory with Actor with MessageHandler{
       }
     }
   }
+
+  //TODO Implement with a configuration file
+  def lookupChannel(name:String):String
 
   override def handleMessage(msg:String){
     deserialize(msg) match{
@@ -57,6 +60,19 @@ with ActorRelationFactory with Actor with MessageHandler{
     new ChamRel(channel)
   }
 
+  def InChannel(name:String) = {
+    val k = createLocalRelation(this.chamLocation+":"+name)
+    addRelation(k)
+    new ChamRel(k)
+  }
+
+  def OutChannel(name:String) = {
+    val loc = lookupChannel(name)
+    val k = createChannel(name,loc)
+    addRelation(k)
+    new ChamRel(k)
+  }
+
   def processAtom(a:Atom):Atom = {
     new Atom(a.relName, a.terms.map{
       case rv:RelVariable =>
@@ -70,13 +86,13 @@ with ActorRelationFactory with Actor with MessageHandler{
     })
   }
 
-  override def Rel:Applicable = Rel("@R"+nextIndex)
-
-  override def Rel(n:String): ChamRel = {
-    val r = createLocalRelation(this.chamLocation+":"+n)
-    addRelation(r)
-    new ChamRel(r)
-  }
+//  override def Rel:Applicable = Rel("@R"+nextIndex)
+//
+//  override def Rel(n:String): ChamRel = {
+//    val r = createLocalRelation(this.chamLocation+":"+n)
+//    addRelation(r)
+//    new ChamRel(r)
+//  }
 
   override def toString:String = this.chamLocation
 }
@@ -84,11 +100,5 @@ with ActorRelationFactory with Actor with MessageHandler{
 object ChamRunner{
   def main(args:Array[String]){
     //TODO Load from configuration
-    val host = "localhost"
-    val port = 9999
-    val name = "Agent1"
-
-    val cham = new ActorCham(host,port,name)
-    cham.start()
   }
 }
