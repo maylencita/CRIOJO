@@ -23,7 +23,7 @@ trait StatefulEngine extends Engine{
   def initSolution = new HashSolution()
 
   def executeRules(){
-    while (rules.exists(r => r.execute())){}
+    while (rules.exists(r => r.execute)){}
   }
 
   def introduceAtom(atom: Atom){

@@ -105,7 +105,7 @@ trait DebugCham extends StatefulEngine {
   }
 
   trait DebugStatefulRule
-    extends Rule {
+    extends StatefulRule {
 
     override def applyReaction(pe:PartialExecution) {
 
