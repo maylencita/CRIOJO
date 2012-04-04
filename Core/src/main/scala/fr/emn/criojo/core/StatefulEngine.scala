@@ -94,9 +94,6 @@ trait StatefulEngine extends Engine{
       }
       str
     }
-
-    /* FIXME: Ensure is deprecated */
-    @deprecated def notifyCham(atom: Atom){}
   }
 }
 
