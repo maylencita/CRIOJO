@@ -36,7 +36,7 @@ object JSONUtil {
         case ValueTerm(str:String) => JsonTerm("str",str)
         case t => JsonTerm("obj",t.toString)
       })
-      tojson[JsonAtom](jatom).toString
+      tojson[JsonAtom](jatom).toString()
 
     case _ => ""
   }

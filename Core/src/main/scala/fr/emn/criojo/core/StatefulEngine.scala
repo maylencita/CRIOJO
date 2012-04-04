@@ -6,10 +6,9 @@ package fr.emn.criojo.core
  * Date: 24/11/11
  * Time: 10:05
  */
-import fr.emn.criojo.core.Criojo._
+
 import collection.immutable.HashSet
 import statemachine.{StateMachine, PartialExecution}
-import collection.mutable.ListBuffer
 
 /**
  * The StatefulEngine trait
