@@ -23,7 +23,7 @@ import fr.emn.criojo.core.{ValueTerm, Variable, Atom}
 
 class ActorsTests {
   @Test
-  def serializationTest{
+  def serializationTest(){
     import JSONUtil._
     val atom = Atom("R",Variable("x"),ValueTerm(4),ValueTerm("Hola"))
     val deserialized = deserialize(serialize(atom)).get
