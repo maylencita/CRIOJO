@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import Criojo._
-import fr.emn.criojo.util.Logger
 import statemachine.PartialExecution
 
 /**

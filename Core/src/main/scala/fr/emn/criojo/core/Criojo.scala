@@ -1,7 +1,5 @@
 package fr.emn.criojo.core
 
-import collection.immutable.HashMap
-
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen

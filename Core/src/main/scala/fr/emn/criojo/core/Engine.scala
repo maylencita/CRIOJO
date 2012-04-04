@@ -6,7 +6,7 @@ package fr.emn.criojo.core
  * Date: 17/11/11
  * Time: 17:18
  */
-import Criojo._
+
 import fr.emn.criojo.util.Logger._
 
 trait Engine extends RuleFactory{

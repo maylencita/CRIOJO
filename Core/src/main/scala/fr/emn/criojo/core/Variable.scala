@@ -8,10 +8,6 @@ package fr.emn.criojo.core
  * To change this template use File | Settings | File Templates.
  */
 
-//object Variable{
-//  def apply(n: String):Variable = new Variable(n)
-//}
-
 @serializable
 case class Variable (name: String) extends Term {
 
@@ -28,8 +24,6 @@ case class Variable (name: String) extends Term {
     })
     value
   }
-
-//  def eval():Expression = UndefinedExpression
 
   def matches(that:Term) = true
 
