@@ -47,11 +47,11 @@ abstract class Rule extends RelationObserver{
   }
 
   override def equals(that:Any) = {
-    def eq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.terms == a2.terms
-    def eq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => eq2(a1,a2)))
+    def innerEq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.terms == a2.terms
+    def innerEq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => innerEq2(a1,a2)))
 
     that match{
-      case r:Rule => eq(this.head,r.head) && eq(this.body,r.body) 
+      case r:Rule => innerEq(this.head,r.head) && innerEq(this.body,r.body)
       case _ => false
     }
   }
