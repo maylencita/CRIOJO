@@ -55,8 +55,6 @@ abstract class Rule extends RelationObserver {
    */
   def execute: Boolean
 
-  def applyReaction(pe: PartialExecution): Unit
-
   override def equals(that:Any) = {
     def innerEq2(a1:Atom, a2:Atom):Boolean = a1.relName == a2.relName && a1.terms == a2.terms
     def innerEq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => innerEq2(a1,a2)))

@@ -39,6 +39,22 @@ class ValuationTests {
   }
 
   @Test
+  def intersectTest(){
+
+    val v1 = Valuation(x->1, z->3)
+    val v2 = Valuation(y->2)
+    val v3 = Valuation(y->2,z->4)
+    val intersect1 = v1 intersect v2
+    val intersect2 = v2 intersect  v3
+
+    val expected2 = Valuation(y->2)
+    assertTrue("Expected : () \n" +
+      "Actual   : " + intersect1, intersect1.isEmpty)
+    assertTrue("Expected : " + expected2 + "\n" +
+      "Actual   : " + intersect1, expected2.sameElements(intersect2))
+  }
+
+  @Test
   def emptyUnionTest(){
 
     val v1 = Valuation(x->1, z->3)
