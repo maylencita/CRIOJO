@@ -86,8 +86,6 @@ trait StatefulEngine extends Engine{
       }
     }
 
-    def notifyCham(atom: Atom){}
-
     override def toString = {
       var str = super.toString + ": \n" +
         "\tPartial Executions: \n"
@@ -97,6 +95,9 @@ trait StatefulEngine extends Engine{
       }
       str
     }
+
+    /* FIXME: Ensure is deprecated */
+    @deprecated def notifyCham(atom: Atom){}
   }
 }
 
