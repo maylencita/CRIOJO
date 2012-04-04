@@ -19,6 +19,34 @@ class Cham extends StatefulEngine //with DefaultFactory
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
+  //TODO according to Cham implementation: ActorCham, HttpCham, etc
+  //TODO should be loaded from a config file
+  val chamLocation = "" //host+":"+port+":"+name
+
+  def Channel(name:String,loc:String) = {
+    val channel = createChannel(name,loc)
+    addRelation(channel)
+    new ChamRel(channel)
+  }
+
+  def InChannel(name:String) = {
+    val k = createLocalRelation(this.chamLocation+":"+name)
+    addRelation(k)
+    new ChamRel(k)
+  }
+
+  def OutChannel(name:String) = {
+    val loc = lookupChannel(name)
+    val k = createChannel(name,loc)
+    addRelation(k)
+    new ChamRel(k)
+  }
+
+  //TODO Implement with a configuration file
+  def lookupChannel(name:String):String = {
+    throw new IllegalAccessException("Unnimplemented method.")
+  }
+
   def Var:VarExpression = {
     index += 1
     new VarExpression("x"+index)

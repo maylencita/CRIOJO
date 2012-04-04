@@ -33,7 +33,7 @@ object PongCham extends ActorCham("localhost",9999,"Client") with PrintCham{
     (Wait() & pong(n)) --> (Print(n) & End())
   )
 
-  def lookupChannel(name:String) = name match{
+  override def lookupChannel(name:String) = name match{
     case "ping" => "localhost:9090:Server"
   }
 }
@@ -51,7 +51,7 @@ object PingCham extends ActorCham("localhost",9090,"Server") with PrintCham with
     (Counter(n) & ping(k)) --> (Counter(n+1) & k(n) & Debug(n,k))
   )
 
-  def lookupChannel(name:String) = ""
+  override def lookupChannel(name:String) = ""
 }
 
 class PingPongSpec extends Specification{

@@ -4,6 +4,7 @@ import org.specs2.mutable._
 import fr.emn.criojo.core.{ValueTerm, Variable}
 import fr.emn.criojo.ext.StrCHAM
 import fr.emn.criojo.ext.debug.DebugCham
+import fr.emn.criojo.lang.Cham
 
 /*
  * Created by IntelliJ IDEA.
@@ -13,7 +14,8 @@ import fr.emn.criojo.ext.debug.DebugCham
  */
 
 trait Lookup {
-  def lookupChannel(name:String):String = name match  {
+  this: Cham =>
+  override def lookupChannel(name:String):String = name match  {
     case "p" => "localhost:9090:Agent2"
     case "ping" => "localhost:9090:Agent2"
     case _ => ""
