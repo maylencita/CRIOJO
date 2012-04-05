@@ -8,20 +8,13 @@ package json_criojo
  * To change this template use File | Settings | File Templates.
  */
 
-import scala.reflect.Manifest
-import sjson.json._
-import json_criojo.protocols.JsonAtom._
-import json_criojo.protocols.JsonTerm._
-import org.junit.Assert._
 import sjson.json.JsonSerialization._
-import dispatch.json.Js
 import fr.emn.criojo.core._
 //import fr.emn.criojo.actors.ActorLocalRelation
 
 object JSONUtil {
   import json_criojo.protocols._
   import dispatch.json._
-  import Js._
 
   /**
    * Serializes objects as JSON string
