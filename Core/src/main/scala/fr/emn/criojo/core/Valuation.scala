@@ -22,15 +22,69 @@ object Valuation{
  *            | (x -> v) valuation
  */
 trait Valuation{
+
+  /** Returns the sign of the valuation.
+   *
+   * @return Valuation sign.
+   */
   def sign:Boolean
+
+  /** Returns the negation of the valuation.
+   *
+   * @return a negation of the valuation.
+   */
   def unary_! : Valuation
+
+  /** Tests if the valuation is empty.
+   *
+   * @return true if the valuation is empty, false otherwise.
+   */
   def isEmpty:Boolean
+
+  /** Returns the size of the valuation.
+   *
+   * @return the size of the valuation.
+   */
   def size:Int
+
+  /** Returns the domain of the valuation., eg: the variables that appears in the valuation.
+   *
+   * @return the domain of the valuation.
+   */
   def domain:Set[Variable]
+
+  /** Converts the valuation to a set of Assignments.
+   *
+   * @return a set of the Assignments.
+   */
   def keyValues:Set[Assignment]
+
+  /** Return the term associated with the given key
+   *
+   * @return a term.
+   */
   def apply(key:Variable):Term
+
+  /** Return the assignment associated with the given key
+   *
+   * @return an assignment.
+   */
   def get(key:Variable):Assignment
+
+  /** Return the union of this valuation with that valuation.
+   *
+   * The result contains all assignment contained in this valuation and that valuation.
+   *
+   * @return the union of this and that valuation.
+   */
   def union(that:Valuation):Valuation
+
+  /** Return the intersection of this valuation with that valuation.
+   *
+   * The result contains all assignment contained in this valuation and that valuation.
+   *
+   * @return the interesction of this and that valuation.
+   */
   def intersect(that:Valuation):Valuation
   def sameElements(that:Valuation):Boolean
   def restrict(newDom:Set[Variable]):Valuation

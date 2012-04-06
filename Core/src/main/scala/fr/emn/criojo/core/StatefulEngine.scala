@@ -23,7 +23,7 @@ trait StatefulEngine extends Engine{
   def initSolution = new HashSolution()
 
   def executeRules(){
-    while (rules.exists(r => r.execute())){}
+    while (rules.exists(r => r.execute)){}
   }
 
   def introduceAtom(atom: Atom){
@@ -50,7 +50,7 @@ trait StatefulEngine extends Engine{
         removeExecution(atom)
     }
 
-    def execute() = {
+    override def execute() = {
       var executed = false
       val finalState = states(size - 1)
       if(finalState.hasExecutions){
@@ -66,7 +66,7 @@ trait StatefulEngine extends Engine{
       executed
     }
 
-    override def applyReaction(finalExecution:PartialExecution) {
+    def applyReaction(finalExecution:PartialExecution) {
       val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
         val i = Indexator.getIndex
         vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
@@ -84,8 +84,6 @@ trait StatefulEngine extends Engine{
         newAtoms.foreach(a => introduceAtom(a))
       }
     }
-
-    def notifyCham(atom: Atom){}
 
     override def toString = {
       var str = super.toString + ": \n" +
