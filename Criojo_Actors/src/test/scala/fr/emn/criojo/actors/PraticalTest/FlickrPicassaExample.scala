@@ -50,8 +50,9 @@ class CommunicationSpec extends Specification {
       val adapter = new ActorCham("localhost", 9002, "Adapter") with StrCHAM with Lookup with DebugCham {
         val requestPictureCount = InChannel("requestPictureCount")
         val sendCount = InChannel("sendCount")
+        val total = Rel("total")
 
-        val login, mdp = Var
+        val login, mdp, t, c = Var
 
 //        val flickrIn = OutChannel("flickrIn") //,"localhost:9003:FlickrWrapper")
 //        val picasaIn = OutChannel("PicasaIn") //,"localhost:9004:PicassaWrapper")
@@ -60,7 +61,8 @@ class CommunicationSpec extends Specification {
         val picasaIn = Channel("PicasaIn", "localhost:9003:PicassaWrapper")
 
         rules(
-          requestPictureCount(login, mdp) --> flickrIn(login, mdp)
+          requestPictureCount(login, mdp) --> (flickrIn(login, mdp) & total(0)),
+          (sendCount(c) & total(t)) --> total(c.add(1))
         )
       }
 
@@ -90,7 +92,7 @@ class CommunicationSpec extends Specification {
         val login, mdp = Var
         val x, y, count = Var
 
-        val reponse = Rel
+        val reponse = Rel("reponse")
 
         val getAllPicture = NativeRelation("getAllPicture") {
 
@@ -99,7 +101,7 @@ class CommunicationSpec extends Specification {
             daoFlick.connect(x.getValue,y.getValue)
 
             val listOfPictures:List[Picture] = daoFlick.getPictures()
-            this.introduceAtom(reponse(new ValueTerm[String](listOfPictures.size.toString)))
+            this.introduceAtom(reponse(listOfPictures.size))
             this.executeRules()
           }
           case _ => println("ici")

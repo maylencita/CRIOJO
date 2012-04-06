@@ -7,6 +7,7 @@ import scala.actors.remote.Node
 import json_criojo.JSONUtil._
 import fr.emn.criojo.core.{RelVariable, Atom}
 import fr.emn.criojo.lang.{Applicable, ChamRel, Cham}
+import fr.emn.criojo.ext.{StrCHAM, IntegerCham}
 
 /*
  * Created by IntelliJ IDEA.
@@ -18,7 +19,7 @@ trait MessageHandler{
   def handleMessage(msg:String) {}
 }
 
-abstract class ActorCham(host:String,port:Int,name:String) extends Cham
+abstract class ActorCham(host:String,port:Int,name:String) extends Cham with IntegerCham with StrCHAM
 with ActorRelationFactory with Actor with MessageHandler{
   val chamLocation = host+":"+port+":"+name
   RemoteActor.classLoader = getClass().getClassLoader()
