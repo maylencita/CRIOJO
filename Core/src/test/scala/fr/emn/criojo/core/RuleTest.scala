@@ -1,8 +1,8 @@
 package fr.emn.criojo.core
 
 import org.junit.Test
-import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.lang.Cham
+import fr.emn.criojo.ext.IntegerCham
 
 
 /**

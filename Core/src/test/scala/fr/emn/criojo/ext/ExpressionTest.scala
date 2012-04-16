@@ -1,12 +1,12 @@
 package fr.emn.criojo.ext
 
-import debug.DebugCham
-import org.junit.Test
-import fr.emn.criojo.ext.expressions._
-import fr.emn.criojo.lang.{Nu, Cham}
-import fr.emn.criojo.ext.expressions.{Expression, UndefinedExpression}
-import fr.emn.criojo.core.{Atom, Term, Valuation}
 
+import debug.DebugCham
+import expression._
+import org.junit.Test
+import fr.emn.criojo.lang.{Nu, Cham}
+import fr.emn.criojo.core.{Atom, Term, Valuation}
+import fr.emn.criojo.ext.expression.converters._
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,12 +21,12 @@ class ExpressionTest {
   @Test
   def ExpressionAddTest() {
 
-    implicit def int2term(n: Int): Expression = IntExpression(n)
+    //implicit def int2term(n: Int): Expression = IntExpression(n)
 
     val x: Expression = 1
     val y: Expression = 2
 
-    val result = x + y
+    val result:Expression = x + y
     assert(result.isInstanceOf[BinaryExpression])
     println(result)
   }
@@ -34,7 +34,7 @@ class ExpressionTest {
   @Test
   def ExpressionValueAddEvalTest() {
 
-    implicit def int2term(n: Int): Expression = IntExpression(n)
+    //implicit def int2term(n: Int): Expression = IntExpression(n)
 
     val x: Expression = 1
     val y: Expression = 2
@@ -47,29 +47,29 @@ class ExpressionTest {
   @Test
   def ExpressionWithUndefinedvalTest() {
 
-    implicit def int2term(n: Int): Expression = IntExpression(n)
+//    implicit def int2term(n: Int): Expression = IntExpression(n)
 
     val x: Expression = 1
     val y: Expression = 2
 
-    val result11 = x + y + UndefinedExpression + 3 + 4
+    val result11 = x + y + NoneTerm + 3 + 4
     val result12 = result11.eval()
-    assert(result12.equals(UndefinedExpression))
+    assert(result12.equals(NoneTerm))
 
-    val result21 = UndefinedExpression + x + y + 3 + 4
+    val result21 = NoneTerm + x + y + 3 + 4
     val result22 = result21.eval()
-    assert(result22.equals(UndefinedExpression))
+    assert(result22.equals(NoneTerm))
 
-    val result31 = x + y + 3 + 4 + UndefinedExpression
+    val result31 = x + y + 3 + 4 + NoneTerm
     val result32 = result21.eval()
-    assert(result32.equals(UndefinedExpression))
+    assert(result32.equals(NoneTerm))
   }
 
   @Test
   def StringExpressionTest() {
 
-    implicit def string2Exp(n: String): Expression = StrExpression(n)
-    implicit def int2term(n: Int): Expression = IntExpression(n)
+//    implicit def string2Exp(n: String): Expression = StrExpression(n)
+//    implicit def int2term(n: Int): Expression = IntExpression(n)
 
     val x: Expression = 1
     val y: Expression = "2"
@@ -82,8 +82,8 @@ class ExpressionTest {
   @Test
   def VariableTest() {
 
-    implicit def string2Exp(n: String): Expression = StrExpression(n)
-    implicit def int2term(n: Int): Expression = IntExpression(n)
+//    implicit def string2Exp(n: String): Expression = StrExpression(n)
+//    implicit def int2term(n: Int): Expression = IntExpression(n)
 
     val x: Expression = 1
     val y: Expression = 2
@@ -97,12 +97,13 @@ class ExpressionTest {
     val result = x1 + x2
     val result2 = result.eval()
     val result3 = result.eval(listOfSubs)
-    assert(result3.isInstanceOf[IntExpression] && result3.asInstanceOf[IntExpression].getValue == 3)
+
+    assert(result3.matches(3))
 
     val resultb = x1 + x2 + x3
     val result2b = resultb.eval()
     val result3b = resultb.eval(listOfSubs)
-    assert(result3b.equals(UndefinedExpression))
+    assert(result3b.equals(NoneTerm))
   }
 
 
@@ -111,9 +112,9 @@ class ExpressionTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      implicit def string2Exp(n: String): Expression = StrExpression(n)
+//      implicit def string2Exp(n: String): Expression = StrExpression(n)
 
-      implicit def int2term(n: Int): Expression = IntExpression(n)
+//      implicit def int2term(n: Int): Expression = IntExpression(n)
 
       val x, y, z = Var
       val OneBonbon = Rel("OneBonbon")
@@ -124,20 +125,20 @@ class ExpressionTest {
       )
     }
 
-    implicit def string2Exp(n: String): Expression = StrExpression(n)
-    implicit def int2term(n: Int): Expression = IntExpression(n)
+//    implicit def string2Exp(n: String): Expression = StrExpression(n)
+//    implicit def int2term(n: Int): Expression = IntExpression(n)
 
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.OneBonbon(1))
 
-    //    assert(machine.containsRelation(machine.OneBonbon, 1))
+    assert(machine.containsRelation(machine.OneBonbon, 1))
     machine.executeRules()
 
     machine.introduceMolecule(machine.OneBonbon(2))
     machine.executeRules()
-    //    assert(machine.containsRelation(machine.TwoBonbons, 1))
-    //    assert(machine.containsRelation(machine.OneBonbon, 0))
+    assert(machine.containsRelation(machine.TwoBonbons, 1))
+    assert(machine.containsRelation(machine.OneBonbon, 0))
     assert(machine.getSolution.size == 1)
   }
 
@@ -159,7 +160,7 @@ class ExpressionTest {
       val O = Rel("O")
       val H = Rel("H")
 
-      implicit def int2term(n: Int): Expression = IntExpression(n)
+//      implicit def int2term(n: Int): Expression = IntExpression(n)
 
       val EXPLODE_R1_COO_R2 = Rel("EXPLODE_R1_COO_R2")
       val EXPLODE_H2O = Rel("EXPLODE_H2O")
@@ -167,23 +168,24 @@ class ExpressionTest {
       rules(
 
         // INITIATION
-        (R1_COO_R2(n1) &: H2O(n2)) --> Gr(Min(n1, n2), 0) ?: (R1_COO_R2(n1 - Min(n1, n2)) & H2O(n2 - Min(n1, n2)) & EXPLODE_R1_COO_R2(Min(n1, n2)) & EXPLODE_H2O(Min(n1, n2))),
+        (R1_COO_R2(n1) &: H2O(n2)) --> {Min(n1, n2) GreaterThan 0} ?: (R1_COO_R2(n1 - Min(n1, n2)) & H2O(n2 - Min(n1, n2)) & EXPLODE_R1_COO_R2(Min(n1, n2)) & EXPLODE_H2O(Min(n1, n2))),
 
         // DIVISION
         (EXPLODE_R1_COO_R2(n1) &: R1(n2) &: R2(n3) &: COO(n4)) --> (R1(n2 + n1) & R2(n3 + n1) & COO(n4 + n1)),
-        (EXPLODE_H2O(n1) &: H(n2) &: O(n3)) --> (H(n2 + 2 * n1) & O(n3 + n1)),
+        (EXPLODE_H2O(n1) &: H(n2) &: O(n3)) --> (H(n2 + n1*2) & O(n3 + n1)),
 
         // SUB DIVISION
-        (COO(n1) &: C(n2) &: O(n3)) --> Gr(n1, 0) ?: (COO(0) & C(n2 + n1) & O(n3 + 2 * n1)),
+        (COO(n1) &: C(n2) &: O(n3)) --> {n1 GreaterThan 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
 
         // RECOMPOSITION
-        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> Gr(Min(n1, n2, n3), 0) ?: (R2(n1 - Min(n1, n2, n3)) & O(n2 - Min(n1, n2, n3)) & H(n3 - Min(n1, n2, n3)) & R2_OH(n4 + Min(n1, n2, n3))),
-        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> Gr(Min(n1, n2, n3 / 2, n4), 0) ?: (R1_COOH(n5 + Min(n1, n2, n3 / 2, n4)) & R1(n1 - Min(n1, n2, n3 / 2, n4)) & C(n2 - Min(n1, n2, n3 / 2, n4)) & O(n3 - 2 * Min(n1, n2, n3 / 2, n4)) & H(n4 - Min(n1, n2, n3 / 2, n4)))
+        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {Min(n1, n2, n3) GreaterThan 0} ?: (R2(n1 - Min(n1, n2, n3)) & O(n2 - Min(n1, n2, n3)) & H(n3 - Min(n1, n2, n3)) & R2_OH(n4 + Min(n1, n2, n3))),
+        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {Min(n1, n2, n3 / 2, n4) GreaterThan 0} ?: (R1_COOH(n5 + Min(n1, n2, n3 / 2, n4)) & R1(n1 - Min(n1, n2, n3 / 2, n4)) & C(n2 - Min(n1, n2, n3 / 2, n4)) & O(n3 -  Min(n1, n2, n3 / 2, n4)) & H(n4 -Min(n1, n2, n3 / 2, n4)))
       )
     }
 
-    import machine.int2term
+//    import machine.int2term
     machine.enableSolutionTrace()
+    machine.enableStreamingTrace()
 
     machine.introduceMolecule(machine.R1_COO_R2(1))
     machine.introduceMolecule(machine.H2O(2))
@@ -222,8 +224,8 @@ class ExpressionTest {
       )
     }
 
-    import machine.num2fun
-    implicit def stringToValue(s: String) = StrExpression(s)
+    //import machine.num2fun
+//    implicit def stringToValue(s: String) = StrExpression(s)
 
     machine.enableSolutionTrace()
 
@@ -268,10 +270,9 @@ class ExpressionTest {
       )
     }
 
-    import machine.num2fun
+//    import machine.num2fun
 
-    implicit def str2fun(s: String): Term = new StrExpression(s)
-
+//    implicit def str2fun(s: String): Term = new StrExpression(s)
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.AreConnected("A", "B"))
@@ -289,6 +290,6 @@ class ExpressionTest {
     assert(machine.containsMolecule(machine.PrintInt("D")))
     assert(machine.containsMolecule(machine.PrintInt("E")))
 
-    //assert(machine.containsMolecule(machine.PrintInt("C"), 0)) // C is not in the shortest, but it can appear in the solution
+//    assert(machine.containsMolecule(machine.PrintInt("C"), 0)) // C is not in the shortest, but it can appear in the solution
   }
 }

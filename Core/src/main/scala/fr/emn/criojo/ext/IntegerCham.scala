@@ -1,10 +1,12 @@
 package fr.emn.criojo.ext
 
+import expression._
+import expression.types.CriojoInteger
 import fr.emn.criojo.lang._
-import fr.emn.criojo.ext.expressions.IntExpression
 import fr.emn.criojo.core._
 import factory.DefaultFactory
 
+import expression.converters._
 /*
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -51,7 +53,9 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
   protected val IntSub = NativeRelation("$IntSubs"){
     case (Atom(_,a::b::c::_), _) =>
       (getValue(a),getValue(b)) match{
-        case (Some(v1),Some(v2)) => introduceAtom(IntVal(c,v1-v2))
+        case (Some(v1),Some(v2)) => {
+          introduceAtom(IntVal(c,SomeTerm(CriojoInteger(v1-v2))))
+        }
         case _ => introduceAtom(IntSub2(a,b,c))
       }
     case _ =>
@@ -208,19 +212,25 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
     }
   }
 
-  def getIntValue(x:Variable):Option[Int]= genEqClasses.getValue(x) match{
+  def getIntValue(x:Variable):Option[Int]= {
+    val truc = genEqClasses
+    genEqClasses.getValue(x) match{
     case Some(v) => v match {
       case n:Int => Some(n)
       case _ => None
     }
     case _ => None
   }
-
-  implicit def num2fun(n:Int):Term = new IntExpression(n) //new IntTerm(n)
+}
+  //implicit def num2fun(n:Int):Term = new IntExpression(n) //new IntTerm(n)
 
   private def getValue(t:Term):Option[Int] = t match{
-    case v:Value[Int] => Some(v.getValue)
+    case SomeTerm(CriojoInteger(n)) => Some(n)
     case vr:Variable => getIntValue(vr) match{
+      case Some(v) => Some(v)
+      case _ => None
+    }
+    case id:IdTerm => getIntValue(Variable(id.name))  match{
       case Some(v) => Some(v)
       case _ => None
     }
@@ -229,6 +239,7 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
 
   private def declare(a:Atom){ a match{
     case Atom(_, (v:Variable)::(ValueTerm(n:Int))::_) => genEqClasses.add(n,v) //intEqClasses add (n.toInt,v)
+    case Atom(_, (id:IdTerm)::(SomeTerm(CriojoInteger(n)))::_) => genEqClasses.add(n,Variable(id.name)) //intEqClasses add (n.toInt,v)
     case _ => //Nothing, wrong format
   }
   }

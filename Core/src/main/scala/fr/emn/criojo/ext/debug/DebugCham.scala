@@ -86,7 +86,7 @@ trait DebugCham extends StatefulEngine {
     var cpt:Int = 0
 
     solution.foreach( a => {
-      if(a.relName.charAt(0)!='$') {
+      if(a.relName.charAt(0)!='%') {
         if(!firstPrint)
           print(",")
         cpt = (cpt+1)%10
@@ -121,8 +121,11 @@ trait DebugCham extends StatefulEngine {
 
       DEBUG_TRACE += result
 
-      if(DEBUG_DIRECT_MODE)
+      if(DEBUG_DIRECT_MODE){
         println(result)
+        //printSolution()
+      }
+
 
       super.applyReaction(pe)
     }

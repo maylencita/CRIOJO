@@ -118,8 +118,8 @@ class Assignment (val variable:Variable,val value:Term,s:Boolean) extends Pair(v
       this.value == v2.value
   }
 
-  override def toString =
-    variable+ (if(!s) "!=" else "=") +value.toString
+//  override def toString =
+//    variable+ (if(!s) "!=" else "=") +value.toString
 }
 object NullAssignment extends Assignment(Undef,Undef){}
 

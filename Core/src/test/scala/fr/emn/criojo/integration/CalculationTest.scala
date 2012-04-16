@@ -4,9 +4,12 @@ import org.junit.Test
 import fr.emn.criojo.lang.{Nu, Cham}
 import fr.emn.criojo.core._
 import java.io.FileWriter
-import fr.emn.criojo.ext.expressions.{UndefinedExpression, BooleanExpression, Expression, IntExpression}
 import fr.emn.criojo.ext.IntegerCham
 
+import fr.emn.criojo.ext.expression.converters._
+import fr.emn.criojo.ext.debug.DebugCham
+import fr.emn.criojo.ext.expression.types.CriojoInteger
+import fr.emn.criojo.ext.expression._
 
 /*
 * Created by IntelliJ IDEA.
@@ -25,11 +28,6 @@ class CalculationTest {
       val fib = Rel("fib")
       val Fib = Rel("Fib")
 
-      val MPrint = NativeRelation("2"){
-        case (Atom(_, a :: b :: c ::_),_) => println(a + "," + b + "," + c)
-        case _ =>
-      }
-
       val n,n1,n2,r,r1,r2,v,x,y,z = Var
 
 
@@ -41,8 +39,8 @@ class CalculationTest {
             IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
       )
     }
-    import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fib(8))
+//    import fCham.{num2fun,fib}
+    fCham.introduceMolecule(fCham.fib(8))
     fCham.executeRules()
     //println(fCham.printRules)
   }
@@ -50,14 +48,9 @@ class CalculationTest {
 
   @Test /*(timeout=3000)*/
   def gcdTest(){
-    val fCham = new Cham with IntegerCham{
+    val fCham = new Cham with IntegerCham with DebugCham {
       val gcd = Rel("gcd")
       val Result = Rel("Resultat")
-
-      val MPrint = NativeRelation("2"){
-        case (Atom(_,a::b::c::_),_) => println(a + "," + b + "," + c)
-        case _ =>
-      }
 
       val n,n1,n2,r,r1,r2,v,x,y,xNew = Var
 
@@ -68,23 +61,20 @@ class CalculationTest {
         gcd(x,y) --> Eq(x,y) ?: Result(y)
       )
     }
-    import fCham.{num2fun,gcd}
-    fCham.introduceMolecule(gcd(8,2))
+    fCham.enableStreamingTrace()
+    fCham.enableSolutionTrace()
+    fCham.introduceMolecule(fCham.gcd(8,2))
     fCham.executeRules()
+    fCham.printSolution()
     // println(fCham.printRules)
   }
 
   @Test /*(timeout=3000)*/
   def fibonacciWithMemTest(){
-    val fCham = new Cham with IntegerCham{
+    val fCham = new Cham with IntegerCham with DebugCham {
       val fib = Rel("fib")
       val Fib = Rel("Fib")
       val FEq = Rel("FEq")
-
-      val MPrint = NativeRelation("2"){
-        case (Atom(_,a::b::c::_),_) => println(a + "," + b + "," + c)
-        case _ =>
-      }
 
       val n,n1,n2,r,r1,r2,x = Var
       val v,v1,v2 = Var
@@ -98,8 +88,11 @@ class CalculationTest {
             IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
       )
     }
-    import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fib(5))
+//    import fCham.{num2fun,fib}
+    fCham.enableSolutionTrace()
+    fCham.enableStreamingTrace()
+
+    fCham.introduceMolecule(fCham.fib(5))
     fCham.executeRules()
     // println(fCham.printRules)
   }
@@ -130,7 +123,7 @@ class CalculationTest {
         def name = x.name
         def matches(that: Term): Boolean = false
 
-        def eval(): Expression = x.eval()
+        override def eval(): Expression = x.eval()
 
         def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
           case e:Expression => e
@@ -157,14 +150,14 @@ class CalculationTest {
 
       rules(
         fibo(n) --> Nu(r)(Fibo(n,r) & WaitResult(r,n)),
-        Fibo(n,r) --> (Abs(Result(r,n)) && {n>1}) ?: (Fibo(n-1,r) & Fibo(n-2,r)),
-        (Result(n1,v1) & Result(n2,v2)) --> ({n1==(n2+1)}) ?: Result(n1+1,v1+v2),
-        Fibo(n,r) --> {n < num2fun(2)} ?: Result(n,1),
+        Fibo(n,r) --> (Abs(Result(r,n)) && {n GreaterThan 1}) ?: (Fibo(n-1,r) & Fibo(n-2,r)),
+        (Result(n1,v1) & Result(n2,v2)) --> ({n1 Equal (n2+1)}) ?: Result(n1+1,v1+v2),
+        Fibo(n,r) --> {n LessThan  2} ?: Result(n,1),
         (WaitResult(r,n) & Result(n,v)) --> Bingo(v)
       )
     }
 
-    import cm.num2fun
+//    import cm.num2fun
 
     cm.introduceMolecule(cm.fibo(14))
     cm.executeRules()
@@ -205,7 +198,7 @@ class CalculationTest {
         MPrint_var(r) --> MPrint(r)
       )
     }
-    import fCham.{num2fun}
+//    import fCham.{num2fun}
 
     fCham.MPrint_var.relation = fCham.MPrint
     fCham.introduceMolecule(fCham.AskFib(6, fCham.MPrint_var))
@@ -234,8 +227,8 @@ class CalculationTest {
         gcd(x,y) --> Eq(x,y) ?: (Result(y) & PrintInt(y))
       )
     }
-    import chemicalMachine.{num2fun,gcd}
-    chemicalMachine.introduceMolecule(gcd(8,4))
+//    import chemicalMachine.{num2fun,gcd}
+    chemicalMachine.introduceMolecule(chemicalMachine.gcd(8,4))
     chemicalMachine.executeRules()
 
   }
@@ -262,7 +255,7 @@ class CalculationTest {
         def name = x.name
         def matches(that: Term): Boolean = false
 
-        def eval(): Expression = x.eval()
+        override def eval(): Expression = x.eval()
 
         def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
           case e:Expression => e
@@ -286,16 +279,16 @@ class CalculationTest {
       val x,y = Var
 
       rules(
-        gcd(x,y) --> {x < y} ?: gcd(y,x),
+        gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
         gcd(x,y) --> {
           var i=2;
           println("in the guard...");
-          x > y} ?: gcd(LazyExpression({println("in the body...");x-y}),y),
-        gcd(x,y) --> {x == y} ?: (Result(y) & PrintInt(y))
+          x GreaterThan y} ?: gcd(LazyExpression({println("in the body...");x-y}),y),
+        gcd(x,y) --> {x Equal y} ?: (Result(y) & PrintInt(y))
       )
     }
-    import chemicalMachine.{num2fun,gcd}
-    chemicalMachine.introduceMolecule(gcd(13,4))
+//    import chemicalMachine.{num2fun,gcd}
+    chemicalMachine.introduceMolecule(chemicalMachine.gcd(13,4))
     chemicalMachine.executeRules()
 
   }
@@ -306,36 +299,7 @@ class CalculationTest {
     var fw = new FileWriter("etoile.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
-    implicit def LazyGuard(x: => Expression):CriojoGuard = {
-      val g = new CriojoGuard{
-        override def eval(vals: Valuation) = {
-          val valuation = x.eval(vals)
-          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
-        }
-        val valuations = new ValuationList()
-        val observed = Set[String]()
-        def receiveUpdate(atom: Atom){}
-      }
-      g
-    }
 
-    implicit def LazyExpression(x: => Expression):Expression = {
-      val g = new Expression {
-
-        def name = x.name
-        def matches(that: Term): Boolean = false
-
-        def eval(): Expression = x.eval()
-
-        def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
-          case e:Expression => e
-          case _ => UndefinedExpression
-        }
-
-        def getValuation(t:Term):Valuation = x.getValuation(t)
-      }
-      g
-    }
 
     val cm = new Cham with IntegerCham {
 
@@ -344,22 +308,22 @@ class CalculationTest {
 
       val Print = NativeRelation("Print3") {
 
-        case ((Atom(_, (x: IntExpression) :: (y: IntExpression) :: (l: IntExpression) :: _), _)) => {
-          fw.write("<polygon points=\"" + x.getValue + "," + y.getValue + " " + (x.getValue - l.getValue) + "," + (y.getValue - l.getValue) + " " + (x.getValue + l.getValue) + "," + (y.getValue - l.getValue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
+        case ((Atom(_, SomeTerm(CriojoInteger(xvalue)) :: SomeTerm(CriojoInteger(yvalue)) :: SomeTerm(CriojoInteger(lvalue)) :: _), _)) => {
+          fw.write("<polygon points=\"" + xvalue + "," + yvalue + " " + (xvalue - lvalue) + "," + (yvalue - lvalue) + " " + (xvalue + lvalue) + "," + (yvalue - lvalue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
         case _ =>
       }
 
       rules(
-        (Sierpinski(x, y, l, n)) --> {n == num2fun(0)} ?: Print(x,y,l),
+        (Sierpinski(x, y, l, n)) --> {n Equal 0} ?: Print(x,y,l),
 
         Sierpinski(x, y, l, n)
-          --> {n>0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
+          --> {n GreaterThan 0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
       )
       //DEBUG_MODE = true
     }
 
-    import cm.num2fun
+//    import cm.num2fun
 
     cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 7))
     cm.executeRules()

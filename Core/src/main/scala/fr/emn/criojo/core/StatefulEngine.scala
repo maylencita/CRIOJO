@@ -57,7 +57,7 @@ trait StatefulEngine extends Engine{
         finalState.removeExecution(pe => guard.eval(pe.valuation)) match{
           case Some(pe:PartialExecution) => {
             applyReaction(pe)
-            
+
             executed = true
           }
           case _ => //Skip

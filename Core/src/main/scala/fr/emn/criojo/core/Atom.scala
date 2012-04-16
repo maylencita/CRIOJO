@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import fr.emn.criojo.ext.expression.Expression
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -64,7 +66,10 @@ case class Atom(relName:String, terms: List[Term]) {
       case rv:RelVariable => rv.relation
       case _ => this.relation
     }
-    val newTerms = terms.map(_.applyValuation(valuation))
+    val newTerms = terms.map({ t:Term => t.applyValuation(valuation) match {
+      case exp:Expression => exp.eval(valuation)
+      case appliedTerm:Term => appliedTerm
+    }})
 
     val newAtom = new Atom((if(nuRel !=null) nuRel.name else this.relName), newTerms)
     newAtom.relation = nuRel

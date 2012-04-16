@@ -3,8 +3,8 @@ package fr.emn.criojo.core
 import org.junit._
 import Assert._
 
-import fr.emn.criojo.ext.expressions.IntExpression
 import fr.emn.criojo.core.Criojo._
+import fr.emn.criojo.ext.expression.IntExpression
 
 /*
  * Created by IntelliJ IDEA.

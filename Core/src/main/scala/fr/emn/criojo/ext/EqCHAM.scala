@@ -8,6 +8,8 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 
+import expression.SomeTerm
+import expression.types.CriojoInteger
 import fr.emn.criojo.core._
 import factory.DefaultFactory
 import fr.emn.criojo.lang._
@@ -87,6 +89,7 @@ trait EqCHAM extends Cham with DefaultFactory{
         case (ValueTerm(v1),ValueTerm(v2)) => v1 == v2
         case (v1:Variable,v2:Variable) => (v1.equals(v2) || eqClasses.exists(ec => ec.contains(v1) && ec.contains(v2)))
         case (x:Variable,ValueTerm(v)) => equalsOp(genEqClasses.getValue(x),v)
+        case (x:IdTerm,SomeTerm(CriojoInteger(v))) => equalsOp(genEqClasses.getValue(Variable(x.name)),v)
         case (ValueTerm(v),x:Variable) => equalsOp(genEqClasses.getValue(x),v)
         case (IdTerm(v1),IdTerm(v2)) => v1==v2
         case (v1,v2) => v1==v2

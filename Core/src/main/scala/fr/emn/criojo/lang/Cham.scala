@@ -1,9 +1,8 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
-import factory.{DefaultFactory, RelationFactory}
-import fr.emn.criojo.ext._
-import expressions.VarExpression
+import factory.{RelationFactory}
+import fr.emn.criojo.ext.expression.VarExpression
 
 /*
 * Created by IntelliJ IDEA.

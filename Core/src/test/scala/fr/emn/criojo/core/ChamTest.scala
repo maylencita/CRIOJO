@@ -17,6 +17,8 @@ import fr.emn.criojo.lang._
 import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.ext.debug.DebugCham
 
+import fr.emn.criojo.ext.expression.converters._
+
 class ChamTest {
   import Criojo._
 
@@ -39,7 +41,7 @@ class ChamTest {
       )
     }
 
-    import machine.num2fun
+//    import machine.num2fun
 
     machine.enableSolutionTrace()
 
@@ -66,7 +68,7 @@ class ChamTest {
       )
     }
 
-    import machine.num2fun
+//    import machine.num2fun
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.OneBonbon())
@@ -98,7 +100,7 @@ class ChamTest {
       )
     }
 
-    import machine.num2fun
+//    import machine.num2fun
 
     implicit def str2fun(n:String):Term = new ValueTerm[String](n) //new IntTerm(n)
     machine.enableSolutionTrace()
@@ -265,7 +267,7 @@ class ChamTest {
       )
     }
 
-    import sm.{num2fun}
+//    import sm.{num2fun}
     sm.enableSolutionTrace()
 
     sm.introduceMolecule(sm.A())
