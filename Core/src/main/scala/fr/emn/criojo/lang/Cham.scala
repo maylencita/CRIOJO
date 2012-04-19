@@ -2,7 +2,6 @@ package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
 import factory.{RelationFactory}
-import fr.emn.criojo.ext.expression.VarExpression
 
 /*
 * Created by IntelliJ IDEA.
@@ -18,10 +17,10 @@ class Cham extends StatefulEngine //with DefaultFactory
   type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
-  def Var:VarExpression = {
-    index += 1
-    new VarExpression("x"+index)
-  }
+//  def Var:VarExpression = {
+//    index += 1
+//    new VarExpression("x"+index)
+//  }
 
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
@@ -36,7 +35,7 @@ class Cham extends StatefulEngine //with DefaultFactory
   def NativeRel(f:(List[Term]) => Unit) = {
     val natRel = createNativeRelation("NR@"+nextIndex,f)
     addRelation(natRel)
-    new ChamRel(natRel)
+    new ChamChannel(natRel)
   }
 
   def If(guard: Guard)(body: => Molecule):RuleBody = {
@@ -71,16 +70,16 @@ class Cham extends StatefulEngine //with DefaultFactory
 
   def Rel:Applicable = Rel("@R"+nextIndex)
 
-  def Rel(n:String): ChamRel = {
+  def Rel(n:String): ChamChannel = {
     val r = createLocalRelation(n)
     addRelation(r)
-    new ChamRel(r)
+    new ChamChannel(r)
   }
 
-  def Rel(relName:String, f:(List[Term]=>Molecule)): ChamRel = {
+  def Rel(relName:String, f:(List[Term]=>Molecule)): ChamChannel = {
     val r = createLocalRelation (relName)
     addRelation(r)
-    new ChamRel(r)
+    new ChamChannel(r)
   }
 
   def introduceMolecule(molecule:Molecule){
@@ -94,14 +93,14 @@ class Cham extends StatefulEngine //with DefaultFactory
 
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
   implicit def mol2atom(mol:Molecule):Atom = mol.head
-//  implicit def relToVar(r:Relation):RelVariable = {
-//    val vr = new RelVariable(r.name)
+//  implicit def relToVar(r:Relation):ChannelVariable = {
+//    val vr = new ChannelVariable(r.name)
 //    vr.relation = r
 //    vr
 //  }
 
   // A variable of type Relation
-  case class VarR(override val name:String) extends RelVariable(name){
+  case class VarR(override val name:String) extends ChannelVariable(name){
 
     def apply(tlst:Term*):CrjAtom = {
       val at = new CrjAtom(this.name, tlst.toList)
@@ -115,9 +114,9 @@ class Cham extends StatefulEngine //with DefaultFactory
     def apply(vars:Term*) = new CrjAtom(name, vars.toList)
   }
 
-  case class Fun(name:String){
-    def apply(terms:Term*) = new Function(name, terms.toList)
-  }
+//  case class Fun(name:String){
+//    def apply(terms:Term*) = new Function(name, terms.toList)
+//  }
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
@@ -126,8 +125,8 @@ class Cham extends StatefulEngine //with DefaultFactory
 /**
  * A wrapper for a relation that is also a variable
  */
-class ChamRel(val delegate:Relation,val function:(List[Term]) => Molecule)
-  extends RelVariable(delegate.name) with Applicable{
+class ChamChannel(val delegate:Relation,val function:(List[Term]) => Molecule)
+  extends ChannelVariable(delegate.name) with Applicable{
 
   this.relation = delegate
 

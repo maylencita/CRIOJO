@@ -9,6 +9,7 @@ package fr.emn.criojo.core
 
 import collection.immutable.HashSet
 import statemachine.{StateMachine, PartialExecution}
+import fr.emn.criojo.ext.expression.types.StringVariable
 
 /**
  * The StatefulEngine trait
@@ -69,7 +70,7 @@ trait StatefulEngine extends Engine{
     def applyReaction(finalExecution:PartialExecution) {
       val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
         val i = Indexator.getIndex
-        vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
+        vals union Valuation(sv -> StringVariable(sv.name+"@"+i))
       }
 
       if(!finalValuation.isEmpty) {

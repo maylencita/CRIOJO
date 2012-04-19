@@ -1,28 +1,39 @@
 package fr.emn.criojo.ext.expression.types
 
-import fr.emn.criojo.ext.expression.CriojoType
 import fr.emn.criojo.ext.expression.operations.{CanMultiplyType, CanAddType}
+import fr.emn.criojo.ext.expression.{Expression, CriojoType}
+import fr.emn.criojo.core.Variable
 
-/**
- * Created by IntelliJ IDEA.
- * User: jonathan
- * Date: 4/11/12
- * Time: 7:34 PM
- * To change this template use File | Settings | File Templates.
- */
+abstract class CriojoBoolean extends CriojoType with Expression {
 
-case class CriojoBoolean(b:Boolean) extends CriojoType with CanAddType with CanMultiplyType {
-
-  def add(o:CriojoType):CriojoType = o match {
-    case CriojoBoolean(v:Boolean) => CriojoBoolean(v || b)
+  def internReduce():CriojoBooleanValue = this.reduce() match {
+    case csv:CriojoBooleanValue => csv
+    case x:Any => throw(new Exception("incorrect match"))
   }
 
-  def multiply(o:CriojoType):CriojoType = o match {
-    case CriojoBoolean(v:Boolean) => CriojoBoolean(v && b)
-  }
+  def ||(i:CriojoBoolean):CriojoBoolean = CriojoBooleanCriojoBooleanOrCriojoBoolean(this,i)
+  def &&(i:CriojoBoolean):CriojoBoolean = CriojoBooleanCriojoBooleanAndCriojoBoolean(this,i)
+}
 
-  def matches(that:CriojoType):Boolean = that match {
-    case CriojoBoolean(v:Boolean) => v == b
-    case _ => false
+object BooleanVariable {
+  var index=0;
+
+  def createVariable(n:String):BooleanVariable = {
+    var result:BooleanVariable = new BooleanVariable()
+    result.name = n
+    result
   }
+}
+case class BooleanVariable() extends CriojoBoolean with Variable {
+   var name = "Boolean"+BooleanVariable.index
+}
+case class CriojoBooleanValue(v:Boolean) extends CriojoBoolean {
+}
+
+case class CriojoBooleanCriojoBooleanOrCriojoBoolean(i1:CriojoBoolean, i2:CriojoBoolean) extends CriojoBoolean {
+  override def reduce():Expression = CriojoBooleanValue(i1.internReduce().v||i2.internReduce().v)
+}
+
+case class CriojoBooleanCriojoBooleanAndCriojoBoolean(i1:CriojoBoolean, i2:CriojoBoolean) extends CriojoBoolean {
+  override def reduce():Expression = CriojoBooleanValue(i1.internReduce().v&&i2.internReduce().v)
 }

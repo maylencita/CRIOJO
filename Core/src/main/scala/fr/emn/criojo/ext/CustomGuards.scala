@@ -19,7 +19,7 @@ import fr.emn.criojo.core.Valuation
 
 //class EqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
 
-//  def eval(vals: Valuation) = {
+//  def reduce(vals: Valuation) = {
 //
 //    var value1 : Term = null
 //    var value2 : Term = null
@@ -61,7 +61,7 @@ import fr.emn.criojo.core.Valuation
 //}
 
 //class NotEqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
-//  def eval(vals: Valuation) = {
+//  def reduce(vals: Valuation) = {
 //
 //    var value1 : Term = null
 //    var value2 : Term = null
@@ -103,12 +103,12 @@ import fr.emn.criojo.core.Valuation
 //}
 
 //class AllAreTrueGuard(guards:List[Guard]) extends CriojoGuard(List()){
-//  def eval(vals: Valuation) = {
+//  def reduce(vals: Valuation) = {
 //
 //    val allGuards = guards
 //    allGuards.forall(g => {
 //
-//      g.eval(vals)
+//      g.reduce(vals)
 //    })
 //  }
 //  override def toString = atoms.mkString("ForEachTrue(", ",", ")")

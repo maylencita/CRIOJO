@@ -103,38 +103,6 @@ class CalculationTest {
     var fw = new FileWriter("etoile.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
-    implicit def LazyGuard(x: => Expression):CriojoGuard = {
-      val g = new CriojoGuard{
-        override def eval(vals: Valuation) = {
-
-          val valuation = x.eval(vals)
-          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
-        }
-        val valuations = new ValuationList()
-        val observed = Set[String]()
-        def receiveUpdate(atom: Atom){}
-      }
-      g
-    }
-
-    implicit def LazyExpression(x: => Expression):Expression = {
-      val g = new Expression {
-
-        def name = x.name
-        def matches(that: Term): Boolean = false
-
-        override def eval(): Expression = x.eval()
-
-        def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
-          case e:Expression => e
-          case _ => UndefinedExpression
-        }
-
-        def getValuation(t:Term):Valuation = x.getValuation(t)
-      }
-      g
-    }
-
     val cm = new Cham with IntegerCham {
 
       val fibo = Rel("fibo")
@@ -239,7 +207,7 @@ class CalculationTest {
     implicit def LazyGuard(x: => Expression):CriojoGuard = {
       val g = new CriojoGuard{
         override def eval(vals: Valuation) = {
-          val valuation = x.eval(vals)
+          val valuation = x.reduce(vals)
           valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
         }
         val valuations = new ValuationList()
@@ -255,7 +223,7 @@ class CalculationTest {
         def name = x.name
         def matches(that: Term): Boolean = false
 
-        override def eval(): Expression = x.eval()
+        override def reduce(): Expression = x.reduce()
 
         def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
           case e:Expression => e
@@ -294,6 +262,157 @@ class CalculationTest {
   }
 
   @Test
+  def HydrolyseTestRelations() {
+
+
+    val machine = new Cham with IntegerCham with DebugCham {
+      //TestCham with DefaultCham{
+      val n1, n2, n3, n4, n5 = Var
+      val R1_COO_R2 = Rel("R1_COO_R2")
+      val R2_OH = Rel("R2_OH")
+      val R1_COOH = Rel("R1_COOH")
+      val H2O = Rel("H2O")
+      val COO = Rel("COO")
+      val R1 = Rel("R1")
+      val R2 = Rel("R2")
+      val C = Rel("C")
+      val O = Rel("O")
+      val H = Rel("H")
+
+      //      implicit def int2term(n: Int): Expression = IntExpression(n)
+
+      val EXPLODE_R1_COO_R2 = Rel("EXPLODE_R1_COO_R2")
+      val EXPLODE_H2O = Rel("EXPLODE_H2O")
+
+      rules(
+
+        // INITIATION
+        (R1_COO_R2(n1) &: H2O(n2)) --> {Min(n1, n2) GreaterThan 0} ?: (R1_COO_R2(n1 - Min(n1, n2)) & H2O(n2 - Min(n1, n2)) & EXPLODE_R1_COO_R2(Min(n1, n2)) & EXPLODE_H2O(Min(n1, n2))),
+
+        // DIVISION
+        (EXPLODE_R1_COO_R2(n1) &: R1(n2) &: R2(n3) &: COO(n4)) --> (R1(n2 + n1) & R2(n3 + n1) & COO(n4 + n1)),
+        (EXPLODE_H2O(n1) &: H(n2) &: O(n3)) --> (H(n2 + n1*2) & O(n3 + n1)),
+
+        // SUB DIVISION
+        (COO(n1) &: C(n2) &: O(n3)) --> {n1 GreaterThan 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
+
+        // RECOMPOSITION
+        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {Min(n1, n2, n3) GreaterThan 0} ?: (R2(n1 - Min(n1, n2, n3)) & O(n2 - Min(n1, n2, n3)) & H(n3 - Min(n1, n2, n3)) & R2_OH(n4 + Min(n1, n2, n3))),
+        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {Min(n1, n2, n3 / 2, n4) GreaterThan 0} ?: (R1_COOH(n5 + Min(n1, n2, n3 / 2, n4)) & R1(n1 - Min(n1, n2, n3 / 2, n4)) & C(n2 - Min(n1, n2, n3 / 2, n4)) & O(n3 -  Min(n1, n2, n3 / 2, n4)) & H(n4 -Min(n1, n2, n3 / 2, n4)))
+      )
+    }
+
+    //    import machine.int2term
+    machine.enableSolutionTrace()
+    machine.enableStreamingTrace()
+
+    machine.introduceMolecule(machine.R1_COO_R2(1))
+    machine.introduceMolecule(machine.H2O(2))
+    machine.introduceMolecule(machine.R2_OH(0))
+    machine.introduceMolecule(machine.R1_COOH(0))
+    machine.introduceMolecule(machine.COO(0))
+    machine.introduceMolecule(machine.R1(0))
+    machine.introduceMolecule(machine.R2(0))
+    machine.introduceMolecule(machine.C(0))
+    machine.introduceMolecule(machine.O(0))
+    machine.introduceMolecule(machine.H(0))
+    machine.executeRules()
+
+    assert(machine.containsMolecule(machine.R1_COO_R2(0)))
+    assert(machine.containsMolecule(machine.H2O(1)))
+    assert(machine.containsMolecule(machine.R1_COOH(1)))
+  }
+
+  @Test
+  def MapReduceTest() {
+
+    val machine = new Cham with IntegerCham with DebugCham {
+      //TestCham with DefaultCham{
+      val z, w, n, i, j, kp, km = Var
+      val InsertWord = Rel("InsertWord")
+      val Count = Rel("Count")
+
+      val PrintInt = NativeRelation("PrintInt") {
+        case (Atom(_, a :: _), _) => println(a)
+        case _ =>
+      }
+
+      rules(
+        InsertWord(w) --> Count(w, 1), // MAP
+        (Count(w, i) & Count(w, j)) --> Count(w, i + j) // REDUCE
+      )
+    }
+
+    //import machine.num2fun
+    //    implicit def stringToValue(s: String) = StrExpression(s)
+
+    machine.enableSolutionTrace()
+
+    machine.introduceMolecule(machine.InsertWord("aa"))
+    machine.introduceMolecule(machine.InsertWord("aa"))
+    machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("cc"))
+    machine.introduceMolecule(machine.InsertWord("aa"))
+    machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("dd"))
+    machine.executeRules()
+
+    assert(machine.getSolution.containsMolecule(machine.Count("aa", 3)))
+    assert(machine.getSolution.containsMolecule(machine.Count("cc", 1)))
+  }
+
+  @Test
+  def DjikstraTest() {
+
+    val machine = new Cham with IntegerCham with DebugCham {
+      //TestCham with DefaultCham{
+      val x, y, z, w, n, i, j = Var
+
+      val AreConnected = Rel("LeadsTo")
+      val AreInRelation = Rel("AreInRelation")
+      val IsItEquivalent = Rel("IsItEquivalent")
+
+      val PUSH = Rel("PUSH")
+      val POP = Rel("POP")
+
+      val PrintInt = NativeRelation("PrintInt") {
+        case (Atom(_, a :: _), _) => /*println(x)*/
+        case _ =>
+      }
+
+      rules(
+        IsItEquivalent(x, y) --> Nu(i)(AreInRelation(x, y, i)),
+        (AreInRelation(x, w, n) &: AreConnected(x, y)) --> NotEq(x, w) ?: Nu(i)((AreInRelation(x, w, n) & PUSH(i, n, x) & AreInRelation(y, w, i))),
+        AreInRelation(x, y, n) --> Eq(x, y) ?: (PrintInt(x) & POP(n)),
+        (POP(j) &: PUSH(i, n, x)) --> Eq(i, j) ?: (PrintInt(x) & POP(n))
+      )
+    }
+
+    //    import machine.num2fun
+
+    //    implicit def str2fun(s: String): Term = new StrExpression(s)
+    machine.enableSolutionTrace()
+
+    machine.introduceMolecule(machine.AreConnected("A", "B"))
+    machine.introduceMolecule(machine.AreConnected("B", "C"))
+    machine.introduceMolecule(machine.AreConnected("C", "D"))
+    machine.introduceMolecule(machine.AreConnected("D", "E"))
+    machine.introduceMolecule(machine.AreConnected("B", "D"))
+    machine.introduceMolecule(machine.AreConnected("D", "F"))
+
+    machine.introduceMolecule(machine.IsItEquivalent("A", "E"))
+    machine.executeRules()
+
+    assert(machine.containsMolecule(machine.PrintInt("A")))
+    assert(machine.containsMolecule(machine.PrintInt("B")))
+    assert(machine.containsMolecule(machine.PrintInt("D")))
+    assert(machine.containsMolecule(machine.PrintInt("E")))
+
+    //    assert(machine.containsMolecule(machine.PrintInt("C"), 0)) // C is not in the shortest, but it can appear in the solution
+  }
+
+  @Test
   def PaintSierpinskiTest() {
 
     var fw = new FileWriter("etoile.svg");
@@ -308,7 +427,7 @@ class CalculationTest {
 
       val Print = NativeRelation("Print3") {
 
-        case ((Atom(_, SomeTerm(CriojoInteger(xvalue)) :: SomeTerm(CriojoInteger(yvalue)) :: SomeTerm(CriojoInteger(lvalue)) :: _), _)) => {
+        case ((Atom(_, CriojoIntValue(xvalue) :: CriojoIntValue(yvalue) :: CriojoIntValue(lvalue) :: _), _)) => {
           fw.write("<polygon points=\"" + xvalue + "," + yvalue + " " + (xvalue - lvalue) + "," + (yvalue - lvalue) + " " + (xvalue + lvalue) + "," + (yvalue - lvalue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
         case _ =>

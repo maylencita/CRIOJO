@@ -77,14 +77,14 @@ trait Engine extends RuleFactory{
     addRule(rule)
   }
 
-  def processRuleHead(rule:Rule):List[RelVariable]={
-    var headVars = List[RelVariable]()
+  def processRuleHead(rule:Rule):List[ChannelVariable]={
+    var headVars = List[ChannelVariable]()
 
     if (!rule.isAxiom)
       rule.head.foreach{
         case a if(a.relation != null) => a.relation.addObserver(rule)
           a.terms.foreach{
-            case rv:RelVariable => headVars :+= rv
+            case rv:ChannelVariable => headVars :+= rv
             case _ =>
           }
 
@@ -97,14 +97,14 @@ trait Engine extends RuleFactory{
 //            a.relation = new LocalRelation("Undefined")
 //        }
 //        a.terms.foreach{
-//          case rv:RelVariable => headVars :+= rv
+//          case rv:ChannelVariable => headVars :+= rv
 //          case _ =>
 //        }
       }
     headVars
   }
 
-  def processRuleBody(headVars:List[RelVariable], rule:Rule){
+  def processRuleBody(headVars:List[ChannelVariable], rule:Rule){
     rule.guard match{
       case cg:CriojoGuard =>
         cg.observed.foreach{relName =>
@@ -122,7 +122,7 @@ trait Engine extends RuleFactory{
 //        case _=> getRelation(a.relName)
 //      }
 //      a.terms.foreach{
-//        case rv: RelVariable if(!headVars.contains(rv)) =>
+//        case rv: ChannelVariable if(!headVars.contains(rv)) =>
 //          findRelation(rv.name) match{
 //            case Some(r) => rv.relation = r
 //            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);

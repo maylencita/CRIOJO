@@ -62,12 +62,12 @@ case class Atom(relName:String, terms: List[Term]) {
   def apply(n:Int):Term = terms(n)
 
   def applyValuation(valuation:Valuation):Atom = {
-    val nuRel:Relation = valuation(Variable(this.relName)) match{
-      case rv:RelVariable => rv.relation
+    val nuRel:Relation = valuation(ChannelVariable(this.relName)) match {
+      case rv:ChannelVariable => rv.relation
       case _ => this.relation
     }
     val newTerms = terms.map({ t:Term => t.applyValuation(valuation) match {
-      case exp:Expression => exp.eval(valuation)
+      case exp:Expression => exp.reduce()
       case appliedTerm:Term => appliedTerm
     }})
 

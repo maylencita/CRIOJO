@@ -12,7 +12,7 @@ import fr.emn.criojo.core.statemachine.PartialExecution
 import fr.emn.criojo.core._
 import fr.emn.criojo.lang.Molecule
 import fr.emn.criojo.core.StatefulEngine
-import fr.emn.criojo.lang.ChamRel
+import fr.emn.criojo.lang.ChamChannel
 
 /**
  * Created by IntelliJ IDEA.
@@ -67,7 +67,7 @@ trait DebugCham extends StatefulEngine {
     (solution.elems.count(atom => atom.matches(a)) == n)
   }
 
-  def containsRelation(a:ChamRel, n:Int):Boolean = {
+  def containsRelation(a:ChamChannel, n:Int):Boolean = {
     (solution.elems.count(atom => a.name==atom.relName) == n)
   }
 

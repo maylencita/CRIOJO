@@ -1,55 +1,50 @@
 package fr.emn.criojo.ext.expression.types
 
 import fr.emn.criojo.ext.expression.operations._
-import fr.emn.criojo.ext.expression.{IncorrectUseException, CriojoType}
+import fr.emn.criojo.ext.expression.{Expression, CriojoType}
+import fr.emn.criojo.core.Variable
 
-case class CriojoInteger(v:Int) extends CriojoType with CanAddType with CanSubType with CanMultiplyType with CanDivideType with CanBeCompared {
+abstract class CriojoInteger extends CriojoType with Expression {
 
-  def add(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoInteger(v+x)
-    case CriojoString(s:String) => CriojoString(v.toString()+s)
-  }
-  
-  def sub(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoInteger(v-x)
-  }
-  
-  def multiply(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoInteger(v*x)
-  }
-  
-  def divide(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoInteger(v/x)
+  def internReduce():CriojoIntegerValue = this.reduce() match {
+    case csv:CriojoIntegerValue => csv
+    case x:Any => throw(new Exception("incorrect match"))
   }
 
-  def isEqual(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoBoolean(v==x)
-  }
+  def +(i:CriojoInteger):CriojoInteger = CriojoIntegerCriojoIntegerAddCriojoInteger(this,i)
+  def -(i:CriojoInteger):CriojoInteger = CriojoIntegerCriojoIntegerSubCriojoInteger(this,i)
+  def *(i:CriojoInteger):CriojoInteger = CriojoIntegerCriojoIntegerMultiplyCriojoInteger(this,i)
+  def /(i:CriojoInteger):CriojoInteger = CriojoIntegerCriojoIntegerDivideCriojoInteger(this,i)
+}
 
-  def isDifferent(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoBoolean(v!=x)
-  }
+object IntegerVariable {
+  var index=0;
 
-  def lessThan(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoBoolean(v<x)
+  def createVariable(n:String):IntegerVariable = {
+    var result:IntegerVariable = new IntegerVariable()
+    result.name = n
+    result
   }
+}
+case class IntegerVariable() extends CriojoInteger with Variable {
+  var name = "Integer"+IntegerVariable.index
+}
 
-  def lessOrEquals(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoBoolean(v<=x)
-  }
+case class CriojoIntegerValue(v:Int) extends CriojoInteger {
+}
 
-  def greaterThan(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoBoolean(v>x)
-  }
+case class CriojoIntegerCriojoIntegerAddCriojoInteger(i1:CriojoInteger, i2:CriojoInteger) extends CriojoInteger {
+  override def reduce():Expression = CriojoIntegerValue(i1.internReduce().v+i2.internReduce().v)
+}
 
-  def greaterOrEquals(o:CriojoType):CriojoType = o match {
-    case CriojoInteger(x:Int) => CriojoBoolean(v>=x)
-  }
+case class CriojoIntegerCriojoIntegerSubCriojoInteger(i1:CriojoInteger, i2:CriojoInteger) extends CriojoInteger {
+  override def reduce():Expression = CriojoIntegerValue(i1.internReduce().v-i2.internReduce().v)
+}
 
-  def matches(that:CriojoType):Boolean = that match {
-    case CriojoInteger(w:Int) => w == v
-    case _ => false
-  }
+case class CriojoIntegerCriojoIntegerMultiplyCriojoInteger(i1:CriojoInteger, i2:CriojoInteger) extends CriojoInteger {
+  override def reduce():Expression = CriojoIntegerValue(i1.internReduce().v*i2.internReduce().v)
+}
 
-  override def toString():String = v.toString()
+case class CriojoIntegerCriojoIntegerDivideCriojoInteger(i1:CriojoInteger, i2:CriojoInteger) extends CriojoInteger {
+  override def reduce():Expression = CriojoIntegerValue(i1.internReduce().v/i2.internReduce().v)
 }

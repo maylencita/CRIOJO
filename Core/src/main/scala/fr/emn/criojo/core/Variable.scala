@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import fr.emn.criojo.ext.expression.Expression
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -9,10 +11,12 @@ package fr.emn.criojo.core
  */
 
 @serializable
-case class Variable (name: String) extends Term {
+trait Variable extends Term {
 
-  def applyValuation(valuation:Valuation):Term = {
-    var value:Term = this
+  def getName():String
+
+  def applyValuation(valuation:Valuation):Expression = {
+    var value:Term = null
     valuation.forall(v => {
       if(v._1.equals(this)) {
         value = v._2
@@ -22,19 +26,23 @@ case class Variable (name: String) extends Term {
         true
       }
     })
-    value
+
+    value match {
+      case exp:Expression => exp
+      case _:Any => throw new Exception("Boom!")
+    }
   }
 
   def matches(that:Term) = true
 
-  def +(index:String):IdTerm = {
-     new IdTerm(this.name+index)
-  }
+//  def +(index:String):IdTerm = {
+//     new IdTerm(this.getName()+index)
+//  }
 
   override def hashCode = this.name.hashCode
 
   override def equals(that: Any):Boolean = that match{
-    case v:Variable => this.name == v.name
+    case v:Variable => this.name == v.getName()
     case _ => false
   }
 
@@ -46,23 +54,22 @@ case class Variable (name: String) extends Term {
   def getValuation(t:Term):Valuation = Valuation(this->t)
 }
 
-object RelVariable{
-  def apply(r:Relation):RelVariable = {
-    val rv = new RelVariable(r.name)
-    rv.relation = r
-    rv
-  }
-}
 
 @serializable
-class RelVariable(name:String) extends Variable(name){
+case class ChannelVariable(name:String) extends Variable {
+
+  def getName():String = name
+
   @transient
   var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
 
   override def toString = if (relation == null) this.name else relation.toString
 }
 
-object Undef extends Variable("_"){
+object Undef extends Variable(){
   //Undef matches anything
+  def name = "UndefinedVariable"
+  def getName():String = name
+  
   override def matches(that:Term) = true
 }

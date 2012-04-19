@@ -235,7 +235,7 @@ class ChamTest {
         case (Atom("Resp", o::p::_),s) => result = true
         case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
       }
-      val RespVar = RelVariable(Resp)
+      val RespVar = ChannelVariable(Resp)
 
       rules(
         S(x,y) --> R(x,y,RespVar),
