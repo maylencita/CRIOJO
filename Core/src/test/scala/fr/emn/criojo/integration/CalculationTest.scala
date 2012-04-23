@@ -106,7 +106,7 @@ class CalculationTest {
     var fw = new FileWriter("etoile.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
-    val cm = new Cham with IntegerCham {
+    val cm = new Cham with IntegerCham with DebugCham {
 
       val fibo = LocalRelation("fibo")
       val Fibo = LocalRelation("Fibo")

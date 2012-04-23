@@ -74,11 +74,6 @@ class Cham extends StatefulEngine //with DefaultFactory
     molecule.toList.foreach(introduceAtom(_))
   }
 
-  def nextIndex:Int = {
-    index += 1
-    index
-  }
-
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
   implicit def mol2atom(mol:Molecule):Atom = mol.head
 //  implicit def relToVar(r:Relation):VarChannel = {
@@ -109,11 +104,11 @@ class Cham extends StatefulEngine //with DefaultFactory
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
   def VarString:VarScalaString = {
-    new VarScalaString("VarScalaString"+nextIndex)
+    new VarScalaString("VarScalaString" + java.util.UUID.randomUUID().toString)
   }
 
   def VarInt:VarScalaInt = {
-    new VarScalaInt("VarInt"+nextIndex)
+    new VarScalaInt("VarInt" + java.util.UUID.randomUUID().toString)
   }
 }
 

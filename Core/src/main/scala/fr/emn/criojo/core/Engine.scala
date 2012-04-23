@@ -12,8 +12,6 @@ import fr.emn.criojo.ext.expression.Relation.constructor.{LocalRelation, OutChan
 import fr.emn.criojo.ext.expression.Relation.{Relation}
 
 trait Engine extends RuleFactory{
-  protected var index = 0
-
   protected var rules:List[Rule] = List()
   protected var relations:List[Relation] = List()
   protected val solution:Solution = initSolution
@@ -21,10 +19,6 @@ trait Engine extends RuleFactory{
   def initSolution:Solution
   def executeRules()
   def introduceAtom(atom:Atom)
-  def getSolution:Solution
-
-  @Deprecated //("Use notifyRelationObservers")
-  def receiveUpdate(atom:Atom){}
 
   def notifyRelationObservers(atom: Atom){
     if (atom.relation != null)
