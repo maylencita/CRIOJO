@@ -105,13 +105,17 @@ class ChamTest {
     }
 
     machine.enableSolutionTrace()
+    machine.enableStreamingTrace()
 
     machine.introduceMolecule(machine.H())
     machine.introduceMolecule(machine.H())
     machine.introduceMolecule(machine.H())
     machine.introduceMolecule(machine.H())
     machine.introduceMolecule(machine.O())
+
+    machine.printSolution()
     machine.executeRules()
+    machine.printSolution()
 
     assert(machine.containsRelation(machine.H4O,1))
     assert(machine.containsRelation(machine.H,0))
@@ -276,16 +280,17 @@ class ChamTest {
 //    import sm.{num2fun}
     sm.enableSolutionTrace()
     sm.enableStreamingTrace()
-    var c = sm.C()
+
     sm.introduceMolecule(sm.A())
-    sm.introduceMolecule(c)
+    sm.introduceMolecule(sm.C())
     sm.introduceMolecule(sm.B())
     sm.introduceMolecule(sm.C())
     sm.introduceMolecule(sm.C())
-    sm.removeAtom(c.head)
+
     sm.printSolution()
     sm.executeRules()
     sm.printSolution()
+
     assertTrue(sm.containsRelation(sm.A,  1))
     assertTrue(sm.containsRelation(sm.C,  1))
     assertTrue(sm.containsRelation(sm.B,  0))

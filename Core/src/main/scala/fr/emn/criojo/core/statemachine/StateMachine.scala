@@ -50,6 +50,7 @@ trait StateMachine {
                 transition.ini.executions.foreach {
                   pe => {
                     val pExec = pe.newExecution(i,atom,vals)
+
                     pExec.valuation match {
                       case BottomValuation =>
                       case _ => newExecutions.addBinding(transition.fin,pExec)
@@ -116,7 +117,7 @@ trait StateMachine {
       tmap.put(hd, tarr)
       pos += 1
     }
-
+    println(tmap)
     tmap
   }
 
