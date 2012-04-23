@@ -37,8 +37,6 @@ trait StatefulEngine extends Engine {
     notifyRelationObservers(atom)
   }
 
-  def getSolution:Solution = this.solution //EmptySolution
-
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
     extends Rule with StateMachine{
 

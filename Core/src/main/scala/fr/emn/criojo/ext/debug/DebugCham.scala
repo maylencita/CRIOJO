@@ -100,6 +100,8 @@ trait DebugCham extends StatefulEngine {
     println(">")
   }
 
+  def getSolution:Solution = this.solution
+
   override def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
     new StatefulRule(h,b,g,scope) with DebugStatefulRule
   }
