@@ -9,7 +9,6 @@ package fr.emn.criojo.core
 
 import collection.immutable.HashSet
 import statemachine.{StateMachine, PartialExecution}
-import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 
 /**
  * The StatefulEngine trait
@@ -38,7 +37,7 @@ trait StatefulEngine extends Engine {
   }
 
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
-    extends Rule with StateMachine{
+    extends Rule with StateMachine {
 
     init(head.toArray)
 

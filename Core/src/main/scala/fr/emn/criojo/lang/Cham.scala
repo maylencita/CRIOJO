@@ -4,7 +4,6 @@ import fr.emn.criojo.core._
 import factory.{RelationFactory}
 import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
-import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 /*
 * Created by IntelliJ IDEA.

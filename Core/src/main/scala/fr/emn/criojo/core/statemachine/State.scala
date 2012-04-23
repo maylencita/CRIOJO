@@ -39,6 +39,7 @@ class State(val id:Int){
 
   //Removes all executions associated to atom `atom
   def removeExecutions(atom:Atom){
+    // todo: check if dequeueFirst fix the C() problem, instead of dequeueAll
     qExecutions.dequeueAll(ex => ex.containsAtom(atom))
   }
 
