@@ -8,11 +8,9 @@ package fr.emn.criojo.ext
 * To change this template use File | Settings | File Templates.
 */
 
-import expression.types.{IntegerVariable, CriojoIntegerValue, BooleanVariable, CriojoInteger}
 import fr.emn.criojo.core._
 import factory.DefaultFactory
 import fr.emn.criojo.lang._
-import Criojo._
 
 import collection.mutable.HashSet
 import EqClass._
@@ -27,7 +25,7 @@ trait EqCHAM extends Cham with DefaultFactory{
 //  * CHM definition:
 //  */
 //  //--Public:
-//  //val EQ = NativeRelation("Eq"){ (a,s) => if (a.terms.size == 2) addEquivalence(a.vars(0),a.vars(1),s) }
+//  //val EQ = NativeRelation("Eq"){ (a,s) => if (a.patterns.size == 2) addEquivalence(a.vars(0),a.vars(1),s) }
 //  //val EQ_ask = NativeRelation("Eq_ask")(askEq)
 //  //val NotEQ = NativeRelation("$NotEq"){(a,s) => addNotEqual(a.vars(0),a.vars(1),s)}
 //

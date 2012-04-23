@@ -1,75 +1,62 @@
 package fr.emn.criojo.core
 
-import fr.emn.criojo.ext.expression.Expression
 
-/**
- * Created by IntelliJ IDEA.
- * User: mayleen
- * Date: Jun 9, 2010
- * Time: 5:52:26 PM
- * To change this template use File | Settings | File Templates.
- */
+trait Variable extends Pattern {
+}
 
-@serializable
-trait Variable extends Term {
+trait Var[ T<: Pattern] extends Variable {
 
-  def getName():String
+  /** Transforms variable in expression using valuation.
+   *
+   * Applying [[fr.emn.criojo.core.Valuation]] to current variable and transform in
+   * [[fr.emn.criojo.core.Expression]]. This mechanism is use to pass from
+   * Right Rule Pattern to Expression in solution.
+   *
+   * @param valuation  Map of VariableName, value, match between Left Rule
+   *                   variable and solution value.
+   * @return  Expression from variable.
+   * @throws  NoValuationForVariable No valuation applicable for this variable.
+   */
+  override def applyValuation(valuation: Valuation): Expression = {
+    var expr: Expression = null
 
-  def applyValuation(valuation:Valuation):Expression = {
-    var value:Term = null
     valuation.forall(v => {
-      if(v._1.equals(this)) {
-        value = v._2
+      if (v._1.equals(this))  {
+        expr = v._2
         false
-      }
-      else {
+      }  else {
         true
       }
     })
 
-    value match {
-      case exp:Expression => exp
-      case _:Any => throw new Exception("Boom!")
+    if (expr == null) {
+      throw new NoValuationForVariable()
     }
+
+    expr
   }
 
-  def matches(that:Term) = true
+  /** Matches given expression with variable.
+   *
+   * It's possible the given expression not match with variable. In this
+   * case, an empty valuation is returned.
+   *
+   * @param expr Expression to try to match.
+   * @return If expression match, a valuation from given expression for current
+   *         variable. An empty valuation otherwise.
+   */
+  override def getValuation(expr: Expression): Valuation = expr match {
+    case expr: T => Valuation(this -> expr)
+    case _ => Valuation()
+  }
 
-//  def +(index:String):IdTerm = {
-//     new IdTerm(this.getName()+index)
-//  }
 
-  override def hashCode = this.name.hashCode
-
-  override def equals(that: Any):Boolean = that match{
-    case v:Variable => this.name == v.getName()
+  override def matches(that:Expression):Boolean = that match {
+    case o:T => true
     case _ => false
   }
-
-  override def toString = name
-
-  def toInt:Int = toString.toInt
-
-  @throws(classOf[PatternNotMatchingException])
-  def getValuation(t:Term):Valuation = Valuation(this->t)
 }
 
-
-@serializable
-case class ChannelVariable(name:String) extends Variable {
-
-  def getName():String = name
-
-  @transient
-  var relation:Relation = _ //TODO Initialize in constructor -> make method CHAM.newRelation()
-
-  override def toString = if (relation == null) this.name else relation.toString
-}
-
-object Undef extends Variable(){
-  //Undef matches anything
-  def name = "UndefinedVariable"
-  def getName():String = name
-  
-  override def matches(that:Term) = true
+object Undef extends Variable with Expression {
+  def matches(that:Term):Boolean = true
 }

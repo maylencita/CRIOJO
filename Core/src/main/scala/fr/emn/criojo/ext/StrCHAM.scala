@@ -17,13 +17,13 @@ trait StrCHAM extends EqCHAM with DefaultFactory {
 //  /**********************************************************************
 //  * VM definition:
 //  */
-//  val Str_print = Rel("$Str_print")
-//  val StrVal = Rel("Str")
+//  val Str_print = LocalRelation("$Str_print")
+//  val StrVal = LocalRelation("Str")
 ////  val StrRel = new NativeRelation("$Str", this.solution, (a,s) => strEqClasses add (a.vars(0).name,a.vars(1))){
 ////    addRelation(this)
 ////    override def apply(vars:Term*) = new StringAtom(vars(0).toString, vars(1))
 ////  }
-//  val Str_ask = Rel("Str_ask")//NativeRelation("$Str_ask"){(a,s) => ask(a) }
+//  val Str_ask = LocalRelation("Str_ask")//NativeRelation("$Str_ask"){(a,s) => ask(a) }
 //
 //  //--Private:
 //  private val Declare = NativeRelation("$StrCham.Declare"){ (a,s) => declare(a) }

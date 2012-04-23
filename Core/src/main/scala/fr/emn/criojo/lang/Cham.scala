@@ -2,6 +2,9 @@ package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
 import factory.{RelationFactory}
+import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
+import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 /*
 * Created by IntelliJ IDEA.
@@ -14,7 +17,6 @@ class Cham extends StatefulEngine //with DefaultFactory
   //TODO change Cham where used
   this:RelationFactory =>
 
-  type MoleculeBuilder = (Variable*) => Molecule
   type RuleDef = RuleFactory => Rule
 
 //  def Var:VarExpression = {
@@ -32,11 +34,11 @@ class Cham extends StatefulEngine //with DefaultFactory
     natRel
    }
 
-  def NativeRel(f:(List[Term]) => Unit) = {
-    val natRel = createNativeRelation("NR@"+nextIndex,f)
-    addRelation(natRel)
-    new ChamChannel(natRel)
-  }
+//  def NativeRel(f:(List[Term]) => Unit) = {
+//    val natRel = createNativeRelation("NR@"+nextIndex,f)
+//    addRelation(natRel)
+//    new VarRelationWrapper(natRel)
+//  }
 
   def If(guard: Guard)(body: => Molecule):RuleBody = {
     new RuleBody(body, guard)
@@ -60,27 +62,13 @@ class Cham extends StatefulEngine //with DefaultFactory
     ruleDef
   }
 
-  def axiom(fact:Molecule){
-    val AxiomTok = Tok()
-  }
-
-  def facts(flst:Molecule*){
-    flst.toList.foreach{fact => axiom(fact)}
-  }
-
-  def Rel:Applicable = Rel("@R"+nextIndex)
-
-  def Rel(n:String): ChamChannel = {
-    val r = createLocalRelation(n)
-    addRelation(r)
-    new ChamChannel(r)
-  }
-
-  def Rel(relName:String, f:(List[Term]=>Molecule)): ChamChannel = {
-    val r = createLocalRelation (relName)
-    addRelation(r)
-    new ChamChannel(r)
-  }
+//  def axiom(fact:Molecule){
+//    val AxiomTok = Tok()
+//  }
+//
+//  def facts(flst:Molecule*){
+//    flst.toList.foreach{fact => axiom(fact)}
+//  }
 
   def introduceMolecule(molecule:Molecule){
     molecule.toList.foreach(introduceAtom(_))
@@ -93,51 +81,58 @@ class Cham extends StatefulEngine //with DefaultFactory
 
   implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)
   implicit def mol2atom(mol:Molecule):Atom = mol.head
-//  implicit def relToVar(r:Relation):ChannelVariable = {
-//    val vr = new ChannelVariable(r.name)
+//  implicit def relToVar(r:Relation):VarChannel = {
+//    val vr = new VarChannel(r.name)
 //    vr.relation = r
 //    vr
 //  }
 
   // A variable of type Relation
-  case class VarR(override val name:String) extends ChannelVariable(name){
+//  case class VarR(override val name:String) extends VarChannel(name){
+//
+//    def apply(tlst:Term*):CrjAtom = {
+//      val at = new CrjAtom(this.name, tlst.toList)
+//      at.relation = this.relation
+//      at
+//    }
+//  }
 
-    def apply(tlst:Term*):CrjAtom = {
-      val at = new CrjAtom(this.name, tlst.toList)
-      at.relation = this.relation
-      at
-    }
-  }
-
-  case class Tok() extends LocalRelation("$X"+index,true){
-    index += 1
-    def apply(vars:Term*) = new CrjAtom(name, vars.toList)
-  }
+//  case class Tok() extends LocalRelation("$X"+index,true){
+//    index += 1
+//    def apply(vars:Term*) = new CrjAtom(name, vars.toList)
+//  }
 
 //  case class Fun(name:String){
-//    def apply(terms:Term*) = new Function(name, terms.toList)
+//    def apply(patterns:Term*) = new Function(name, patterns.toList)
 //  }
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
+  def VarString:VarScalaString = {
+    new VarScalaString("VarScalaString"+nextIndex)
+  }
+
+  def VarInt:VarScalaInt = {
+    new VarScalaInt("VarInt"+nextIndex)
+  }
 }
 
 /**
  * A wrapper for a relation that is also a variable
  */
-class ChamChannel(val delegate:Relation,val function:(List[Term]) => Molecule)
-  extends ChannelVariable(delegate.name) with Applicable{
-
-  this.relation = delegate
-
-  def this(del:Relation) = {
-    this(del,(terms:List[Term])=> {
-      val atom = new CrjAtom(del.name, terms.toList)
-      atom.relation = del
-      atom
-    })
-  }
-}
+//class ChamChannel(val delegate:Relation,val function:(List[Term]) => Molecule)
+//  extends VarChannel(delegate.name) with Applicable{
+//
+//  this.relation = delegate
+//
+//  def this(del:Relation) = {
+//    this(del,(terms:List[Term])=> {
+//      val atom = new CrjAtom(del.name, terms.toList)
+//      atom.relation = del
+//      atom
+//    })
+//  }
+//}
 
 /**
  * An object of type Applicable applies a function to one or more Terms to obtain a Molecule

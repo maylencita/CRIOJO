@@ -1,16 +1,11 @@
 package fr.emn.criojo.core
 
-import fr.emn.criojo.ext.expression.Expression
+trait Pattern extends Term {
 
-/**
- * Created by IntelliJ IDEA.
- * User: jonathan
- * Date: 4/18/12
- * Time: 5:28 PM
- * To change this template use File | Settings | File Templates.
- */
+  def matches(exp:Expression):Boolean
 
-trait Pattern {
-  def matches(e:Expression):Valuation
-  def apply(vals:Valuation):Expression
+  def getValuation(exp: Expression): Valuation
+
+  /**Transform variable by value */
+  def applyValuation(valuation: Valuation): Expression
 }

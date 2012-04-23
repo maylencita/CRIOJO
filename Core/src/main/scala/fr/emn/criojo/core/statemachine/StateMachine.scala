@@ -1,8 +1,7 @@
 package fr.emn.criojo.core.statemachine
 
-import fr.emn.criojo.core.Criojo._
-import fr.emn.criojo.core.Atom
 import collection.mutable.{Queue, HashMap, MultiMap, Set}
+import fr.emn.criojo.core.{BottomValuation, Atom}
 
 /*
 * Created by IntelliJ IDEA.
@@ -32,23 +31,28 @@ trait StateMachine {
     val newExecutions:MultiMap[State,PartialExecution] =
       new HashMap[State,Set[PartialExecution]] with MultiMap[State,PartialExecution]
 
-    if(pattern != null){
+    if(pattern != null) {
       for(i <- 0 until pattern.length){
         val a = pattern(i)
-        if (a.relName == atom.relName && a.arity == atom.arity && a.matches(atom)){
-          val vals = getValuation(a.terms,atom.terms)
+        if (a.relation.name == atom.relation.name && a.arity == atom.arity && a.correspondsTo(atom)){
+          val vals = a.getValuation(atom) // fixme: le premier atome contient une liste de patterns et le second une list d'expression
           transitions(a).foreach{
             transition=> {
               if(transition.ini.stateZero) {
+
                 val pExec = new PartialExecution(i,atom,vals)
-                newExecutions.addBinding(transition.fin,pExec)
+                pExec.valuation match {
+                  case BottomValuation =>
+                  case _ => newExecutions.addBinding(transition.fin,pExec)
+                }
               }
               else {
                 transition.ini.executions.foreach {
                   pe => {
-                    if(a.applyValuation(pe.valuation).matches(atom)){
-                      val pExec = pe.newExecution(i,atom,vals)
-                      newExecutions.addBinding(transition.fin,pExec)
+                    val pExec = pe.newExecution(i,atom,vals)
+                    pExec.valuation match {
+                      case BottomValuation =>
+                      case _ => newExecutions.addBinding(transition.fin,pExec)
                     }
                   }
                 }
@@ -70,7 +74,7 @@ trait StateMachine {
   def removeExecution(atom:Atom){
     if(pattern != null){
       for(a <- pattern){
-        if (a.relName == atom.relName && a.arity == atom.arity){
+        if (a.relation.name == atom.relation.name && a.arity == atom.arity){
           transitions(a).foreach{t=>
             t.fin.removeExecutions(atom)
           }

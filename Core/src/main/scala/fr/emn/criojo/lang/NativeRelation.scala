@@ -8,16 +8,15 @@ package fr.emn.criojo.lang
  */
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.core._
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
-case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Unit) extends LocalRelation(rn, false, true){
+case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Unit) extends LocalRelation(rn){
 
-  def apply(vars:Term*):Molecule = new CrjAtom(name, vars.toList)
-
-  override def copy(sol:Solution) = new NativeRelation(rn, sol, f)
+  override def apply(vars:Term*):Molecule = new CrjAtom(this, vars.toList)
 
   override def notifyObservers(a:Atom) {
     a match {
-      case Atom(this.name, _) =>
+      case Atom(LocalRelation(this.name), _) =>
         log("[Relation(" + name + ").notifyObservers] notified by " + a)
         f(a, solution)
         solution.inactivate(a)
@@ -26,7 +25,7 @@ case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Uni
         //solution.remove(a)
 
         solution.cleanup()
-      case _ => super.notifyObservers(a)
+      case _ =>
     }
   }
 }

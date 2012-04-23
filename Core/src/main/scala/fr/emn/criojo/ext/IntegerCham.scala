@@ -1,12 +1,8 @@
 package fr.emn.criojo.ext
 
-import expression._
-import expression.types.CriojoInteger
-import fr.emn.criojo.lang._
 import fr.emn.criojo.core._
 import factory.DefaultFactory
 
-import expression.converters._
 /*
 * Created by IntelliJ IDEA.
 * User: mayleen
@@ -14,18 +10,18 @@ import expression.converters._
 * Time: 14:38
 */
 trait IntegerCham extends EqCHAM with DefaultFactory{
-//  val IntVal = Rel("Int") //Like Val(x,n)
-//  val Int_ask = Rel("Int_ask")
-//  val Int_print = Rel("$Int_print")
-//  val Add = Rel("Add")
-//  val Sub = Rel("Subs")
-//  val Mod = Rel("Mod")
-//  val Leq_ask = Rel("Leq_ask")
-//  val Leq = Rel("Leq")
-//  private val Res = Rel("$Int.Res")
-//  private val LeqRes = Rel("$Int.LeqRes")
-//  private val mod = Rel("$Int.mod")
-//  private val IntAdd2 = Rel("$Int.add2")
+//  val IntVal = LocalRelation("Int") //Like Val(x,n)
+//  val Int_ask = LocalRelation("Int_ask")
+//  val Int_print = LocalRelation("$Int_print")
+//  val Add = LocalRelation("Add")
+//  val Sub = LocalRelation("Subs")
+//  val Mod = LocalRelation("Mod")
+//  val Leq_ask = LocalRelation("Leq_ask")
+//  val Leq = LocalRelation("Leq")
+//  private val Res = LocalRelation("$Int.Res")
+//  private val LeqRes = LocalRelation("$Int.LeqRes")
+//  private val mod = LocalRelation("$Int.mod")
+//  private val IntAdd2 = LocalRelation("$Int.add2")
 //
 //  val intEqClasses = new TypedEqClasses[Int](eqClasses,disjClasses)
 //  private val Declare = NativeRelation("$Declare"){ (a,s) => declare(a) }
@@ -39,8 +35,8 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
 //    //      println(x)
 //    //    }
 //  }
-//  private val IntSub2 = Rel("$IntSubs2")
-//  private val IntDiv2 = Rel("$IntDivs2")
+//  private val IntSub2 = LocalRelation("$IntSubs2")
+//  private val IntDiv2 = LocalRelation("$IntDivs2")
 //
 //  protected val IntAdd = NativeRelation("$IntAdd"){ //(a,s) => add(a) }
 //    case (Atom(_,a::b::c::_), _) =>
@@ -96,8 +92,8 @@ trait IntegerCham extends EqCHAM with DefaultFactory{
 //    val Err = VarR("Err")
 //    val z,s,v,v1,v2 = Var
 //    val x,y,n = Var
-//    val X1 = Rel("$Int.$X1")
-//    val ModRes = Rel("$Int.ModRes")
+//    val X1 = LocalRelation("$Int.$X1")
+//    val ModRes = LocalRelation("$Int.ModRes")
 //
 //    rules(
 //      IntVal(x,n) --> Abs(X1(x))?:(Declare(x,n) & IntVal(x,n) & X1(x)),

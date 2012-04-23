@@ -16,7 +16,7 @@ case class StandAloneSolution(var elems:List[Atom]) extends Solution {
     var firstPrint:Boolean = true
     print("<")
     elems.foreach( a => {
-      if(a.relName.charAt(0)!='$') {
+      if(a.relation.name.charAt(0)!='$') {
         if(!firstPrint)
           print(",")
         print(a)

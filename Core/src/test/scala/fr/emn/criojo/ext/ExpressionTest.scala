@@ -98,7 +98,7 @@
 //    val result2 = result.reduce()
 //    val result3 = result.reduce(listOfSubs)
 //
-//    assert(result3.matches(3))
+//    assert(result3.correspondsTo(3))
 //
 //    val resultb = x1 + x2 + x3
 //    val result2b = resultb.reduce()
@@ -117,8 +117,8 @@
 ////      implicit def int2term(n: Int): Expression = IntExpression(n)
 //
 //      val x, y, z = Var
-//      val OneBonbon = Rel("OneBonbon")
-//      val TwoBonbons = Rel("TwoBonbons")
+//      val OneBonbon = LocalRelation("OneBonbon")
+//      val TwoBonbons = LocalRelation("TwoBonbons")
 //
 //      rules(
 //        (OneBonbon(x) &: OneBonbon(y)) --> TwoBonbons(x + y + 1)
@@ -149,21 +149,21 @@
 ////    val machine = new Cham with IntegerCham with DebugCham {
 ////      //TestCham with DefaultCham{
 ////      val n1, n2, n3, n4, n5 = Var
-////      val R1_COO_R2 = Rel("R1_COO_R2")
-////      val R2_OH = Rel("R2_OH")
-////      val R1_COOH = Rel("R1_COOH")
-////      val H2O = Rel("H2O")
-////      val COO = Rel("COO")
-////      val R1 = Rel("R1")
-////      val R2 = Rel("R2")
-////      val C = Rel("C")
-////      val O = Rel("O")
-////      val H = Rel("H")
+////      val R1_COO_R2 = LocalRelation("R1_COO_R2")
+////      val R2_OH = LocalRelation("R2_OH")
+////      val R1_COOH = LocalRelation("R1_COOH")
+////      val H2O = LocalRelation("H2O")
+////      val COO = LocalRelation("COO")
+////      val R1 = LocalRelation("R1")
+////      val R2 = LocalRelation("R2")
+////      val C = LocalRelation("C")
+////      val O = LocalRelation("O")
+////      val H = LocalRelation("H")
 ////
 //////      implicit def int2term(n: Int): Expression = IntExpression(n)
 ////
-////      val EXPLODE_R1_COO_R2 = Rel("EXPLODE_R1_COO_R2")
-////      val EXPLODE_H2O = Rel("EXPLODE_H2O")
+////      val EXPLODE_R1_COO_R2 = LocalRelation("EXPLODE_R1_COO_R2")
+////      val EXPLODE_H2O = LocalRelation("EXPLODE_H2O")
 ////
 ////      rules(
 ////
@@ -210,8 +210,8 @@
 ////    val machine = new Cham with IntegerCham with DebugCham {
 ////      //TestCham with DefaultCham{
 ////      val z, w, n, i, j, kp, km = Var
-////      val InsertWord = Rel("InsertWord")
-////      val Count = Rel("Count")
+////      val InsertWord = LocalRelation("InsertWord")
+////      val Count = LocalRelation("Count")
 ////
 ////      val PrintInt = NativeRelation("PrintInt") {
 ////        case (Atom(_, a :: _), _) => println(a)
@@ -250,12 +250,12 @@
 ////      //TestCham with DefaultCham{
 ////      val x, y, z, w, n, i, j = Var
 ////
-////      val AreConnected = Rel("LeadsTo")
-////      val AreInRelation = Rel("AreInRelation")
-////      val IsItEquivalent = Rel("IsItEquivalent")
+////      val AreConnected = LocalRelation("LeadsTo")
+////      val AreInRelation = LocalRelation("AreInRelation")
+////      val IsItEquivalent = LocalRelation("IsItEquivalent")
 ////
-////      val PUSH = Rel("PUSH")
-////      val POP = Rel("POP")
+////      val PUSH = LocalRelation("PUSH")
+////      val POP = LocalRelation("POP")
 ////
 ////      val PrintInt = NativeRelation("PrintInt") {
 ////        case (Atom(_, a :: _), _) => /*println(x)*/

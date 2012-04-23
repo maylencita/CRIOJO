@@ -1,14 +1,5 @@
 package fr.emn.criojo.ext
 
-import fr.emn.criojo.core.Term
-import fr.emn.criojo.core.CriojoGuard
-import fr.emn.criojo.core.Guard
-import fr.emn.criojo.core.Variable
-import fr.emn.criojo.core.ValueTerm
-import fr.emn.criojo.core.Solution
-import fr.emn.criojo.core.Criojo._
-import fr.emn.criojo.core.Valuation
-
 /**
  * Created by IntelliJ IDEA.
  * User: jonathan

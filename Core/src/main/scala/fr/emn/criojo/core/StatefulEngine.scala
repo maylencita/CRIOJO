@@ -9,7 +9,7 @@ package fr.emn.criojo.core
 
 import collection.immutable.HashSet
 import statemachine.{StateMachine, PartialExecution}
-import fr.emn.criojo.ext.expression.types.StringVariable
+import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 
 /**
  * The StatefulEngine trait
@@ -17,7 +17,7 @@ import fr.emn.criojo.ext.expression.types.StringVariable
  * @define PARENT no other class
  * @define RESULT 3
  */
-trait StatefulEngine extends Engine{
+trait StatefulEngine extends Engine {
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
@@ -32,7 +32,7 @@ trait StatefulEngine extends Engine{
     notifyRelationObservers(atom)
   }
 
-  def removeAtom(atom: Atom){
+  def removeAtom(atom: Atom) {
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
@@ -68,10 +68,11 @@ trait StatefulEngine extends Engine{
     }
 
     def applyReaction(finalExecution:PartialExecution) {
-      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
-        val i = Indexator.getIndex
-        vals union Valuation(sv -> StringVariable(sv.name+"@"+i))
-      }
+//      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
+//        val i = Indexator.getIndex
+//        vals union Valuation(sv -> VarScalaString(sv.name+"@"+i))
+//      }
+      val finalValuation = finalExecution.valuation
 
       if(!finalValuation.isEmpty) {
 
@@ -81,7 +82,7 @@ trait StatefulEngine extends Engine{
           finalExecution.atom(i)
         }
 
-        removeAtoms.foreach{a => removeAtom(a)}
+        removeAtoms.foreach(a => removeAtom(a))
         newAtoms.foreach(a => introduceAtom(a))
       }
     }
@@ -108,7 +109,7 @@ class HashSolution extends Solution{
     var cpt:Int = 0
     
     elements.foreach( a => {
-      if(a.relName.charAt(0)!='$') {
+      if(a.relation.name.charAt(0)!='$') {
         if(!firstPrint)
           print(",")
         cpt = (cpt+1)%10
@@ -141,13 +142,13 @@ class HashSolution extends Solution{
   }
 
   def remove(atom: Atom){
-    elements = elements.filterNot(a=> atom == a)
+    elements = elements.filterNot(a=> atom eq a)
   }
 
   override def contains(atom:Atom) = elements.exists{a =>
-    (a.relName == atom.relName) &&
+    (a.relation.name == atom.relation.name) &&
       a.arity == atom.arity &&
-      a.terms.zip(atom.terms).forall{t =>
+      a.patterns.zip(atom.patterns).forall{t =>
         t._1 == t._2
       }
   }

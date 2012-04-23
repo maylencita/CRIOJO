@@ -17,10 +17,11 @@ import fr.emn.criojo.lang._
 import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.ext.debug.DebugCham
 
-import fr.emn.criojo.ext.expression.converters._
+import fr.emn.criojo.core.Converters._
+import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 class ChamTest {
-  import Criojo._
 
   logLevel = INFO
 
@@ -30,10 +31,10 @@ class ChamTest {
   def testRelations() {
 
     val machine = new IntegerCham with DebugCham {
-      val x,y,z = Var
-      val R = Rel("R")
-      val S = Rel("S")
-      val Z = Rel("S")
+      val x,y,z = VarInt
+      val R = LocalRelation("R")
+      val S = LocalRelation("S")
+      val Z = LocalRelation("S")
 
       rules(
         (R(x,y) &: R(y,z)) --> R(x,z),
@@ -44,11 +45,14 @@ class ChamTest {
 //    import machine.num2fun
 
     machine.enableSolutionTrace()
+    machine.enableStreamingTrace()
 
     machine.introduceMolecule(machine.R(1,2))
     machine.introduceMolecule(machine.S(2,1))
+    machine.introduceMolecule(machine.S(2,1))
 
     machine.executeRules()
+    machine.printSolution()
 
     assert(machine.containsRelation(machine.R,1)) // S(x,y) -> R(x,y) and R(x,y),R(y,z) -> R(x,y)
     assert(machine.containsRelation(machine.Z,0)) // no Z atom
@@ -59,9 +63,9 @@ class ChamTest {
   def BonbonsTestRelations() {
 
     val machine = new Cham with IntegerCham with DebugCham {
-      val x,y,z = Var
-      val OneBonbon = Rel("OneBonbon")
-      val TwoBonbons = Rel("TwoBonbons")
+      val x,y,z = VarInt
+      val OneBonbon = LocalRelation("OneBonbon")
+      val TwoBonbons = LocalRelation("TwoBonbons")
 
       rules(
         (OneBonbon() &: OneBonbon()) --> TwoBonbons()
@@ -90,19 +94,16 @@ class ChamTest {
   def H4ORelations() {
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val a,b,x,y,z = Var
-      val H = Rel("H")
-      val O = Rel("O")
-      val H4O = Rel("H4O")
+      val a,b,x,y,z = VarInt
+      val H = LocalRelation("H")
+      val O = LocalRelation("O")
+      val H4O = LocalRelation("H4O")
 
       rules(
         (H() & H() & H() & H() & O()) --> H4O()
       )
     }
 
-//    import machine.num2fun
-
-    implicit def str2fun(n:String):Term = new ValueTerm[String](n) //new IntTerm(n)
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.H())
@@ -118,13 +119,15 @@ class ChamTest {
     assert(machine.getSolution.size==1)
   }
 
+
+
   @Test(timeout=1000)
   def testAtomInsertion(){
 
     val machine = new Cham with DebugCham with DefaultFactory {
-      val x,y,z = Var
-      val R = Rel("R")
-      val S = Rel("S")
+      val x,y,z = VarString
+      val R = LocalRelation("R")
+      val S = LocalRelation("S")
 
       rules(
         (R(x,y) & R(z,y)) --> R(x,z),
@@ -133,11 +136,12 @@ class ChamTest {
       )
     }
 
-    val a1 = Atom("R", Variable("a"),Variable("b"))
-    val a2 = Atom("S", Variable("b"),Variable("c"))
-    val a3 = Atom("R", Variable("a"),Variable("c"))
+    val a1 = Atom(machine.R, WrapScalaString("a"),WrapScalaString("b"))
+    val a2 = Atom(machine.S, WrapScalaString("b"),WrapScalaString("c"))
+    val a3 = Atom(machine.R, WrapScalaString("a"),WrapScalaString("c"))
 
     machine.enableSolutionTrace()
+    machine.enableStreamingTrace()
 
     machine.introduceAtom(a1)
     assert(machine.containsRelation(machine.R,  1))
@@ -150,117 +154,119 @@ class ChamTest {
     assertEquals(3, machine.getSolution.size)
 
     machine.executeRules()
+    machine.printSolution()
+
     assert(machine.containsRelation(machine.R,  1))
     assert(machine.containsRelation(machine.S,  0))
   }
 
-  @Test (timeout=1000)
-  def testGuardSubs(){
+//  @Test (timeout=1000)
+//  def testGuardSubs(){
+//
+//    logLevel = DEBUG
+//    val a = Variable("a")
+//    val b = Variable("b")
+//    val c = Variable("c")
+//    val d = Variable("d")
+//
+//    val machine = new Cham with DefaultFactory with DebugCham {
+//      val s,x,y,z = Var
+//      val R = LocalRelation("R")
+//      val X1 = LocalRelation("X1")
+//
+//      rules(
+//        R(s,x,y) --> Abs(X1(s)) ?: (R(s,x,y) &: R(s,x,y) &: X1(s)) // (1)
+//      )
+//    }
+//
+//    machine.enableSolutionTrace()
+//
+//    val atom = Atom("R", Variable("1"), a, b)
+//    val atom2 = Atom("R", Variable("2"), a, b)
+//    machine.introduceAtom(atom)
+//    machine.introduceAtom(atom2)
+//
+//    assert(machine.containsRelation(machine.R, 2))
+//    assert(machine.containsRelation(machine.X1, 0))
+//
+//    machine.executeRules() // the rule (1) should execute two times
+//
+//    assert(machine.containsRelation(machine.R, 4))
+//    assert(machine.containsRelation(machine.X1, 2))
+//  }
 
-    logLevel = DEBUG
-    val a = Variable("a")
-    val b = Variable("b")
-    val c = Variable("c")
-    val d = Variable("d")
+//  @Test (timeout=1000)
+//  def testNu(){
+//
+//    logLevel = DEBUG
+//
+//    var result = false
+//    val a = Variable("a")
+//    val b = Variable("b")
+//
+//    val machine = new Cham with DefaultFactory {
+//      val x,y,z,w = Var
+//      val S = LocalRelation("S")
+//      val R = NativeRelation("R"){
+//        case (Atom("R", o::v2::v3::_),s) if (v2 != Undef && v3 != Undef) => result = true
+//        case at => fail("Expected: R(x1,x2,x3). Actual: " + at)
+//      }
+//
+//      rules{
+//        S(x) --> Nu(y,z)(R(x,y,z))
+//      }
+//    }
+//
+//    machine.introduceAtom(Atom("S", a))
+//    machine.executeRules()
+//
+//    assertTrue(result) // triggered in the "R" nativeRelation
+//  }
 
-    val machine = new Cham with DefaultFactory with DebugCham {
-      val s,x,y,z = Var
-      val R = Rel("R")
-      val X1 = Rel("X1")
-
-      rules(
-        R(s,x,y) --> Abs(X1(s)) ?: (R(s,x,y) &: R(s,x,y) &: X1(s)) // (1)
-      )
-    }
-
-    machine.enableSolutionTrace()
-
-    val atom = Atom("R", Variable("1"), a, b)
-    val atom2 = Atom("R", Variable("2"), a, b)
-    machine.introduceAtom(atom)
-    machine.introduceAtom(atom2)
-
-    assert(machine.containsRelation(machine.R, 2))
-    assert(machine.containsRelation(machine.X1, 0))
-
-    machine.executeRules() // the rule (1) should execute two times
-
-    assert(machine.containsRelation(machine.R, 4))
-    assert(machine.containsRelation(machine.X1, 2))
-  }
-
-  @Test (timeout=1000)
-  def testNu(){
-
-    logLevel = DEBUG
-
-    var result = false
-    val a = Variable("a")
-    val b = Variable("b")
-
-    val machine = new Cham with DefaultFactory {
-      val x,y,z,w = Var
-      val S = Rel("S")
-      val R = NativeRelation("R"){
-        case (Atom("R", o::v2::v3::_),s) if (v2 != Undef && v3 != Undef) => result = true
-        case at => fail("Expected: R(x1,x2,x3). Actual: " + at)
-      }
-
-      rules{
-        S(x) --> Nu(y,z)(R(x,y,z))
-      }
-    }
-
-    machine.introduceAtom(Atom("S", a))
-    machine.executeRules()
-
-    assertTrue(result) // triggered in the "R" nativeRelation
-  }
-
-  @Test (timeout=1000)
-  def testHORelation(){
-
-    logLevel = DEBUG
-
-    val a = Variable("a")
-    val b = Variable("b")
-    var result = false
-
-    val machine = new Cham with DefaultFactory with DebugCham {
-      val x,y,z,w = Var
-      val Cont = Rel("Cont")
-
-      val R = Rel("R"); val S = Rel("S")
-      val Resp = NativeRelation("Resp"){
-        case (Atom("Resp", o::p::_),s) => result = true
-        case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
-      }
-      val RespVar = ChannelVariable(Resp)
-
-      rules(
-        S(x,y) --> R(x,y,RespVar),
-        R(x,y,Cont) --> Cont(x,y)
-      )
-    }
-
-    val atom1 = Atom("S", a, b)
-    machine.introduceAtom(atom1)
-    machine.executeRules()
-
-    //TODO rewrite test
-    assertTrue(result) // triggered in the "Resp" nativeRelation
-
-  }
+//  @Test (timeout=1000)
+//  def testHORelation(){
+//
+//    logLevel = DEBUG
+//
+//    val a = WrapScalaString("a")
+//    val b = WrapScalaString("b")
+//    var result = false
+//
+//    val machine = new Cham with DefaultFactory with DebugCham {
+//      val x,y,z,w = VarString
+//      val Cont = LocalRelation("Cont")
+//
+//      val R = LocalRelation("R"); val S = LocalRelation("S")
+//      val Resp = NativeRelation("Resp"){
+//        case (Atom(LocalRelation("Resp"), o::p::_),s) => result = true
+//        case resp => fail("Expected atom: Resp(a,b). Actual: " + resp)
+//      }
+//      val RespVar = ChannelVariable(Resp)
+//
+//      rules(
+//        S(x,y) --> R(x,y,RespVar),
+//        R(x,y,Cont) --> Cont(x,y)
+//      )
+//    }
+//
+//    val atom1 = Atom("S", a, b)
+//    machine.introduceAtom(atom1)
+//    machine.executeRules()
+//
+//    //TODO rewrite test
+//    assertTrue(result) // triggered in the "Resp" nativeRelation
+//
+//  }
 
 
   @Test //(timeout=1000)
   def simpleTest2(){
-    val sm = new Cham with IntegerCham with DebugCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
-
+    val sm = new IntegerCham with DebugCham {
+      val A = LocalRelation("A")
+      val B = LocalRelation("B")
+      val C = LocalRelation("C")
+      val D = LocalRelation("D")
+      val x = VarInt
       rules(
         (A() & B() & C()) --> D(),
         (D() & C()) --> A()
@@ -269,14 +275,17 @@ class ChamTest {
 
 //    import sm.{num2fun}
     sm.enableSolutionTrace()
-
+    sm.enableStreamingTrace()
+    var c = sm.C()
     sm.introduceMolecule(sm.A())
-    sm.introduceMolecule(sm.C())
+    sm.introduceMolecule(c)
     sm.introduceMolecule(sm.B())
     sm.introduceMolecule(sm.C())
     sm.introduceMolecule(sm.C())
+    sm.removeAtom(c.head)
+    sm.printSolution()
     sm.executeRules()
-
+    sm.printSolution()
     assertTrue(sm.containsRelation(sm.A,  1))
     assertTrue(sm.containsRelation(sm.C,  1))
     assertTrue(sm.containsRelation(sm.B,  0))

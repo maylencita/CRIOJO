@@ -6,10 +6,13 @@ import fr.emn.criojo.core._
 import java.io.FileWriter
 import fr.emn.criojo.ext.IntegerCham
 
-import fr.emn.criojo.ext.expression.converters._
+import fr.emn.criojo.core.Converters._
 import fr.emn.criojo.ext.debug.DebugCham
-import fr.emn.criojo.ext.expression.types.CriojoInteger
-import fr.emn.criojo.ext.expression._
+import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
+import com.sun.tools.corba.se.idl.constExpr.NotEqual
+import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 /*
 * Created by IntelliJ IDEA.
@@ -22,80 +25,80 @@ import fr.emn.criojo.ext.expression._
 class CalculationTest {
 
 
-  @Test /*(timeout=3000)*/
-  def fibonacciTest(){
-    val fCham = new Cham with IntegerCham{
-      val fib = Rel("fib")
-      val Fib = Rel("Fib")
+//  @Test /*(timeout=3000)*/
+//  def fibonacciTest(){
+//    val fCham = new Cham with IntegerCham{
+//      val fib = LocalRelation("fib")
+//      val Fib = LocalRelation("Fib")
+//
+//      val n,n1,n2,r,r1,r2,v,x,y,z = VarInt
+//
+//
+//      rules(
+//        fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
+//        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v) /*& IntVal(n,v)*/),
+//        Fib(n,r) -->
+//          Gr(n, 1) ?: Nu(n1,n2,r1,r2)(
+//            IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
+//      )
+//    }
+////    import fCham.{num2fun,fib}
+//    fCham.introduceMolecule(fCham.fib(8))
+//    fCham.executeRules()
+//    //println(fCham.printRules)
+//  }
 
-      val n,n1,n2,r,r1,r2,v,x,y,z = Var
 
+//  @Test /*(timeout=3000)*/
+//  def gcdTest(){
+//    val fCham = new Cham with IntegerCham with DebugCham {
+//      val gcd = LocalRelation("gcd")
+//      val Result = LocalRelation("Resultat")
+//
+//      val n,n1,n2,r,r1,r2,v,x,y,xNew = VarInt
+//
+//
+//      rules(
+//        gcd(x,y) --> Less(x,y) ?: gcd(y,x),
+//        gcd(x,y) --> Gr(x,y) ?: Nu(xNew)(IntSub(x,y,xNew) & gcd(xNew,y)),
+//        gcd(x,y) --> Eq(x,y) ?: Result(y)
+//      )
+//    }
+//    fCham.enableStreamingTrace()
+//    fCham.enableSolutionTrace()
+//    fCham.introduceMolecule(fCham.gcd(8,2))
+//    fCham.executeRules()
+//    fCham.printSolution()
+//    // println(fCham.printRules)
+//  }
 
-      rules(
-        fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
-        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v) /*& IntVal(n,v)*/),
-        Fib(n,r) -->
-          Gr(n, 1) ?: Nu(n1,n2,r1,r2)(
-            IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
-      )
-    }
+//  @Test /*(timeout=3000)*/
+//  def fibonacciWithMemTest(){
+//    val fCham = new Cham with IntegerCham with DebugCham {
+//      val fib = LocalRelation("fib")
+//      val Fib = LocalRelation("Fib")
+//      val FEq = LocalRelation("FEq")
+//
+//      val n,n1,n2,r,r1,r2,x = VarInt
+//      val v,v1,v2 = VarInt
+//
+//      rules(
+//        fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
+//        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v)),
+//        (Fib(n,r1) & Fib(n,r2) & IntVal(r1,v)) --> (IntVal(r2,v) & IntVal(r1,v)),
+//        Fib(n,r) -->
+//          (Abs(Fib(n,v)) && Gr(n, 1)) ?: Nu(n1,n2,r1,r2)(
+//            IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
+//      )
+//    }
 //    import fCham.{num2fun,fib}
-    fCham.introduceMolecule(fCham.fib(8))
-    fCham.executeRules()
-    //println(fCham.printRules)
-  }
-
-
-  @Test /*(timeout=3000)*/
-  def gcdTest(){
-    val fCham = new Cham with IntegerCham with DebugCham {
-      val gcd = Rel("gcd")
-      val Result = Rel("Resultat")
-
-      val n,n1,n2,r,r1,r2,v,x,y,xNew = Var
-
-
-      rules(
-        gcd(x,y) --> Less(x,y) ?: gcd(y,x),
-        gcd(x,y) --> Gr(x,y) ?: Nu(xNew)(IntSub(x,y,xNew) & gcd(xNew,y)),
-        gcd(x,y) --> Eq(x,y) ?: Result(y)
-      )
-    }
-    fCham.enableStreamingTrace()
-    fCham.enableSolutionTrace()
-    fCham.introduceMolecule(fCham.gcd(8,2))
-    fCham.executeRules()
-    fCham.printSolution()
-    // println(fCham.printRules)
-  }
-
-  @Test /*(timeout=3000)*/
-  def fibonacciWithMemTest(){
-    val fCham = new Cham with IntegerCham with DebugCham {
-      val fib = Rel("fib")
-      val Fib = Rel("Fib")
-      val FEq = Rel("FEq")
-
-      val n,n1,n2,r,r1,r2,x = Var
-      val v,v1,v2 = Var
-
-      rules(
-        fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
-        (Fib(n,r) & IntVal(n,v)) --> Leq(v,1) ?: (IntVal(r,v)),
-        (Fib(n,r1) & Fib(n,r2) & IntVal(r1,v)) --> (IntVal(r2,v) & IntVal(r1,v)),
-        Fib(n,r) -->
-          (Abs(Fib(n,v)) && Gr(n, 1)) ?: Nu(n1,n2,r1,r2)(
-            IntSub(n,1,n1) & IntSub(n,2,n2) & IntAdd(r1,r2,r) & Fib(n1,r1) & Fib(n2,r2) )
-      )
-    }
-//    import fCham.{num2fun,fib}
-    fCham.enableSolutionTrace()
-    fCham.enableStreamingTrace()
-
-    fCham.introduceMolecule(fCham.fib(5))
-    fCham.executeRules()
-    // println(fCham.printRules)
-  }
+//    fCham.enableSolutionTrace()
+//    fCham.enableStreamingTrace()
+//
+//    fCham.introduceMolecule(fCham.fib(5))
+//    fCham.executeRules()
+//    // println(fCham.printRules)
+//  }
 
   @Test
   def FibonnaciNewSyntaxTest() {
@@ -105,16 +108,16 @@ class CalculationTest {
 
     val cm = new Cham with IntegerCham {
 
-      val fibo = Rel("fibo")
-      val Fibo = Rel("Fibo")
-      val WaitResult = Rel("WaitResult")
-      val Result = Rel("Result")
-      val Bingo = Rel("Bingo")
+      val fibo = LocalRelation("fibo")
+      val Fibo = LocalRelation("Fibo")
+      val WaitResult = LocalRelation("WaitResult")
+      val Result = LocalRelation("Result")
+      val Bingo = LocalRelation("Bingo")
 
-      val n,n1,n2,r,r1,r2,x = Var
-      val v,v1,v2 = Var
+      val n,n1,n2,r,r1,r2,x = VarInt
+      val v,v1,v2 = VarInt
 
-      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = Var
+      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = VarInt
 
       rules(
         fibo(n) --> Nu(r)(Fibo(n,r) & WaitResult(r,n)),
@@ -137,62 +140,62 @@ class CalculationTest {
     fw.close()
   }
 
-  @Test /*(timeout=3000)*/
-  def fibonacciIterative(){
-    val fCham = new Cham with IntegerCham{
-      val AskFib = Rel("AskFib")
-      val Rep = Rel("Rep")
-      val Fib = Rel("Fib")
-      val Res = Rel("Res")
-
-      val MPrint = NativeRelation("MPrint"){
-        case (Atom(_,a::_),_) => println(a)
-        case _ =>
-      }
-
-      val MPrint_var = VarR("MPrint_var")
-
-      val K = VarR("K+")
-      val n,n1,n2,r,r1,r2,r3,s = Var
-      val v,v1,v2 = Var
-
-      rules(
-        AskFib(n,K) --> Nu(s)(Fib(s,0) & Fib(s,1) & Rep(s, n, K)),
-        Fib(s, 0) --> Res(s, 0, 0),
-        Fib(s, 1) --> Res(s, 1, 1),
-        //(Rep(s,n,K) &: Res(s, n1, r1) &: Res(s, n1+1, r2)) --> ((Gr(n,n1+1) || Eq(n,n1+1)))  ?: (Rep(s,n,K) & Res(s, n1+1, r2) & Res(s,  n1+2, r1+r2)),
-        (Rep(s,n,K) &: Res(s, n1, r1) &: Res(s, n2, r2)) --> ((Gr(n,n2) || Eq(n,n2)) && Eq(n2,n1+1))  ?: (Rep(s,n,K) & Res(s, n2, r2) & Res(s,  n1+2, r1+r2)),
-        (Rep(s,n,K) &: Res(s,n,r)) --> K(r),
-        MPrint_var(r) --> MPrint(r)
-      )
-    }
-//    import fCham.{num2fun}
-
-    fCham.MPrint_var.relation = fCham.MPrint
-    fCham.introduceMolecule(fCham.AskFib(6, fCham.MPrint_var))
-    fCham.executeRules()
-    println(fCham.getSolution)
-    // println(fCham.printRules)
-  }
+//  @Test /*(timeout=3000)*/
+//  def fibonacciIterative(){
+//    val fCham = new Cham with IntegerCham{
+//      val AskFib = LocalRelation("AskFib")
+//      val Rep = LocalRelation("Rep")
+//      val Fib = LocalRelation("Fib")
+//      val Res = LocalRelation("Res")
+//
+//      val MPrint = NativeRelation("MPrint"){
+//        case (Atom(_,a::_),_) => println(a)
+//        case _ =>
+//      }
+//
+//      val MPrint_var = VarR("MPrint_var")
+//
+//      val K = VarR("K+")
+//      val n,n1,n2,r,r1,r2,r3,s = VarInt
+//      val v,v1,v2 = VarInt
+//
+//      rules(
+//        AskFib(n,K) --> Nu(s)(Fib(s,0) & Fib(s,1) & Rep(s, n, K)),
+//        Fib(s, 0) --> Res(s, 0, 0),
+//        Fib(s, 1) --> Res(s, 1, 1),
+//        //(Rep(s,n,K) &: Res(s, n1, r1) &: Res(s, n1+1, r2)) --> ((Gr(n,n1+1) || Eq(n,n1+1)))  ?: (Rep(s,n,K) & Res(s, n1+1, r2) & Res(s,  n1+2, r1+r2)),
+//        (Rep(s,n,K) &: Res(s, n1, r1) &: Res(s, n2, r2)) --> ((Gr(n,n2) || Eq(n,n2)) && Eq(n2,n1+1))  ?: (Rep(s,n,K) & Res(s, n2, r2) & Res(s,  n1+2, r1+r2)),
+//        (Rep(s,n,K) &: Res(s,n,r)) --> K(r),
+//        MPrint_var(r) --> MPrint(r)
+//      )
+//    }
+////    import fCham.{num2fun}
+//
+//    fCham.MPrint_var.relation = fCham.MPrint
+//    fCham.introduceMolecule(fCham.AskFib(6, fCham.MPrint_var))
+//    fCham.executeRules()
+//    println(fCham.getSolution)
+//    // println(fCham.printRules)
+//  }
 
   @Test /*(timeout=3000)*/
   def gcdTestExp(){
     val chemicalMachine = new Cham with IntegerCham{
-      val gcd = Rel("gcd")
-      val Result = Rel("Resultat")
+      val gcd = LocalRelation("gcd")
+      val Result = LocalRelation("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,a::_),_) => println(a)
         case _ =>
       }
 
-      val x,y = Var
+      val x,y = VarInt
 
 
       rules(
-        gcd(x,y) --> Less(x,y) ?: gcd(y,x),
-        gcd(x,y) --> Gr(x,y) ?: gcd(x-y,y),
-        gcd(x,y) --> Eq(x,y) ?: (Result(y) & PrintInt(y))
+        gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
+        gcd(x,y) --> {x GreaterThan y} ?: gcd(x-y,y),
+        gcd(x,y) --> {x Equal y} ?: (Result(y) & PrintInt(y))
       )
     }
 //    import chemicalMachine.{num2fun,gcd}
@@ -204,47 +207,18 @@ class CalculationTest {
   @Test /*(timeout=3000)*/
   def gcdTestExpCustomGuards(){
 
-    implicit def LazyGuard(x: => Expression):CriojoGuard = {
-      val g = new CriojoGuard{
-        override def eval(vals: Valuation) = {
-          val valuation = x.reduce(vals)
-          valuation.isInstanceOf[BooleanExpression] && valuation.asInstanceOf[BooleanExpression].getValue
-        }
-        val valuations = new ValuationList()
-        val observed = Set[String]()
-        def receiveUpdate(atom: Atom){}
-      }
-      g
-    }
 
-    implicit def LazyExpression(x: => Expression):Expression = {
-      val g = new Expression {
-
-        def name = x.name
-        def matches(that: Term): Boolean = false
-
-        override def reduce(): Expression = x.reduce()
-
-        def applyValuation(vals:Valuation): Expression = x.applyValuation(vals) match {
-          case e:Expression => e
-          case _ => UndefinedExpression
-        }
-
-        def getValuation(t:Term):Valuation = x.getValuation(t)
-      }
-      g
-    }
 
     val chemicalMachine = new Cham with IntegerCham{
-      val gcd = Rel("gcd")
-      val Result = Rel("Resultat")
+      val gcd = LocalRelation("gcd")
+      val Result = LocalRelation("Resultat")
 
       val PrintInt = NativeRelation("PrintInt"){
         case (Atom(_,a::_),_) => println(a)
         case _ =>
       }
 
-      val x,y = Var
+      val x,y = VarInt
 
       rules(
         gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
@@ -267,27 +241,27 @@ class CalculationTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      val n1, n2, n3, n4, n5 = Var
-      val R1_COO_R2 = Rel("R1_COO_R2")
-      val R2_OH = Rel("R2_OH")
-      val R1_COOH = Rel("R1_COOH")
-      val H2O = Rel("H2O")
-      val COO = Rel("COO")
-      val R1 = Rel("R1")
-      val R2 = Rel("R2")
-      val C = Rel("C")
-      val O = Rel("O")
-      val H = Rel("H")
+      val n1, n2, n3, n4, n5 = VarInt
+      val R1_COO_R2 = LocalRelation("R1_COO_R2")
+      val R2_OH = LocalRelation("R2_OH")
+      val R1_COOH = LocalRelation("R1_COOH")
+      val H2O = LocalRelation("H2O")
+      val COO = LocalRelation("COO")
+      val R1 = LocalRelation("R1")
+      val R2 = LocalRelation("R2")
+      val C = LocalRelation("C")
+      val O = LocalRelation("O")
+      val H = LocalRelation("H")
 
       //      implicit def int2term(n: Int): Expression = IntExpression(n)
 
-      val EXPLODE_R1_COO_R2 = Rel("EXPLODE_R1_COO_R2")
-      val EXPLODE_H2O = Rel("EXPLODE_H2O")
+      val EXPLODE_R1_COO_R2 = LocalRelation("EXPLODE_R1_COO_R2")
+      val EXPLODE_H2O = LocalRelation("EXPLODE_H2O")
 
       rules(
 
         // INITIATION
-        (R1_COO_R2(n1) &: H2O(n2)) --> {Min(n1, n2) GreaterThan 0} ?: (R1_COO_R2(n1 - Min(n1, n2)) & H2O(n2 - Min(n1, n2)) & EXPLODE_R1_COO_R2(Min(n1, n2)) & EXPLODE_H2O(Min(n1, n2))),
+        (R1_COO_R2(n1) &: H2O(n2)) --> {ScalaInt.Min(n1, n2) GreaterThan 0} ?: (R1_COO_R2(n1 - ScalaInt.Min(n1, n2)) & H2O(n2 - ScalaInt.Min(n1, n2)) & EXPLODE_R1_COO_R2(ScalaInt.Min(n1, n2)) & EXPLODE_H2O(ScalaInt.Min(n1, n2))),
 
         // DIVISION
         (EXPLODE_R1_COO_R2(n1) &: R1(n2) &: R2(n3) &: COO(n4)) --> (R1(n2 + n1) & R2(n3 + n1) & COO(n4 + n1)),
@@ -297,8 +271,8 @@ class CalculationTest {
         (COO(n1) &: C(n2) &: O(n3)) --> {n1 GreaterThan 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
 
         // RECOMPOSITION
-        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {Min(n1, n2, n3) GreaterThan 0} ?: (R2(n1 - Min(n1, n2, n3)) & O(n2 - Min(n1, n2, n3)) & H(n3 - Min(n1, n2, n3)) & R2_OH(n4 + Min(n1, n2, n3))),
-        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {Min(n1, n2, n3 / 2, n4) GreaterThan 0} ?: (R1_COOH(n5 + Min(n1, n2, n3 / 2, n4)) & R1(n1 - Min(n1, n2, n3 / 2, n4)) & C(n2 - Min(n1, n2, n3 / 2, n4)) & O(n3 -  Min(n1, n2, n3 / 2, n4)) & H(n4 -Min(n1, n2, n3 / 2, n4)))
+        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {ScalaInt.Min(n1, n2, n3) GreaterThan 0} ?: (R2(n1 - ScalaInt.Min(n1, n2, n3)) & O(n2 - ScalaInt.Min(n1, n2, n3)) & H(n3 - ScalaInt.Min(n1, n2, n3)) & R2_OH(n4 + ScalaInt.Min(n1, n2, n3))),
+        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {ScalaInt.Min(n1, n2, n3 / 2, n4) GreaterThan 0} ?: (R1_COOH(n5 + ScalaInt.Min(n1, n2, n3 / 2, n4)) & R1(n1 - ScalaInt.Min(n1, n2, n3 / 2, n4)) & C(n2 - ScalaInt.Min(n1, n2, n3 / 2, n4)) & O(n3 -  ScalaInt.Min(n1, n2, n3 / 2, n4)) & H(n4 -ScalaInt.Min(n1, n2, n3 / 2, n4)))
       )
     }
 
@@ -328,9 +302,10 @@ class CalculationTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      val z, w, n, i, j, kp, km = Var
-      val InsertWord = Rel("InsertWord")
-      val Count = Rel("Count")
+      val w = VarString
+      val z, n, i, j, kp, km = VarInt
+      val InsertWord = LocalRelation("InsertWord")
+      val Count = LocalRelation("Count")
 
       val PrintInt = NativeRelation("PrintInt") {
         case (Atom(_, a :: _), _) => println(a)
@@ -367,14 +342,14 @@ class CalculationTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      val x, y, z, w, n, i, j = Var
+      val x, y, z, w, n, i, j = VarString
 
-      val AreConnected = Rel("LeadsTo")
-      val AreInRelation = Rel("AreInRelation")
-      val IsItEquivalent = Rel("IsItEquivalent")
+      val AreConnected = LocalRelation("LeadsTo")
+      val AreInRelation = LocalRelation("AreInRelation")
+      val IsItEquivalent = LocalRelation("IsItEquivalent")
 
-      val PUSH = Rel("PUSH")
-      val POP = Rel("POP")
+      val PUSH = LocalRelation("PUSH")
+      val POP = LocalRelation("POP")
 
       val PrintInt = NativeRelation("PrintInt") {
         case (Atom(_, a :: _), _) => /*println(x)*/
@@ -383,9 +358,9 @@ class CalculationTest {
 
       rules(
         IsItEquivalent(x, y) --> Nu(i)(AreInRelation(x, y, i)),
-        (AreInRelation(x, w, n) &: AreConnected(x, y)) --> NotEq(x, w) ?: Nu(i)((AreInRelation(x, w, n) & PUSH(i, n, x) & AreInRelation(y, w, i))),
-        AreInRelation(x, y, n) --> Eq(x, y) ?: (PrintInt(x) & POP(n)),
-        (POP(j) &: PUSH(i, n, x)) --> Eq(i, j) ?: (PrintInt(x) & POP(n))
+        (AreInRelation(x, w, n) &: AreConnected(x, y)) --> {x NotEqual y} ?: Nu(i)((AreInRelation(x, w, n) & PUSH(i, n, x) & AreInRelation(y, w, i))),
+        AreInRelation(x, y, n) --> {x Equal y} ?: (PrintInt(x) & POP(n)),
+        (POP(j) &: PUSH(i, n, x)) --> {i Equal j} ?: (PrintInt(x) & POP(n))
       )
     }
 
@@ -422,12 +397,12 @@ class CalculationTest {
 
     val cm = new Cham with IntegerCham {
 
-      val Sierpinski = Rel("Sierpinski")
-      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = Var
+      val Sierpinski = LocalRelation("Sierpinski")
+      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = VarInt
 
       val Print = NativeRelation("Print3") {
 
-        case ((Atom(_, CriojoIntValue(xvalue) :: CriojoIntValue(yvalue) :: CriojoIntValue(lvalue) :: _), _)) => {
+        case ((Atom(_, WrapScalaInt(xvalue) :: WrapScalaInt(yvalue) :: WrapScalaInt(lvalue) :: _), _)) => {
           fw.write("<polygon points=\"" + xvalue + "," + yvalue + " " + (xvalue - lvalue) + "," + (yvalue - lvalue) + " " + (xvalue + lvalue) + "," + (yvalue - lvalue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
         case _ =>

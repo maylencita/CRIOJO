@@ -10,14 +10,14 @@
 // * Time: 11:11
 // */
 //trait ListCham extends Cham with DefaultFactory{
-//  val Cons = Rel("Cons")
-//  val IsNil = Rel("IsNil")
-//  private val Lst = Rel("lst")
-//  val Head = Rel("Head")
-//  val Tail = Rel("Tail")
-//  val Nil = Rel("Nil")
-//  private val Hd = Rel("$Hd")
-//  private val Tl = Rel("$Tl")
+//  val Cons = LocalRelation("Cons")
+//  val IsNil = LocalRelation("IsNil")
+//  private val Lst = LocalRelation("lst")
+//  val Head = LocalRelation("Head")
+//  val Tail = LocalRelation("Tail")
+//  val Nil = LocalRelation("Nil")
+//  private val Hd = LocalRelation("$Hd")
+//  private val Tl = LocalRelation("$Tl")
 //  private val K = VarR("K")
 //  private val Kmin = VarR("K-")
 //  private val Err = VarR("Err")

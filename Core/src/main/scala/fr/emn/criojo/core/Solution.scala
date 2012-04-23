@@ -1,6 +1,7 @@
 package fr.emn.criojo.core
 
 import fr.emn.criojo.lang.Molecule
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,11 +39,11 @@ trait Solution{
   def contains(a:Atom) = elems.contains(a)
 
   def containsAtom(a:Atom, n:Int):Boolean = {
-    (elems.count(atom => atom.matches(a)) == n)
+    (elems.count(atom => atom.correspondsTo(a)) == n)
   }
 
   def containsAtom(a:LocalRelation, n:Int):Boolean = {
-    (elems.count(atom => a.name==atom.relName) == n)
+    (elems.count(atom => a.name==atom.relation.name) == n)
   }
 
   def containsMolecule(m:Molecule):Boolean = {
@@ -88,12 +89,12 @@ trait Solution{
 
   protected def findMatches(atom:Atom, vals:Valuation): List[Atom] = {
     if (vals.isEmpty){
-      filter(_.relName == atom.relName).toList
+      filter(_.relation.name == atom.relation.name).toList
     }else{
       val test = atom.applyValuation(vals)
       //val test = atom.applySubstitutions(vals)
-//      filter(a => a.isActive && a.matches(test)).toList
-      filter(a => a.isActive && test.matches(a)).toList
+//      filter(a => a.isActive && a.correspondsTo(test)).toList
+      filter(a => a.isActive && test.correspondsTo(a)).toList
     }
   }
 
@@ -118,7 +119,7 @@ class SolutionImpl(owner:Engine, var elems:List[Atom]) extends Solution{
     var firstPrint:Boolean = true
     print("<")
     elems.foreach( a => {
-      if(a.relName.charAt(0)!='$') {
+      if(a.relation.name.charAt(0)!='$') {
         if(!firstPrint)
           print(",")
         print(a)

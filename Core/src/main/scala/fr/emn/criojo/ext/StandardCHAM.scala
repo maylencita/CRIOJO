@@ -17,7 +17,7 @@ abstract class StandardCHAM extends ExtendedCHAM
 //      while (rules.exists(r => r.isAxiom && r.executeRules)){}
 //  }
 
-//  def newRemoteRelation(remoteName:String,url:String):RemoteRelation
+//  def newRemoteRelation(remoteName:String,url:String):OutChannel
 //  def newLocalRelation(name:String,public:Boolean):LocalRelation
 
 //  override def toString:String = {

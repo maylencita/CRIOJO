@@ -12,7 +12,7 @@ import fr.emn.criojo.core.statemachine.PartialExecution
 import fr.emn.criojo.core._
 import fr.emn.criojo.lang.Molecule
 import fr.emn.criojo.core.StatefulEngine
-import fr.emn.criojo.lang.ChamChannel
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 /**
  * Created by IntelliJ IDEA.
@@ -64,11 +64,11 @@ trait DebugCham extends StatefulEngine {
   }
 
   def containsAtom(a:Atom, n:Int):Boolean = {
-    (solution.elems.count(atom => atom.matches(a)) == n)
+    (solution.elems.count(atom => atom.correspondsTo(a)) == n)
   }
 
-  def containsRelation(a:ChamChannel, n:Int):Boolean = {
-    (solution.elems.count(atom => a.name==atom.relName) == n)
+  def containsRelation(a:LocalRelation, n:Int):Boolean = {
+    (solution.elems.count(atom => a.name==atom.relation.name) == n)
   }
 
   def containsMolecule(m:Molecule):Boolean = {
@@ -86,7 +86,7 @@ trait DebugCham extends StatefulEngine {
     var cpt:Int = 0
 
     solution.foreach( a => {
-      if(a.relName.charAt(0)!='%') {
+      if(a.relation.name.charAt(0)!='%') {
         if(!firstPrint)
           print(",")
         cpt = (cpt+1)%10

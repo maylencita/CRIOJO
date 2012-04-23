@@ -40,7 +40,7 @@ case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard with StateMachine
 
   def onFinalState(){}
 
-  def observed = atoms.map(a => a.relName).toSet
+  def observed = atoms.map(a => a.relation.name).toSet
 
   def receiveUpdate(atom: Atom){
     if (atom.isActive)

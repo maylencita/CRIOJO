@@ -22,7 +22,7 @@ abstract class ExtendedCHAM extends Cham with IntegerCham with StrCHAM with Null
   /**********************************************************************
   * VM definition:
   */
-//  val Print = Rel("Print")
+//  val Print = LocalRelation("Print")
 //
 //  private val Null_print = NativeRelation("Null_print"){(a,s) => println("Null")}
 //

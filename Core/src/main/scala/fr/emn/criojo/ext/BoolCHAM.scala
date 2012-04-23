@@ -26,14 +26,14 @@
 //
 //trait BoolCHAM2 extends Cham with DefaultFactory{
 //
-//  val And = Rel("And")
-//  val Or = Rel("Or")
-//  val TrueRel = Rel("TrueRel")
-//  val FalseRel = Rel("FalseRel")
+//  val And = LocalRelation("And")
+//  val Or = LocalRelation("Or")
+//  val TrueRel = LocalRelation("TrueRel")
+//  val FalseRel = LocalRelation("FalseRel")
 //  val trueFun = Fun("true")
 //  val falseFun = Fun("false")
 //  private val K = VarR("K")
-//  private val Val = Rel("$Val")
+//  private val Val = LocalRelation("$Val")
 //  private val s,x,y,v,v1,v2 = BooleanVariable()
 //
 //  rules(

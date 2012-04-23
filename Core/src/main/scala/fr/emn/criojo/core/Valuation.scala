@@ -12,16 +12,16 @@ package fr.emn.criojo.core
  */
 object Valuation{
   def apply():Valuation =  TopValuation
-  def apply(elems: (Variable,Term)*):Valuation = new MapValuation(elems.map(p=>new Assignment(p._1,p._2)).toSet)
+  def apply(elems: (Variable,Expression)*):Valuation = new MapValuation(elems.map(p=>new Assignment(p._1,p._2)).toSet)
 
-  implicit def pair2Assg(p:(Variable,Term)):Assignment = new Assignment(p._1,p._2)
+  implicit def pair2Assg(p:(Variable,Expression)):Assignment = new Assignment(p._1,p._2)
 }
 /**
  * valuation := Top
  *            | Bottom
  *            | (x -> v) valuation
  */
-trait Valuation{
+trait Valuation {
 
   /** Returns the sign of the valuation.
    *
@@ -61,9 +61,9 @@ trait Valuation{
 
   /** Return the term associated with the given key
    *
-   * @return a term.
+   * @return an expression.
    */
-  def apply(key:Variable):Term
+  def apply(key:Variable):Expression
 
   /** Return the assignment associated with the given key
    *
@@ -99,13 +99,13 @@ trait Valuation{
   /*
 Methods to avoid compilation errors while Valuation is adopted in all the code
   */
-  def find(p:((Variable,Term)) => Boolean) = keyValues.find(p)
-  def forall(p:((Variable,Term)) => Boolean) = keyValues.forall(p)
+  def find(p:((Variable,Expression)) => Boolean) = keyValues.find(p)
+  def forall(p:((Variable,Expression)) => Boolean) = keyValues.forall(p)
   def toSet = Set()
 }
 
-class Assignment (val variable:Variable,val value:Term,s:Boolean) extends Pair(variable,value){
-  def this(x:Variable,v:Term)={
+class Assignment (val variable:Variable,val value:Expression,s:Boolean) extends Pair(variable,value){
+  def this(x:Variable,v:Expression)={
     this(x,v,true)
   }
   def apply(v:Variable):Boolean = v == variable
@@ -164,7 +164,7 @@ object BottomValuation extends EmptyVal{
   def hasExtension(that:Valuation):Boolean = false
 }
 
-class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
+class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation {
 
   def keyValues = kv
 
@@ -184,7 +184,7 @@ class MapValuation(kv:Set[Assignment],val sign:Boolean=true) extends Valuation{
    * @param key
    * @return
    */
-  def apply(key:Variable):Term = keyValues.find(a => a(key)) match{
+  def apply(key:Variable):Expression = keyValues.find(a => a(key)) match{
     case Some(assg) => assg.value
     case _ => Undef
   }
@@ -281,7 +281,7 @@ class NormalForm(val alpha:Valuation, val beta:List[Valuation]){
 }
 
 /**
- * A list of valuations that corresponds to the union of
+ * A list of valuations that correspondsTo to the union of
  * multiple valuations
  * @param vlist
  */

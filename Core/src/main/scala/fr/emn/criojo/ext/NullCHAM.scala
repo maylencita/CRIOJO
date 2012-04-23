@@ -21,8 +21,8 @@ trait NullCHAM extends EqCHAM with DefaultFactory{
 //  /**********************************************************************
 //  * VM definition:
 //  */
-//  private val f = new ChannelVariable("false")
-//  private val t = new ChannelVariable("true")
+//  private val f = new VarChannel("false")
+//  private val t = new VarChannel("true")
 //
 //  val NullRel = NativeRelation("Null")( addNull )
 //  val Null_ask = NativeRelation("Null_ask")(askNull)

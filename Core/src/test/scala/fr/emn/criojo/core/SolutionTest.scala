@@ -10,13 +10,15 @@ package fr.emn.criojo.core
 
 import org.junit._
 import Assert._
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 
 class SolutionTest {
 
   val solution = new StandAloneSolution()
   val r = new LocalRelation("R")
-  val a = Atom(r, Variable("x1"))
-  val a2 = Atom(r, Variable("x1"))
+  val a = Atom(r, VarScalaString("x1"))
+  val a2 = Atom(r, VarScalaString("x1"))
 
   @Test (timeout=1000)
   def testMultiRel(){
@@ -53,20 +55,20 @@ class SolutionTest {
 
     assertTrue(solution.toString == sol2.toString)
 
-    sol2.addAtom(Atom(r, Variable("x2")))
+    sol2.addAtom(Atom(r, VarScalaString("x2")))
 
     assertFalse(solution.toString == sol2.toString)
   }
 
   @Test (timeout=1000)
   def testEquals(){
-    val b = Atom(r, Variable("y1"))
+    val b = Atom(r, VarScalaString("y1"))
     val sol1 = StandAloneSolution(List(a,b))
     val sol2 = StandAloneSolution(List(a,b))
 
     assertTrue(sol1 == sol2)
 
-    sol2.addAtom(Atom(r, Variable("x3")))
+    sol2.addAtom(Atom(r, VarScalaString("x3")))
 
     assertFalse(sol1 == sol2)
   }
@@ -78,7 +80,7 @@ class SolutionTest {
     val sol2 = solution.clone
 
     a.setActive(false)
-    sol2.addAtom(Atom(r, Variable("y1")))
+    sol2.addAtom(Atom(r, VarScalaString("y1")))
     sol2.cleanup()
 
     assertFalse(solution == sol2)
@@ -105,8 +107,8 @@ class SolutionTest {
 
     val solution = new StandAloneSolution()
     val r = new LocalRelation("R")
-    val a = Atom(r, Variable("x1"))
-    val a2 = Atom(r, Variable("x1"))
+    val a = Atom(r, VarScalaString("x1"))
+    val a2 = Atom(r, VarScalaString("x1"))
 
     assertTrue(solImpl.isEmpty)
     solution.addAtom(a)

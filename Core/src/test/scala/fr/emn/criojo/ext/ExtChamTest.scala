@@ -21,10 +21,10 @@ import fr.emn.criojo.core._
   def EqChamTest {
     //TODO Ameliorate this test
     val sm = new EqCHAM with IntegerCham with DebugCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
+      val A = LocalRelation("A")
+      val B = LocalRelation("B")
+      val C = LocalRelation("C")
+      val D = LocalRelation("D")
 
       var x,y,v,z = Var
       var vx:Term = 1
@@ -93,10 +93,10 @@ import fr.emn.criojo.core._
   def ExtendedChamTest {
     //TODO Review ExtendedCham
     val sm = new ExtendedCHAM with IntegerCham with DebugCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
+      val A = LocalRelation("A")
+      val B = LocalRelation("B")
+      val C = LocalRelation("C")
+      val D = LocalRelation("D")
 
       var x,y,v,z = Var
       var vx:Term = 1
