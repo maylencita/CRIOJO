@@ -24,7 +24,7 @@ class SolutionTest {
   def testMultiRel(){
     solution.addAtom(a)
     solution.addAtom(a2)
-
+    println(solution.toString)
     assertTrue("<R(x1),R(x1)>" == solution.toString)
   }
 

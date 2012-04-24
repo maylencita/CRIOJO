@@ -37,9 +37,9 @@ object Converters {
 
       override def reduce(): Expression = x.reduce()
 
-      //def applyValuation(vals:Valuation): Expression = x.applyValuation(vals)
+      override def applyValuation(vals:Valuation): Expression = x.applyValuation(vals)
 
-      //def getValuation(exp:Expression):Valuation = x.getValuation(exp)
+      override def getValuation(exp:Expression):Valuation = x.getValuation(exp)
     }
     g
   }

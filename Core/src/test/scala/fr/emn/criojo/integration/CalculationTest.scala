@@ -49,28 +49,27 @@ class CalculationTest {
 //  }
 
 
-//  @Test /*(timeout=3000)*/
-//  def gcdTest(){
-//    val fCham = new Cham with IntegerCham with DebugCham {
-//      val gcd = LocalRelation("gcd")
-//      val Result = LocalRelation("Resultat")
-//
-//      val n,n1,n2,r,r1,r2,v,x,y,xNew = VarInt
-//
-//
-//      rules(
-//        gcd(x,y) --> Less(x,y) ?: gcd(y,x),
-//        gcd(x,y) --> Gr(x,y) ?: Nu(xNew)(IntSub(x,y,xNew) & gcd(xNew,y)),
-//        gcd(x,y) --> Eq(x,y) ?: Result(y)
-//      )
-//    }
-//    fCham.enableStreamingTrace()
-//    fCham.enableSolutionTrace()
-//    fCham.introduceMolecule(fCham.gcd(8,2))
-//    fCham.executeRules()
-//    fCham.printSolution()
-//    // println(fCham.printRules)
-//  }
+  @Test /*(timeout=3000)*/
+  def gcdTest(){
+    val fCham = new Cham with IntegerCham with DebugCham {
+      val gcd = LocalRelation("gcd")
+      val Result = LocalRelation("Resultat")
+
+      val n,n1,n2,r,r1,r2,v,x,y,xNew = VarInt
+
+
+      rules(
+        gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
+        gcd(x,y) --> {x GreaterThan y} ?: gcd(x -y,y),
+        gcd(x,y) --> {x Equal y} ?: Result(y)
+      )
+    }
+    fCham.enableStreamingTrace()
+    fCham.enableSolutionTrace()
+    fCham.introduceMolecule(fCham.gcd(8,2))
+    fCham.executeRules()
+    fCham.printSolution()
+  }
 
 //  @Test /*(timeout=3000)*/
 //  def fibonacciWithMemTest(){
@@ -106,21 +105,22 @@ class CalculationTest {
     var fw = new FileWriter("etoile.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
-    val cm = new Cham with IntegerCham {
+    val cm = new Cham with IntegerCham with DebugCham {
 
       val fibo = LocalRelation("fibo")
       val Fibo = LocalRelation("Fibo")
       val WaitResult = LocalRelation("WaitResult")
       val Result = LocalRelation("Result")
       val Bingo = LocalRelation("Bingo")
+      val Session = LocalRelation("Session")
 
-      val n,n1,n2,r,r1,r2,x = VarInt
+      val n,n1,n2,r,r1,r2,x,s = VarInt
       val v,v1,v2 = VarInt
 
       val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = VarInt
 
       rules(
-        fibo(n) --> Nu(r)(Fibo(n,r) & WaitResult(r,n)),
+        (fibo(n) & Session(s)) --> (Fibo(n,s) & WaitResult(s,n) & Session(s+1)),
         Fibo(n,r) --> (Abs(Result(r,n)) && {n GreaterThan 1}) ?: (Fibo(n-1,r) & Fibo(n-2,r)),
         (Result(n1,v1) & Result(n2,v2)) --> ({n1 Equal (n2+1)}) ?: Result(n1+1,v1+v2),
         Fibo(n,r) --> {n LessThan  2} ?: Result(n,1),
@@ -129,11 +129,14 @@ class CalculationTest {
     }
 
 //    import cm.num2fun
+    cm.enableSolutionTrace()
+    cm.enableStreamingTrace()
 
+    cm.introduceMolecule(cm.Session(0))
     cm.introduceMolecule(cm.fibo(14))
     cm.executeRules()
 
-    cm.getSolution.displaySolution()
+    cm.printSolution()
 
     
     fw.write("</svg>\n")
@@ -342,11 +345,13 @@ class CalculationTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      val x, y, z, w, n, i, j = VarString
+      val x, y, z, w  = VarString
+      val n,s,i, j = VarInt
 
       val AreConnected = LocalRelation("LeadsTo")
       val AreInRelation = LocalRelation("AreInRelation")
       val IsItEquivalent = LocalRelation("IsItEquivalent")
+      val Session = LocalRelation("Session")
 
       val PUSH = LocalRelation("PUSH")
       val POP = LocalRelation("POP")
@@ -357,8 +362,8 @@ class CalculationTest {
       }
 
       rules(
-        IsItEquivalent(x, y) --> Nu(i)(AreInRelation(x, y, i)),
-        (AreInRelation(x, w, n) &: AreConnected(x, y)) --> {x NotEqual y} ?: Nu(i)((AreInRelation(x, w, n) & PUSH(i, n, x) & AreInRelation(y, w, i))),
+        (IsItEquivalent(x, y) & Session(s)) --> (AreInRelation(x, y, s) & Session(s+1)),
+        (AreInRelation(x, w, n) & AreConnected(x, y) & Session(s)) --> {x NotEqual y} ?: (AreInRelation(x, w, n) & PUSH(s, n, x) & AreInRelation(y, w, s) & Session(s+1)),
         AreInRelation(x, y, n) --> {x Equal y} ?: (PrintInt(x) & POP(n)),
         (POP(j) &: PUSH(i, n, x)) --> {i Equal j} ?: (PrintInt(x) & POP(n))
       )
@@ -369,6 +374,7 @@ class CalculationTest {
     //    implicit def str2fun(s: String): Term = new StrExpression(s)
     machine.enableSolutionTrace()
 
+    machine.introduceMolecule(machine.Session(0))
     machine.introduceMolecule(machine.AreConnected("A", "B"))
     machine.introduceMolecule(machine.AreConnected("B", "C"))
     machine.introduceMolecule(machine.AreConnected("C", "D"))
