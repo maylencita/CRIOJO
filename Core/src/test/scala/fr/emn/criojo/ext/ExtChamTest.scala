@@ -1,10 +1,6 @@
 package fr.emn.criojo.ext
 
-import debug.DebugCham
-import org.junit.Test
-import fr.emn.criojo.lang.Cham
-import org.junit.Assert._
-import fr.emn.criojo.core._
+
 
 
 /**

@@ -14,7 +14,7 @@ trait StateMachine {
 
   protected var size = 0
   protected var states:Array[State] = null
-  protected var transitions:HashMap[Atom,Array[Transition]] = null
+  protected var transitions:HashMap[Int,Array[Transition]] = null
 
   var pattern:Array[Atom] = null
 
@@ -37,7 +37,7 @@ trait StateMachine {
         val a = pattern(i)
         if (a.relation.name == atom.relation.name && a.arity == atom.arity && a.correspondsTo(atom)){
           val vals = a.getValuation(atom) // fixme: le premier atome contient une liste de patterns et le second une list d'expression
-          transitions(a).foreach{
+          transitions(a.hashCode).foreach{
             transition=> {
               if(transition.ini.stateZero) {
 
@@ -77,7 +77,7 @@ trait StateMachine {
     if(pattern != null){
       for(a <- pattern){
         if (a.relation.name == atom.relation.name && a.arity == atom.arity){
-          transitions(a).foreach{t=>
+          transitions(a.hashCode).foreach{t=>
             t.fin.removeExecutions(atom)
           }
         }
@@ -89,14 +89,14 @@ trait StateMachine {
     if (size == 0)
       size = math.pow(2,pattern.length).intValue
     val slst = new Array[State](size)
-    for(i <- 0 until size){
+    for(i <- 0 to size-1){
       slst.update(i, new State(i))
     }
     slst
   }
 
   private def initTransitions = {
-    val tmap = HashMap[Atom,Array[Transition]]()
+    val tmap = HashMap[Int,Array[Transition]]()
 
     var pos = 0
     for(hd <- pattern){
@@ -115,10 +115,9 @@ trait StateMachine {
         }
         i += 1
       }
-      tmap.put(hd, tarr)
+      tmap.put(hd.hashCode, tarr)
       pos += 1
     }
-    println(tmap)
     tmap
   }
 

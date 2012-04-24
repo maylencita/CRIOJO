@@ -19,8 +19,8 @@ class ExtAtomTest {
   @Test
   def cloneTest() {
 
-    val x = new VarScalaString("x")
-    val y = new VarScalaString("y")
+    val x = VarScalaString("x")
+    val y = VarScalaString("y")
 
     val listOfTerms:List[Term] = List(x, y)
     var atom:Atom = new Atom("Carbon",listOfTerms)

@@ -14,7 +14,7 @@ case class MinScalaInt(listOfInt:List[ScalaInt]) extends ScalaInt {
 
   override def reduce(): Expression = {
     def min(s1:ScalaInt, s2:ScalaInt):ScalaInt = (s1.reduce(), s2.reduce()) match {
-      case (WrapScalaInt(i), WrapScalaInt(j)) => if (i>j) s1 else s2
+      case (WrapScalaInt(i), WrapScalaInt(j)) => if (i<j) s1 else s2
       case _ => throw new PatternNotMatchingException
     }
 

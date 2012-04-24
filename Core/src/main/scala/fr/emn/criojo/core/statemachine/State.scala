@@ -11,7 +11,7 @@ import scala._
 * Time: 14:17
 */
 class State(val id:Int){
-  private val qExecutions:Queue[PartialExecution] = Queue()
+  private val qExecutions:Queue[PartialExecution] = Queue[PartialExecution]()
 
   def hasExecutions:Boolean = !qExecutions.isEmpty
 
