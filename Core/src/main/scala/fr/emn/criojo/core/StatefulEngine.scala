@@ -8,6 +8,7 @@ package fr.emn.criojo.core
  */
 
 import collection.immutable.HashSet
+import datatype.Variable
 import statemachine.{StateMachine, PartialExecution}
 
 /**

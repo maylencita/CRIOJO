@@ -1,6 +1,7 @@
 package fr.emn.criojo.actors
 
 import org.specs2.mutable._
+import fr.emn.criojo.core.datatype.Variable
 import fr.emn.criojo.core.{ValueTerm, Variable}
 import fr.emn.criojo.ext.StrCHAM
 import fr.emn.criojo.ext.debug.DebugCham

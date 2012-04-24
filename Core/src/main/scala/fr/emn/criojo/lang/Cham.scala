@@ -1,6 +1,7 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
+import datatype.{Term, Variable}
 import factory.{RelationFactory}
 import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
@@ -103,11 +104,11 @@ class Cham extends StatefulEngine //with DefaultFactory
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
   def VarString:VarScalaString = {
-    new VarScalaString("VarScalaString" + java.util.UUID.randomUUID().toString)
+    new VarScalaString()
   }
 
   def VarInt:VarScalaInt = {
-    new VarScalaInt("VarInt" + java.util.UUID.randomUUID().toString)
+    new VarScalaInt()
   }
 }
 

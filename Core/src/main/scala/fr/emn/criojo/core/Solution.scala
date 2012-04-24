@@ -1,5 +1,6 @@
 package fr.emn.criojo.core
 
+import datatype.Valuation
 import fr.emn.criojo.lang.Molecule
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 

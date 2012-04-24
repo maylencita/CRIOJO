@@ -12,6 +12,7 @@ import DefaultProtocol._
 import JsonSerialization._
 import json_criojo.protocols.{JsonTerm, JsonAtom}
 import json_criojo.JSONUtil
+import fr.emn.criojo.core.datatype.Variable
 import fr.emn.criojo.core.{ValueTerm, Variable, Atom}
 
 /*

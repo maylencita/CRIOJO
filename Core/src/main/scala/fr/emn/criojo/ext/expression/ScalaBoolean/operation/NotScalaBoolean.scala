@@ -2,7 +2,7 @@ package fr.emn.criojo.ext.expression.ScalaBoolean.operation
 
 import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
-import fr.emn.criojo.core.{PatternNotMatchingException, Valuation, Expression}
+import fr.emn.criojo.core.datatype.{PatternNotMatchingException, Valuation, Expression}
 
 case class NotScalaBoolean(x: ScalaBoolean) extends ScalaBoolean {
   override def getValuation(expr: Expression): Valuation = expr match {

@@ -2,7 +2,8 @@ package fr.emn.criojo.ext
 
 import expression.ScalaString.VarScalaString
 import org.junit.Test
-import fr.emn.criojo.core.{Atom, Term, Variable}
+import fr.emn.criojo.core.datatype.Term
+import fr.emn.criojo.core.Atom
 
 
 /**

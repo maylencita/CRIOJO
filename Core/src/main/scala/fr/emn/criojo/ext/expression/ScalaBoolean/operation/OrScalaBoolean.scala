@@ -1,9 +1,8 @@
 package fr.emn.criojo.ext.expression.ScalaBoolean.operation
 
-import fr.emn.criojo.core.{Expression, Valuation}
 import fr.emn.criojo._
+import core.datatype.{Expression, PatternNotMatchingException, Valuation}
 import ext.expression.ScalaBoolean.ScalaBoolean
-import fr.emn.criojo.core.PatternNotMatchingException
 import ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 
 case class OrScalaBoolean(x: ScalaBoolean, y: ScalaBoolean) extends ScalaBoolean {

@@ -1,5 +1,6 @@
 package fr.emn.criojo.core
 
+import datatype.{Valuation, NormalForm, ValuationList}
 import org.junit._
 import Assert._
 

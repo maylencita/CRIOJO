@@ -1,7 +1,8 @@
 package fr.emn.criojo.ext.expression.ScalaBoolean
 
-import fr.emn.criojo.core.Var
+import fr.emn.criojo.core.datatype.Var
 
-
-case class VarScalaBoolean(name: String) extends Var[ScalaBoolean] with ScalaBoolean {
+case class VarScalaBoolean(n: String) extends Var[ScalaBoolean](n)
+    with ScalaBoolean {
+  def this() = this("")
 }

@@ -10,6 +10,8 @@ package json_criojo
 
 import sjson.json.JsonSerialization._
 import fr.emn.criojo.core._
+import datatype.Undef
+
 //import fr.emn.criojo.actors.ActorLocalRelation
 
 object JSONUtil {

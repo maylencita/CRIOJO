@@ -1,8 +1,7 @@
 package fr.emn.criojo.ext.expression.ScalaInt.operation
 
-import fr.emn.criojo.core.{Expression, Valuation}
 import fr.emn.criojo._
-import fr.emn.criojo.core.PatternNotMatchingException
+import core.datatype.{PatternNotMatchingException, Expression, Valuation}
 import ext.expression.ScalaInt.constructor.WrapScalaInt
 import ext.expression.ScalaInt.ScalaInt
 

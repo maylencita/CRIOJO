@@ -6,6 +6,8 @@ package fr.emn.criojo.core
  * Date: 07/03/12
  * Time: 15:06
  */
+
+import datatype.Term
 import org.junit._
 import Assert._
 import fr.emn.criojo.lang._
@@ -173,7 +175,7 @@ class GuardsTests {
     assertEquals(1,cham.passed)
   }
 
-  @Test(timeout=1000)
+  @Test
   def notExistsTest(){
     val cham = new Cham with TestCham{
       val R = LocalRelation("R")

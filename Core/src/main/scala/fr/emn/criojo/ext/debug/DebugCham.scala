@@ -10,6 +10,7 @@ package fr.emn.criojo.ext.debug
 import collection.mutable.ListBuffer
 import fr.emn.criojo.core.statemachine.PartialExecution
 import fr.emn.criojo.core._
+import datatype.Variable
 import fr.emn.criojo.lang.Molecule
 import fr.emn.criojo.core.StatefulEngine
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation

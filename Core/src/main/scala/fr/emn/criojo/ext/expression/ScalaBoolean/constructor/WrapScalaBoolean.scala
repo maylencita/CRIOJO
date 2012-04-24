@@ -1,6 +1,6 @@
 package fr.emn.criojo.ext.expression.ScalaBoolean.constructor
 
-import fr.emn.criojo.core.{Valuation, Expression}
+import fr.emn.criojo.core.datatype.{Valuation, Expression}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
 case class WrapScalaBoolean(b: Boolean) extends ScalaBoolean {

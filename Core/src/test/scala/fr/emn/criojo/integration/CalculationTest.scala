@@ -9,8 +9,6 @@ import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.core.Converters._
 import fr.emn.criojo.ext.debug.DebugCham
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
-import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
-import com.sun.tools.corba.se.idl.constExpr.NotEqual
 import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 

@@ -1,9 +1,9 @@
 package fr.emn.criojo.core.factory
 
 import fr.emn.criojo.core.impur.NativeRelation
-import fr.emn.criojo.core.Term
 import fr.emn.criojo.ext.expression.Relation.constructor.{Channel, LocalRelation}
 import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, Relation}
+import fr.emn.criojo.core.datatype.Term
 
 
 /**

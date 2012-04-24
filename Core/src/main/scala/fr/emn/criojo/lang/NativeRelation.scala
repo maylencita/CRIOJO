@@ -8,6 +8,7 @@ package fr.emn.criojo.lang
  */
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.core._
+import datatype.Term
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 case class NativeRelation(rn:String, solution:Solution, f:(Atom,Solution) => Unit) extends LocalRelation(rn){

@@ -1,6 +1,6 @@
 package fr.emn.criojo.ext.expression.ScalaInt.constructor
 
-import fr.emn.criojo.core.{Valuation, Expression}
+import fr.emn.criojo.core.datatype.{Valuation, Expression}
 import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 
 case class WrapScalaInt(i: Int) extends ScalaInt {

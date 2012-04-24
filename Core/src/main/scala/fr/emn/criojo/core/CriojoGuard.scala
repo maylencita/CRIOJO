@@ -1,5 +1,6 @@
 package fr.emn.criojo.core
 
+import datatype._
 import statemachine.StateMachine
 
 /*

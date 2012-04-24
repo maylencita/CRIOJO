@@ -1,14 +1,16 @@
 package fr.emn.criojo.ext.expression.ScalaInt.operation
 
-import fr.emn.criojo.core.{Valuation, Expression, PatternNotMatchingException}
+import fr.emn.criojo.core.datatype.{PatternNotMatchingException, Valuation, Expression}
 import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
 case class GreaterThanScalaInt(x: ScalaInt, y: ScalaInt) extends ScalaBoolean {
   override def getValuation(expr: Expression): Valuation = expr match {
-    case expr: GreaterThanScalaInt => x.getValuation(expr.x).union(y.getValuation(expr.y))
-    case _ => throw new PatternNotMatchingException()
+    case expr: GreaterThanScalaInt =>
+      x.getValuation(expr.x).union(y.getValuation(expr.y))
+    case _ =>
+      throw new PatternNotMatchingException()
   }
 
   override def applyValuation(valuation: Valuation): Expression = {

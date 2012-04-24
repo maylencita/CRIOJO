@@ -11,6 +11,7 @@ package fr.emn.criojo.ext
 import fr.emn.criojo.core._
 
 import collection.mutable.{HashSet,HashMap}
+import datatype.Variable
 
 object EqClass{
   type EqClass = HashSet[Variable]

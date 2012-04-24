@@ -1,5 +1,6 @@
 package fr.emn.criojo.core
 
+import datatype._
 import fr.emn.criojo.ext.expression.Relation.{Relation}
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 

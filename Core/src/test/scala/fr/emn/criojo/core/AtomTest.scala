@@ -1,5 +1,6 @@
 package fr.emn.criojo.core
 
+import datatype.{Term, Valuation}
 import org.junit.Test
 import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt

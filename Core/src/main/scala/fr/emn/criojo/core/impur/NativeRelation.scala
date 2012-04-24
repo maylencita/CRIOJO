@@ -1,7 +1,8 @@
 package fr.emn.criojo.core.impur
 
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-import fr.emn.criojo.core.{Atom, Term}
+import fr.emn.criojo.core.datatype.Term
+import fr.emn.criojo.core.Atom
 
 
 /*

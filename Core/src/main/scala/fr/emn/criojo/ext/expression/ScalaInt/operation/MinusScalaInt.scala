@@ -1,8 +1,8 @@
 package fr.emn.criojo.ext.expression.ScalaInt.operation
 
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
-import fr.emn.criojo.core.{Valuation, Expression, PatternNotMatchingException}
 import fr.emn.criojo._
+import core.datatype.{PatternNotMatchingException, Expression, Valuation}
 import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 
 case class MinusScalaInt(x: ScalaInt, y: ScalaInt) extends ScalaInt {

@@ -1,7 +1,8 @@
 package fr.emn.criojo.core.statemachine
 
 import collection.mutable.{Queue, HashMap, MultiMap, Set}
-import fr.emn.criojo.core.{BottomValuation, Atom}
+import fr.emn.criojo.core.datatype.BottomValuation
+import fr.emn.criojo.core.Atom
 
 /*
 * Created by IntelliJ IDEA.

@@ -1,7 +1,7 @@
 package fr.emn.criojo.ext.expression.ScalaString
 
 import operation._
-import fr.emn.criojo.core.{Pattern, Expression}
+import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
 trait ScalaString extends Pattern with Expression {

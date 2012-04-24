@@ -1,13 +1,11 @@
 package fr.emn.criojo.ext.expression.ScalaInt
 
 import operation._
-import fr.emn.criojo.core.Pattern
-import fr.emn.criojo.core.Expression
+import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
 object ScalaInt {
-
-  def Min(listOfInt:ScalaInt*) = new MinScalaInt(listOfInt.toList)
+  def Min(listOfInt: ScalaInt*) = new MinScalaInt(listOfInt.toList)
 }
 
 trait ScalaInt extends Pattern with Expression {

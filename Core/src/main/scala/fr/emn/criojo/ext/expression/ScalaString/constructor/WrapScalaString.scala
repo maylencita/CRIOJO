@@ -1,6 +1,6 @@
 package fr.emn.criojo.ext.expression.ScalaString.constructor
 
-import fr.emn.criojo.core.{Valuation, Expression}
+import fr.emn.criojo.core.datatype.{Valuation, Expression}
 import fr.emn.criojo.ext.expression.ScalaString.ScalaString
 
 case class WrapScalaString(s: String) extends ScalaString {

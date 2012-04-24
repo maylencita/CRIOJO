@@ -1,6 +1,7 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
+import datatype.{Term, Variable}
 import fr.emn.criojo.ext.expression.Relation.Relation
 
 /**

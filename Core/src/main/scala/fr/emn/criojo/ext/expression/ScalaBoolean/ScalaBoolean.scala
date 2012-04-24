@@ -1,7 +1,6 @@
 package fr.emn.criojo.ext.expression.ScalaBoolean
 
-import fr.emn.criojo.core.Pattern
-import fr.emn.criojo.core.Expression
+import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaInt.NoValueDefined
 import operation.{NotScalaBoolean, AndScalaBoolean, OrScalaBoolean}
 

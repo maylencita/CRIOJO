@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import datatype.Variable
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen

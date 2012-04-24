@@ -1,7 +1,7 @@
 package fr.emn.criojo.ext.expression.ScalaInt
 
-import fr.emn.criojo.core.Var
+import fr.emn.criojo.core.datatype.Var
 
-
-case class VarScalaInt(name:String) extends Var[ScalaInt] with ScalaInt {
+case class VarScalaInt(n: String) extends Var[ScalaInt](n) with ScalaInt {
+  def this() = this("")
 }
