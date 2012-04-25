@@ -20,8 +20,8 @@ class AtomTest {
   @Test
   def TermListTest() {
 
-    val x = new VarScalaString("x")
-    val y = new VarScalaString("y")
+    val x = VarScalaString()
+    val y = VarScalaString()
 
     val listOfTerms:List[Term] = List(x, y)
     var atom:Atom = new Atom("Carbon",listOfTerms)
@@ -33,30 +33,30 @@ class AtomTest {
   @Test
   def MatchesTest() {
 
-    val x = new VarScalaString("x")
-    val y = new VarScalaString("y")
+    val x = VarScalaString()
+    val y = VarScalaString()
 
     val listOfTerms:List[Term] = List(x, y)
     var atom:Atom = new Atom("Carbon",listOfTerms)
 
-    val x1 = new VarScalaString("x")
-    val y1 = new VarScalaString("y")
+    val x1 = VarScalaString()
+    val y1 = VarScalaString()
 
     val listOfTerms1:List[Term] = List(x1, y1)
     var atom1:Atom = new Atom("Carbon",listOfTerms1)
 
     assert(atom.correspondsTo(atom1)) // Carbon(x,y) should match Carbon(x,y)
 
-    val x2 = new VarScalaString("x1")
-    val y2 = new VarScalaString("y")
+    val x2 = VarScalaString()
+    val y2 = VarScalaString()
 
     val listOfTerms2:List[Term] = List(x2, y2)
     var atom2:Atom = new Atom("Carbon",listOfTerms2)
 
     assert(atom.correspondsTo(atom2)) // Carbon(x,y) should match Carbon(x1,y)
 
-    val x3 = new VarScalaString("x1")
-    val y3 = new VarScalaString("y")
+    val x3 = VarScalaString()
+    val y3 = VarScalaString()
 
     val listOfTerms3:List[Term] = List(x3, y3)
     var atom3:Atom = new Atom("Carbon2",listOfTerms3)
@@ -67,30 +67,23 @@ class AtomTest {
   @Test
   def ApplyValuationTest() {
 
-    val x = new VarScalaInt("x")
-    val y = new VarScalaInt("y")
+    val x = VarScalaInt()
+    val y = VarScalaInt()
+    val vx = WrapScalaInt(1)
+    val vy = WrapScalaInt(2)
 
-    val listOfTerms:List[Term] = List(x, y)
-    var atom:Atom = new Atom("Carbon",listOfTerms)
+    val atomPattern = new Atom("Carbon", x :: y :: Nil)
+    val atomExpression = atomPattern.applyValuation(Valuation(x->vx, y->vy))
 
-    val x1 = new VarScalaInt("x")
-    val y1 = new VarScalaInt("y")
-    val vx1 = new WrapScalaInt(1)
-    val vy1 = new WrapScalaInt(2)
-
-    val valuations = Valuation(x1->vx1,y1->vy1)
-
-    val atom2:Atom = atom.applyValuation(valuations)
-
-    assert(atom2.patterns(0)==vx1) // selection of the 1st term of the valuated atom
-    assert(atom2.patterns(1)==vy1) // selection of the 2nd term of the valuated atom
+    assert(atomExpression.patterns(0) == vx)
+    assert(atomExpression.patterns(1) == vy)
   }
 
   @Test
   def cloneTest() {
 
-    val x = new VarScalaInt("x")
-    val y = new VarScalaInt("y")
+    val x = VarScalaInt()
+    val y = VarScalaInt()
 
     val listOfTerms:List[Term] = List(x, y)
     var atom:Atom = new Atom("Carbon",listOfTerms)

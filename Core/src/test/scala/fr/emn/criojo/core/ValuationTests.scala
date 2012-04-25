@@ -17,9 +17,9 @@ import fr.emn.criojo.core.Converters._
 class ValuationTests {
 
   //Common objects
-  val x = VarScalaInt("x")
-  val y = VarScalaInt("y")
-  val z = VarScalaInt("z")
+  val x = VarScalaInt()
+  val y = VarScalaInt()
+  val z = VarScalaInt()
 
   @Test
   def unionTest(){

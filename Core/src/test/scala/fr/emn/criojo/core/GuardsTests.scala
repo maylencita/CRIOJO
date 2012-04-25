@@ -17,6 +17,7 @@ import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
 import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
 
 class GuardsTests {
 
@@ -33,7 +34,7 @@ class GuardsTests {
       val R = LocalRelation("R")
       val S = LocalRelation("S")
       val X = LocalRelation("X")
-      val x,y,z = VarString
+      val x,y,z = VarScalaString()
 
       val First = NativeRelation("First"){(s,a) => result(0) = i; i+=1}
       val Second = NativeRelation("Second"){(s,a) => result(1) = i}
@@ -129,7 +130,7 @@ class GuardsTests {
       val S = LocalRelation("S")
       val Test1 = LocalRelation("Test1")
       val Test2 = LocalRelation("Test2")
-      val x,y,z = VarInt
+      val x,y,z = VarScalaInt()
 
       val Concat = NativeRelation("Concat"){
         case ((Atom(_,WrapScalaString(v) :: _), _)) => finalword += v
@@ -156,7 +157,7 @@ class GuardsTests {
     val cham = new Cham with TestCham{
       val R = LocalRelation("R")
       val S = LocalRelation("S")
-      val x,y,z = VarString
+      val x,y,z = VarScalaString()
 
       rules(
         R(x) --> Ex(y,Prs(S(x,y))) ?: Passed()
@@ -177,10 +178,10 @@ class GuardsTests {
 
   @Test
   def notExistsTest(){
-    val cham = new Cham with TestCham{
+    val cham = new Cham with TestCham {
       val R = LocalRelation("R")
       val S = LocalRelation("S")
-      val x,y,z = VarString
+      val x,y,z = VarScalaString()
 
       rules(
         R(x) --> Not(Ex(y,Prs(S(x,y)))) ?: Nu(y)(R(x) & S(x,y) & Passed())

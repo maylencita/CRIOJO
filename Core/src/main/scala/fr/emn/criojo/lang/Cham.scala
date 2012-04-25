@@ -103,6 +103,7 @@ class Cham extends StatefulEngine //with DefaultFactory
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
 
+  /*
   def VarString:VarScalaString = {
     new VarScalaString()
   }
@@ -110,6 +111,7 @@ class Cham extends StatefulEngine //with DefaultFactory
   def VarInt:VarScalaInt = {
     new VarScalaInt()
   }
+  */
 }
 
 /**

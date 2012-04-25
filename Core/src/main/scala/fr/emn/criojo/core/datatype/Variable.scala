@@ -6,17 +6,13 @@ trait Variable extends Pattern {
 }
 
 abstract class Var[T <: Pattern](private val n: String) extends Variable {
-
-  override val name: String = {
-    if (n.trim.length > 0) {
-      n
-    } else {
-      // Use UUID to generate unique id
-      getClass.getName + "@" + java.util.UUID.randomUUID.getMostSignificantBits
-    }
-  }
-
-  def this() = this("")
+  /** Name is automatically defined --  Use UUID to generate unique id */
+  /*
+  override val name: String = if (n.trim.length > 0) n else
+    getClass.getName.split("\\.").reverse(0) + "@" +
+      java.util.UUID.randomUUID.getMostSignificantBits
+  */
+  override val name: String = n
 
   /** Test if variable matches with an expression.
     *
@@ -78,6 +74,6 @@ abstract class Var[T <: Pattern](private val n: String) extends Variable {
 
 @deprecated ("Find a way to delete Undef")
 object Undef extends Variable with Expression {
-  val name = "Undef"
+  override val name = "Undef"
   def matches(that: Term): Boolean = true
 }

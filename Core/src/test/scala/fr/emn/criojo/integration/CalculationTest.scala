@@ -9,8 +9,9 @@ import fr.emn.criojo.ext.IntegerCham
 import fr.emn.criojo.core.Converters._
 import fr.emn.criojo.ext.debug.DebugCham
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
-import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
+import fr.emn.criojo.ext.expression.ScalaInt.{VarScalaInt, ScalaInt}
 
 /*
 * Created by IntelliJ IDEA.
@@ -29,7 +30,7 @@ class CalculationTest {
 //      val fib = LocalRelation("fib")
 //      val Fib = LocalRelation("Fib")
 //
-//      val n,n1,n2,r,r1,r2,v,x,y,z = VarInt
+//      val n,n1,n2,r,r1,r2,v,x,y,z = VarScalaInt()
 //
 //
 //      rules(
@@ -53,7 +54,7 @@ class CalculationTest {
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
-      val n,n1,n2,r,r1,r2,v,x,y,xNew = VarInt
+      val n,n1,n2,r,r1,r2,v,x,y,xNew = VarScalaInt()
 
 
       rules(
@@ -76,8 +77,8 @@ class CalculationTest {
 //      val Fib = LocalRelation("Fib")
 //      val FEq = LocalRelation("FEq")
 //
-//      val n,n1,n2,r,r1,r2,x = VarInt
-//      val v,v1,v2 = VarInt
+//      val n,n1,n2,r,r1,r2,x = VarScalaInt()
+//      val v,v1,v2 = VarScalaInt()
 //
 //      rules(
 //        fib(n) --> Nu(r)(Fib(n,r) & Int_print(r)),
@@ -112,10 +113,10 @@ class CalculationTest {
       val Bingo = LocalRelation("Bingo")
       val Session = LocalRelation("Session")
 
-      val n,n1,n2,r,r1,r2,x,s = VarInt
-      val v,v1,v2 = VarInt
+      val n,n1,n2,r,r1,r2,x,s = VarScalaInt()
+      val v,v1,v2 = VarScalaInt()
 
-      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = VarInt
+      val y, z, a, b, c, lp, xp1, xp2, yp, np, l, vx, vy, vl = VarScalaInt()
 
       rules(
         (fibo(n) & Session(s)) --> (Fibo(n,s) & WaitResult(s,n) & Session(s+1)),
@@ -157,8 +158,8 @@ class CalculationTest {
 //      val MPrint_var = VarR("MPrint_var")
 //
 //      val K = VarR("K+")
-//      val n,n1,n2,r,r1,r2,r3,s = VarInt
-//      val v,v1,v2 = VarInt
+//      val n,n1,n2,r,r1,r2,r3,s = VarScalaInt()
+//      val v,v1,v2 = VarScalaInt()
 //
 //      rules(
 //        AskFib(n,K) --> Nu(s)(Fib(s,0) & Fib(s,1) & Rep(s, n, K)),
@@ -190,7 +191,7 @@ class CalculationTest {
         case _ =>
       }
 
-      val x,y = VarInt
+      val x,y = VarScalaInt()
 
 
       rules(
@@ -219,7 +220,7 @@ class CalculationTest {
         case _ =>
       }
 
-      val x,y = VarInt
+      val x,y = VarScalaInt()
 
       rules(
         gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
@@ -242,7 +243,7 @@ class CalculationTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      val n1, n2, n3, n4, n5 = VarInt
+      val n1, n2, n3, n4, n5 = VarScalaInt()
       val R1_COO_R2 = LocalRelation("R1_COO_R2")
       val R2_OH = LocalRelation("R2_OH")
       val R1_COOH = LocalRelation("R1_COOH")
@@ -303,8 +304,8 @@ class CalculationTest {
 
     val machine = new Cham with IntegerCham with DebugCham {
       //TestCham with DefaultCham{
-      val w = VarString
-      val z, n, i, j, kp, km = VarInt
+      val w = VarScalaString()
+      val z, n, i, j, kp, km = VarScalaInt()
       val InsertWord = LocalRelation("InsertWord")
       val Count = LocalRelation("Count")
 
@@ -342,11 +343,10 @@ class CalculationTest {
   def DjikstraTest() {
 
     val machine = new Cham with IntegerCham with DebugCham {
-      //TestCham with DefaultCham{
-      val x, y, z, w  = VarString
-      val n,s,i, j = VarInt
+      val x, y, z, w = VarScalaString()
+      val n, s, i, j = VarScalaInt()
 
-      val AreConnected = LocalRelation("LeadsTo")
+      val AreConnected = LocalRelation("AreConnected")
       val AreInRelation = LocalRelation("AreInRelation")
       val IsItEquivalent = LocalRelation("IsItEquivalent")
       val Session = LocalRelation("Session")
@@ -355,7 +355,7 @@ class CalculationTest {
       val POP = LocalRelation("POP")
 
       val PrintInt = NativeRelation("PrintInt") {
-        case (Atom(_, a :: _), _) => /*println(x)*/
+        case (Atom(_, a :: _), _) => /* println(x) */
         case _ =>
       }
 
@@ -367,9 +367,6 @@ class CalculationTest {
       )
     }
 
-    //    import machine.num2fun
-
-    //    implicit def str2fun(s: String): Term = new StrExpression(s)
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.Session(0))
@@ -387,8 +384,6 @@ class CalculationTest {
     assert(machine.containsMolecule(machine.PrintInt("B")))
     assert(machine.containsMolecule(machine.PrintInt("D")))
     assert(machine.containsMolecule(machine.PrintInt("E")))
-
-    //    assert(machine.containsMolecule(machine.PrintInt("C"), 0)) // C is not in the shortest, but it can appear in the solution
   }
 
   @Test
@@ -402,7 +397,7 @@ class CalculationTest {
     val cm = new Cham with IntegerCham {
 
       val Sierpinski = LocalRelation("Sierpinski")
-      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = VarInt
+      val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = VarScalaInt()
 
       val Print = NativeRelation("Print3") {
 

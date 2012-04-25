@@ -20,6 +20,8 @@ import fr.emn.criojo.ext.debug.DebugCham
 import fr.emn.criojo.core.Converters._
 import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
+import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 
 class ChamTest {
 
@@ -31,7 +33,7 @@ class ChamTest {
   def testRelations() {
 
     val machine = new IntegerCham with DebugCham {
-      val x,y,z = VarInt
+      val x,y,z = VarScalaInt()
       val R = LocalRelation("R")
       val S = LocalRelation("S")
       val Z = LocalRelation("S")
@@ -63,7 +65,7 @@ class ChamTest {
   def BonbonsTestRelations() {
 
     val machine = new Cham with IntegerCham with DebugCham {
-      val x,y,z = VarInt
+      val x,y,z = VarScalaInt()
       val OneBonbon = LocalRelation("OneBonbon")
       val TwoBonbons = LocalRelation("TwoBonbons")
 
@@ -94,7 +96,7 @@ class ChamTest {
   def H4ORelations() {
 
     val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
-      val a,b,x,y,z = VarInt
+      val a,b,x,y,z = VarScalaInt()
       val H = LocalRelation("H")
       val O = LocalRelation("O")
       val H4O = LocalRelation("H4O")
@@ -129,7 +131,7 @@ class ChamTest {
   def testAtomInsertion(){
 
     val machine = new Cham with DebugCham with DefaultFactory {
-      val x,y,z = VarString
+      val x,y,z = VarScalaString()
       val R = LocalRelation("R")
       val S = LocalRelation("S")
 
@@ -237,7 +239,7 @@ class ChamTest {
 //    var result = false
 //
 //    val machine = new Cham with DefaultFactory with DebugCham {
-//      val x,y,z,w = VarString
+//      val x,y,z,w = VarScalaString()
 //      val Cont = LocalRelation("Cont")
 //
 //      val R = LocalRelation("R"); val S = LocalRelation("S")
@@ -270,7 +272,7 @@ class ChamTest {
       val B = LocalRelation("B")
       val C = LocalRelation("C")
       val D = LocalRelation("D")
-      val x = VarInt
+      val x = VarScalaInt()
       rules(
         (A() & B() & C()) --> D(),
         (D() & C()) --> A()
