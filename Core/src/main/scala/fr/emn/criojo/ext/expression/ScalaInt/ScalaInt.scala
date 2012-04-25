@@ -4,10 +4,7 @@ import operation._
 import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
-object ScalaInt {
-  def Min(listOfInt: ScalaInt*) = new MinScalaInt(listOfInt.toList)
-}
-
+/** Wrap Scala Int type */
 trait ScalaInt extends Pattern with Expression {
   def value: Int = {
     throw new NoValueDefined()
@@ -37,5 +34,9 @@ trait ScalaInt extends Pattern with Expression {
     case i: ScalaInt => i.value
     case _ => throw new NoValueDefined()
   }
+}
+
+object ScalaInt {
+  def Min(listOfInt: ScalaInt*) = new MinScalaInt(listOfInt.toList)
 }
 

@@ -4,6 +4,7 @@ import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaInt.NoValueDefined
 import operation.{NotScalaBoolean, AndScalaBoolean, OrScalaBoolean}
 
+/** Wrap Scala Boolean type */
 trait ScalaBoolean extends Pattern with Expression {
   def value: Boolean = {
     throw new NoValueDefined()

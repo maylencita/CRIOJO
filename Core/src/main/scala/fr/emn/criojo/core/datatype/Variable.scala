@@ -8,7 +8,22 @@ trait Variable extends Pattern {
 /** Parametric Variable Definition.
   *
   * == Overview ==
-  * To use a variable, it's necessary to redefined
+  * To use a variable, it's necessary to redefined it and extends en concrete
+  * pattern. As you could have static typing benefits (on operation). For
+  * example to construct variable on ScalaInt do as :
+  * {{{
+  *                                            +-+
+  *  +---------+                        +------|T|-+
+  *  | Pattern |                        | Var  +-+ |
+  *  +---------+                        +----------+
+  *       ^                                   ^
+  *       |                                   |
+  *       |                                   |
+  *       |                              +--------+
+  *  +----------+         +--------------|ScalaInt|-+
+  *  | ScalaInt | <|----- | VarScalaInt  +--------+ |
+  *  +----------+         +-------------------------+
+  * }}}
   *
   * @constructor  Create a new variable of specific type with a given name.
   * @param  n The variable's name.
