@@ -18,11 +18,9 @@ import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
 import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
+import fr.emn.criojo.core.Converters._
 
 class GuardsTest {
-
-  implicit def num2term(n:Int):Term = new WrapScalaInt(n)
-  implicit def str2term(str:String):Term = new WrapScalaString(str)
 
   @Test
   def presenceTest(){
@@ -187,16 +185,18 @@ class GuardsTest {
     val cham = new Cham with TestCham {
       val R = LocalRelation("R")
       val S = LocalRelation("S")
-      val x,y,z = VarScalaString()
+      val Session = LocalRelation("Session")
+      val x,y,z,s = VarScalaInt()
 
       val Passed = NativeRel { case _ => passed += 1 }
 
       rules(
-        R(x) --> Not(Ex(y,Prs(S(x,y)))) ?: Nu(y)(R(x) & S(x,y) & Passed())
+        (R(x) & Session(s)) --> Not(Ex(y,Prs(S(x,y)))) ?: (R(x) & S(x,s) & Passed() & Session(s+1))
       )
     }
 
-    import cham.{R,S}
+    import cham.{R,S,Session}
+    cham.introduceMolecule(Session(0))
     cham.introduceMolecule(S(1,2))
     cham.introduceMolecule(R(1))
     cham.executeRules()

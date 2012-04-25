@@ -7,6 +7,7 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 import fr.emn.criojo.ext.expression.ScalaString.ScalaString
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
+import fr.emn.criojo.ext.expression.Relation.Relation
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,7 +26,7 @@ object Converters {
         valuation.isInstanceOf[WrapScalaBoolean] && valuation.asInstanceOf[WrapScalaBoolean].value
       }
       val valuations = new ValuationList()
-      val observed = Set[String]()
+      val observed = Set[Relation]()
       def receiveUpdate(atom: Atom){}
     }
     g

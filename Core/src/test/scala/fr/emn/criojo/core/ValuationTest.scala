@@ -14,7 +14,7 @@ import fr.emn.criojo.core.Converters._
  * Time: 00:34
  */
 
-class ValuationTests {
+class ValuationTest {
 
   //Common objects
   val x = VarScalaInt("x")

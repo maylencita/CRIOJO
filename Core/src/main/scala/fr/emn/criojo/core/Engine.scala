@@ -70,12 +70,7 @@ trait Engine extends RuleFactory{
   def processRuleBody(rule:Rule)  {
     rule.guard match{
       case cg:CriojoGuard =>
-        cg.observed.foreach{relName =>
-          findRelation(relName) match{
-            case Some(r) => r.addObserver(cg)
-            case _ => //a.relation = new LocalRelation("Undefined")
-          }
-        }
+        cg.observed.foreach{ relation => relation.addObserver(cg) }
       case _ =>
     }
     rule.body.foreach{a =>
