@@ -10,6 +10,7 @@ package fr.emn.criojo.core
 import collection.immutable.HashSet
 import datatype.Variable
 import statemachine.{StateMachine, PartialExecution}
+import fr.emn.criojo.ext.debug.Solution
 
 /**
  * The StatefulEngine trait
@@ -20,8 +21,6 @@ import statemachine.{StateMachine, PartialExecution}
 trait StatefulEngine extends Engine {
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
-
-  def initSolution = new HashSolution()
 
   def executeRules(){
     while (rules.exists(r => r.execute)){}

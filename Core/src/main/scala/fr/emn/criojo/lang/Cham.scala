@@ -2,9 +2,8 @@ package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
 import datatype.{Term, Variable}
-import factory.{RelationFactory}
-import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
-import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
+import factory.RelationFactory
+import impur.NativeRelation
 
 /*
 * Created by IntelliJ IDEA.
@@ -19,26 +18,14 @@ class Cham extends StatefulEngine //with DefaultFactory
 
   type RuleDef = RuleFactory => Rule
 
-//  def Var:VarExpression = {
-//    index += 1
-//    new VarExpression("x"+index)
-//  }
-
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
-  //TODO replaced by NativeRel
-  def NativeRelation(n:String)(f:(Atom,Solution) => Unit)= {
-    val natRel = new NativeRelation(n,this.solution,f)
-//    val natRel = createNativeRelation(n,f)
+  def NativeRel(f:(List[Term]) => Unit) = {
+    val natRel = new NativeRelation("NativeRel@" +
+        Cham.getNativeRelInstanceNum, f)
     addRelation(natRel)
     natRel
-   }
-
-//  def NativeRel(f:(List[Term]) => Unit) = {
-//    val natRel = createNativeRelation("NR@"+nextIndex,f)
-//    addRelation(natRel)
-//    new VarRelationWrapper(natRel)
-//  }
+  }
 
   def If(guard: Guard)(body: => Molecule):RuleBody = {
     new RuleBody(body, guard)
@@ -102,16 +89,15 @@ class Cham extends StatefulEngine //with DefaultFactory
 //  }
 
   class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}
+}
 
-  /*
-  def VarString:VarScalaString = {
-    new VarScalaString()
+object Cham {
+  private var nativeRelInstanceNum = 0
+  
+  def getNativeRelInstanceNum() = {
+    nativeRelInstanceNum += 1
+    nativeRelInstanceNum
   }
-
-  def VarInt:VarScalaInt = {
-    new VarScalaInt()
-  }
-  */
 }
 
 /**

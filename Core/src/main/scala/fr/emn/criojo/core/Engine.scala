@@ -10,13 +10,12 @@ package fr.emn.criojo.core
 import fr.emn.criojo.util.Logger._
 import fr.emn.criojo.ext.expression.Relation.constructor.{LocalRelation, OutChannel}
 import fr.emn.criojo.ext.expression.Relation.{Relation}
+import fr.emn.criojo.ext.debug.Solution
 
 trait Engine extends RuleFactory{
   protected var rules:List[Rule] = List()
   protected var relations:List[Relation] = List()
-  protected val solution:Solution = initSolution
 
-  def initSolution:Solution
   def executeRules()
   def introduceAtom(atom:Atom)
 
@@ -97,6 +96,5 @@ trait Engine extends RuleFactory{
   }
 
   def printRules: String = rules.mkString("","\n","")
-
 }
 

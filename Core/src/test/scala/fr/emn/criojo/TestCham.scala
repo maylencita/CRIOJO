@@ -13,12 +13,4 @@ import lang.Cham
  */
 
 trait TestCham extends Cham with DefaultFactory{
-  var passed = 0
-  val Print = NativeRelation("Print") {
-    case ((Atom(_,terms), _)) => print(terms.mkString(","))
-    case _ =>
-  }
-  val Passed = NativeRelation("Passed"){(s,a) =>
-    passed += 1
-  }
 }

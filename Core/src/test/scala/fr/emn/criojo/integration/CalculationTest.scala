@@ -1,8 +1,7 @@
 package fr.emn.criojo.integration
 
 import org.junit.Test
-import fr.emn.criojo.lang.{Nu, Cham}
-import fr.emn.criojo.core._
+import fr.emn.criojo.lang.Cham
 import java.io.FileWriter
 import fr.emn.criojo.ext.IntegerCham
 
@@ -186,8 +185,8 @@ class CalculationTest {
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
-      val PrintInt = NativeRelation("PrintInt"){
-        case (Atom(_,a::_),_) => println(a)
+      val PrintInt = NativeRel {
+        case WrapScalaInt(a)::Nil => println(a)
         case _ =>
       }
 
@@ -215,8 +214,8 @@ class CalculationTest {
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
-      val PrintInt = NativeRelation("PrintInt"){
-        case (Atom(_,a::_),_) => println(a)
+      val PrintInt = NativeRel {
+        case WrapScalaInt(a)::Nil => println(a)
         case _ =>
       }
 
@@ -309,8 +308,8 @@ class CalculationTest {
       val InsertWord = LocalRelation("InsertWord")
       val Count = LocalRelation("Count")
 
-      val PrintInt = NativeRelation("PrintInt") {
-        case (Atom(_, a :: _), _) => println(a)
+      val PrintInt = NativeRel {
+        case WrapScalaInt(a)::Nil => println(a)
         case _ =>
       }
 
@@ -354,8 +353,8 @@ class CalculationTest {
       val PUSH = LocalRelation("PUSH")
       val POP = LocalRelation("POP")
 
-      val PrintInt = NativeRelation("PrintInt") {
-        case (Atom(_, a :: _), _) => /* println(x) */
+      val PrintInt = NativeRel {
+        case WrapScalaInt(a)::Nil => /* println(x) */
         case _ =>
       }
 
@@ -399,9 +398,9 @@ class CalculationTest {
       val Sierpinski = LocalRelation("Sierpinski")
       val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = VarScalaInt()
 
-      val Print = NativeRelation("Print3") {
+      val Print = NativeRel {
 
-        case ((Atom(_, WrapScalaInt(xvalue) :: WrapScalaInt(yvalue) :: WrapScalaInt(lvalue) :: _), _)) => {
+        case WrapScalaInt(xvalue)::WrapScalaInt(yvalue)::WrapScalaInt(lvalue)::Nil => {
           fw.write("<polygon points=\"" + xvalue + "," + yvalue + " " + (xvalue - lvalue) + "," + (yvalue - lvalue) + " " + (xvalue + lvalue) + "," + (yvalue - lvalue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
         }
         case _ =>

@@ -125,8 +125,6 @@ class ChamTest {
     assert(machine.getSolution.size==1)
   }
 
-
-
   @Test(timeout=1000)
   def testAtomInsertion(){
 

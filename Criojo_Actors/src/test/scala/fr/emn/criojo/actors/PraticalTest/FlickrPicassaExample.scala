@@ -6,8 +6,8 @@ import org.specs2.mutable._
 import fr.emn.criojo.ext.StrCHAM
 import fr.emn.criojo.actors.{ActorDebugger, ActorCham}
 import fr.emn.criojo.ext.expressions.StrExpression
-import fr.emn.criojo.ext.debug.DebugCham
 import fr.emn.criojo.core.datatype.Variable
+import fr.emn.criojo.ext.debug.{Solution, DebugCham}
 import fr.emn.criojo.core.{Solution, Atom, ValueTerm, Variable}
 
 /*

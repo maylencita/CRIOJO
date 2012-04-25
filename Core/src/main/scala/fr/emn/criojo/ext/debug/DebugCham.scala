@@ -26,19 +26,18 @@ import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 trait DebugCham extends StatefulEngine {
 
+  val solution: Solution = new HashSolution()
   var DEBUG_TRACE:ListBuffer[String] = ListBuffer()
   var DEBUG_DIRECT_MODE = false
   var DEBUG_SOLUTION_MODE = false
 
-  override def introduceAtom(atom: Atom){
-
+  override def introduceAtom(atom: Atom) {
     if(DEBUG_SOLUTION_MODE)
       solution.addAtom(atom)
     super.introduceAtom(atom)
   }
 
-  override def removeAtom(atom: Atom){
-
+  override def removeAtom(atom: Atom) {
     if(DEBUG_SOLUTION_MODE)
       solution.remove(atom)
     super.removeAtom(atom)

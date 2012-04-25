@@ -7,6 +7,7 @@ import scala.actors.remote.RemoteActor
 import scala.actors.remote.RemoteActor._
 import actors.remote.{Node, RemoteActor}
 import json_criojo.JSONUtil
+import fr.emn.criojo.ext.debug.Solution
 
 /*
  * Created by IntelliJ IDEA.

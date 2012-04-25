@@ -19,7 +19,7 @@ import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
 
-class GuardsTests {
+class GuardsTest {
 
   implicit def num2term(n:Int):Term = new WrapScalaInt(n)
   implicit def str2term(str:String):Term = new WrapScalaString(str)
@@ -36,8 +36,8 @@ class GuardsTests {
       val X = LocalRelation("X")
       val x,y,z = VarScalaString()
 
-      val First = NativeRelation("First"){(s,a) => result(0) = i; i+=1}
-      val Second = NativeRelation("Second"){(s,a) => result(1) = i}
+      val First = NativeRel {case _ => result(0) = i; i+=1 }
+      val Second = NativeRel { case _ => result(1) = i }
 
       rules(
         R(x,y) --> Prs(X(x,y)) ?: Second(),
@@ -66,8 +66,8 @@ class GuardsTests {
       val S = LocalRelation("S")
       val X = LocalRelation("X")
 
-      val Concat = NativeRelation("Concat"){
-        case ((Atom(_,WrapScalaString(v) :: _), _)) => finalword += v
+      val Concat = NativeRel {
+        case WrapScalaString(v)::Nil => finalword += v
         case _ =>
       }
 
@@ -90,15 +90,15 @@ class GuardsTests {
     var finalword = ""
 
     //Clonning example
-    val cham = new Cham with TestCham{
+    val cham = new Cham with TestCham {
       val One = LocalRelation("One")
       val Two = LocalRelation("Two")
       val Three = LocalRelation("Three")
       val R = LocalRelation("R")
       val S = LocalRelation("S")
 
-      val Concat = NativeRelation("Concat"){
-        case ((Atom(_,WrapScalaString(v) :: _), _)) => finalword += v
+      val Concat = NativeRel {
+        case WrapScalaString(v)::Nil => finalword += v
         case _ =>
       }
 
@@ -132,8 +132,8 @@ class GuardsTests {
       val Test2 = LocalRelation("Test2")
       val x,y,z = VarScalaInt()
 
-      val Concat = NativeRelation("Concat"){
-        case ((Atom(_,WrapScalaString(v) :: _), _)) => finalword += v
+      val Concat = NativeRel {
+        case WrapScalaString(v)::Nil => finalword += v
         case _ =>
       }
 
@@ -154,9 +154,13 @@ class GuardsTests {
 
   @Test
   def existsTest(){
-    val cham = new Cham with TestCham{
+    var passed = 0
+
+    val cham = new Cham with TestCham {
       val R = LocalRelation("R")
       val S = LocalRelation("S")
+      val Passed = NativeRel { case _ => passed += 1 }
+
       val x,y,z = VarScalaString()
 
       rules(
@@ -169,19 +173,23 @@ class GuardsTests {
     cham.introduceMolecule(R(1))
     cham.executeRules()
 
-    assertEquals(1,cham.passed)
+    assertEquals(1, passed)
 
     cham.introduceMolecule(R(2))
     cham.executeRules()
-    assertEquals(1,cham.passed)
+    assertEquals(1, passed)
   }
 
   @Test
   def notExistsTest(){
+    var passed = 0
+
     val cham = new Cham with TestCham {
       val R = LocalRelation("R")
       val S = LocalRelation("S")
       val x,y,z = VarScalaString()
+
+      val Passed = NativeRel { case _ => passed += 1 }
 
       rules(
         R(x) --> Not(Ex(y,Prs(S(x,y)))) ?: Nu(y)(R(x) & S(x,y) & Passed())
@@ -193,12 +201,12 @@ class GuardsTests {
     cham.introduceMolecule(R(1))
     cham.executeRules()
 
-    assertEquals(0,cham.passed)
+    assertEquals(0, passed)
 
     cham.introduceMolecule(R(2))
     cham.executeRules()
 
-    assertEquals(1,cham.passed)
+    assertEquals(1, passed)
   }
 
   @Test
@@ -209,8 +217,8 @@ class GuardsTests {
       val X1 = LocalRelation("X1")
       val X2 = LocalRelation("X2")
 
-      val Concat = NativeRelation("Concat"){
-        case ((Atom(_,WrapScalaString(v) :: _), _)) => finalword += v
+      val Concat = NativeRel {
+        case WrapScalaString(v)::Nil => finalword += v
         case _ =>
       }
 
