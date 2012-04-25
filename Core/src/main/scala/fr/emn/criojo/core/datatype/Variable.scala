@@ -5,13 +5,15 @@ trait Variable extends Pattern {
   val name: String
 }
 
-abstract class Var[T <: Pattern](private val n: String) extends Variable {
-  /** Name is automatically defined --  Use UUID to generate unique id */
-  /*
-  override val name: String = if (n.trim.length > 0) n else
-    getClass.getName.split("\\.").reverse(0) + "@" +
-      java.util.UUID.randomUUID.getMostSignificantBits
+/** Parametric Variable Definition.
+  *
+  * == Overview ==
+  * To use a variable, it's necessary to redefined
+  *
+  * @constructor  Create a new variable of specific type with a given name.
+  * @param  n The variable's name.
   */
+abstract class Var[T <: Pattern](private val n: String) extends Variable {
   override val name: String = n
 
   /** Test if variable matches with an expression.
