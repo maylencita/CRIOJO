@@ -58,6 +58,17 @@ object Message {
   def parseArgs(s:String):List[Term] = {
     MessageArgsParser.parse(s)
   }
+
+  def atomToMessage(from:String, to:String, a:Atom):String = {
+
+    def patternsToString(pattern:List[Term]):String = pattern match {
+      case (head:Term)::l if l!=Nil => head.toString+","+patternsToString(l)
+      case (head:Term)::l if l==Nil => head.toString
+      case Nil => ""
+    }
+
+    "{'to':'"+to+"'; 'from':'"+from+"'; 'channel':'"+a.relation.name+"';'args':'"+patternsToString(a.patterns)+"'}"
+  }
 }
 
 class Message {

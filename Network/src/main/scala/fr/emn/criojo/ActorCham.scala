@@ -4,7 +4,7 @@ import core.Atom
 import core.factory.DefaultFactory
 import lang.Cham
 import main.scala.fr.emn.criojo.BusManager
-import network.ReceiveHandler
+import network.{Bus, ReceiveHandler}
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,9 +18,13 @@ class ActorCham(val name:String, val busManager:BusManager) extends Cham  with D
 
   busManager.addActor(this)
 
-  def receiveHandler:AtomReceiveHandler = new AtomReceiveHandler {
+  var receiveHandler:AtomReceiveHandler = new AtomReceiveHandler {
     def onReceive(a: Atom) {
       introduceAtom(a)
     }
+  }
+
+  def send(to:String, a:Atom) {
+    busManager.send(name, to, a)
   }
 }

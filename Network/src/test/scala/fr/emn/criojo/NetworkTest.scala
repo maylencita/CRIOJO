@@ -1,6 +1,11 @@
 package fr.emn.criojo
 
 import core.Atom
+import ext.expression.Relation.ChannelLocation
+import ext.expression.Relation.constructor.OutChannel
+import ext.expression.ScalaInt.constructor.WrapScalaInt
+import main.scala.fr.emn.criojo.BusManager
+import network.ReceiveHandler
 import org.junit.Test
 
 /**
@@ -37,5 +42,29 @@ class NetworkTest {
     val atom:Atom = message.atom.get
     assert(atom.relation.name == "Request")
     assert(atom.patterns.size == 6)
+  }
+
+  @Test
+  def CommunicationTest() {
+    val busManager:BusManager = new BusManager()
+    val cham1:ActorCham = new ActorCham("cham1", busManager)
+    val cham2:ActorCham = new ActorCham("cham2", busManager)
+
+    var result = false;
+
+    cham2.receiveHandler = new AtomReceiveHandler {
+      def onReceive(a:Atom) {
+        result = true
+        cham2.introduceAtom(a)
+      }
+    }
+
+    var outChannel:OutChannel = new OutChannel("cham1Tocham2", new ChannelLocation("cham1","localhost", 80))
+
+    cham1.send("cham2", outChannel(WrapScalaInt(1), WrapScalaInt(2)).head)
+
+    Thread.sleep(500)
+
+    assert(result)
   }
 }

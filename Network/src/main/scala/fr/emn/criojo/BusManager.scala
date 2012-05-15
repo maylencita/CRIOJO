@@ -1,9 +1,9 @@
 package main.scala.fr.emn.criojo
 
-import fr.emn.criojo.network.{ReceiveHandler, Bus, BusFactory}
 import java.util.HashMap
-import scala.Option
-import fr.emn.criojo.{Message, AtomReceiveHandler, ActorCham}
+import fr.emn.criojo.{DummyBusFactory, Message, AtomReceiveHandler, ActorCham}
+import fr.emn.criojo.core.Atom
+import fr.emn.criojo.network._
 
 
 /**
@@ -16,27 +16,25 @@ import fr.emn.criojo.{Message, AtomReceiveHandler, ActorCham}
 
 class BusManager {
 
-  var mapReceiver:HashMap[String, AtomReceiveHandler] = new HashMap[String, AtomReceiveHandler]()
-    
-  // TODO: add here a call to the BusFactory implementation
-  var busFactory:BusFactory = null
+  var mapBus:HashMap[String, Bus] = new HashMap[String, Bus]()
+  var busFactory:BusFactory = new BusHornetQFactory()
 
-  // TODO: change the arguments to match with those of the BusFactory implementation
-  var bus:Bus = busFactory.createBus("url:231.7.7.7")
-
-  bus.setReceiveHandler(new ReceiveHandler {
-    def onReceive(p1: String) {
-
-      var message:Message = Message.parse(p1)
-
-      mapReceiver.get(message.to.get) match {
-        case (handler:AtomReceiveHandler) => handler.onReceive(message.atom.get)
-        case _ =>
-      }
+  @throws(classOf[BusException])
+  def send(from:String, to:String, atom:Atom) {
+    mapBus.get(from) match {
+      case b:Bus => b.send(Message.atomToMessage(from, to, atom), to)
+      case _ =>
     }
-  })
+  }
   
+  @throws(classOf[BusException])
   def addActor(actorCham:ActorCham) {
-    mapReceiver.put(actorCham.name, actorCham.receiveHandler)
+    val bus:Bus = new BusRemoteHornetQ("localhost", 5445, actorCham.name, "guest", "guest");
+
+    bus.setReceiveHandler(new ReceiveHandler {
+      def onReceive(p1: String) { actorCham.receiveHandler.onReceive(Message.parse(p1).atom.get) }
+    })
+
+    mapBus.put(actorCham.name, bus)
   }
 }
