@@ -2,6 +2,8 @@ package fr.emn.criojo.ext.expression.Relation
 
 import fr.emn.criojo.core._
 import collection.mutable.HashSet
+import datatype.Term
+import fr.emn.criojo.lang.Molecule
 
 
 /**
@@ -32,6 +34,7 @@ trait Relation {
   def name: String
 
   //def copy(sol: Solution): Relation
+  def apply(vars:Term*):Molecule = Molecule(new Atom(this, vars.toList) :: Nil)
 
   override def toString = name
 }

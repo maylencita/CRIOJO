@@ -9,5 +9,5 @@ import fr.emn.criojo.core.Atom
 case class LocalRelation(name: String) extends Relation {
   def this() = this("LocalRelation"+UUID.randomUUID().toString)
 
-  def apply(vars:Term*):Molecule = Molecule(new Atom(this, vars.toList) :: Nil)
+
 }
