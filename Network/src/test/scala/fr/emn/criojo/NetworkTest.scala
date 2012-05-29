@@ -67,4 +67,29 @@ class NetworkTest {
 
     assert(result)
   }
+
+  @Test
+  def CommunicationNetworkTest() {
+    val busManager:BusManager = new BusManager()
+    val cham1:ActorCham = new ActorCham("cham1", busManager)
+
+    var result = false;
+
+    cham1.receiveHandler = new AtomReceiveHandler {
+      def onReceive(a:Atom) {
+        result = true
+        cham1.introduceAtom(a)
+      }
+    }
+
+    var outChannel:OutChannel = new OutChannel("cham1Tocham2", new ChannelLocation("cham1","localhost", 80))
+
+    while (true) {
+      println(result)
+      cham1.send("cham2", outChannel(WrapScalaInt(1), WrapScalaInt(2)).head)
+      Thread.sleep(1000)
+    }
+
+    assert(true)
+  }
 }
