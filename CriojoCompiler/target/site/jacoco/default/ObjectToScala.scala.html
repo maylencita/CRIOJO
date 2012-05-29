@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ObjectToScala.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CRIOJO-compiler</a> &gt; <a href="index.html" class="el_package">default</a> &gt; <span class="el_source">ObjectToScala.scala</span></div><h1>ObjectToScala.scala</h1><pre class="source lang-java linenums">/**
+ * Created by IntelliJ IDEA.
+ * User: jonathan
+ * Date: 5/21/12
+ * Time: 10:54 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+<span class="nc" id="L9">object ObjectToScala {</span>
+
+  def serverVariableHeader(env:ServerEnvironment):String = {
+<span class="nc bnc" id="L12" title="All 4 branches missed.">    env.mapOfChams.foldLeft(&quot;&quot;){ case(v,(k,p)) =&gt; v+&quot;\t\tvar &quot;+ k + &quot;:Cham \n&quot;}</span>
+  }
+
+  def chamVariableHeader(env:ChamEnvironment):String = {
+<span class="nc bnc" id="L16" title="All 4 branches missed.">    env.mapOfVariables.foldLeft(&quot;&quot;){ case(v,(k,p)) =&gt; v+&quot;\t\t\tvar &quot;+k+p+&quot;\n&quot;}+</span>
+<span class="nc bnc" id="L17" title="All 4 branches missed.">    env.mapOfOutChannel.foldLeft(&quot;&quot;){ case(v,(k,p)) =&gt; v+&quot;\t\t\tvar &quot;+k+p+&quot;\n&quot;}+</span>
+<span class="nc bnc" id="L18" title="All 4 branches missed.">    env.mapOfInChannel.foldLeft(&quot;&quot;){ case(v,(k,p)) =&gt; v+&quot;\t\t\tvar &quot;+k+p+&quot;\n&quot;}</span>
+  }
+
+<span class="nc bnc" id="L21" title="All 2 branches missed.">  def mainProgram(servers:List[Any]):String = servers.foldLeft(&quot;&quot;){case(v,s) =&gt; v+s}</span>
+
+  def serverWithVariableDeclariation(name:String, chams:List[Any], env:ServerEnvironment):String = {
+<span class="nc" id="L24">    &quot;//file &quot;+name+&quot;.criojo\n&quot; +</span>
+<span class="nc" id="L25">    &quot;class criojoMain {\n &quot; +</span>
+<span class="nc" id="L26">    &quot;\tdef main() {\n&quot; +</span>
+<span class="nc" id="L27">    serverVariableHeader(env)+server(name, chams)+&quot;\n\t}\n&quot;+</span>
+<span class="nc" id="L28">    &quot;}\n&quot;</span>
+  }
+
+<span class="nc bnc" id="L31" title="All 2 branches missed.">  def server(name:String, chams:List[Any]):String = chams.foldLeft(&quot;&quot;){case(v,c) =&gt; v+c}+&quot;\n&quot;</span>
+
+  def chamWithVariableDeclariation(name:String, rules:List[Any], env:ChamEnvironment):String = {
+<span class="nc bnc" id="L34" title="All 2 branches missed.">    &quot;\t\t&quot;+name+&quot; = new Cham with IntegerCham with DebugCham {\n&quot;+chamVariableHeader(env)+&quot;\t\t\trules(\n\t&quot;+rules.foldLeft(&quot;\t\t\t&quot;) {</span>
+<span class="nc bnc" id="L35" title="All 6 branches missed.">      case(v,c) =&gt; if (v != &quot;\t\t\t&quot;) { v+&quot;\t\t\t\t,&quot;+c } else { v+c }</span>
+<span class="nc" id="L36">    }+&quot;\t\t\t)\n\t\t}\n&quot;</span>
+  }
+
+  def cham(name:String, rules:List[Any]):String = {
+<span class="nc bnc" id="L40" title="All 2 branches missed.">    &quot;\t\t&quot;+name+&quot; = new Cham with IntegerCham with DebugCham {\n\t\t\trules(\n\t&quot;+rules.foldLeft(&quot;\t\t\t&quot;) {</span>
+<span class="nc bnc" id="L41" title="All 6 branches missed.">      case(v,c) =&gt; if (v != &quot;\t\t\t&quot;) { v+&quot;\t\t\t\t,&quot;+c } else { v+c }</span>
+<span class="nc" id="L42">    }+&quot;\t\t\t)\n\t\t}\n&quot;</span>
+  }
+
+  def rule(atomsLeft:List[Any], atomsRight:List[Any]) = {
+
+<span class="nc bnc" id="L47" title="All 8 branches missed.">    val leftBody = atomsLeft.foldLeft(&quot;&quot;){ case(v1,c1) =&gt; if (v1 != &quot;&quot;) { v1+&quot;,&quot;+c1 } else { v1+c1 } }</span>
+<span class="nc bnc" id="L48" title="All 8 branches missed.">    val rightBody = atomsRight.foldLeft(&quot;&quot;){ case(v2,c2) =&gt; if (v2 != &quot;&quot;) { v2+&quot;,&quot;+c2 } else { v2+c2 } }</span>
+<span class="nc" id="L49">    &quot;(&quot;+leftBody+&quot;) --&gt; (&quot;+rightBody+&quot;)\n&quot;</span>
+  }
+
+  def arguments(args:List[Any]) = {
+<span class="nc bnc" id="L53" title="All 8 branches missed.">    args.foldLeft(&quot;&quot;){ case(v,c) =&gt; if (v != &quot;&quot;) { v+&quot;,&quot;+c } else { v+c } }</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

@@ -1,0 +1,61 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+CRIOJO-compiler,default,CriojoCompiler..anonfun.remoteChamdId.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.remoteChamdId.new Serializable() {...},154,0,16,0,3,0,12,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.remoteChamdId.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.remoteChamdId.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.arguments.new Serializable() {...},69,0,8,0,1,0,8,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.remoteChamdId.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.new Serializable() {...},69,0,8,0,1,0,8,0,4,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.new Serializable() {...},69,0,8,0,1,0,8,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.cham.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.cham.new Serializable() {...},80,0,6,0,5,0,7,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.cham.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.cham.new Serializable() {...},30,0,2,0,1,0,6,0,5,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.inChannelId.new Serializable() {...},55,0,4,0,3,0,6,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.inChannelId.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.server.new Serializable() {...},38,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.atom.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.atom.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.atom.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.atom.new Serializable() {...},65,0,6,0,2,0,7,0,4,0
+CRIOJO-compiler,default,CriojoCompiler.,57,0,4,0,11,0,5,0,3,0
+CRIOJO-compiler,default,ObjectToScala,43,0,0,0,0,0,9,0,9,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.criojoId.3..anonfun.apply.new Serializable() {...},45,0,2,0,3,0,5,0,4,0
+CRIOJO-compiler,default,ChamEnvironment,42,0,0,0,4,0,7,0,7,0
+CRIOJO-compiler,default,ServerEnvironment,16,0,0,0,2,0,3,0,3,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.chamWithVariableDeclariation.new Serializable() {...},69,0,8,0,2,0,8,0,4,0
+CRIOJO-compiler,default,ObjectToScala.,183,0,0,0,20,0,11,0,11,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.chamVariableHeader.new Serializable() {...},59,0,4,0,1,0,6,0,4,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.chamVariableHeader.new Serializable() {...},59,0,4,0,1,0,6,0,4,0
+CRIOJO-compiler,default,Main,4,0,0,0,2,0,2,0,2,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.chamVariableHeader.new Serializable() {...},59,0,4,0,1,0,6,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.program.new Serializable() {...},18,0,0,0,2,0,4,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.server.2..anonfun.apply.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,ProgramEnvironment,16,0,0,0,2,0,3,0,3,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.cham.new Serializable() {...},69,0,8,0,2,0,8,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.server.new Serializable() {...},30,0,2,0,1,0,6,0,5,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.server.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.program.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.server.new Serializable() {...},80,0,6,0,5,0,7,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.server.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.atoms.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.serverVariableHeader.new Serializable() {...},56,0,4,0,1,0,6,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.atoms.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.cham.2..anonfun.apply.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.exps.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.exps.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.localChamdId.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.localChamdId.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.localChamdId.new Serializable() {...},96,0,6,0,3,0,7,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.criojoId.new Serializable() {...},31,0,2,0,1,0,6,0,5,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.criojoId.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler,668,0,20,0,22,0,92,0,82,0
+CRIOJO-compiler,default,ObjectToScala..anonfun.mainProgram.new Serializable() {...},38,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.criojoId.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.exp.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.exp.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.exp.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.exp.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.rule.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.rule.new Serializable() {...},23,0,2,0,1,0,5,0,4,0
+CRIOJO-compiler,default,CriojoCompiler..anonfun.rule.new Serializable() {...},43,0,4,0,2,0,6,0,4,0
