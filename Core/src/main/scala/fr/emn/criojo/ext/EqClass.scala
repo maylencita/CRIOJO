@@ -8,9 +8,11 @@ package fr.emn.criojo.ext
  * To change this template use File | Settings | File Templates.
  */
 
+import debug.InvalidStateError
 import fr.emn.criojo.core._
 
 import collection.mutable.{HashSet,HashMap}
+import datatype.Variable
 
 object EqClass{
   type EqClass = HashSet[Variable]

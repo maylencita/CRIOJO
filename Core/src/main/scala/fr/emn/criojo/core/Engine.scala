@@ -8,32 +8,24 @@ package fr.emn.criojo.core
  */
 
 import fr.emn.criojo.util.Logger._
+import fr.emn.criojo.ext.expression.Relation.constructor.{LocalRelation, OutChannel}
+import fr.emn.criojo.ext.expression.Relation.{Relation}
+import fr.emn.criojo.ext.debug.Solution
 
 trait Engine extends RuleFactory{
-  protected var index = 0
-
   protected var rules:List[Rule] = List()
   protected var relations:List[Relation] = List()
-  protected val solution:Solution = initSolution
 
-  def initSolution:Solution
   def executeRules()
   def introduceAtom(atom:Atom)
-  def getSolution:Solution
-
-  @Deprecated //("Use notifyRelationObservers")
-  def receiveUpdate(atom:Atom){}
 
   def notifyRelationObservers(atom: Atom){
     if (atom.relation != null)
       atom.relation.notifyObservers(atom)
     else
-      findRelation(atom.relName) match{
-        case Some(relation) => {
-          var r = relation
-          relation.notifyObservers(atom)
-        }
-        case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relName)
+      findRelation(atom.relation.name) match{
+        case Some(relation) => relation.notifyObservers(atom)
+        case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relation.name)
       }
   }
 
@@ -59,60 +51,26 @@ trait Engine extends RuleFactory{
         }
   }
 
-  def newLocalRelation(name:String,public:Boolean):LocalRelation = {
-    new LocalRelation(name, public)
-  }
-
-  def newRemoteRelation(remoteName:String,url:String):RemoteRelation = {
-    throw new IllegalAccessException("Unimplemented method newRemoteRelation.")
-  }
-
   def initRules(ruleDefs:List[RuleFactory => Rule]){
     ruleDefs.foreach{ f => initRule(f)  }
   }
 
   def initRule(rf: RuleFactory => Rule){
     val rule = rf(this)
-    processRuleBody(processRuleHead(rule), rule)
+    processRuleHead(rule)
+    processRuleBody(rule)
     addRule(rule)
   }
 
-  def processRuleHead(rule:Rule):List[RelVariable]={
-    var headVars = List[RelVariable]()
-
+  def processRuleHead(rule:Rule) {
     if (!rule.isAxiom)
-      rule.head.foreach{
-        case a if(a.relation != null) => a.relation.addObserver(rule)
-          a.terms.foreach{
-            case rv:RelVariable => headVars :+= rv
-            case _ =>
-          }
-
-        case a => log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
-//--- We don't need this anymore because a comes with its relation!
-//        findRelation(a.relName) match{
-//          case Some(r) => r.addObserver(rule)
-//          case _ =>
-//            log(WARNING, this.getClass, "addRule","Undefined relation " + a.relName)
-//            a.relation = new LocalRelation("Undefined")
-//        }
-//        a.terms.foreach{
-//          case rv:RelVariable => headVars :+= rv
-//          case _ =>
-//        }
-      }
-    headVars
+      rule.head.foreach{ a => a.relation.addObserver(rule)}
   }
 
-  def processRuleBody(headVars:List[RelVariable], rule:Rule){
+  def processRuleBody(rule:Rule)  {
     rule.guard match{
       case cg:CriojoGuard =>
-        cg.observed.foreach{relName =>
-          findRelation(relName) match{
-            case Some(r) => r.addObserver(cg)
-            case _ => //a.relation = new LocalRelation("Undefined")
-          }
-        }
+        cg.observed.foreach{ relation => relation.addObserver(cg) }
       case _ =>
     }
     rule.body.foreach{a =>
@@ -121,8 +79,8 @@ trait Engine extends RuleFactory{
 //        case Some(hv) => hv.relation
 //        case _=> getRelation(a.relName)
 //      }
-//      a.terms.foreach{
-//        case rv: RelVariable if(!headVars.contains(rv)) =>
+//      a.patterns.foreach{
+//        case rv: VarChannel if(!headVars.contains(rv)) =>
 //          findRelation(rv.name) match{
 //            case Some(r) => rv.relation = r
 //            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);
@@ -133,6 +91,5 @@ trait Engine extends RuleFactory{
   }
 
   def printRules: String = rules.mkString("","\n","")
-
 }
 

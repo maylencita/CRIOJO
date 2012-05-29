@@ -1,10 +1,6 @@
 package fr.emn.criojo.ext
 
-import debug.DebugCham
-import org.junit.Test
-import fr.emn.criojo.lang.Cham
-import org.junit.Assert._
-import fr.emn.criojo.core._
+
 
 
 /**
@@ -21,10 +17,10 @@ import fr.emn.criojo.core._
   def EqChamTest {
     //TODO Ameliorate this test
     val sm = new EqCHAM with IntegerCham with DebugCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
+      val A = LocalRelation("A")
+      val B = LocalRelation("B")
+      val C = LocalRelation("C")
+      val D = LocalRelation("D")
 
       var x,y,v,z = Var
       var vx:Term = 1
@@ -70,33 +66,33 @@ import fr.emn.criojo.core._
     assertTrue(sm.getSolution.size==1)
 
     // value x value
-    assertTrue(sm.Eq(sm.x,sm.x).eval(Valuation(sm.x -> 3,sm.y -> 2)))
-    assertTrue(!sm.Eq(sm.x,sm.y).eval(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(sm.Eq(sm.x,sm.x).reduce(Valuation(sm.x -> 3,sm.y -> 2)))
+    assertTrue(!sm.Eq(sm.x,sm.y).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
 
-    assertTrue(!sm.NotEq(sm.x,sm.x).eval(Valuation(sm.x-> 3,sm.y-> 2)))
-    assertTrue(sm.NotEq(sm.x,sm.y).eval(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(!sm.NotEq(sm.x,sm.x).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(sm.NotEq(sm.x,sm.y).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
 
     // variable x variable
-    assertTrue(sm.Eq(sm.v,sm.v).eval(Valuation(sm.x-> 3,sm.y-> 2)))
-    assertTrue(!sm.NotEq(sm.v,sm.v).eval(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(sm.Eq(sm.v,sm.v).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(!sm.NotEq(sm.v,sm.v).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
 
     // variable x value
-    assertTrue(!sm.Eq(sm.x,sm.v).eval(Valuation(sm.x-> 3,sm.y-> 2)))
-    assertTrue(sm.NotEq(sm.x,sm.v).eval(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(!sm.Eq(sm.x,sm.v).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(sm.NotEq(sm.x,sm.v).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
 
     // value x variable
-    assertTrue(!sm.Eq(sm.v,sm.y).eval(Valuation(sm.x-> 3,sm.y-> 2)))
-    assertTrue(sm.NotEq(sm.v,sm.y).eval(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(!sm.Eq(sm.v,sm.y).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
+    assertTrue(sm.NotEq(sm.v,sm.y).reduce(Valuation(sm.x-> 3,sm.y-> 2)))
   }
 
   @Test
   def ExtendedChamTest {
     //TODO Review ExtendedCham
     val sm = new ExtendedCHAM with IntegerCham with DebugCham {
-      val A = Rel("A")
-      val B = Rel("B")
-      val C = Rel("C")
-      val D = Rel("D")
+      val A = LocalRelation("A")
+      val B = LocalRelation("B")
+      val C = LocalRelation("C")
+      val D = LocalRelation("D")
 
       var x,y,v,z = Var
       var vx:Term = 1

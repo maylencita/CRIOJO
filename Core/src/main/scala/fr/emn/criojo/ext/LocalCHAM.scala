@@ -17,7 +17,7 @@ class LocalCHAM extends ExtendedCHAM{ //StandardCHAM{
 //    new LocalRelation(name, public)
 //  }
 //
-//  def newRemoteRelation(remoteName:String,url:String):RemoteRelation = {
+//  def newRemoteRelation(remoteName:String,url:String):OutChannel = {
 //    throw new IllegalAccessException("Local machine virtual.")
 //  }
 }

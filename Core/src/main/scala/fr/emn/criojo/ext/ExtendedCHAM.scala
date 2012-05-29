@@ -16,13 +16,13 @@ import fr.emn.criojo.lang.{CrjAtom, Molecule, Cham}
  */
 //TODO Add other CHAM traits.. for example: with NumberCHAM, DateCHAM...
 abstract class ExtendedCHAM extends Cham with IntegerCham with StrCHAM with NullCHAM{
-
-  private val x,y = Var
+//
+//  private val x,y = Var
 
   /**********************************************************************
   * VM definition:
   */
-//  val Print = Rel("Print")
+//  val Print = LocalRelation("Print")
 //
 //  private val Null_print = NativeRelation("Null_print"){(a,s) => println("Null")}
 //

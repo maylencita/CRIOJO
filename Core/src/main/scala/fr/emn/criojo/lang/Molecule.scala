@@ -1,6 +1,8 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
+import datatype.{Term, Variable}
+import fr.emn.criojo.ext.expression.Relation.Relation
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,8 +44,6 @@ trait Molecule {
   def tail:Molecule
 
   var scope = List[Variable]()
-
-  def unary_! : CrjAtom
 
   def &: (a:Atom) = {
     val molecule = new &: (a, this)
@@ -96,20 +96,12 @@ trait Molecule {
  * @define THIS CrjAtom
  */
 
-class CrjAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) with Molecule {
+class CrjAtom(relation:Relation, terms: List[Term]) extends Atom(relation, terms) with Molecule {
   def empty:Boolean = false
 
   def head:Atom = this
 
   def tail:Molecule = Empty
-
-  def unary_! : CrjAtom = {
-    val newAtom = new CrjAtom(relName,terms)
-    newAtom.relation = this.relation
-    newAtom.persistent = true
-    newAtom
-  }
-
 }
 
 /**

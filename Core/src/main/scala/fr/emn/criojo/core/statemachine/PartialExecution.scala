@@ -1,6 +1,6 @@
 package fr.emn.criojo.core.statemachine
 
-import fr.emn.criojo.core.Valuation
+import fr.emn.criojo.core.datatype.Valuation
 import fr.emn.criojo.core.Atom
 import scala._
 import collection.immutable.HashMap
@@ -25,7 +25,7 @@ class PartialExecution(atomMap:HashMap[Int,Atom],val valuation:Valuation){
     new PartialExecution(this.atomMap + (pos -> newAtom), this.valuation.union(vals))
   }
 
-  def containsAtom(atom:Atom): Boolean = atomMap.exists(p => p._2 == atom)
+  def containsAtom(atom:Atom): Boolean = atomMap.exists(p => p._2 eq atom)
 
   override def toString = atoms.mkString("{",",","}")
 }

@@ -11,7 +11,7 @@ import scala._
 * Time: 14:17
 */
 class State(val id:Int){
-  private val qExecutions:Queue[PartialExecution] = Queue()
+  private val qExecutions:Queue[PartialExecution] = Queue[PartialExecution]()
 
   def hasExecutions:Boolean = !qExecutions.isEmpty
 
@@ -39,6 +39,7 @@ class State(val id:Int){
 
   //Removes all executions associated to atom `atom
   def removeExecutions(atom:Atom){
+    // todo: check if dequeueFirst fix the C() problem, instead of dequeueAll
     qExecutions.dequeueAll(ex => ex.containsAtom(atom))
   }
 

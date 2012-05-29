@@ -1,6 +1,8 @@
 package fr.emn.criojo.core
 
+import datatype._
 import statemachine.StateMachine
+import fr.emn.criojo.ext.expression.Relation.Relation
 
 /*
  * Created by IntelliJ IDEA.
@@ -21,7 +23,7 @@ abstract class CriojoGuard extends Guard with RelationObserver{
    * Returns the list of ids of observed relations
    * @return
    */
-  def observed:Set[String]
+  def observed:Set[Relation]
 
   def eval(valuation: Valuation) = {
     valuations(valuation:Valuation).exists(v => v.consistentWith(valuation))
@@ -40,7 +42,7 @@ case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard with StateMachine
 
   def onFinalState(){}
 
-  def observed = atoms.map(a => a.relName).toSet
+  def observed = atoms.map(a => a.relation).toSet
 
   def receiveUpdate(atom: Atom){
     if (atom.isActive)

@@ -8,7 +8,9 @@ package fr.emn.criojo.core
  */
 
 import collection.immutable.HashSet
+import datatype.Variable
 import statemachine.{StateMachine, PartialExecution}
+import fr.emn.criojo.ext.debug.Solution
 
 /**
  * The StatefulEngine trait
@@ -16,11 +18,9 @@ import statemachine.{StateMachine, PartialExecution}
  * @define PARENT no other class
  * @define RESULT 3
  */
-trait StatefulEngine extends Engine{
+trait StatefulEngine extends Engine {
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
-
-  def initSolution = new HashSolution()
 
   def executeRules(){
     while (rules.exists(r => r.execute)){}
@@ -31,15 +31,13 @@ trait StatefulEngine extends Engine{
     notifyRelationObservers(atom)
   }
 
-  def removeAtom(atom: Atom){
+  def removeAtom(atom: Atom) {
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
 
-  def getSolution:Solution = this.solution //EmptySolution
-
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
-    extends Rule with StateMachine{
+    extends Rule with StateMachine {
 
     init(head.toArray)
 
@@ -57,7 +55,7 @@ trait StatefulEngine extends Engine{
         finalState.removeExecution(pe => guard.eval(pe.valuation)) match{
           case Some(pe:PartialExecution) => {
             applyReaction(pe)
-            
+
             executed = true
           }
           case _ => //Skip
@@ -67,10 +65,11 @@ trait StatefulEngine extends Engine{
     }
 
     def applyReaction(finalExecution:PartialExecution) {
-      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
-        val i = Indexator.getIndex
-        vals union Valuation(sv -> new IdTerm(sv.name+"@"+i))
-      }
+//      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
+//        val i = Indexator.getIndex
+//        vals union Valuation(sv -> VarScalaString(sv.name+"@"+i))
+//      }
+      val finalValuation = finalExecution.valuation
 
       if(!finalValuation.isEmpty) {
 
@@ -80,7 +79,7 @@ trait StatefulEngine extends Engine{
           finalExecution.atom(i)
         }
 
-        removeAtoms.foreach{a => removeAtom(a)}
+        removeAtoms.foreach(a => removeAtom(a))
         newAtoms.foreach(a => introduceAtom(a))
       }
     }
@@ -107,7 +106,7 @@ class HashSolution extends Solution{
     var cpt:Int = 0
     
     elements.foreach( a => {
-      if(a.relName.charAt(0)!='$') {
+      if(a.relation.name.charAt(0)!='$') {
         if(!firstPrint)
           print(",")
         cpt = (cpt+1)%10
@@ -140,13 +139,13 @@ class HashSolution extends Solution{
   }
 
   def remove(atom: Atom){
-    elements = elements.filterNot(a=> atom == a)
+    elements = elements.filterNot(a=> atom eq a)
   }
 
   override def contains(atom:Atom) = elements.exists{a =>
-    (a.relName == atom.relName) &&
+    (a.relation.name == atom.relation.name) &&
       a.arity == atom.arity &&
-      a.terms.zip(atom.terms).forall{t =>
+      a.patterns.zip(atom.patterns).forall{t =>
         t._1 == t._2
       }
   }

@@ -1,0 +1,42 @@
+target/
+servers/
+**/.DS_Store
+
+# IGNORE IDEA FILES
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# IGNORE VIM FILES
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# IGNORE ECLIPSE FILES
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
