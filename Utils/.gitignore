@@ -1,5 +1,5 @@
 target/
-**/target/
+servers/
 **/.DS_Store
 
 # IGNORE IDEA FILES
