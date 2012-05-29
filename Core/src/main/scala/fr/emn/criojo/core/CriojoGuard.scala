@@ -1,11 +1,8 @@
 package fr.emn.criojo.core
 
-import Criojo._
-import collection.mutable.ListBuffer
-import scala.collection.mutable.HashMap
-import fr.emn.criojo.lang.Molecule
-import fr.emn.criojo.util.Logger._
+import datatype._
 import statemachine.StateMachine
+import fr.emn.criojo.ext.expression.Relation.Relation
 
 /*
  * Created by IntelliJ IDEA.
@@ -13,16 +10,39 @@ import statemachine.StateMachine
  * Date: 05/10/11
  * Time: 13:31
  */
-abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine with RelationObserver{
-  val starter = null
-
-  init(atoms.toArray)
-
+abstract class CriojoGuard extends Guard with RelationObserver{
   def empty = false
 
-  def initRelations(){}
+  /**
+   * The set of valuations that satisfy this guard
+   * @return
+   */
+  def valuations(valuation:Valuation):ValuationList = new ValuationList()
+
+  /**
+   * Returns the list of ids of observed relations
+   * @return
+   */
+  def observed:Set[Relation]
+
+  def eval(valuation: Valuation) = {
+    valuations(valuation:Valuation).exists(v => v.consistentWith(valuation))
+  }
+
+  implicit def valuationToValuationList(valuation:Valuation):ValuationList = {
+
+     new ValuationList(List(new NormalForm(valuation, List())))
+  }
+}
+
+case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard with StateMachine{
+  init(atoms.toArray)
+
+  val finalState = states(size - 1)
 
   def onFinalState(){}
+
+  def observed = atoms.map(a => a.relation).toSet
 
   def receiveUpdate(atom: Atom){
     if (atom.isActive)
@@ -30,185 +50,80 @@ abstract class CriojoGuard(val atoms:List[Atom]) extends Guard with StateMachine
     else
       removeExecution(atom)
   }
+
+  override def valuations(valuation:Valuation):ValuationList =
+    new ValuationList(finalState.executions.map{ex =>
+      if(ex.valuation.isEmpty)
+        NormalForm(TopValuation)
+      else
+        NormalForm(ex.valuation)
+    }.toList)
+
+  override def toString= atoms.mkString("<",",",">")
 }
 
-class ExistGuard(atoms:List[Atom]) extends CriojoGuard(atoms){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    val newAtoms = atoms.map(_.applySubstitutions(subs))
-    val finalState = states(size - 1)
-    finalState.hasExecution(ex =>
-      newAtoms.forall(nat=>ex.atoms.exists(exat=>exat.matches(nat)))
-    )
-  }
-  override def toString = atoms.mkString("Exst(", ",", ")")
-}
-
-class AbsGuard(atoms:List[Atom]) extends ExistGuard(atoms){
-  override def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    val finalState = states(size - 1)
-    !finalState.hasExecutions || !super.eval(sol,subs)
-  }
+case class AbsGuard(override val atoms:List[Atom]) extends PresenceGuard(atoms){
+  override def valuations(valuation:Valuation) = super.valuations(valuation:Valuation).not
 
   override def toString = atoms.mkString("Abs(", ",", ")")
 }
 
-class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard.atoms ++ rguard.atoms){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    lguard.eval(sol,subs) && rguard.eval(sol,subs)
+case class NotGuard(guard:CriojoGuard) extends CriojoGuard{
+
+  def observed = guard.observed
+
+  override def valuations(valuation:Valuation) = guard.valuations(valuation).not
+
+  def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
+}
+
+case class ExistsGuard(guard:CriojoGuard, x:Variable) extends CriojoGuard{
+  def observed = guard.observed
+
+  def gamma(nf: NormalForm):NormalForm = {
+    if (nf.alpha.domain.contains(x)){
+      NormalForm(nf.alpha.restrict(nf.alpha.domain-x),
+        nf.beta.map(b =>
+          b.restrict(b.domain-x)
+        )
+      )
+    }else{
+      val newBetas = nf.beta.filterNot(b => b.domain.contains(x))
+      NormalForm(nf.alpha,newBetas)
+    }
   }
+
+  override def valuations(valuation:Valuation) = guard.valuations(valuation).map(v => gamma(v))
+
+  def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
+
+  override def toString = "Exst("+x+"):" + guard
+}
+
+class ForAllGuard(guard:CriojoGuard, x:Variable) extends ExistsGuard(NotGuard(guard),x){
+  override def valuations(valuation:Valuation) = super.valuations(valuation).not
+}
+
+case class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{
+
+  def observed = lguard.observed ++ rguard.observed
+
+  override def valuations(valuation:Valuation) = lguard.valuations(valuation) or rguard.valuations(valuation)
+
+  def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
+
+  override def toString = "["+lguard +" v "+ rguard +"]"
+}
+
+case class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{
+
+  def observed = lguard.observed ++ rguard.observed
+
+  override def valuations(valuation:Valuation) = lguard.valuations(valuation) intersect rguard.valuations(valuation)
+
+  def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
 
   override def toString = "["+lguard +" ^ "+ rguard +"]"
 }
 
-class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard(lguard.atoms ++ rguard.atoms){
-  def eval(sol: Solution, subs: List[Criojo.Substitution]) = {
-    lguard.eval(sol,subs) || rguard.eval(sol,subs)
-  }
-  override def toString = "["+lguard +" v "+ rguard +"]"
-}
 
-// CUSTOM GUARDS
-
-
-
-
-//class CriojoGuard(val starter:Atom, ruleDefs:List[RuleFactory => Rule], relList: List[Relation]) extends GuardCham with Guard{
-//
-////  var rules:List[Rule] = List()
-////  override val solution = new GuardSolution(List[Atom]())
-//  addRelation(new LocalRelation("true"))
-//  addRelation(new LocalRelation("false"))
-//
-//  initRules(ruleDefs)
-//
-//  //Copy relations from owner CHAM
-//  def initRelations(){
-//    for(r <- relList){
-//      addRelation(r.copy(this.solution))
-////      r match{
-////        case nr:NativeRelation => addRelation(new NativeRelation(nr.name, this.solution, nr.f))
-////        case _ => addRelation(new LocalRelation(r.name,r.isMultiRel))
-////      }
-//    }
-//  }
-//
-//  def empty = rules.isEmpty
-//
-//  def eval(sol:Solution, subs:List[Substitution]):Boolean = {
-//    log("------------------------------------------------------")
-//    log("[CriojoGuard.eval] Begin " + this.toString)
-//    log("[CriojoGuard.eval] solution: " + sol)
-////    log("[CriojoGuard.eval] substitutions: " + subs)
-//
-//    levelDown
-//    this.solution.revert()
-//    this.solution.update(sol.copy(this))
-//    this.solution.addAtom(starter.applySubstitutions(subs))
-//    rules.foreach{r =>
-//      r.executeRules(List[Substitution]())
-//    }
-//    levelUp
-//
-//    log("[CriojoGuard.eval] finished with solution: " + solution)
-//    log("------------------------------------------------------")
-//    solution.exists(a => a.relName == starter.relName)
-//  }
-//
-//  override def toString = starter + ":" + printRules
-//
-////  def createRule(h: Head, b: Body, g: Guard, scope: List[Variable]) = new GuardRule(h, b, g, scope)
-//
-////  override def toString:String = {
-////    starter + ":" + rules.mkString("",";","")
-////  }
-//
-///*
-//  class GuardRule(h:List[Atom], val body:List[Atom], val guard:Guard, scp:List[Variable]) extends Rule{
-//    def head = h
-//
-//    def executeRules(subs: List[Criojo.Substitution]) = {
-//      var matches = List[Atom]()
-//      var result = false
-//
-//      if (this.isAxiom ||
-//              (head.size == 1 && head.filter(_.isActive).isEmpty) ||
-//              !{matches= query(head.filter(_.isActive),subs); matches}.isEmpty){
-//        log("[Rule.executeRules] {"+this+"} Substitutions: " + subs)
-//        log("[Rule.executeRules] solution= " + solution)
-//        log("[Rule.executeRules] Found Matches: " + matches + " for rule " + this)
-//        levelDown
-//        val subs2 = subs.union(getHeadSubstitutions(matches))
-//        if (guard.empty || guard.eval(solution, subs2)){
-//          levelUp
-//          applyReaction(solution, subs2)
-//          result=true
-//        }else
-//          levelUp
-//      }
-//
-//      //Activate atoms that were inactivated but not eliminated
-//      solution.revert
-//      result
-//    }
-//
-//    def notifyCham(atom: Atom){}
-//  }
-//*/
-//}
-//
-//class GuardSolution(var elems: List[Atom]) extends Solution{
-//  private var oldElements:List[Atom] = List()
-//
-//  def addAtom(atom: Atom) { elems :+= atom  }
-//
-//  def addMolecule(molecule: List[Atom]) { elems ++= molecule  }
-//
-//  def remove(a: Atom){  elems.filterNot(_ == a) }
-//
-//  def clear(){   elems = List[Atom]()  }
-//
-//  def cleanup(){  elems = elems.filter(_.isActive)  }
-//
-//  def update(newsol: Solution){
-//    if (newsol.contains(False) || newsol.isEmpty){
-//      clear()
-//    }else{
-//      this.elems = newsol.elems
-//    }
-//  }
-//
-//  def inactivate(a: Atom){  a.setActive(false)  }
-//
-//  def activate(a: Atom){  a.setActive(true)  }
-//
-//  def copy(newOwner: CHAM) = new GuardSolution(elems.map(a => a.clone))
-//
-//  def notifyCHAM(newAtom: Atom){}
-//
-//  def createBackUp(){
-//  }
-//  def reverse(){
-//  }
-//
-//}
-
-// A simplified CHAM whose rules does not produce reactions, only reductions
-//class GuardCham extends CHAM{
-//  override val solution:Solution = new GuardSolution(List[Atom]())
-//
-//  override def receiveUpdate(atom:Atom){
-//  /*Does nothing*/
-//  }
-//
-//  override def initRule(rf: RuleFactory => Rule){
-//    val rule = rf(this)
-//    processRuleBody(List[RelVariable](), rule)
-//    addRule(rule)
-//  }
-//
-//  override def findRelation(relName:String):Option[Relation] =
-//    super.findRelation(relName) match{
-//      case Some(r) => Some(r)
-//      case _ => Some(new LocalRelation(relName))
-//    }
-//}

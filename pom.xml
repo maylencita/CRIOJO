@@ -13,6 +13,10 @@
 
     <modules>
         <module>Core</module>
+        <module>CriojoCompiler</module>
+        <module>BusSpec</module>
+        <module>BusHornetQImpl</module>
+        <module>Network</module>
     </modules>
 
     <build>

@@ -59,19 +59,19 @@ object Logger {
   }
 
 
-  def levelDown{
+  def levelDown(){
     indent+=1
   }
 
-  def levelUp{
+  def levelUp(){
     indent-=1
   }
 
-  def disableLog{
+  def disableLog(){
     on = false
   }
 
-  def enableLog{
+  def enableLog(){
     on = true
   }
 

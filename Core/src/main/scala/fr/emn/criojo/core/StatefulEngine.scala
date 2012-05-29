@@ -6,9 +6,11 @@ package fr.emn.criojo.core
  * Date: 24/11/11
  * Time: 10:05
  */
-import fr.emn.criojo.core.Criojo._
+
 import collection.immutable.HashSet
+import datatype.Variable
 import statemachine.{StateMachine, PartialExecution}
+import fr.emn.criojo.ext.debug.Solution
 
 /**
  * The StatefulEngine trait
@@ -16,31 +18,26 @@ import statemachine.{StateMachine, PartialExecution}
  * @define PARENT no other class
  * @define RESULT 3
  */
-trait StatefulEngine extends Engine{
+trait StatefulEngine extends Engine {
 
-  def createRule(h: Head, b: Body, g: Guard, scope: List[Variable]) = new StatefulRule(h,b,g,scope)
-
-  def initSolution = new HashSolution()
+  def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
   def executeRules(){
-    while (rules.exists(r => r.execute())){}
+    while (rules.exists(r => r.execute)){}
   }
 
   def introduceAtom(atom: Atom){
-    solution.addAtom(atom)
+
     notifyRelationObservers(atom)
   }
 
-  def removeAtom(atom: Atom){
-    solution.remove(atom)
+  def removeAtom(atom: Atom) {
     atom.setActive(false)
     notifyRelationObservers(atom)
   }
 
-  def getSolution = this.solution //EmptySolution
-
-  class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:List[Variable])
-    extends Rule with StateMachine{
+  class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
+    extends Rule with StateMachine {
 
     init(head.toArray)
 
@@ -51,12 +48,16 @@ trait StatefulEngine extends Engine{
         removeExecution(atom)
     }
 
-    def execute(subs: List[Substitution]) = {
+    override def execute() = {
       var executed = false
       val finalState = states(size - 1)
       if(finalState.hasExecutions){
-        finalState.removeExecution(pe => guard.eval(getSolution,pe.subs)) match{
-          case Some(pe:PartialExecution) => applyReaction(pe); executed = true
+        finalState.removeExecution(pe => guard.eval(pe.valuation)) match{
+          case Some(pe:PartialExecution) => {
+            applyReaction(pe)
+
+            executed = true
+          }
           case _ => //Skip
         }
       }
@@ -64,17 +65,24 @@ trait StatefulEngine extends Engine{
     }
 
     def applyReaction(finalExecution:PartialExecution) {
-      val scopeSubs = scope.map{v => val i=Indexator.getIndex; (v,v+("@"+i))}
-      val newAtoms = this.body.map(_.applySubstitutions(finalExecution.subs.union(scopeSubs)))
-      val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
-        finalExecution.atom(i)
+//      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =>
+//        val i = Indexator.getIndex
+//        vals union Valuation(sv -> VarScalaString(sv.name+"@"+i))
+//      }
+      val finalValuation = finalExecution.valuation
+
+      if(!finalValuation.isEmpty) {
+
+        val newAtoms = this.body.map(_.applyValuation(finalValuation))
+
+        val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
+          finalExecution.atom(i)
+        }
+
+        removeAtoms.foreach(a => removeAtom(a))
+        newAtoms.foreach(a => introduceAtom(a))
       }
-
-      removeAtoms.foreach{a => removeAtom(a)}
-      newAtoms.foreach(a => introduceAtom(a))
     }
-
-    def notifyCham(atom: Atom){}
 
     override def toString = {
       var str = super.toString + ": \n" +
@@ -91,9 +99,34 @@ trait StatefulEngine extends Engine{
 class HashSolution extends Solution{
   var elements = new HashSet[Atom]()
 
-  def createBackUp() = null
+  def displaySolution() {
+    var firstPrint:Boolean = true
+    print("<")
+    
+    var cpt:Int = 0
+    
+    elements.foreach( a => {
+      if(a.relation.name.charAt(0)!='$') {
+        if(!firstPrint)
+          print(",")
+        cpt = (cpt+1)%10
+        if(cpt!=9)
+          print(a)
+        else
+          println(a)
+        firstPrint = false
+      }
+    })
+    println(">")
+  }
 
-  def reverse() = null
+  def createBackUp() {
+    null
+  }
+
+  def reverse() {
+    null
+  }
 
   def elems = elements.toList
 
@@ -106,13 +139,13 @@ class HashSolution extends Solution{
   }
 
   def remove(atom: Atom){
-    elements = elements.filterNot(a=> atom == a)
+    elements = elements.filterNot(a=> atom eq a)
   }
 
   override def contains(atom:Atom) = elements.exists{a =>
-    (a.relName == atom.relName) &&
+    (a.relation.name == atom.relation.name) &&
       a.arity == atom.arity &&
-      a.terms.zip(atom.terms).forall{t =>
+      a.patterns.zip(atom.patterns).forall{t =>
         t._1 == t._2
       }
   }

@@ -1,6 +1,9 @@
 package fr.emn.criojo.core
 
-import Criojo.Substitution
+import datatype._
+import fr.emn.criojo.ext.expression.Relation.{Relation}
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,137 +19,93 @@ import Criojo.Substitution
  */
 @serializable
 object Atom{
-  def apply(rn:String, lst:Term*):Atom = new Atom(rn, lst.toList)
-  def apply(rel:Relation, lst:Term*):Atom = {
-    val a = new Atom(rel.name, lst.toList)
-    a.relation = rel
-    a
-  }
+
+  def apply(rn:String, lst:Term*):Atom = new Atom(LocalRelation(rn), lst.toList)
+  def apply(rel:Relation, lst:Term*):Atom = new Atom(rel, lst.toList)
 }
 
 /**
  * The Atom class
  * @define THIS Atom
  */
-case class Atom(relName:String, terms: List[Term]) {
+//TODO pass relation as parameter in construction
+case class Atom(relation:Relation, patterns: List[Term]) {
 
-  val vars = terms.map{case v:Variable => v; case _ => Undef}
+  def this(relationName:String, patterns:List[Term]) = this(LocalRelation(relationName), patterns)
 
   var persistent:Boolean = false
   protected var active:Boolean = true
-  @transient
-  var relation:Relation = _
 
-  def isTrue:Boolean = false     //TODO ??
+  //TODO Remove this
+  def isTrue:Boolean = false
   def isFalse:Boolean = false
 
-  def arity = terms.size
+  def arity = patterns.size
 
   @deprecated ("Use: setActive(false)")
   def inactivate(){
     active = false
-  }  
+  }
 
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
 
-  /** Returns the term at position n.
-   *
-   * @param n the position of the term
-   * @return the term at position n
-   */
-  def apply(n:Int):Term = terms(n)
-
+  def applyValuation(valuation:Valuation):Atom = new Atom(relation, patterns.map({ pattern:Term => pattern.applyValuation(valuation).reduce() }))
 
   /** Applies the given substitutions to the atom.
    *
-   * @param subs a List[ [[fr.emn.criojo.core.Term]] ]
+   * @param vals a Valuation
    * @return an [[fr.emn.criojo.core.Atom]]
    */
-  def applySubstitutions(subs:List[Substitution]):Atom = {
-    val nuRel:Relation = subs.find(s => s._1.name == this.relName) match{
-      case Some(sub) => sub match{
-        case (_, rv:RelVariable) => rv.relation
-        case _ => this.relation
-      }
-      case _ => this.relation
-    }
+  @deprecated("use: applyValuation")
+  def applySubstitutions(vals:Valuation):Atom = this
 
-    val nuRelName:String = subs.find(s => s._1.name == this.relName) match{
-      case Some(nv) => nv._2.name
-      case _ => this.relName
-    }
-
-    def applySubstitution(term:Term):Term = term match{
-      case v:Variable => findSubstitution(v)
-      case v:ValueTerm[_] => v
-      case f@Function(n, plst) => f(plst.map(p => applySubstitution(p)))
-      case _ => Undef
-    }
-    def findSubstitution(variable:Variable) =
-      subs.find(s => s._1.name == variable.name) match{
-        case Some((v,t)) => t
-        case _ =>
-          variable match{
-            case rv:RelVariable if (rv.relation != null) => rv
-            case rv:RelVariable if (rv.relation == null) => Undef
-            case _ => Undef
-          }
-    }
-
-    val newTerms = terms.map(applySubstitution(_))
-
-    val newAtom = new Atom(nuRelName, newTerms)
-    newAtom.relation = nuRel
-    newAtom
-  }
-
-  /** Returns true if the given atom matches this atom.
+  /** Returns true if the given atom correspondsTo this atom.
    *
    * @param that an [[fr.emn.criojo.core.Atom]]
    * @return true if the matching is positive
    */
-  def matches(that: Atom) : Boolean = {
-    this.relName == that.relName &&
-    this.arity == that.arity &&
-    this.terms.zip(that.terms).forall(p => p._1.matches(p._2))
+  def correspondsTo(that: Atom) : Boolean = {
+      this.relation.name == that.relation.name &&
+      this.arity == that.arity &&
+      this.patterns.zip(that.patterns).forall(p => p._1.matches(p._2.asInstanceOf[Expression]))
   }
+
+  // fixme: le premier atome contient une liste de patterns et le second une list d'expression
+  def getValuation(that: Atom):Valuation = {
+//    def getVal(t1:Term, t2:Term):Valuation = t2 match {
+//      case exp:Expression => t1.getValuation(exp)
+//      case _ => throw new PatternNotMatchingException
+//    }
+    def getVal(t1:Pattern, t2:Expression):Valuation = t1.getValuation(t2)
+    this.patterns.zip(that.patterns).foldLeft(Valuation())((v,p)=>v union getVal(p._1.asInstanceOf[Pattern],p._2.asInstanceOf[Expression]))
+  }
+
 
   /** Returns true if the given variable is in this atom.
    *
    * @param v a [[fr.emn.criojo.core.Variable]]
-   * @return true if the variable is in the list of terms
+   * @return true if the variable is in the list of patterns
    */
   def hasVariable(v: Variable): Boolean = {
-    this.terms.contains(v)
+    this.patterns.contains(v)
   }
 
-  override def hashCode =
-    if (relation != null && relation.isMultiRel)
-      super.hashCode
-    else
-      toString.hashCode
+  // constant hashcode
+  override def hashCode = super.hashCode()
 
   override def equals(that: Any):Boolean = that match{
-    case a:Atom =>
-      if (relation != null && relation.isMultiRel)
-        super.equals(a)
-      else
-        this.relName == a.relName && this.terms.zip(a.terms).forall(p => p._1 == p._2)
+    case a:Atom => this.relation.name == a.relation.name && this.patterns.zip(a.patterns).forall(p => p._1 eq  p._2)
+
     case _ => false
   }
 
   override def toString =
     (if (active) "" else "-") +
-            (if (relation != null) relation else relName) +
-            (if (terms.isEmpty) "" else terms.mkString("(",",",")"))
+            relation +
+            (if (patterns.isEmpty) "" else patterns.mkString("(",",",")"))
 
-  override def clone:Atom = {
-    val a = new Atom(relName,terms)
-    a.active = this.active
-    a.relation = this.relation
-    a
-  }
+  override def clone:Atom = new Atom(relation,patterns)
 }
 
 

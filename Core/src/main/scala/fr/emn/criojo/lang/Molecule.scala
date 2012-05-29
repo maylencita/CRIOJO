@@ -1,6 +1,8 @@
 package fr.emn.criojo.lang
 
 import fr.emn.criojo.core._
+import datatype.{Term, Variable}
+import fr.emn.criojo.ext.expression.Relation.Relation
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,14 +38,12 @@ object Molecule{
  *  r := m --> guard ? m
  * @define THIS A
  */
-trait Molecule{
+trait Molecule {
   def empty:Boolean
   def head:Atom
   def tail:Molecule
 
   var scope = List[Variable]()
-
-  def unary_! : CrjAtom
 
   def &: (a:Atom) = {
     val molecule = new &: (a, this)
@@ -64,28 +64,28 @@ trait Molecule{
 
   @Deprecated
   def ==> (c2:Molecule): RuleFactory => Rule ={
-    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope)
+    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)
     f
   }
 
   def --> (c2:Molecule): RuleFactory => Rule ={
-    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope)
+    val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)
     f
   }
   @Deprecated
-  def ==> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
+  def ==> (gc: (_, _)):RuleFactory => Rule = gc match {
     case (g:Guard, conj:Molecule) => getRuleBuilder(g,conj)
     case _ => null
   }
 
-  def --> (gc: Tuple2[_,_]):RuleFactory => Rule = gc match {
+  def --> (gc: (_, _)):RuleFactory => Rule = gc match {
     case (g:Guard, conj:Molecule) =>
-      (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
+      (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     case _ => null
   }
 
   def getRuleBuilder (g:Guard,conj:Molecule): RuleFactory => Rule = {
-    val f = (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope)
+    val f = (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     f
   }
 
@@ -96,19 +96,12 @@ trait Molecule{
  * @define THIS CrjAtom
  */
 
-class CrjAtom(relName:String, terms: List[Term]) extends Atom(relName, terms) with Molecule {
+class CrjAtom(relation:Relation, terms: List[Term]) extends Atom(relation, terms) with Molecule {
   def empty:Boolean = false
 
   def head:Atom = this
 
   def tail:Molecule = Empty
-
-  def unary_! : CrjAtom = {
-    val newAtom = new CrjAtom(relName,terms)
-    newAtom.persistent = true
-    newAtom
-  }
-
 }
 
 /**

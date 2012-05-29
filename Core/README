@@ -1,6 +1,6 @@
-This folder contains the implementation of the core of CREOLE.
+This folder contains the implementation of CRIOJO core.
 Content description:
 
 -src -> The sources
--Core.iml -> IntelliJ Module
+-pom.xml -> Maven configuration file
 

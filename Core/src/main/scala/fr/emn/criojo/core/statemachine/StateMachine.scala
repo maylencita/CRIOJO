@@ -1,8 +1,8 @@
 package fr.emn.criojo.core.statemachine
 
-import fr.emn.criojo.core.Criojo._
-import fr.emn.criojo.core.Atom
 import collection.mutable.{Queue, HashMap, MultiMap, Set}
+import fr.emn.criojo.core.datatype.BottomValuation
+import fr.emn.criojo.core.Atom
 
 /*
 * Created by IntelliJ IDEA.
@@ -14,7 +14,7 @@ trait StateMachine {
 
   protected var size = 0
   protected var states:Array[State] = null
-  protected var transitions:HashMap[Atom,Array[Transition]] = null
+  protected var transitions:HashMap[Int,Array[Transition]] = null
 
   var pattern:Array[Atom] = null
 
@@ -32,25 +32,37 @@ trait StateMachine {
     val newExecutions:MultiMap[State,PartialExecution] =
       new HashMap[State,Set[PartialExecution]] with MultiMap[State,PartialExecution]
 
-    if(pattern != null){
+    if(pattern != null) {
       for(i <- 0 until pattern.length){
         val a = pattern(i)
-        if (a.relName == atom.relName && a.arity == atom.arity && a.matches(atom)){
-          val subs = getSubstitutions(a.terms,atom.terms)
-          transitions(a).foreach{transition=>
-            if(transition.ini.stateZero){
-              val pExec = new PartialExecution(i,atom,subs)
-              newExecutions.addBinding(transition.fin,pExec)
-            }else
-              transition.ini.executions.foreach{pe =>
-                if(a.applySubstitutions(pe.subs).matches(atom)){
-                  val pExec = pe.newExecution(i,atom,subs)
-                  newExecutions.addBinding(transition.fin,pExec)
+        if (a.relation.name == atom.relation.name && a.arity == atom.arity && a.correspondsTo(atom)){
+          val vals = a.getValuation(atom) // fixme: le premier atome contient une liste de patterns et le second une list d'expression
+          transitions(a.hashCode).foreach{
+            transition=> {
+              if(transition.ini.stateZero) {
+
+                val pExec = new PartialExecution(i,atom,vals)
+                pExec.valuation match {
+                  case BottomValuation =>
+                  case _ => newExecutions.addBinding(transition.fin,pExec)
                 }
               }
+              else {
+                transition.ini.executions.foreach {
+                  pe => {
+                    val pExec = pe.newExecution(i,atom,vals)
+
+                    pExec.valuation match {
+                      case BottomValuation =>
+                      case _ => newExecutions.addBinding(transition.fin,pExec)
+                    }
+                  }
+                }
               }
+            }
           }
         }
+      }
       updateStates(newExecutions)
     }
   }
@@ -64,8 +76,8 @@ trait StateMachine {
   def removeExecution(atom:Atom){
     if(pattern != null){
       for(a <- pattern){
-        if (a.relName == atom.relName && a.arity == atom.arity){
-          transitions(a).foreach{t=>
+        if (a.relation.name == atom.relation.name && a.arity == atom.arity){
+          transitions(a.hashCode).foreach{t=>
             t.fin.removeExecutions(atom)
           }
         }
@@ -77,14 +89,14 @@ trait StateMachine {
     if (size == 0)
       size = math.pow(2,pattern.length).intValue
     val slst = new Array[State](size)
-    for(i <- 0 until size){
+    for(i <- 0 to size-1){
       slst.update(i, new State(i))
     }
     slst
   }
 
   private def initTransitions = {
-    val tmap = HashMap[Atom,Array[Transition]]()
+    val tmap = HashMap[Int,Array[Transition]]()
 
     var pos = 0
     for(hd <- pattern){
@@ -103,10 +115,9 @@ trait StateMachine {
         }
         i += 1
       }
-      tmap.put(hd, tarr)
+      tmap.put(hd.hashCode, tarr)
       pos += 1
     }
-
     tmap
   }
 

@@ -1,5 +1,7 @@
 package fr.emn.criojo.core
 
+import datatype.Variable
+
 /**
  * Created by IntelliJ IDEA.
  * User: mayleen
@@ -16,7 +18,7 @@ trait RuleFactory{
   type Body = List[Atom]
   type Head = List[Atom]
 
-  def createRule(h:Head,b:Body,g:Guard):Rule = createRule(h,b,g,List()) 
-  def createRule(h:Head,b:Body,g:Guard,scope:List[Variable]):Rule
+  def createRule(h:Head,b:Body,g:Guard):Rule = createRule(h,b,g,Set())
+  def createRule(h:Head,b:Body,g:Guard,scope:Set[Variable]):Rule
 
 }

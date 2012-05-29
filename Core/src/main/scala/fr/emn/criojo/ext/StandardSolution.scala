@@ -1,7 +1,6 @@
 package fr.emn.criojo.ext
 
 import fr.emn.criojo.core._
-import Criojo.Substitution
 import fr.emn.criojo.util.Logger
 
 /**
@@ -22,13 +21,13 @@ class StandardSolution /*extends Solution{
   }
 
 //  override def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = relation match{
-//    case Atom(SUC, terms) =>
+//    case Atom(SUC, patterns) =>
 //    case _ =>
 //      if (subs.isEmpty){
 //        filter(_.relName == relation.relName).toList
 //      }else{
 //        val test = relation.applySubstitutions(subs)
-//        filter(a => a.active && a.matches(test)).toList
+//        filter(a => a.active && a.correspondsTo(test)).toList
 //      }
 //  }
 
@@ -64,7 +63,7 @@ class StandardSolution /*extends Solution{
   }
 
   def prettyPrint = {
-      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.terms.map(getPrintVariable(_)))).mkString("<",",",">")
+      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.patterns.map(getPrintVariable(_)))).mkString("<",",",">")
   }
   
   override def clone:Solution = {
@@ -89,7 +88,7 @@ class StandardSolution /*extends Solution{
 ////          v
 //      }
 
-      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.terms.map(getPrintVariable(_)))).mkString("<",",",">")
+      elems.filterNot(_.relName.startsWith("$")).map(a => new Atom(a.relName, a.patterns.map(getPrintVariable(_)))).mkString("<",",",">")
     }
 
   }
