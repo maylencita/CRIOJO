@@ -38,7 +38,7 @@ import org.hornetq.core.server.HornetQServers;
  * This connector comes with an implementation of HornetQ server. If no server
  * start on {@link BusConnectorLocalHornetQ}.getHost with given port, the
  * connector start a new HornetQ server. To connect to bus, the HornetQ server
- * configuration will specifying connectors using Netty implementation.
+ * configuration will specifying connectors using Netty implementation. Server
  * 
  * @see http://www.jboss.org/hornetq
  */
@@ -47,13 +47,15 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	public static final String QUEUE = "jms.queue.";
 	public static final String DEFAULT_BROADCAST_ADDRESS = "231.7.7.7";
 	public static final int DEFAULT_BROADCAST_PORT = 9876;
+	public static final int DEFAULT_STOMPWEBSOCKET_PORT = 61614;
 
-	private int port;
-	private String name;
-	private String login;
-	private String password;
-	private String broadcastAddress;
-	private int broadcastPort;
+	private final int port;
+	private final String name;
+	private final String login;
+	private final String password;
+	private final int stompWebSocketPort;
+	private final String broadcastAddress;
+	private final int broadcastPort;
 	private boolean disconected;
 
 	private ClientSession session = null;
@@ -85,6 +87,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 *          The session login.
 	 * @param password
 	 *          The session password.
+	 * @param stompWebSocketPort
+	 *          The Stomp over WebSocket acceptor port.
 	 * @param broadcastAddress
 	 *          The broadcast address (HornetQ server).
 	 * @param broadcastPort
@@ -93,12 +97,13 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 *           Troubles append during connection to Bus or Bus start.
 	 */
 	public BusConnectorLocalHornetQ(int port, String name, String login,
-	    String password, String broadcastAddress, int broadcastPort)
-	    throws BusConnectorException {
+	    String password, int stompWebSocketPort, String broadcastAddress,
+	    int broadcastPort) throws BusConnectorException {
 		this.port = port;
 		this.name = name;
 		this.login = login;
 		this.password = password;
+		this.stompWebSocketPort = stompWebSocketPort;
 		this.broadcastAddress = broadcastAddress;
 		this.broadcastPort = broadcastPort;
 		this.disconected = false;
@@ -118,7 +123,9 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 * new HornetQ server on {@link BusConnectorLocalHornetQ}.getHost with given
 	 * port. If new server started, the new server is start in clustered mode with
 	 * broadcast address BusConnectorLocalHornetQ.DEFAULT_BROADCAST_ADDRESS and
-	 * broadcast port BusConnectorLocalHrnetQ.DEFAULT_BROADCAST_PORT.
+	 * broadcast port BusConnectorLocalHrnetQ.DEFAULT_BROADCAST_PORT. Moreover an
+	 * acceptor for Stomp connection over WebSocket is started on
+	 * BusConnectorLocalHornetQ.DEFAULT_STOMPWEBSOCKET_PORT.
 	 * 
 	 * @param port
 	 *          The host port (HornetQ Connector port, with Netty).
@@ -133,8 +140,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 */
 	public BusConnectorLocalHornetQ(int port, String name, String login,
 	    String password) throws BusConnectorException {
-		this(port, name, login, password, DEFAULT_BROADCAST_ADDRESS,
-		    DEFAULT_BROADCAST_PORT);
+		this(port, name, login, password, DEFAULT_STOMPWEBSOCKET_PORT,
+		    DEFAULT_BROADCAST_ADDRESS, DEFAULT_BROADCAST_PORT);
 	}
 
 	@Override
@@ -317,22 +324,14 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n   <connectors>      "
 			    + "\n      <connector name=\"netty\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyConnectorFactory</factory-class>"
-			    + "\n         <param key=\"host\"  value=\""
-			    + getHost()
-			    + "\"/>"
-			    + "\n         <param key=\"port\"  value=\""
-			    + port
-			    + "\"/>"
+			    + "\n         <param key=\"host\"  value=\"" + getHost() + "\"/>"
+			    + "\n         <param key=\"port\"  value=\"" + port + "\"/>"
 			    + "\n      </connector>"
 			    + "\n      "
 			    + "\n      <connector name=\"netty-throughput\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyConnectorFactory</factory-class>"
-			    + "\n         <param key=\"host\"  value=\""
-			    + getHost()
-			    + "\"/>"
-			    + "\n         <param key=\"port\"  value=\""
-			    + (port + 10)
-			    + "\"/>"
+			    + "\n         <param key=\"host\"  value=\"" + getHost() + "\"/>"
+			    + "\n         <param key=\"port\"  value=\"" + (port + 10) + "\"/>"
 			    + "\n         <param key=\"batch-delay\" value=\"50\"/>"
 			    + "\n      </connector>"
 			    + "\n   </connectors>"
@@ -340,22 +339,21 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n   <acceptors>"
 			    + "\n      <acceptor name=\"netty\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
-			    + "\n         <param key=\"host\"  value=\""
-			    + getHost()
-			    + "\"/>"
-			    + "\n         <param key=\"port\"  value=\""
-			    + port
-			    + "\"/>"
+			    + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
+			    + "\n         <param key=\"port\"  value=\"" + port + "\"/>"
+			    + "\n      </acceptor>"
+			    + "\n      "
+			    + "\n      <acceptor name=\"stomp-ws-acceptor\">"
+			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
+			    + "\n         <param key=\"protocol\"  value=\"stomp_ws\"/>"
+			    + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
+			    + "\n         <param key=\"port\"  value=\"" + stompWebSocketPort + "\"/>"
 			    + "\n      </acceptor>"
 			    + "\n      "
 			    + "\n      <acceptor name=\"netty-throughput\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
-			    + "\n         <param key=\"host\"  value=\""
-			    + getHost()
-			    + "\"/>"
-			    + "\n         <param key=\"port\"  value=\""
-			    + (port + 10)
-			    + "\"/>"
+			    + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
+			    + "\n         <param key=\"port\"  value=\"" + (port + 10) + "\"/>"
 			    + "\n         <param key=\"batch-delay\" value=\"50\"/>"
 			    + "\n         <param key=\"direct-deliver\" value=\"false\"/>"
 			    + "\n      </acceptor>"
@@ -363,12 +361,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n"
 			    + "\n   <broadcast-groups>"
 			    + "\n      <broadcast-group name=\"bg-group1\">"
-			    + "\n         <group-address>"
-			    + broadcastAddress
-			    + "</group-address>"
-			    + "\n         <group-port>"
-			    + broadcastPort
-			    + "</group-port>"
+			    + "\n         <group-address>" + broadcastAddress + "</group-address>"
+			    + "\n         <group-port>" + broadcastPort + "</group-port>"
 			    + "\n         <broadcast-period>5000</broadcast-period>"
 			    + "\n         <connector-ref>netty</connector-ref>"
 			    + "\n      </broadcast-group>"
@@ -376,12 +370,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n"
 			    + "\n   <discovery-groups>"
 			    + "\n      <discovery-group name=\"dg-group1\">"
-			    + "\n         <group-address>"
-			    + broadcastAddress
-			    + "</group-address>"
-			    + "\n         <group-port>"
-			    + broadcastPort
-			    + "</group-port>"
+			    + "\n         <group-address>" + broadcastAddress + "</group-address>"
+			    + "\n         <group-port>" + broadcastPort + "</group-port>"
 			    + "\n         <refresh-timeout>10000</refresh-timeout>"
 			    + "\n      </discovery-group>"
 			    + "\n   </discovery-groups>"
