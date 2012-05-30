@@ -86,7 +86,7 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 		ClientMessage msg = session.createMessage(false);
 
 		try {
-			// Use NullableSimpleString cause is default Stomp message form.
+			// Use NullableSimpleString cause it is default Stomp message form.
 			msg.getBodyBuffer().writeNullableSimpleString(new SimpleString(message));
 			msg.setDurable(true);
 			producer.send(QUEUE + recipient, msg);
@@ -107,7 +107,7 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 					} catch (HornetQException hqe) {
 						hqe.printStackTrace();
 					}
-					// Use NullableSimpleString cause is default Stomp message form.
+					// Use NullableSimpleString cause it is default Stomp message form.
 					receiveHandler.onReceive(message.getBodyBuffer()
 					    .readNullableSimpleString().toString());
 				}

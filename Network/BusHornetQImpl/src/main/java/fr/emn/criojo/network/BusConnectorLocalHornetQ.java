@@ -9,6 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.hornetq.api.core.HornetQException;
+import org.hornetq.api.core.SimpleString;
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.api.core.client.ClientConsumer;
 import org.hornetq.api.core.client.ClientMessage;
@@ -43,7 +44,6 @@ import org.hornetq.core.server.HornetQServers;
  */
 public class BusConnectorLocalHornetQ implements BusConnector {
 	protected static Lock l = new ReentrantLock();
-	public static final String MSG_HEADER = "msg";
 	public static final String QUEUE = "jms.queue.";
 	public static final String DEFAULT_BROADCAST_ADDRESS = "231.7.7.7";
 	public static final int DEFAULT_BROADCAST_PORT = 9876;
@@ -143,8 +143,9 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 		ClientMessage msg = session.createMessage(false);
 
 		try {
+			// Use NullableSimpleString cause it is default Stomp message form.
+			msg.getBodyBuffer().writeNullableSimpleString(new SimpleString(message));
 			msg.setDurable(true);
-			msg.putStringProperty(MSG_HEADER, message);
 			producer.send(QUEUE + recipient, msg);
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
@@ -163,7 +164,9 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 					} catch (HornetQException hqe) {
 						hqe.printStackTrace();
 					}
-					receiveHandler.onReceive(message.getStringProperty(MSG_HEADER));
+					// Use NullableSimpleString cause it is default Stomp message form.
+					receiveHandler.onReceive(message.getBodyBuffer()
+					    .readNullableSimpleString().toString());
 				}
 			});
 		} catch (HornetQException hqe) {
@@ -489,11 +492,11 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	public String getQueueName() {
 		return QUEUE + name;
 	}
-	
+
 	@Override
 	public String getName() {
-  	return name;
-  }
+		return name;
+	}
 
 	/**
 	 * Structure to count number of instance on a specific server.
