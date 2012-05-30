@@ -5,7 +5,7 @@ import ext.expression.Relation.ChannelLocation
 import ext.expression.Relation.constructor.OutChannel
 import ext.expression.ScalaInt.constructor.WrapScalaInt
 import main.scala.fr.emn.criojo.BusManager
-import network.ReceiveHandler
+
 import org.junit.Test
 
 /**
