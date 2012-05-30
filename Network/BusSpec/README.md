@@ -1,18 +1,22 @@
-Criojo-Networking
-=================
+# BusSpec
 
-This is the project for the networking part of the Criojo language.
+This is the project for the networking part of the Criojo language. It provides
+classes to make Criojo agents interaction. This package defined interfaces of
+how to connect on Bus and send/receive message over the Bus.
 
-It provides classes and basic implementation to make Criojo interact with HornetQ.
+## Source
+The project's source code is hosted at:
 
-Installation
-============
+https://github.com/maylencita/CRIOJO
 
-Take the jar from the /lib directory and insert it in your java/scala project. There is a maven dependency that will automatically download the core and the bootstrap of HornetQ.
+## Installation
 
-Simply Connect to an HornetQ Server by running the bus.
+To install simply use Maven :
 
-Contact
-=======
+```% mvn install```
 
-Do not hesistate to contact the Criojo team with the issue tracker, or by private mail (soon).
+## Contact
+
+Do not hesitate to contact the Criojo team with the issue tracker, or by
+private mail (soon).
+

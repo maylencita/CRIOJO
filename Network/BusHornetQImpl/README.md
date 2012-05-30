@@ -1,18 +1,46 @@
-Criojo-Networking
-=================
+# BusHornetQImpl
 
-This is the project for the networking part of the Criojo language.
+This is the project for the networking part of the Criojo language. It provides
+an implementation of BusSpec with HornetQ.
 
-It provides classes and basic implementation to make Criojo interact with HornetQ.
+## HornetQ
+HornetQ is an open source asynchronous messaging project from JBoss. It is an
+example of Message Oriented Middleware. HornetQ is an open source project to
+build a multi-protocol, embeddable, very high performance, clustered,
+asynchronous messaging system.
 
-Installation
-============
+The HornetQ source code is available at:
 
-Take the jar from the /lib directory and insert it in your java/scala project. There is a maven dependency that will automatically download the core and the bootstrap of HornetQ.
+https://github.com/hornetq/hornetq
 
-Simply Connect to an HornetQ Server by running the bus.
+## Implementation
+This project provides two implementations of BusConnector. The first is
+BusConnectorRemoteHornetQ and the second is BusConnectorLocalHornetQ.
 
-Contact
-=======
+### BusConnectorRemoteHornetQ
+BusConnectorRemoteHornetQ connect to an existing server. The server would be a
+HornetQ server with acceptors using Netty implementation. With this connector,
+the server configuration is in charge of administrator.
 
-Do not hesistate to contact the Criojo team with the issue tracker, or by private mail (soon).
+### BusConnectorLocalHornetQ
+This connector comes with an implementation of HornetQ server. If no server
+start on BusConnectorLocalHornetQ.getHost with given port, the connector start
+a new HornetQ server. To connect to bus, the HornetQ server configuration will
+specifying acceptors using Netty implementation.
+
+## Source
+The project's source code is hosted at:
+
+https://github.com/maylencita/CRIOJO
+
+## Installation
+
+To install simply use Maven :
+
+```% mvn install```
+
+## Contact
+
+Do not hesitate to contact the Criojo team with the issue tracker, or by
+private mail (soon).
+
