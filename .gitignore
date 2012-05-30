@@ -4,6 +4,8 @@
 *.iws
 .idea/
 
+**/data/
+
 # IGNORE VIM FILES
 .*.sw[a-z]
 *.un~

@@ -9,12 +9,14 @@ public class BusConnectorLocalHornetQFactory implements BusConnectorFactory {
 	 * to be on localhost. If no HornetQ node run on localhost, the connector will
 	 * start a new bus node. The new bus node is start in cluster mode with
 	 * configuration information given in the url. The bus node have. The url form
-	 * is "port:name:login:password:b-castAddress:b-castPort" with:
+	 * is "port:name:login:password:stompWSPort:b-castAddress:b-castPort" with:
 	 * <ul>
 	 * <li>port: The Bus Node Port (HornetQ Connector Port);</li>
 	 * <li>name: The new Connector Name (unique in cluster);</li>
 	 * <li>login: The user login (default guest);</li>
 	 * <li>password: The user password (default guest);</li>
+	 * <li>stompWSPort: The Stomp over WebSocket acceptor Port (HornetQ stomp_ws,
+	 * default is BusConnectorLocalHornetQ.DEFAULT_STOMPWEBSOCKET_PORT);</li>
 	 * <li>b-castAddress: The broadcast address (HornetQ broadcast, discovery,
 	 * default is BusConnectorLocalHornetQ.DEFAULT_BROADCAST_ADDRESS);</li>
 	 * <li>b-castPort: The broadcast port (HornetQ broadcast, discovery, default
@@ -32,21 +34,25 @@ public class BusConnectorLocalHornetQFactory implements BusConnectorFactory {
 		} else if (params.length == 4) {
 			bus = createConnector(Integer.valueOf(params[0]), params[1], params[2],
 			    params[3]);
-		} else if (params.length == 6) {
+		} else if (params.length == 7) {
 			bus = createConnector(Integer.valueOf(params[0]), params[1], params[2],
-			    params[3], params[4], Integer.valueOf(params[5]));
+			    params[3], Integer.valueOf(params[4]), params[5],
+			    Integer.valueOf(params[6]));
 		} else {
 			throw new BusConnectorFactoryException(
 			    "Can't create BusConnectorLocalHornetQ with following "
 			        + "url. The default format is \"host:port:name:login:password\" with :"
-			        + "\tport: The Bus Node Port (HornetQ Connector Port);"
-			        + "\tname: The new Connector Name (unique in cluster);"
-			        + "\tlogin: The user login (default guest);"
-			        + "\tpassword: The user password (default guest);"
-			        + "\tb-castAddress: The broadcast address (HornetQ broadcast, "
+			        + "\n\tport: The Bus Node Port (HornetQ Connector Port);"
+			        + "\n\tname: The new Connector Name (unique in cluster);"
+			        + "\n\tlogin: The user login (default guest);"
+			        + "\n\tpassword: The user password (default guest);"
+			        + "\n\tstompWSPort: The Stomp over WebSocket acceptor Port "
+			        + "(HornetQ stomp_ws, default is "
+			        + "BusConnectorLocalHornetQ.DEFAULT_STOMPWEBSOCKET_PORT);"
+			        + "\n\tb-castAddress: The broadcast address (HornetQ broadcast, "
 			        + "discovery, default is "
 			        + "BusConnectorLocalHornetQ.DEFAULT_BROADCAST_ADDRESS);"
-			        + "\tb-castPort: The broadcast port (HornetQ broadcast, "
+			        + "\n\tb-castPort: The broadcast port (HornetQ broadcast, "
 			        + "discovery, default is "
 			        + "BusConnectorLocalHornetQ.DEFAULT_BROADCAST_PORT).");
 		}
@@ -69,6 +75,8 @@ public class BusConnectorLocalHornetQFactory implements BusConnectorFactory {
 	 *          The user login (may be guest).
 	 * @param password
 	 *          The user password (may be guest).
+	 * @param	stompWSPort
+	 * 					The Stomp over WebSocket acceptor port (if any).
 	 * @param broadcastAddress
 	 *          The BroadcastAddress of new local server (if any).
 	 * @param broadcastPort
@@ -79,10 +87,11 @@ public class BusConnectorLocalHornetQFactory implements BusConnectorFactory {
 	 *           Error {@link BusConnector} instantiation.
 	 */
 	public BusConnector createConnector(int port, String name, String login,
-	    String password, String broadcastAddress, int broadcastPort)
+	    String password, int stompWSPort, String broadcastAddress,
+	    int broadcastPort)
 	    throws BusConnectorException {
 		return new BusConnectorLocalHornetQ(port, name, login, password,
-		    broadcastAddress, broadcastPort);
+				stompWSPort, broadcastAddress, broadcastPort);
 	}
 
 	/**
