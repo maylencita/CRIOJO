@@ -11,11 +11,11 @@ import network._
  * To change this template use File | Settings | File Templates.
  */
 
-class DummyBus extends Bus {
+class DummyBus extends BusConnector {
 
   var receiveHandler:ReceiveHandler = null
 
-  @throws(classOf[BusException])
+  @throws(classOf[BusConnectorException])
   def send(s:String, s1:String) {
     if(receiveHandler != null)
       receiveHandler.onReceive(s1)
@@ -24,10 +24,14 @@ class DummyBus extends Bus {
   def setReceiveHandler(handler:ReceiveHandler) {
     receiveHandler = handler
   }
+  
+  def getName:String = "dummy"
+  def isDisconected:Boolean = false
+  def disconnect() {}
 }
 
-class DummyBusFactory extends BusFactory {
+class DummyBusFactory extends BusConnectorFactory {
 
-  @throws(classOf[BusFactoryException])
-  def createBus(s:String):Bus = new DummyBus()
+  @throws(classOf[BusConnectorFactoryException])
+  def createConnector(s:String):BusConnector = new DummyBus()
 }

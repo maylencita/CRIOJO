@@ -10,9 +10,24 @@ object ObjectToScala {
 
   def serverVariableHeader(env:ServerEnvironment):String = {
     env.mapOfChams.foldLeft(""){ case(v,(k,p)) => v+"\t\tvar "+ k + ":Cham \n"}
+    env.mapOfFirewalls.foldLeft(""){ case(v,(k,p)) => v+"\t\tvar "+ k + ":Firewall \n"}
   }
 
   def chamVariableHeader(env:ChamEnvironment):String = {
+    env.mapOfVariables.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
+    env.mapOfOutChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
+    env.mapOfInChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}
+  }
+
+  def firewallVariableHeader(env:FirewallEnvironment):String = {
+
+    env.mapOfObjects.foldLeft(""){ case(v,(k,p)) =>
+      p.getType() match {
+        case "cham" => v+"\t\tvar "+ k + ":Cham \n"
+        case "firewall" => v+"\t\tvar "+ k + ":Firewall \n"
+      }
+    }
+
     env.mapOfVariables.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
     env.mapOfOutChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
     env.mapOfInChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}
@@ -30,10 +45,28 @@ object ObjectToScala {
 
   def server(name:String, chams:List[Any]):String = chams.foldLeft(""){case(v,c) => v+c}+"\n"
 
-  def chamWithVariableDeclariation(name:String, rules:List[Any], env:ChamEnvironment):String = {
-    "\t\t"+name+" = new Cham with IntegerCham with DebugCham {\n"+chamVariableHeader(env)+"\t\t\trules(\n\t"+rules.foldLeft("\t\t\t") {
+  def firewallWithVariableDeclariation(name:String, env:FirewallEnvironment):String = {
+    "\t\t"+name+" = new Firewall {\n"+
+    firewallVariableHeader(env)+"\t\t\t" +
+    "\n\t"+
+    env.assignations.foldLeft("\t\t\t") {
+      case(v,c) => if (v != "\t\t\t") { v+"\t\t\t\t,"+c } else { v+c }
+    }+
+    env.mapOfObjects.foldLeft(""){ case(v,(k,p)) => p match {
+      case f:FirewallEnvironment => "\t\t\tvar "+k+":FirewallEnvironment\n"+firewallWithVariableDeclariation (k,f)+"\n"
+      case c:ChamEnvironment => "\t\t\tvar "+k+":ChamEnvironment\n"+chamWithVariableDeclariation(k,c)+"\n"
+    }}+
+    "\n\t\t}\n"
+  }
+
+  def chamWithVariableDeclariation(name:String, env:ChamEnvironment):String = {
+    "\t\t"+name+" = new Cham with IntegerCham with DebugCham {\n"+chamVariableHeader(env)+"\t\t\trules(\n\t"+env.rules.foldLeft("\t\t\t") {
       case(v,c) => if (v != "\t\t\t") { v+"\t\t\t\t,"+c } else { v+c }
     }+"\t\t\t)\n\t\t}\n"
+  }
+
+  def channelOpening(idChannel:String):String = {
+    "\""+idChannel+"\""
   }
 
   def cham(name:String, rules:List[Any]):String = {

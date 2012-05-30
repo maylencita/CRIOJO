@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.emn.criojo</groupId>
-    <artifactId>CRIOJO</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <inceptionYear>2010</inceptionYear>
+  <groupId>fr.emn.criojo</groupId>
+  <artifactId>CRIOJO</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <inceptionYear>2010</inceptionYear>
 
-    <packaging>pom</packaging>
+  <packaging>pom</packaging>
 
-    <modules>
-        <module>Core</module>
-        <module>CriojoCompiler</module>
-        <module>BusSpec</module>
-        <module>BusHornetQImpl</module>
-        <module>Network</module>
-    </modules>
+  <modules>
+    <module>Core</module>
+    <module>CriojoCompiler</module>
+    <module>Network</module>
+  </modules>
 
-    <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <version>2.6</version>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-        <!-- To use the plugin goals in your POM or parent POM -->
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.6</version>
-            <!--<configuration>-->
-                <!--<include>**/*Test.scala</include>-->
-            <!--</configuration>-->
-          </plugin>
-        </plugins>        
-    </build>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <!-- To use the plugin goals in your POM or parent POM -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.6</version>
+        <!--<configuration>-->
+          <!--<include>**/*Test.scala</include>-->
+          <!--</configuration>-->
+      </plugin>
+    </plugins>        
+  </build>
 </project>

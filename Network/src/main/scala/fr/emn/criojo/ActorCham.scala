@@ -4,7 +4,6 @@ import core.Atom
 import core.factory.DefaultFactory
 import lang.Cham
 import main.scala.fr.emn.criojo.BusManager
-import network.{Bus, ReceiveHandler}
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,13 +13,21 @@ import network.{Bus, ReceiveHandler}
  * To change this template use File | Settings | File Templates.
  */
 
-class ActorCham(val name:String, val busManager:BusManager) extends Cham  with DefaultFactory {
+class ActorCham(val name:String, val busManager:BusManager) extends Cham  with NetworkObject with DefaultFactory {
 
   busManager.addActor(this)
 
+  def getName:String = name
+
+  override def introduceAtom(atom : fr.emn.criojo.core.Atom) {
+    super.introduceAtom(atom)
+  }
+  
   var receiveHandler:AtomReceiveHandler = new AtomReceiveHandler {
     def onReceive(a: Atom) {
-      introduceAtom(a)
+      if(filterRules.contains(name+"."+a.relation.name)) {
+        introduceAtom(a)
+      }
     }
   }
 
