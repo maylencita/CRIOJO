@@ -40,10 +40,10 @@
   <dependencies>
       <dependency>
           <groupId>fr.emn.criojo.network</groupId>
-          <artifactId>CriojoNetwork</artifactId>
+          <artifactId>NetworkSpec</artifactId>
           <version>1.0-SNAPSHOT</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/CriojoNetwork-1.0-SNAPSHOT.jar</systemPath>
+          <systemPath>${basedir}/lib/NetworkSpec-1.0-SNAPSHOT.jar</systemPath>
       </dependency>
 
       <dependency>

@@ -17,13 +17,29 @@ class ProgramEnvironment {
 
 class ServerEnvironment {
   var mapOfChams:HashMap[String, ChamEnvironment] = HashMap()
+  var mapOfFirewalls:HashMap[String, FirewallEnvironment] = HashMap()
 }
 
 class ChamEnvironment {
+
+  def getType():String = "cham"
+
+  var rules:List[Any] = List()
+
   var mapOfVariables:HashMap[String, String] = HashMap()
   var mapOfInChannel:HashMap[String, String] = HashMap()
   var mapOfOutChannel:HashMap[String, String] = HashMap()
 }
+
+class FirewallEnvironment extends ChamEnvironment {
+
+  override def getType():String = "firewall"
+
+  var assignations:List[Any] = List()
+  var mapOfObjects:HashMap[String, ChamEnvironment] = HashMap()
+}
+
+
 
 object CriojoCompiler {
   def main(args: Array[String]) {
@@ -54,6 +70,7 @@ class CriojoCompiler extends JavaTokenParsers {
   var env:ProgramEnvironment = new ProgramEnvironment()
 
   var currentChamEnvironment:ChamEnvironment = new ChamEnvironment()
+  var currentFirewallEnvironment:FirewallEnvironment = new FirewallEnvironment()
   var currentServerEnvironment:ServerEnvironment = new ServerEnvironment()
 
   def parse(s:String):String = parseAll(program,s).get.toString
@@ -68,7 +85,7 @@ class CriojoCompiler extends JavaTokenParsers {
     case servers => ObjectToScala.mainProgram(servers)
   }
 
-  def server: Parser[Any] = id~"{"~rep(cham)<~"}" ^^ {
+  def server: Parser[Any] = id~"{"~rep(cham | firewall)<~"}" ^^ {
     case idServer~_~chams => {
       env.mapOfServers.put(idServer, currentServerEnvironment)
       currentServerEnvironment = new ServerEnvironment()
@@ -76,11 +93,28 @@ class CriojoCompiler extends JavaTokenParsers {
     }
   }
 
+  def firewall: Parser[Any] = id~"("~repsep(channelOpening, ",")~"){"~repsep(criojoObject, ",")<~"}" ^^ {
+    case idFirewall~_~assignations~_~children => {
+      currentServerEnvironment.mapOfFirewalls.put(idFirewall, currentFirewallEnvironment)
+      currentChamEnvironment = new FirewallEnvironment()
+      currentServerEnvironment.mapOfFirewalls.get(idFirewall).get.assignations = assignations
+      ObjectToScala.firewallWithVariableDeclariation(idFirewall, currentServerEnvironment.mapOfFirewalls.get(idFirewall).get)
+    }
+  }
+
+  def criojoObject:Parser[Any] = firewall | cham
+  
+  def channelOpening: Parser[Any] = criojoId ^^ {
+    case idChannel => ObjectToScala.channelOpening(idChannel.toString)
+  }
+
   def cham: Parser[Any] = id~"{"~rep(rule)<~"}" ^^ {
     case idCham~_~rules => {
       currentServerEnvironment.mapOfChams.put(idCham, currentChamEnvironment)
+      currentFirewallEnvironment.mapOfObjects.put(idCham, currentChamEnvironment)
       currentChamEnvironment = new ChamEnvironment()
-      ObjectToScala.chamWithVariableDeclariation(idCham, rules, currentServerEnvironment.mapOfChams.get(idCham).get)
+      currentServerEnvironment.mapOfChams.get(idCham).get.rules = rules
+      ObjectToScala.chamWithVariableDeclariation(idCham, currentServerEnvironment.mapOfChams.get(idCham).get)
     }
   }
 
@@ -100,6 +134,7 @@ class CriojoCompiler extends JavaTokenParsers {
   
   def criojoId = remoteChamdId | localChamdId | inChannelId | id ^^ { case idVar => {
       currentChamEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+      currentFirewallEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
       idVar
     }
 
@@ -107,16 +142,19 @@ class CriojoCompiler extends JavaTokenParsers {
 
   def inChannelId: Parser[Any] = "@"~id ^^ { case _~atomName => {
     currentChamEnvironment.mapOfInChannel.put(atomName, ":InChannel = InChannel(\""+atomName+"\")")
+    currentFirewallEnvironment.mapOfInChannel.put(atomName, ":InChannel = InChannel(\""+atomName+"\")")
     atomName
   }
   }
   def localChamdId: Parser[Any] = id~"."~id ^^ { case chamName~_~atomName => {
       currentChamEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = OutChannel(\""+chamName+"."+atomName+"\")")
+      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = OutChannel(\""+chamName+"."+atomName+"\")")
       "@"+chamName+"."+atomName
     }
   }
   def remoteChamdId: Parser[Any] = id~"."~id~"."~id ^^ { case serverName~_~chamName~"."~atomName => {
       currentChamEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
+      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
       "@"+serverName+"."+chamName+"."+atomName
     }
   }

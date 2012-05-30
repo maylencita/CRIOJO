@@ -48,6 +48,14 @@ class CompilerTest {
 
     assert(true)
   }
+
+  @Test
+  def firewallTest() {
+    println(new CriojoCompiler().parse("server1{firewall(cham1.A){cham1{}}}"))
+
+    assert(true)
+  }
+
   @Test
   def computeFileTest() {
     val inputProgram = scala.io.Source.fromFile("program.criojo").mkString
