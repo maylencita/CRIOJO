@@ -1,23 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
-       <groupId>fr.emn.criojo</groupId>
-        <artifactId>CRIOJO</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>fr.emn.criojo</groupId>
+    <artifactId>CRIOJO</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
   <groupId>fr.emn.criojo</groupId>
   <artifactId>CRIOJO-network</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>BusSpec</module>
+    <module>BusHornetQImpl</module>
+  </modules>
+
   <properties>
     <scala.version>2.9.1</scala.version>
     <junit.version>4.8.1</junit.version>
-    <!--<junit.version>3.8.1</junit.version>-->
     <jersey-version>1.3</jersey-version>
-
-      <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.language>scala</sonar.language>
   </properties>
 
@@ -38,42 +43,28 @@
   </pluginRepositories>
 
   <dependencies>
-      <dependency>
-          <groupId>fr.emn.criojo.network</groupId>
-          <artifactId>CriojoNetwork</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>system</scope>
-          <systemPath>${basedir}/lib/CriojoNetwork-1.0-SNAPSHOT.jar</systemPath>
-      </dependency>
+    <!-- Bus API -->
+    <dependency>
+      <groupId>fr.emn.criojo.network</groupId>
+      <artifactId>BusSpec</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
 
-      <dependency>
-          <groupId>fr.emn.criojo.core</groupId>
-          <artifactId>CRIOJO-Core</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>system</scope>
-          <systemPath>${basedir}/lib/CRIOJO-core-1.0-SNAPSHOT.jar</systemPath>
-      </dependency>
+    <!-- Bus Implementation -->
+    <dependency>
+      <groupId>fr.emn.criojo.network</groupId>
+      <artifactId>BusHornetQImpl</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
 
-      <dependency>
-          <groupId>org.hornetq</groupId>
-          <artifactId>hornetq-core</artifactId>
-          <version>2.2.15.Final</version>
-      </dependency>
+    <!-- Criojo -->
+    <dependency>
+      <groupId>fr.emn.criojo</groupId>
+      <artifactId>CRIOJO-Core</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
 
-      <dependency>
-          <groupId>org.jboss.netty</groupId>
-          <artifactId>netty</artifactId>
-          <version>3.2.7.Final</version>
-      </dependency>
-
-      <dependency>
-          <groupId>fr.emn.criojo.network</groupId>
-          <artifactId>HornetQImpl</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>system</scope>
-          <systemPath>${basedir}/lib/HornetQImpl-1.0-SNAPSHOT.jar</systemPath>
-      </dependency>
-
+    <!-- Utils -->
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
@@ -85,27 +76,26 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-client</artifactId>
-          <version>${jersey-version}</version>
-          <!--<scope>test</scope>-->
-      </dependency>
-      <dependency>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-json</artifactId>
-          <version>${jersey-version}</version>
-      </dependency>
-      <dependency>
-          <groupId>net.debasishg</groupId>
-          <artifactId>sjson_2.8.0</artifactId>
-          <version>0.8</version>
-      </dependency>
-      <dependency>
-        <groupId>net.databinder</groupId>
-        <artifactId>dispatch-json_2.8.0.RC3</artifactId>
-        <version>0.7.4</version>
-      </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.debasishg</groupId>
+      <artifactId>sjson_2.8.0</artifactId>
+      <version>0.8</version>
+    </dependency>
+    <dependency>
+      <groupId>net.databinder</groupId>
+      <artifactId>dispatch-json_2.8.0.RC3</artifactId>
+      <version>0.7.4</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -115,6 +105,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
         <executions>
           <execution>
             <goals>
@@ -128,45 +119,28 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.5.3.201107060350</version>
         <configuration>
-          <downloadSources>true</downloadSources>
-          <buildcommands>
-            <buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>
-          </buildcommands>
-          <additionalProjectnatures>
-            <projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>
-          </additionalProjectnatures>
-          <classpathContainers>
-            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-            <classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
-          </classpathContainers>
+          <includes>fr.emn.criojo.*</includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
-        <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.5.3.201107060350</version>
-            <configuration>
-                <includes>fr.emn.criojo.*</includes>
-            </configuration>
-            <executions>
-                <execution>
-                    <id>pre-unit-test</id>
-                    <goals>
-                        <goal>prepare-agent</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>post-unit-test</id>
-                    <phase>test</phase>
-                    <goals>
-                        <goal>report</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
     </plugins>
   </build>
   <reporting>
@@ -174,6 +148,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
         </configuration>
@@ -181,4 +156,4 @@
     </plugins>
   </reporting>
 </project>
-        
+
