@@ -353,7 +353,7 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n      "
 			    + "\n      <acceptor name=\"stomp-ws-acceptor\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
-			    + "\n         <param key=\"protocol\"  value=\"stomp\"/>"
+			    + "\n         <param key=\"protocol\"  value=\"stomp_ws\"/>"
 			    + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
 			    + "\n         <param key=\"port\"  value=\"" + stompWebSocketPort + "\"/>"
 			    + "\n      </acceptor>"
