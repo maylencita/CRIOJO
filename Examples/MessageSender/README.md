@@ -4,11 +4,11 @@ MessageSender is simply app use to test BusConnector.
 This app offer an interface to connect on Bus with different implementation of
 BusConnector and send message over the bus.
 
-## Required
+## Compile
 
-Ensure you already launch ```mvn install``` on `CRIOJO main directory.
+Ensure you already launch ```mvn install``` on CRIOJO main directory.
 
-Next do ```mvn compile```.
+Next, ```mvn compile```.
 
 ## LocalConnector
 

@@ -9,7 +9,7 @@ public interface BusConnectorFactory {
 	 * Create a connector on the bus
 	 * 
 	 * @param url
-	 *          Hot to access on the bus.
+	 *          How to connect the bus.
 	 * @return a {@link BusConnector}.
 	 * @throws BusConnectorFactoryException
 	 *           An error occur during {@link BusConnector} instantiation.
