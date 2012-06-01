@@ -58,15 +58,15 @@ public class MessageSender {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void initComponents() {
 		// -- Message Buffer
 		messageBufferTextArea = new JTextArea();
 		messageBufferTextArea.setEditable(false);
-		
+
 		// -- User
 		userTextField = new JTextField("User Name");
-		
+
 		// -- Message
 		messageTextField = new JTextField("Message");
 	}
@@ -88,8 +88,8 @@ public class MessageSender {
 		messageTextField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					String recipientName = (!userTextField.getText().trim().isEmpty()) ? userTextField
-					    .getText().trim() : "NoName";
+					String recipientName = (!userTextField.getText().trim().isEmpty()) ?
+							userTextField.getText().trim() : "NoName";
 					String msg = messageTextField.getText().trim();
 					messageTextField.setText("");
 					send(msg, recipientName);
@@ -101,7 +101,8 @@ public class MessageSender {
 		conn.setReceiveHandler(new ReceiveHandler() {
 			@Override
 			public void onReceive(String msg) {
-				messageBufferTextArea.setText(messageBufferTextArea.getText() + "\n" + msg);
+				messageBufferTextArea.setText(messageBufferTextArea.getText() + "\n"
+				    + msg);
 			}
 		});
 	}
@@ -159,23 +160,6 @@ public class MessageSender {
 		frame.add(messageTextField, gbc);
 	}
 
-	public static void main(String[] args) {
-		BusConnector connector = null;
-		BusConnectorFactory factory = null;
-
-		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(
-		    System.in));
-
-		factory = chooseFactory(bufferRead);
-
-		if (factory != null) {
-			connector = connect(factory, bufferRead);
-
-			if (connector != null) {
-				new MessageSender(connector);
-			}
-		}
-	}
 
 	/**
 	 * Let user defined hot to connect on bus.
@@ -199,8 +183,7 @@ public class MessageSender {
 					connector = factory.createConnector(choice);
 					stop = true;
 				} catch (BusConnectorFactoryException e) {
-					e.printStackTrace();
-					System.out.println("Wrong url, try again ;)");
+					System.out.println("Wrong url, try again ;)\n" + e.getMessage());
 				} catch (BusConnectorException e) {
 					System.out.println(e.getMessage());
 					e.printStackTrace();
@@ -225,7 +208,7 @@ public class MessageSender {
 			int choice = -1;
 
 			try {
-				System.out.print("0 - quit; 1 = LocalHornetQ; 2 - RemoteHornetQ: ");
+				System.out.print("0 - quit; 1 - LocalHornetQ; 2 - RemoteHornetQ: ");
 				choice = Integer.parseInt(bufferRead.readLine().trim());
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -252,5 +235,36 @@ public class MessageSender {
 		}
 
 		return factory;
+	}
+	
+
+	/**
+	 * Start new MessageSender, if user give correct informations.
+	 */
+	private static void startMessageSender(BusConnectorFactory factory,
+      BufferedReader bufferRead) {
+	  BusConnector connector;
+	  if (factory != null) {
+			connector = connect(factory, bufferRead);
+
+			if (connector != null) {
+				new MessageSender(connector);
+			}
+		}
+  }
+	
+	public static void main(String[] args) {
+		BusConnectorFactory factory = null;
+
+		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(
+		    System.in));
+
+		factory = chooseFactory(bufferRead);
+		
+		System.out.println("\n* Defined connector of first MessageSender *");
+		startMessageSender(factory, bufferRead);
+		
+		System.out.println("\n* Defined connector of second MessageSender *");
+		startMessageSender(factory, bufferRead);
 	}
 }
