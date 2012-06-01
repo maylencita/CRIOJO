@@ -108,8 +108,12 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 						hqe.printStackTrace();
 					}
 					// Use NullableSimpleString cause it is default Stomp message form.
-					receiveHandler.onReceive(message.getBodyBuffer()
-					    .readNullableSimpleString().toString());
+					try {
+						receiveHandler.onReceive(message.getBodyBuffer()
+						    .readNullableSimpleString().toString());
+					} catch (NullPointerException npe) {
+						receiveHandler.onReceive(message.toString());
+					}
 				}
 			});
 		} catch (HornetQException hqe) {

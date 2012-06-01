@@ -45,6 +45,8 @@ import org.hornetq.core.server.HornetQServers;
 public class BusConnectorLocalHornetQ implements BusConnector {
 	protected static Lock l = new ReentrantLock();
 	public static final String QUEUE = "jms.queue.";
+	public static final SimpleString MANAGEMENT_QUEUE = new SimpleString(QUEUE
+			+ "hornetq.management");
 	public static final String DEFAULT_BROADCAST_ADDRESS = "231.7.7.7";
 	public static final int DEFAULT_BROADCAST_PORT = 9876;
 	public static final int DEFAULT_STOMPWEBSOCKET_PORT = 61614;
@@ -172,8 +174,12 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 						hqe.printStackTrace();
 					}
 					// Use NullableSimpleString cause it is default Stomp message form.
-					receiveHandler.onReceive(message.getBodyBuffer()
-					    .readNullableSimpleString().toString());
+					try {
+						receiveHandler.onReceive(message.getBodyBuffer()
+								.readNullableSimpleString().toString());
+					} catch(NullPointerException npe) {
+						receiveHandler.onReceive(message.toString());
+					}
 				}
 			});
 		} catch (HornetQException hqe) {
@@ -321,6 +327,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n   <large-messages-directory>${data.dir:../data}/large-messages</large-messages-directory>"
 			    + "\n   -->"
 			    + "\n"
+			    + "\n		<management-address>jms.queue.hornetq.management</management-address>"
+			    + "\n"
 			    + "\n   <connectors>      "
 			    + "\n      <connector name=\"netty\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyConnectorFactory</factory-class>"
@@ -345,7 +353,7 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n      "
 			    + "\n      <acceptor name=\"stomp-ws-acceptor\">"
 			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
-			    + "\n         <param key=\"protocol\"  value=\"stomp_ws\"/>"
+			    + "\n         <param key=\"protocol\"  value=\"stomp\"/>"
 			    + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
 			    + "\n         <param key=\"port\"  value=\"" + stompWebSocketPort + "\"/>"
 			    + "\n      </acceptor>"
@@ -391,6 +399,11 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			    + "\n         <permission type=\"consume\" roles=\"guest\"/>"
 			    + "\n         <permission type=\"send\" roles=\"guest\"/>"
 			    + "\n      </security-setting>"
+			    + "\n   "
+			    + "\n			<!--security for management queue-->"
+		      + "\n			<security-setting match=\"jms.queue.hornetq.management\">"
+		      + "\n				<permission type=\"manage\" roles=\"guest\" />"
+		      + "\n			</security-setting>"
 			    + "\n   </security-settings>"
 			    + "\n"
 			    + "\n" + "\n</configuration>";
@@ -406,6 +419,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			System.err.println("[BUS] Start local server using " + confFile);
 			HornetQServer server = HornetQServers.newHornetQServer(configuration);
 			server.start();
+			server.deployQueue(MANAGEMENT_QUEUE, MANAGEMENT_QUEUE, null, false,
+					false);
 
 			servers.put(port, new InstanceServer(server));
 		} else {
