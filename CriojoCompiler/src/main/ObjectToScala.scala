@@ -48,9 +48,17 @@ object ObjectToScala {
     "import fr.emn.criojo.ext.expression.ScalaString.VarScalaString\n"+
     "\n\n"+
     "object criojoMain {\n " +
+    "\tvar listOfNames:List[String] = List(); var index:Int = -1\n"+
+    "\tdef pushToNames(name:String) { listOfNames = List(name):::listOfNames }\n"+
+    "\tdef popNames() {listOfNames match {case Nil => listOfNames=Nil; case a::l => listOfNames=l}}\n"+
+    "\tdef getNames():String = listOfNames.foldLeft(\"\"){case (v,c) => c+\".\"+v}\n"+
+    "\n\n"+
     "\tdef main(args:Array[String]) {\n" +
+    "\t\tpushToNames(\""+name+"\")\n"+
+    "\t\tvar parentName:String = getNames()\n\n"+
     "\t\tval busManager:BusManager = new BusManager()\n"+
     serverVariableHeader(env)+server(name, chams)+"\n\t}\n"+
+    "\n\tpopNames()\n"+
     "}\n"
   }
 
@@ -58,7 +66,9 @@ object ObjectToScala {
 
   def firewallWithVariableDeclariation(name:String, env:FirewallEnvironment):String = {
     "\t\t"+name+" = new Firewall {\n"+
-    "\n\t\t\tfilterRules=List("+
+    "\t\t\tpushToNames(\""+name+"\")\n"+
+    "\t\t\tvar parentName:String = getNames()\n\n"+
+    "\t\t\tfilterRules=List("+
     env.assignations.foldLeft("") {
       case(v,c) => if (v != "") { v+","+c } else { v+c }
     }+
@@ -72,17 +82,21 @@ object ObjectToScala {
     "\n\t\t\tchildren = List("+
     env.mapOfObjects.foldLeft(""){ case(v,(k,p)) => if (v != "") { v+","+k } else { v+k } }+
     ")"+
+    "\n\t\t\tpopNames()\n"+
     "\n\t\t}\n"+
     "\t\t"+name+".sendFilterRules()\n"
   }
 
   def chamWithVariableDeclariation(name:String, env:ChamEnvironment):String = {
-    "\t\t\t"+name+" = new ActorCham(\""+name+"\", busManager) with ActorChamDebug {\n"+
+    "\t\t\t"+name+" = new ActorCham(parentName+\""+name+"\", busManager) with ActorChamDebug {\n"+
+    "\t\t\t\tpushToNames(\""+name+"\")\n"+
+    "\t\t\t\tvar parentName:String = getNames()\n\n"+
     chamVariableHeader(env)+"\t\t\trules(\n\t"+env.rules.foldLeft("\t\t\t") {
       case(v,c) => if (v != "\t\t\t") { v+"\t\t\t\t,"+c } else { v+c }
     }+
     "\t\t\t)"+
     "\n"+
+    "\n\t\t\tpopNames()\n"+
     "\t\t}\n"
   }
 
@@ -91,19 +105,22 @@ object ObjectToScala {
   }
 
   def cham(name:String, rules:List[Any]):String = {
-    "\t\t\t"+name+" = new ActorCham(\\\"\"+name+\"\\\", busManager) with ActorChamDebug {\n"+
+    "\t\t\t"+name+" = new ActorCham(parentName+\\\"\"+name+\"\\\", busManager) with ActorChamDebug {\n"+
+    "\t\t\t\tpushToNames(\""+name+"\")\n"+
+    "\t\t\t\tvar parentName:String = getNames()\n\n"+
     "\t\t\trules(\n\t"+
     rules.foldLeft("\t\t\t") {
       case(v,c) => if (v != "\t\t\t") { v+"\t\t\t\t,"+c } else { v+c }
     }+
     "\t\t\t)"+
+    "\n\t\tpopNames()\n"+
     "\n\t\t}\n"
   }
 
   def rule(atomsLeft:List[Any], atomsRight:List[Any]) = {
 
-    val leftBody = atomsLeft.foldLeft(""){ case(v1,c1) => if (v1 != "") { v1+","+c1 } else { v1+c1 } }
-    val rightBody = atomsRight.foldLeft(""){ case(v2,c2) => if (v2 != "") { v2+","+c2 } else { v2+c2 } }
+    val leftBody = atomsLeft.foldLeft(""){ case(v1,c1) => if (v1 != "") { v1+"&"+c1 } else { v1+c1 } }
+    val rightBody = atomsRight.foldLeft(""){ case(v2,c2) => if (v2 != "") { v2+"&"+c2 } else { v2+c2 } }
     "("+leftBody+") --> ("+rightBody+")\n"
   }
 

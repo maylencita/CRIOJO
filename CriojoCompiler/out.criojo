@@ -34,7 +34,7 @@ object criojoMain {
 			var Kb:Channel = new Channel("Kb")
 			var Ka:VarChannel = VarChannel("Ka")
 			rules(
-				(Kb(Ka)) --> (Ka(cpt),Kb(cpt))
+				(Kb(Ka)) --> (Ka(cpt)&Kb(cpt))
 			)
 		}
 

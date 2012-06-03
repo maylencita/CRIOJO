@@ -43,6 +43,16 @@ class CompilerTest {
   }
 
   @Test
+  def adressPrefixTest() {
+    val compiler = new CriojoCompiler()
+
+    println(compiler.parseAll(compiler.addressPrefix,"a.b.c.d.").get)
+    println(compiler.parseAll(compiler.remoteChannelId,"a.b.c.d.A.@K").get)
+
+    assert(true)
+  }
+
+  @Test
   def computeTest() {
     new CriojoCompiler().parse("server1{cham1{}cham2{}}server2{cham3{}cham4{}}")
 

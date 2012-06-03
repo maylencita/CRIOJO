@@ -74,6 +74,21 @@ class CriojoCompiler extends JavaTokenParsers {
   var currentFirewallEnvironment:FirewallEnvironment = new FirewallEnvironment()
   var currentServerEnvironment:ServerEnvironment = new ServerEnvironment()
 
+  var treeOfNames:List[String] = List()
+
+  def getName:String = treeOfNames.foldLeft(""){ case(v,c) => if (v != "") { v+"."+c } else { v+c } }
+
+  def pushName(n:String) {
+    treeOfNames = List(n) ::: treeOfNames
+  }
+
+  def popName() {
+    treeOfNames = treeOfNames match {
+      case Nil => Nil
+      case a::l => l
+    }
+  }
+
   def parse(s:String):String = parseAll(program,s).get.toString
 
   val fpt = floatingPointNumber
@@ -190,8 +205,8 @@ class CriojoCompiler extends JavaTokenParsers {
         currentChamEnvironment.mapOfVarChannel.remove(atomName)
       }
 
-      currentChamEnvironment.mapOfInChannel.put(atomName, ":Channel = new Channel(\""+atomName+"\")")
-      currentFirewallEnvironment.mapOfInChannel.put(atomName, ":Channel = new Channel(\""+atomName+"\")")
+      currentChamEnvironment.mapOfInChannel.put(atomName, ":Channel = new Channel(parentName+\""+atomName+"\")")
+      currentFirewallEnvironment.mapOfInChannel.put(atomName, ":Channel = new Channel(parentName+\""+atomName+"\")")
       atomName
     }
   }
@@ -201,7 +216,7 @@ class CriojoCompiler extends JavaTokenParsers {
     }
   }
 
-  def outChannelId: Parser[Any] = VarChannelChamdId | remoteChannelChamdId | remoteServerChannelChamdId
+  def outChannelId: Parser[Any] = VarChannelChamdId | remoteChannelId
 
   def VarChannelChamdId: Parser[Any] = "@"~id ^^ { case _~atomName => {
 
@@ -216,17 +231,13 @@ class CriojoCompiler extends JavaTokenParsers {
     }
   }
 
-  def remoteChannelChamdId: Parser[Any] = id~".@"~id ^^ { case chamName~_~atomName => {
-      currentChamEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = new OutChannel(\""+chamName+"."+atomName+"\")")
-      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = new OutChannel(\""+chamName+"."+atomName+"\")")
-      chamName+"To"+atomName
+  def remoteChannelId: Parser[Any] = addressPrefix~"@"~id ^^ { case prefixe~_~atomName => {
+      currentChamEnvironment.mapOfOutChannel.put((prefixe+atomName).replace(".","To"), ":OutChannel = new OutChannel(\""+prefixe+atomName+"\")")
+      currentFirewallEnvironment.mapOfOutChannel.put((prefixe+atomName).replace(".","To"), ":OutChannel = new OutChannel(\""+prefixe+atomName+"\")")
+      (prefixe+atomName).replace(".","To")
     }
   }
 
-  def remoteServerChannelChamdId: Parser[Any] = id~"."~id~".@"~id ^^ { case serverName~_~chamName~_~atomName => {
-      currentChamEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = new OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
-      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = new OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
-      chamName+"At"+serverName+"To"+atomName
-    }
-  }
+  def addressPrefix: Parser[Any] = rep(prefix) ^^ {case idPrefs => idPrefs.foldLeft(""){ case (v,c) => v+c } }
+  def prefix :Parser[Any] = id~"." ^^ { case prefix~_ => prefix+"." }
 }

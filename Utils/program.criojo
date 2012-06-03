@@ -2,7 +2,7 @@ applicationServer {
     firewall() {
 
         A {
-          test() -> B.@Kb(@Ka)
+          test() -> applicationServer.firewall.B.@Kb(@Ka)
           @Ka(cpt) -> alert(cpt)
         }
         B {
