@@ -1,55 +1,47 @@
-//file server1.criojo
-class criojoMain {
- 	def main() {
-		web = new Cham with IntegerCham with DebugCham {
-			var out:LocalRelation = new LocalRelation("out")
-			var Request:LocalRelation = new LocalRelation("Request")
+//file applicationServer
+package application
+
+import fr.emn.criojo.core.Converters._
+import fr.emn.criojo.ext.expression.Relation.constructor.{OutChannel, LocalRelation, Channel}
+import fr.emn.criojo.network.{ActorChamDebug, ActorCham, Firewall, BusManager}
+import fr.emn.criojo.ext.expression.Relation.VarChannel
+import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
+
+
+object criojoMain {
+ 	def main(args:Array[String]) {
+		val busManager:BusManager = new BusManager()
+		var firewall:Firewall = null 
+		firewall = new Firewall {
+
+			filterRules=List()
+			var A:ActorCham = null
+			A = new ActorCham("A", busManager) with ActorChamDebug {
+			var test:LocalRelation = new LocalRelation("test")
+			var cpt = VarScalaString("cpt")
+			var alert:LocalRelation = new LocalRelation("alert")
+			var BToKb:OutChannel = new OutChannel("B.Kb")
+			var Ka:Channel = new Channel("Ka")
 			rules(
-				(Request("/index")) --> (out("<html><head><title></title></head><body>Helloworld from server1!</body></html>"))
+				(test()) --> (BToKb(Ka))
+				,(Ka(cpt)) --> (alert(cpt))
 			)
 		}
-		cham1 = new Cham with IntegerCham with DebugCham {
-			var C:LocalRelation = new LocalRelation("C")
-			var name1:LocalRelation = new LocalRelation("name1")
-			var D:LocalRelation = new LocalRelation("D")
-			var B:LocalRelation = new LocalRelation("B")
-			var A:LocalRelation = new LocalRelation("A")
-			var cham3Atserver2ToA:OutChannel = OutChannel("server2.cham3.A")
+
+			var B:ActorCham = null
+			B = new ActorCham("B", busManager) with ActorChamDebug {
+			var cpt = VarScalaString("cpt")
+			var Kb:Channel = new Channel("Kb")
+			var Ka:VarChannel = VarChannel("Ka")
 			rules(
-				(A(1),B(1,"equinoxe")) --> (C(1),D(2))
-				,(A(3),B(4)) --> (C(5),D(6))
-				,(A(7),B(name1)) --> (C(9),@server2.cham3.A())
+				(Kb(Ka)) --> (Ka(cpt),Kb(cpt))
 			)
-		}
-		cham2 = new Cham with IntegerCham with DebugCham {
-			rules(
-							)
 		}
 
 
-	}
-}
-//file server2.criojo
-class criojoMain {
- 	def main() {
-		web = new Cham with IntegerCham with DebugCham {
-			var out:LocalRelation = new LocalRelation("out")
-			var Request:LocalRelation = new LocalRelation("Request")
-			rules(
-				(Request("/index")) --> (out("<html><head><title></title></head><body>Helloworld from server2!</body></html>"))
-			)
+			children = List(B,A)
 		}
-		cham3 = new Cham with IntegerCham with DebugCham {
-			var B:LocalRelation = new LocalRelation("B")
-			var A:InChannel = InChannel("A")
-			rules(
-				(A()) --> (B(1))
-			)
-		}
-		cham4 = new Cham with IntegerCham with DebugCham {
-			rules(
-							)
-		}
+		firewall.sendFilterRules()
 
 
 	}

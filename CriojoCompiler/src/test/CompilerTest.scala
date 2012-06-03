@@ -51,15 +51,21 @@ class CompilerTest {
 
   @Test
   def firewallTest() {
-    println(new CriojoCompiler().parse("server1{firewall(cham1.A){cham1{}}}"))
+    println(new CriojoCompiler().parse("server1{firewall(cham1.@A, cham2.@B){cham1{@A(x)->cham2.@B(x)} cham2{@B(x)->D(x)}}}"))
 
     assert(true)
   }
 
   @Test
   def computeFileTest() {
-    val inputProgram = scala.io.Source.fromFile("program.criojo").mkString
-    new CriojoCompiler().parse(inputProgram)
+    var inputProgram:String = ""
+    try {
+      inputProgram = scala.io.Source.fromFile("program.criojo").mkString
+    }
+    catch {
+      case e:Exception => inputProgram = scala.io.Source.fromFile("/Users/jonathan/Documents/workspace_stage/CRIOJO/CriojoCompiler/program.criojo").mkString
+    }
+    println (new CriojoCompiler().parse(inputProgram) )
 
     assert(true)
   }
@@ -67,20 +73,38 @@ class CompilerTest {
   @Test
   def mainCompilerTest1Arg() {
 
-    val args = new Array[String](1)
-    args(0) = "program.criojo"
-    CriojoCompiler.main(args)
-
+    try {
+      val args = new Array[String](1)
+      args(0) = "program.criojo"
+      CriojoCompiler.main(args)
+    }
+    catch {
+      case e:Exception => {
+        val args = new Array[String](1)
+        args(0) = "/Users/jonathan/Documents/workspace_stage/CRIOJO/CriojoCompiler/program.criojo"
+        CriojoCompiler.main(args)
+      }
+    }
     assert(true)
   }
 
   @Test
   def mainCompilerTest2Arg() {
 
-    val args = new Array[String](2)
-    args(0) = "program.criojo"
-    args(1) = "out.criojo"
-    CriojoCompiler.main(args)
+    try {
+      val args = new Array[String](2)
+      args(0) = "program.criojo"
+      args(1) = "out.criojo"
+      CriojoCompiler.main(args)
+    }
+    catch {
+      case e:Exception => {
+        val args = new Array[String](2)
+        args(0) = "/Users/jonathan/Documents/workspace_stage/CRIOJO/CriojoCompiler/program.criojo"
+        args(1) = "/Users/jonathan/Documents/workspace_stage/CRIOJO/CriojoCompiler/out.criojo"
+        CriojoCompiler.main(args)
+      }
+    }
 
     assert(true)
   }

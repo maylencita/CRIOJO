@@ -8,7 +8,9 @@ import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 import fr.emn.criojo.ext.expression.ScalaString.ScalaString
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 import fr.emn.criojo.ext.expression.Relation.Relation
-
+import fr.emn.criojo.ext.expression.Relation.ChannelLocation
+import fr.emn.criojo.ext.expression.Relation.constructor.Channel
+import fr.emn.criojo.ext.expression.Relation.constructor.OutChannel
 /**
  * Created by IntelliJ IDEA.
  * User: jonathan
@@ -49,4 +51,9 @@ object Converters {
   implicit def intToExpression(i:Int):ScalaInt = WrapScalaInt(i)
   implicit def stringToExpression(s:String):ScalaString = WrapScalaString(s)
   implicit def booleanToTerm(b:Boolean):ScalaBoolean = WrapScalaBoolean(b)
+  
+  implicit def ChannelLocationToChannel(cl:ChannelLocation):Channel = new Channel(cl.url, cl)
+  implicit def ChannelLocationToOutChannel(cl:ChannelLocation):OutChannel = new OutChannel(cl.url, cl)
+  implicit def ChannelToChannelLocation(c:Channel):ChannelLocation = c.location
+  implicit def OutChannelToChannelLocation(oc:OutChannel):ChannelLocation = oc.location
 }

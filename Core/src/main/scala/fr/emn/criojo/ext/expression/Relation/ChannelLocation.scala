@@ -1,13 +1,7 @@
 package fr.emn.criojo.ext.expression.Relation
 
-/**
- * Created by IntelliJ IDEA.
- * User: jonathan
- * Date: 4/20/12
- * Time: 3:03 PM
- * To change this template use File | Settings | File Templates.
- */
+import fr.emn.criojo.core.datatype.{Expression, Pattern}
 
-class ChannelLocation(name:String, url:String, port:Int) {
+class ChannelLocation(val url:String) extends Pattern with Expression {
 
 }

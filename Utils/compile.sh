@@ -19,16 +19,18 @@ java -jar compiler/CriojoCompiler.jar $1 | awk '
 	
 	{
 		if($1 == "//file") {
-			addresse = $2".program"
+			addresse = $2".scala"
 			dossier = "servers/" $2
 			
 			print "mkdir " dossier
-			print "touch " dossier "/" addresse
-			command = "echo \"// this is a script generated from criojo tools\" > " dossier "/" addresse
+			print "mkdir -p " dossier "/src/main/scala/application"
+			print "mkdir -p " dossier "/src/test/scala/application"
+			print "touch " dossier "/src/main/scala/application/" addresse
+			command = "echo \"// this is a script generated from criojo tools\" > " dossier "/src/main/scala/application/" addresse
 		}
 		else {
 			gsub(/\"/, "\\\"", $0)
-			command = "echo \""  $0 "\" >> " dossier "/" addresse
+			command = "echo \""  $0 "\" >> " dossier "/src/main/scala/application/" addresse
 		}
 	
 		print command
@@ -48,6 +50,8 @@ IFS=$old_IFS     # rétablissement du séparateur de champ par défaut
 
 for folder in `ls servers/`; do
     eval "cp -r conf servers/$folder/conf"
+    eval "cp -r lib servers/$folder/lib"
+    eval "cp script/pom.xml.template servers/$folder/pom.xml"
     eval "cp script/run.sh servers/$folder/run.sh"
     eval "chmod +x servers/$folder/run.sh"
 done

@@ -28,6 +28,7 @@ class ChamEnvironment {
 
   var mapOfVariables:HashMap[String, String] = HashMap()
   var mapOfInChannel:HashMap[String, String] = HashMap()
+  var mapOfVarChannel:HashMap[String, String] = HashMap()
   var mapOfOutChannel:HashMap[String, String] = HashMap()
 }
 
@@ -93,8 +94,8 @@ class CriojoCompiler extends JavaTokenParsers {
     }
   }
 
-  def firewall: Parser[Any] = id~"("~repsep(channelOpening, ",")~"){"~repsep(criojoObject, ",")<~"}" ^^ {
-    case idFirewall~_~assignations~_~children => {
+  def firewall: Parser[Any] = id~"("~repsep(channelOpening, ",")~")"~"{"~rep(criojoObject)<~"}" ^^ {
+    case idFirewall~_~assignations~_~_~children => {
       currentServerEnvironment.mapOfFirewalls.put(idFirewall, currentFirewallEnvironment)
       currentChamEnvironment = new FirewallEnvironment()
       currentServerEnvironment.mapOfFirewalls.get(idFirewall).get.assignations = assignations
@@ -104,7 +105,7 @@ class CriojoCompiler extends JavaTokenParsers {
 
   def criojoObject:Parser[Any] = firewall | cham
   
-  def channelOpening: Parser[Any] = criojoId ^^ {
+  def channelOpening: Parser[Any] = inChannelFirewallAssignationId ^^ {
     case idChannel => ObjectToScala.channelOpening(idChannel.toString)
   }
 
@@ -118,44 +119,114 @@ class CriojoCompiler extends JavaTokenParsers {
     }
   }
 
-  def rule: Parser[Any] = atoms~"->"~atoms ^^ {
+  def rule: Parser[Any] = atomsLeft~"->"~atomsRight ^^ {
     case atomsLeft~_~atomsRight => ObjectToScala.rule(atomsLeft, atomsRight)
   }
 
+
+  // FOR GENERIC ATOMS
   def atoms: Parser[List[Any]] = repsep(atom, ",")
 
-  def atom: Parser[Any] = criojoId~"("~exps~")" ^^ {
+  def atom: Parser[Any] = atomId~"("~exps~")" ^^ {
     case idAtom~_~expressions~_ => idAtom+"("+ObjectToScala.arguments(expressions)+")"
   }
-  
+
   def exps: Parser[List[Any]] = repsep(exp, ",")
   def exp: Parser[Any] = fpt | str | dec | criojoId | num
-  
-  
-  def criojoId = remoteChamdId | localChamdId | inChannelId | id ^^ { case idVar => {
-      currentChamEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
-      currentFirewallEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+
+  // ATOMS DEFINITION
+  // FOR LEFT ATOMS
+  def atomsLeft: Parser[List[Any]] = repsep(atomLeft, ",")
+
+  def atomLeft: Parser[Any] = (inChannelId | atomId)~"("~expsLeft~")" ^^ {
+    case idAtom~_~expressions~_ => idAtom+"("+ObjectToScala.arguments(expressions)+")"
+  }
+
+  def expsLeft: Parser[List[Any]] = repsep(expLeft, ",")
+  def expLeft: Parser[Any] = fpt | str | dec | outChannelId | criojoId | num
+
+  // FOR RIGHT ATOMS
+  def atomsRight: Parser[List[Any]] = repsep(atomRight, ",")
+
+  def atomRight: Parser[Any] = (VarChannelChamdId | outChannelId | atomId)~"("~expsRight~")" ^^ {
+    case idAtom~_~expressions~_ => idAtom+"("+ObjectToScala.arguments(expressions)+")"
+  }
+
+  def expsRight: Parser[List[Any]] = repsep(expRight, ",")
+  def expRight: Parser[Any] = fpt | str | dec | inChannelId | outChannelId | varId | num
+
+  // END OF ATOMS DEFINITION
+
+  def criojoId = id ^^ { case idVar => {
+      if(!currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)) {
+        currentChamEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+        currentFirewallEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+      }
       idVar
     }
+  }
 
+  def atomId = id ^^ { case idVar => {
+      if(!currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)) {
+        currentChamEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+        currentFirewallEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+      }
+      idVar
+    }
+  }
+
+  def varId = id ^^ { case idVar => {
+      if(!currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)) {
+        currentChamEnvironment.mapOfVariables.put(idVar, " = VarScalaString(\""+idVar+"\")")
+        currentFirewallEnvironment.mapOfVariables.put(idVar, " = VarScalaString(\""+idVar+"\")")
+      }
+      idVar
+    }
   }
 
   def inChannelId: Parser[Any] = "@"~id ^^ { case _~atomName => {
-    currentChamEnvironment.mapOfInChannel.put(atomName, ":InChannel = InChannel(\""+atomName+"\")")
-    currentFirewallEnvironment.mapOfInChannel.put(atomName, ":InChannel = InChannel(\""+atomName+"\")")
-    atomName
-  }
-  }
-  def localChamdId: Parser[Any] = id~"."~id ^^ { case chamName~_~atomName => {
-      currentChamEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = OutChannel(\""+chamName+"."+atomName+"\")")
-      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = OutChannel(\""+chamName+"."+atomName+"\")")
-      "@"+chamName+"."+atomName
+
+      if(currentChamEnvironment.mapOfVarChannel.contains(atomName)) {
+        currentChamEnvironment.mapOfVarChannel.remove(atomName)
+      }
+
+      currentChamEnvironment.mapOfInChannel.put(atomName, ":Channel = new Channel(\""+atomName+"\")")
+      currentFirewallEnvironment.mapOfInChannel.put(atomName, ":Channel = new Channel(\""+atomName+"\")")
+      atomName
     }
   }
-  def remoteChamdId: Parser[Any] = id~"."~id~"."~id ^^ { case serverName~_~chamName~"."~atomName => {
-      currentChamEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
-      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
-      "@"+serverName+"."+chamName+"."+atomName
+
+  def inChannelFirewallAssignationId: Parser[Any] = id~".@"~id ^^ { case chamName~_~atomName => {
+      chamName+"."+atomName
+    }
+  }
+
+  def outChannelId: Parser[Any] = VarChannelChamdId | remoteChannelChamdId | remoteServerChannelChamdId
+
+  def VarChannelChamdId: Parser[Any] = "@"~id ^^ { case _~atomName => {
+
+      if(!currentChamEnvironment.mapOfInChannel.contains(atomName)) {
+
+        currentChamEnvironment.mapOfVarChannel.put(atomName, ":VarChannel = VarChannel(\""+atomName+"\")")
+        currentFirewallEnvironment.mapOfVarChannel.put(atomName, ":VarChannel = VarChannel(\""+atomName+"\")")
+
+      }
+
+      atomName
+    }
+  }
+
+  def remoteChannelChamdId: Parser[Any] = id~".@"~id ^^ { case chamName~_~atomName => {
+      currentChamEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = new OutChannel(\""+chamName+"."+atomName+"\")")
+      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"To"+atomName, ":OutChannel = new OutChannel(\""+chamName+"."+atomName+"\")")
+      chamName+"To"+atomName
+    }
+  }
+
+  def remoteServerChannelChamdId: Parser[Any] = id~"."~id~".@"~id ^^ { case serverName~_~chamName~_~atomName => {
+      currentChamEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = new OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
+      currentFirewallEnvironment.mapOfOutChannel.put(chamName+"At"+serverName+"To"+atomName, ":OutChannel = new OutChannel(\""+serverName+"."+chamName+"."+atomName+"\")")
+      chamName+"At"+serverName+"To"+atomName
     }
   }
 }

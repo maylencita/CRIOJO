@@ -1,23 +1,12 @@
+applicationServer {
+    firewall() {
 
-
-server1 {
-    web {
-        Request("/index") -> out("<html><head><title></title></head><body>Helloworld from server1!</body></html>")
+        A {
+          test() -> B.@Kb(@Ka)
+          @Ka(cpt) -> alert(cpt)
+        }
+        B {
+          @Kb(@Ka) -> @Ka(cpt), @Kb(cpt)
+        }
     }
-    cham1 {
-        A(1),B(1,"equinoxe") -> C(1),D(2)
-        A(3),B(4) -> C(5),D(6)
-        A(7),B(name1) -> C(9), server2.cham3.A()
-    }
-    cham2 {}
-}
-
-server2 {
-    web {
-        Request("/index") -> out("<html><head><title></title></head><body>Helloworld from server2!</body></html>")
-    }
-    cham3 {
-        @A() -> B(1)
-    }
-    cham4 {}
 }
