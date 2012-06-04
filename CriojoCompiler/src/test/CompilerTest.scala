@@ -37,7 +37,8 @@ class CompilerTest {
   def atomTest() {
     val compiler = new CriojoCompiler()
 
-    println(compiler.parseAll(compiler.atom,"A(\"A\",\"aaa\")").get)
+    println(compiler.parseAll(compiler.atomRight,"A(\"A\",\"aaa\")").get)
+    println(compiler.parseAll(compiler.atomLeft,"A(\"A\",\"aaa\")").get)
 
     assert(true)
   }
@@ -61,7 +62,7 @@ class CompilerTest {
     println(compiler.parseAll(compiler.rule, "@Kc()->B( 2) ,A(1) ").get)
     println(compiler.parseAll(compiler.rule, "@Kc()-> (){}() ").get)
 
-    println(compiler.parseAll(compiler.cham, "B{ @Kc() -> (){}()}").get)
+    println(compiler.parseAll(compiler.cham, "B{ {var truc=1} @Kc() -> (){}()}").get)
     println(compiler.parseAll(compiler.cham, "B{Kc()-> (){var i=0 ;{hello}}() }").get)
     println(compiler.parseAll(compiler.cham, "B{ @Kc() -> A(1), A(1)\n @Kc() ->(){def a(a){a+1}}() }").get)
     println(compiler.parseAll(compiler.cham, " B { @Kc () -> A(1) , A(1)\n @Kc()->(){()}() } ").get)

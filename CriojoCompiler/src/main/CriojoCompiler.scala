@@ -16,6 +16,10 @@ class ProgramEnvironment {
 }
 
 class ServerEnvironment {
+
+  var header:Option[String] = None
+  var footer:Option[String] = None
+
   var mapOfChams:HashMap[String, ChamEnvironment] = HashMap()
   var mapOfFirewalls:HashMap[String, FirewallEnvironment] = HashMap()
 }
@@ -25,6 +29,8 @@ class ChamEnvironment {
   def getType():String = "cham"
 
   var rules:List[Any] = List()
+
+  var header:Option[String] = None
 
   var mapOfVariables:HashMap[String, String] = HashMap()
   var mapOfInChannel:HashMap[String, String] = HashMap()
@@ -75,20 +81,6 @@ class CriojoCompiler extends JavaTokenParsers {
   var currentFirewallEnvironment:FirewallEnvironment = new FirewallEnvironment()
   var currentServerEnvironment:ServerEnvironment = new ServerEnvironment()
 
-  var treeOfNames:List[String] = List()
-
-  def getName:String = treeOfNames.foldLeft(""){ case(v,c) => if (v != "") { v+"."+c } else { v+c } }
-
-  def pushName(n:String) {
-    treeOfNames = List(n) ::: treeOfNames
-  }
-
-  def popName() {
-    treeOfNames = treeOfNames match {
-      case Nil => Nil
-      case a::l => l
-    }
-  }
 
   def parse(s:String):String = parseAll(program,s).get.toString
 
@@ -103,61 +95,67 @@ class CriojoCompiler extends JavaTokenParsers {
   }
   
   def withSpace[T](inputParser:Parser[T]): Parser[Any] = spaces~>inputParser<~spaces
-  
+
+  // PROGRAM :=  (SERVER)*
   def program: Parser[Any] = withSpace(rep(server)) ^^ {
     case servers:List[Any] => ObjectToScala.mainProgram(servers)
   }
 
-  def server: Parser[Any] = withSpace(id~"{"~withSpace(rep(cham | firewall))~"}") ^^ {
-    case (idServer:String)~_~(chams:List[Any])~_ => {
+  // SERVER := ID (CHAM | FIREWALL)*
+  def server: Parser[Any] = withSpace(id~"{"~(withSpace(scalaCode).?)~withSpace(rep(cham | firewall))~(withSpace(scalaCode).?)~"}") ^^ {
+    case (idServer:String)~_~(header:Option[String])~(chams:List[Any])~(footer:Option[String])~_ => {
+      currentServerEnvironment.header = header
+      currentServerEnvironment.footer = footer
       env.mapOfServers.put(idServer, currentServerEnvironment)
       currentServerEnvironment = new ServerEnvironment()
-      ObjectToScala.serverWithVariableDeclariation(idServer, chams, env.mapOfServers.get(idServer).get)
+      ObjectToScala.server(idServer, chams, env.mapOfServers.get(idServer).get)
     }
   }
 
+  // FIREWALL := ID (CHANNEL)* (CRIOJO_OBJECT)*
   def firewall: Parser[Any] = withSpace(withSpace(id~"("~withSpace(repsep(channelOpening, ","))~")")~"{"~withSpace(rep(criojoObject))<~"}") ^^ {
     case (idFirewall:String)~_~(assignations:List[Any])~_~_~children => {
       currentServerEnvironment.mapOfFirewalls.put(idFirewall, currentFirewallEnvironment)
       currentChamEnvironment = new FirewallEnvironment()
       currentServerEnvironment.mapOfFirewalls.get(idFirewall).get.assignations = assignations
-      ObjectToScala.firewallWithVariableDeclariation(idFirewall, currentServerEnvironment.mapOfFirewalls.get(idFirewall).get)
+      ObjectToScala.firewall(idFirewall, currentServerEnvironment.mapOfFirewalls.get(idFirewall).get)
     }
   }
 
+  // CRIOJO_OBJECT := (FIREWALL | CHAM)*
   def criojoObject:Parser[Any] = firewall | cham
-  
+
+  // CHANNEL := ID
   def channelOpening: Parser[Any] = inChannelFirewallAssignationId ^^ {
     case idChannel => ObjectToScala.channelOpening(idChannel.toString)
   }
 
-  def cham: Parser[Any] = withSpace(id~"{"~withSpace(rep(rule))<~"}") ^^ {
-    case (idCham:String)~_~(rules:List[Any]) => {
+  // CHAM := ID (SCALA_CODE)? (RULE)*
+  def cham: Parser[Any] = withSpace(id~"{"~(withSpace(scalaCode).?)~withSpace(rep(rule))<~"}") ^^ {
+    case (idCham:String)~_~(scalaHeader:Option[String])~(rules:List[Any]) => {
       currentServerEnvironment.mapOfChams.put(idCham, currentChamEnvironment)
+      currentChamEnvironment.header = scalaHeader
       currentFirewallEnvironment.mapOfObjects.put(idCham, currentChamEnvironment)
       currentChamEnvironment = new ChamEnvironment()
       currentServerEnvironment.mapOfChams.get(idCham).get.rules = rules
-      ObjectToScala.chamWithVariableDeclariation(idCham, currentServerEnvironment.mapOfChams.get(idCham).get)
+      ObjectToScala.cham(idCham, currentServerEnvironment.mapOfChams.get(idCham).get)
     }
   }
 
+  // RULE := (ATOM_LEFT)* (ATOM_RIGHT)*
   def rule: Parser[Any] = withSpace(atomsLeft~"->"~atomsRight) ^^ {
     case (atomsLeft:List[Any])~_~(atomsRight:List[Any]) => ObjectToScala.rule(atomsLeft, atomsRight)
   }
 
 
   // FOR GENERIC ATOMS
-  def atoms: Parser[List[Any]] = repsep(atom, ",")
-
-  def atom: Parser[Any] = withSpace(atomId~"("~exps~")") ^^ {
-    case idAtom~_~(expressions:List[Any])~_ => idAtom+"("+ObjectToScala.arguments(expressions)+")"
-  }
 
   def exps: Parser[List[Any]] = repsep(exp, ",")
   def exp: Parser[Any] = fpt | str | dec | criojoId | num
 
   // ATOMS DEFINITION
   // FOR LEFT ATOMS
+
   def atomsLeft: Parser[List[Any]] = repsep(atomLeft, ",")
 
   def atomLeft: Parser[Any] = withSpace((inChannelId | atomId)~"("~expsLeft~")") ^^ {
@@ -168,6 +166,7 @@ class CriojoCompiler extends JavaTokenParsers {
   def expLeft: Parser[Any] = withSpace(fpt | str | dec | outChannelId | criojoId | num)
 
   // FOR RIGHT ATOMS
+
   def atomsRight: Parser[List[Any]] = repsep(atomRight, ",")
 
   def atomRight: Parser[Any] = withSpace((VarChannelChamdId | outChannelId | atomId)~"("~expsRight~")") ^^ {

@@ -14,10 +14,10 @@ object ObjectToScala {
   }
 
   def chamVariableHeader(env:ChamEnvironment):String = {
-    env.mapOfVariables.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
-    env.mapOfOutChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
-    env.mapOfInChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
-    env.mapOfVarChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}
+    env.mapOfVariables.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}+
+    env.mapOfOutChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}+
+    env.mapOfInChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}+
+    env.mapOfVarChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}
   }
 
   def firewallVariableHeader(env:FirewallEnvironment):String = {
@@ -37,7 +37,18 @@ object ObjectToScala {
 
   def mainProgram(servers:List[Any]):String = servers.foldLeft(""){case(v,s) => v+s}
 
-  def serverWithVariableDeclariation(name:String, chams:List[Any], env:ServerEnvironment):String = {
+  def server(name:String, chams:List[Any], env:ServerEnvironment):String = {
+
+    val headerString:String = env.header match {
+      case None => ""
+      case Some(s:String) => s.substring(1, s.length()-1)
+    }
+
+    val footerString:String = env.footer match {
+      case None => ""
+      case Some(s:String) => s.substring(1, s.length()-1)
+    }
+
     "//file "+name+"\n" +
     "package application\n" +
     "\n"+
@@ -48,7 +59,7 @@ object ObjectToScala {
     "import fr.emn.criojo.ext.expression.ScalaString.VarScalaString\n"+
     "\n\n"+
     "object criojoMain {\n " +
-    "\tvar listOfNames:List[String] = List(); var index:Int = -1\n"+
+    "\tvar listOfNames:List[String] = List()\n"+
     "\tdef pushToNames(name:String) { listOfNames = List(name):::listOfNames }\n"+
     "\tdef popNames() {listOfNames match {case Nil => listOfNames=Nil; case a::l => listOfNames=l}}\n"+
     "\tdef getNames():String = listOfNames.foldLeft(\"\"){case (v,c) => c+\".\"+v}\n"+
@@ -56,16 +67,17 @@ object ObjectToScala {
     "\tdef main(args:Array[String]) {\n" +
     "\t\tpushToNames(\""+name+"\")\n"+
     "\t\tvar parentName:String = getNames()\n\n"+
-    "\t\tval busManager:BusManager = new BusManager()\n"+
-    serverVariableHeader(env)+server(name, chams)+"\n\t}\n"+
-    "\n\tpopNames()\n"+
+    "\t\tval busManager:BusManager = new BusManager()\n\n"+
+    "\t\t"+headerString+"\n\n"+
+      chams.foldLeft(""){case(v,c) => v+c}+"\n\n"+
+    "\n\t\t"+footerString+"\n\n"+
+    "\n\t\tpopNames()\n"+
+    "\n\t}\n"+
     "}\n"
   }
 
-  def server(name:String, chams:List[Any]):String = chams.foldLeft(""){case(v,c) => v+c}+"\n"
-
-  def firewallWithVariableDeclariation(name:String, env:FirewallEnvironment):String = {
-    "\t\t"+name+" = new Firewall {\n"+
+  def firewall(name:String, env:FirewallEnvironment):String = {
+    "\t\tval "+name+" = new Firewall {\n"+
     "\t\t\tpushToNames(\""+name+"\")\n"+
     "\t\t\tvar parentName:String = getNames()\n\n"+
     "\t\t\tfilterRules=List("+
@@ -75,8 +87,8 @@ object ObjectToScala {
     ")\n"+
     env.mapOfObjects.foldLeft(""){
       case(v,(k,p)) => p match {
-        case f:FirewallEnvironment => "\t\t\tvar "+k+":Firewall = null\n"+firewallWithVariableDeclariation (k,f)+"\n"+v
-        case c:ChamEnvironment     => "\t\t\tvar "+k+":ActorCham = null\n"+chamWithVariableDeclariation(k,c)+"\n"+v
+        case f:FirewallEnvironment => "\t\t\tvar "+k+":Firewall = null\n"+firewall (k,f)+"\n"+v
+        case c:ChamEnvironment     => "\t\t\tvar "+k+":ActorCham = null\n"+cham(k,c)+"\n"+v
       }
     }+
     "\n\t\t\tchildren = List("+
@@ -87,34 +99,28 @@ object ObjectToScala {
     "\t\t"+name+".sendFilterRules()\n"
   }
 
-  def chamWithVariableDeclariation(name:String, env:ChamEnvironment):String = {
+  def cham(name:String, env:ChamEnvironment):String = {
+
+    val headerString:String = env.header match {
+      case None => ""
+      case Some(s:String) => s.substring(1, s.length()-1)
+    }
+
     "\t\t\t"+name+" = new ActorCham(parentName+\""+name+"\", busManager) with ActorChamDebug {\n"+
     "\t\t\t\tpushToNames(\""+name+"\")\n"+
     "\t\t\t\tvar parentName:String = getNames()\n\n"+
-    chamVariableHeader(env)+"\t\t\trules(\n\t"+env.rules.foldLeft("\t\t\t") {
-      case(v,c) => if (v != "\t\t\t") { v+"\t\t\t\t,"+c } else { v+c }
+    "\t\t\t\t"+headerString+"\n\n"+
+    chamVariableHeader(env)+"\t\t\t\trules(\n\t"+env.rules.foldLeft("\t\t\t\t") {
+      case(v,c) => if (v != "\t\t\t\t") { v+"\t\t\t\t\t,"+c } else { v+c }
     }+
-    "\t\t\t)"+
+    "\t\t\t\t)"+
     "\n"+
-    "\n\t\t\tpopNames()\n"+
-    "\t\t}\n"
+    "\n\t\t\t\tpopNames()\n"+
+    "\t\t\t}\n"
   }
 
   def channelOpening(idChannel:String):String = {
     "\""+idChannel+"\""
-  }
-
-  def cham(name:String, rules:List[Any]):String = {
-    "\t\t\t"+name+" = new ActorCham(parentName+\\\"\"+name+\"\\\", busManager) with ActorChamDebug {\n"+
-    "\t\t\t\tpushToNames(\""+name+"\")\n"+
-    "\t\t\t\tvar parentName:String = getNames()\n\n"+
-    "\t\t\trules(\n\t"+
-    rules.foldLeft("\t\t\t") {
-      case(v,c) => if (v != "\t\t\t") { v+"\t\t\t\t,"+c } else { v+c }
-    }+
-    "\t\t\t)"+
-    "\n\t\tpopNames()\n"+
-    "\n\t\t}\n"
   }
 
   def rule(atomsLeft:List[Any], atomsRight:List[Any]) = {

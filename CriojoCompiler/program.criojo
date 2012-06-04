@@ -1,12 +1,18 @@
 applicationServer {
+    {var cpt=0}
     firewall() {
 
         A {
-          test() -> applicationServer.firewall.B.@Kb(@Ka, cpt)
-          @Ka(cpt) -> alert(cpt)
+            test() -> applicationServer.firewall.B.@Kb(@Ka, cpt)
+            @Ka(cpt) -> alert(cpt)
         }
         B {
-          @Kb(@Ka, cpt) -> @Ka(cpt), (x){x++}(cpt)
+            {var cptScala=0}
+            @Kb(@Ka, cpt) -> @Ka(cpt), (x){println(x)}(cpt)
         }
+    }
+    {
+        cpt=cpt+1
+        println(cpt)
     }
 }
