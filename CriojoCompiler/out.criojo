@@ -9,40 +9,67 @@ import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 
 
 object criojoMain {
- 	def main(args:Array[String]) {
+ 	var listOfNames:List[String] = List(); var index:Int = -1
+	def pushToNames(name:String) { listOfNames = List(name):::listOfNames }
+	def popNames() {listOfNames match {case Nil => listOfNames=Nil; case a::l => listOfNames=l}}
+	def getNames():String = listOfNames.foldLeft(""){case (v,c) => c+"."+v}
+
+
+	def main(args:Array[String]) {
+		pushToNames("applicationServer")
+		var parentName:String = getNames()
+
 		val busManager:BusManager = new BusManager()
 		var firewall:Firewall = null 
 		firewall = new Firewall {
+			pushToNames("firewall")
+			var parentName:String = getNames()
 
 			filterRules=List()
 			var A:ActorCham = null
-			A = new ActorCham("A", busManager) with ActorChamDebug {
+			A = new ActorCham(parentName+"A", busManager) with ActorChamDebug {
+				pushToNames("A")
+				var parentName:String = getNames()
+
 			var test:LocalRelation = new LocalRelation("test")
 			var cpt = VarScalaString("cpt")
 			var alert:LocalRelation = new LocalRelation("alert")
-			var BToKb:OutChannel = new OutChannel("B.Kb")
-			var Ka:Channel = new Channel("Ka")
+			var applicationServerTofirewallToBToKb:OutChannel = new OutChannel("applicationServer.firewall.B.Kb")
+			var Ka:Channel = new Channel(parentName+"Ka")
 			rules(
-				(test()) --> (BToKb(Ka))
+				(test()) --> (applicationServerTofirewallToBToKb(Ka))
 				,(Ka(cpt)) --> (alert(cpt))
 			)
+
+			popNames()
 		}
 
 			var B:ActorCham = null
-			B = new ActorCham("B", busManager) with ActorChamDebug {
-			var cpt = VarScalaString("cpt")
-			var Kb:Channel = new Channel("Kb")
+			B = new ActorCham(parentName+"B", busManager) with ActorChamDebug {
+				pushToNames("B")
+				var parentName:String = getNames()
+
+			var x:LocalRelation = new LocalRelation("x")
+			var cpt:LocalRelation = new LocalRelation("cpt")
+			var Kb:Channel = new Channel(parentName+"Kb")
 			var Ka:VarChannel = VarChannel("Ka")
 			rules(
-				(Kb(Ka)) --> (Ka(cpt)&Kb(cpt))
+				(Kb(Ka)) --> (Ka(cpt)&NativeRel { case (x::Nil) => {x++}
+case _ => }(cpt))
 			)
+
+			popNames()
 		}
 
 
 			children = List(B,A)
+			popNames()
+
 		}
 		firewall.sendFilterRules()
 
 
 	}
+
+	popNames()
 }

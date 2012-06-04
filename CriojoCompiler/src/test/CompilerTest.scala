@@ -43,6 +43,32 @@ class CompilerTest {
   }
 
   @Test
+  def scalaCodeTest() {
+    val compiler = new CriojoCompiler()
+    println(compiler.parseAll(compiler.scalaCode,"{var i=0+x}").get)
+    println(compiler.parseAll(compiler.nativeCode,"(x){var a =0+1;\nvar b=f(a);;\ndef truc(){return 1;}}(i)").get)
+    println(compiler.parseAll(compiler.atomsRight,"A(1),A(2)").get)
+    println(compiler.parseAll(compiler.atomsRight,"(x){var a =0+1;\nvar b=f(a);;\ndef truc(){return 1;}}(i),(x){var a =0+1;\nvar b=f(a);;\ndef truc(){return 1;}}(i)").get)
+    println(compiler.parseAll(compiler.atomsRight,"A(1 ,1),(x){var a =0+1;\nvar b=f(a);;\ndef truc(){return 1;}}(i),(x){var a =0+1;\nvar b=f(a);;\ndef truc(){return 1;}}(i), B(5)").get)
+    println(compiler.parseAll(compiler.atomsRight, "(x){a}(i),(x){a}(i),A(5) ,B(5), (x){a}(i)").get)
+    println(compiler.parseAll(compiler.atomsRight," (x){var truc}(i)").get)
+    assert(true)
+  }
+
+  @Test
+  def ruleTest() {
+    val compiler = new CriojoCompiler()
+    println(compiler.parseAll(compiler.rule, "@Kc()->B( 2) ,A(1) ").get)
+    println(compiler.parseAll(compiler.rule, "@Kc()-> (){}() ").get)
+
+    println(compiler.parseAll(compiler.cham, "B{ @Kc() -> (){}()}").get)
+    println(compiler.parseAll(compiler.cham, "B{Kc()-> (){var i=0 ;{hello}}() }").get)
+    println(compiler.parseAll(compiler.cham, "B{ @Kc() -> A(1), A(1)\n @Kc() ->(){def a(a){a+1}}() }").get)
+    println(compiler.parseAll(compiler.cham, " B { @Kc () -> A(1) , A(1)\n @Kc()->(){()}() } ").get)
+    assert(true)
+  }
+
+  @Test
   def adressPrefixTest() {
     val compiler = new CriojoCompiler()
 
@@ -54,18 +80,19 @@ class CompilerTest {
 
   @Test
   def computeTest() {
-    new CriojoCompiler().parse("server1{cham1{}cham2{}}server2{cham3{}cham4{}}")
+    new CriojoCompiler().parse(" server1{cham1 {} cham2{}} server2{cham3{}cham4{}}")
+    new CriojoCompiler().parse(" server1{ cham1 { } cham2{} } server2 { cham3{}cham4{} } ")
 
     assert(true)
   }
 
   @Test
   def firewallTest() {
-    println(new CriojoCompiler().parse("server1{firewall(cham1.@A, cham2.@B){cham1{@A(x)->cham2.@B(x)} cham2{@B(x)->D(x)}}}"))
+    println(new CriojoCompiler().parse("server1{firewall(cham1.@A, cham2.@B){ cham1{ @A(x)->cham2.@B(x) } cham2{ @B(x)->D(x) } } }"))
 
     assert(true)
   }
-
+  
   @Test
   def computeFileTest() {
     var inputProgram:String = ""
