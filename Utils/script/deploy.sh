@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+## hosts.xml
 # function that takes one parameter: xml_file_path and return the names of the hosts
 get_hosts_names () {
 	xpath $1 "//server/name" 2>/dev/null | sed -e 's/<[^>]*>/,/g' | tr ',' '\n' | awk '
@@ -39,6 +40,19 @@ get_host_username () {
 # function that takes two parameters: xml_file_path and host_name and return the password of the host
 get_host_password () {
 	xpath $1 "//server[name='$2']/password" 2>/dev/null | sed -e 's/<[^>]*>/,/g' | tr ',' '\n' | awk '
+	BEGIN {}
+	{
+		if($0 != "")
+			print $0
+	}
+	END {}   
+	'
+}
+
+## mappings.xml
+# function that takes one parameter: xml_file_path and return the names of the hosts
+get_mapping_node_name () {
+	xpath $1 "//mapping[server='$2']/node" 2>/dev/null | sed -e 's/<[^>]*>/,/g' | tr ',' '\n' | awk '
 	BEGIN {}
 	{
 		if($0 != "")
@@ -89,11 +103,17 @@ ssh_copy_id () {
 deploy () {
 	echo "Deploying $1 in $2..."
 	
-	ip=$(get_host_ip "hosts.xml" $2)
+	ip=$(get_host_ip "hosts.xml" $2)	
 	username=$(get_host_username "hosts.xml" $2)
+	
+	if [ "$usernamea" = "a" ]; then
+		username="root"
+	fi
+	
 	password=$(get_host_password "hosts.xml" $2)
-	echo "connection to the node $1, please type this password: \"$password\""
-	`ssh -i "$HOME/.ssh/id_dsa" $username@$ip 'mkdir -p /opt/local/criojo/$1'`
+
+	eval "expect ssh_execute.sh $password $username@$ip \"mkdir -p /opt/local/criojo/servers\""
+	eval "expect ssh_copy_directory.sh $password $username@$ip $1 /opt/local/criojo/servers/$1"
 	
 	echo "Done!"
 }
@@ -107,18 +127,8 @@ if ! command_exists xpath ; then
     apt-get install -y libxml-xpath-perl
 fi
 
-declare -a hosts=()
-cpt=0
-for server in `get_hosts_names "hosts.xml"`; do
-	hosts[$cpt]=$server
-	cpt=$((cpt+1))
-done
-
-cpt=0
-for server in `ls -d server*`; do
+for server in `ls -d */`; do
 	
-	deploy $server "${hosts[$cpt]}"
-	
-	cpt=$((cpt+1))
-	cpt=$((cpt%${#hosts[*]}))
+	node=$(get_mapping_node_name "mappings.xml" ${server%%?})
+	deploy $server $node
 done

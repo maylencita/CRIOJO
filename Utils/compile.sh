@@ -57,9 +57,13 @@ for folder in `ls servers/`; do
 done
 
 eval "cp conf/hosts.xml servers/hosts.xml"
+eval "cp conf/mappings.xml servers/mappings.xml"
+eval "cp script/clean.sh servers/clean.sh"
 eval "cp script/deploy.sh servers/deploy.sh"
+eval "cp script/ssh_copy.sh servers/ssh_copy.sh"
+eval "cp script/ssh_copy_directory.sh servers/ssh_copy_directory.sh"
+eval "cp script/ssh_execute.sh servers/ssh_execute.sh"
 eval "cp script/run-all.sh servers/run-all.sh"
-eval "cp script/ssh_hack.sh servers/ssh_hack.sh"
 eval "chmod +x servers/deploy.sh"
 eval "chmod +x servers/run-all.sh"
 
