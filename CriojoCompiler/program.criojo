@@ -3,10 +3,12 @@ applicationServer {
     firewall() {
 
         A {
+            [cpt:int]
             test() -> applicationServer.firewall.B.@Kb(@Ka, cpt)
             @Ka(cpt) -> alert(cpt)
         }
         B {
+            [cpt:int]
             {var cptScala=0}
             @Kb(@Ka, cpt) -> @Ka(cpt), (x){println(x)}(cpt)
         }

@@ -131,8 +131,8 @@ class CriojoCompiler extends JavaTokenParsers {
   }
 
   // CHAM := ID (SCALA_CODE)? (RULE)*
-  def cham: Parser[Any] = withSpace(id~"{"~(withSpace(scalaCode).?)~withSpace(rep(rule))<~"}") ^^ {
-    case (idCham:String)~_~(scalaHeader:Option[String])~(rules:List[Any]) => {
+  def cham: Parser[Any] = withSpace(id~"{"~(withSpace(declarations).?)~(withSpace(scalaCode).?)~withSpace(rep(rule))<~"}") ^^ {
+    case (idCham:String)~_~(scalaDeclaration:Option[String])~(scalaHeader:Option[String])~(rules:List[Any]) => {
       currentServerEnvironment.mapOfChams.put(idCham, currentChamEnvironment)
       currentChamEnvironment.header = scalaHeader
       currentFirewallEnvironment.mapOfObjects.put(idCham, currentChamEnvironment)
@@ -179,27 +179,33 @@ class CriojoCompiler extends JavaTokenParsers {
   // END OF ATOMS DEFINITION
 
   def criojoId = id ^^ { case idVar:String => {
-      if(!currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)) {
-        currentChamEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
-        currentFirewallEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+    if(     !currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)
+         && !currentChamEnvironment.mapOfVariables.contains(idVar) && !currentFirewallEnvironment.mapOfVariables.contains(idVar)
+      ) {
+        currentChamEnvironment.mapOfVariables.put(idVar, "relation")
+        currentFirewallEnvironment.mapOfVariables.put(idVar, "relation")
       }
       idVar
     }
   }
 
   def atomId = id ^^ { case idVar:String => {
-      if(!currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)) {
-        currentChamEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
-        currentFirewallEnvironment.mapOfVariables.put(idVar, ":LocalRelation = new LocalRelation(\""+idVar+"\")")
+      if( !currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)
+        && !currentChamEnvironment.mapOfVariables.contains(idVar) && !currentFirewallEnvironment.mapOfVariables.contains(idVar)
+      ) {
+        currentChamEnvironment.mapOfVariables.put(idVar, "relation")
+        currentFirewallEnvironment.mapOfVariables.put(idVar, "relation")
       }
       idVar
     }
   }
 
   def varId = id ^^ { case idVar:String => {
-      if(!currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)) {
-        currentChamEnvironment.mapOfVariables.put(idVar, " = VarScalaString(\""+idVar+"\")")
-        currentFirewallEnvironment.mapOfVariables.put(idVar, " = VarScalaString(\""+idVar+"\")")
+      if( !currentChamEnvironment.mapOfInChannel.contains(idVar) && !currentFirewallEnvironment.mapOfInChannel.contains(idVar)
+       && !currentChamEnvironment.mapOfVariables.contains(idVar) && !currentFirewallEnvironment.mapOfVariables.contains(idVar)
+      ) {
+        currentChamEnvironment.mapOfVariables.put(idVar, "string")
+        currentFirewallEnvironment.mapOfVariables.put(idVar, "string")
       }
       idVar
     }
@@ -243,6 +249,16 @@ class CriojoCompiler extends JavaTokenParsers {
       (prefixe+atomName).replace(".","To")
     }
   }
+
+  def declarations: Parser[Any] = "["~repsep(declaration,",")~"]" ^^ { case _ => ""}
+  def declaration: Parser[Any] = id~":"~id ^^ {
+    case (varName:String)~_~(varType:String) => {
+      currentChamEnvironment.mapOfVariables.put(varName, varType)
+      currentFirewallEnvironment.mapOfVariables.put(varName, varType)
+    }
+    ""
+  }
+
 
   def addressPrefix: Parser[Any] = rep(prefix) ^^ {case idPrefs => idPrefs.foldLeft(""){ case (v,c) => v+c } }
   def prefix :Parser[Any] = id~"." ^^ { case prefix~_ => prefix+"." }

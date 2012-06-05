@@ -14,7 +14,7 @@ object ObjectToScala {
   }
 
   def chamVariableHeader(env:ChamEnvironment):String = {
-    env.mapOfVariables.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}+
+    env.mapOfVariables.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\t"+variable(k,p)+"\n"}+
     env.mapOfOutChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}+
     env.mapOfInChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}+
     env.mapOfVarChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\t\tvar "+k+p+"\n"}
@@ -29,7 +29,7 @@ object ObjectToScala {
       }
     }
 
-    env.mapOfVariables.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
+    env.mapOfVariables.foldLeft("") { case(v,(k,p)) => v+"\t\t\t"+variable(k,p)+"\n"}+
     env.mapOfOutChannel.foldLeft(""){ case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
     env.mapOfInChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}+
     env.mapOfVarChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}
@@ -57,6 +57,8 @@ object ObjectToScala {
     "import fr.emn.criojo.network.{ActorChamDebug, ActorCham, Firewall, BusManager}\n" +
     "import fr.emn.criojo.ext.expression.Relation.VarChannel\n"+
     "import fr.emn.criojo.ext.expression.ScalaString.VarScalaString\n"+
+    "import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt\n"+
+    "import fr.emn.criojo.ext.expression.ScalaBoolean.VarScalaBoolean\n"+
     "\n\n"+
     "object criojoMain {\n " +
     "\tvar listOfNames:List[String] = List()\n"+
@@ -132,6 +134,20 @@ object ObjectToScala {
 
   def arguments(args:List[Any]) = {
     args.foldLeft(""){ case(v,c) => if (v != "") { v+","+c } else { v+c } }
+  }
+
+  def variable(varName:String, varType:String):String = {
+    "var "+varName+":"+(varType match {
+      case "int" => "VarScalaInt"
+      case "string" => "VarScalaString"
+      case "boolean" => "VarScalaBoolean"
+      case "relation" => "LocalRelation"
+    })+" = "+(varType match {
+      case "int" => "VarScalaInt(\""+varName+"\")"
+      case "string" => "VarScalaString(\""+varName+"\")"
+      case "boolean" => "VarScalaBoolean(\""+varName+"\")"
+      case "relation" => "new LocalRelation(\""+varName+"\")"
+    })
   }
 
 }

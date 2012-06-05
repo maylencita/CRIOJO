@@ -44,6 +44,13 @@ class CompilerTest {
   }
 
   @Test
+  def variableDeclarationTest() {
+    val compiler = new CriojoCompiler()
+    println(compiler.parseAll(compiler.declarations,"[x:int,y:string]").get)
+    assert(true)
+  }
+
+  @Test
   def scalaCodeTest() {
     val compiler = new CriojoCompiler()
     println(compiler.parseAll(compiler.scalaCode,"{var i=0+x}").get)
@@ -62,7 +69,7 @@ class CompilerTest {
     println(compiler.parseAll(compiler.rule, "@Kc()->B( 2) ,A(1) ").get)
     println(compiler.parseAll(compiler.rule, "@Kc()-> (){}() ").get)
 
-    println(compiler.parseAll(compiler.cham, "B{ {var truc=1} @Kc() -> (){}()}").get)
+    println(compiler.parseAll(compiler.cham, "B{ [d:int,e:string] {var truc=1} @Kc() -> (){}()}").get)
     println(compiler.parseAll(compiler.cham, "B{Kc()-> (){var i=0 ;{hello}}() }").get)
     println(compiler.parseAll(compiler.cham, "B{ @Kc() -> A(1), A(1)\n @Kc() ->(){def a(a){a+1}}() }").get)
     println(compiler.parseAll(compiler.cham, " B { @Kc () -> A(1) , A(1)\n @Kc()->(){()}() } ").get)
