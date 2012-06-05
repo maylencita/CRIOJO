@@ -1,0 +1,10 @@
+<mappings>
+	<mapping>
+		<node>node1</node>
+		<server>applicationServer1</server>
+	</mapping>
+	<mapping>
+		<node>node2</node>
+		<server>applicationServer2</server>
+	</mapping>
+</mappings>
