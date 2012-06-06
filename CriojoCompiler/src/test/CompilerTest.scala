@@ -100,8 +100,8 @@ class CompilerTest {
 
     assert(true)
   }
-  
-  @Test
+
+//  @Test
   def computeFileTest() {
     var inputProgram:String = ""
     try {
@@ -115,7 +115,7 @@ class CompilerTest {
     assert(true)
   }
 
-  @Test
+//  @Test
   def mainCompilerTest1Arg() {
 
     try {
@@ -133,7 +133,7 @@ class CompilerTest {
     assert(true)
   }
 
-  @Test
+//  @Test
   def mainCompilerTest2Arg() {
 
     try {
