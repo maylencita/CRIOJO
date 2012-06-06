@@ -171,7 +171,7 @@ class CriojoCompiler extends JavaTokenParsers {
 
   def atomRight: Parser[Any] = withSpace((VarChannelChamdId | outChannelId | atomId)~"("~expsRight~")") ^^ {
     case idAtom~_~(expressions:List[Any])~_ => idAtom+"("+ObjectToScala.arguments(expressions)+")"
-  } | nativeCode
+  } | withSpace(nativeCode)
 
   def expsRight: Parser[List[Any]] = repsep(expRight, ",")
   def expRight: Parser[Any] = withSpace(fpt | str | dec | inChannelId | outChannelId | varId | num)
