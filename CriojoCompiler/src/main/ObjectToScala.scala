@@ -73,6 +73,9 @@ object ObjectToScala {
     "\t\t"+headerString+"\n\n"+
       chams.foldLeft(""){case(v,c) => v+c}+"\n\n"+
     "\n\t\t"+footerString+"\n\n"+
+    "\n\t\twhile(true){" +
+    "\n\t\t\tThread.sleep(500)"+
+    "\n\t\t}"+
     "\n\t\tpopNames()\n"+
     "\n\t}\n"+
     "}\n"
@@ -108,7 +111,7 @@ object ObjectToScala {
       case Some(s:String) => s.substring(1, s.length()-1)
     }
 
-    "\t\t\t"+name+" = new ActorCham(parentName+\""+name+"\", busManager) with ActorChamDebug {\n"+
+    "\t\t\tval "+name+" = new ActorCham(parentName+\""+name+"\", busManager) with ActorChamDebug {\n"+
     "\t\t\t\tpushToNames(\""+name+"\")\n"+
     "\t\t\t\tvar parentName:String = getNames()\n\n"+
     "\t\t\t\t"+headerString+"\n\n"+

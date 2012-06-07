@@ -1,8 +1,11 @@
 package fr.emn.criojo.network
 
-import fr.emn.criojo.core.Atom
 import fr.emn.criojo.core.factory.DefaultFactory
 import fr.emn.criojo.lang.Cham
+import fr.emn.criojo.core.{ReactionStrategy, Atom}
+import scala.fr.emn.criojo.network.NetworkReactionStrategy
+import fr.emn.criojo.ext.expression.Relation.constructor.Channel
+import fr.emn.criojo.ext.expression.Relation.ChannelLocation
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,15 +21,19 @@ class ActorCham(val name:String, val busManager:BusManager) extends Cham  with N
 
   def getName:String = name
 
+  override def reactionStrategy:ReactionStrategy = new NetworkReactionStrategy()
+
   override def introduceAtom(atom : fr.emn.criojo.core.Atom) {
     super.introduceAtom(atom)
+    executeRules()
   }
   
   var receiveHandler:AtomReceiveHandler = new AtomReceiveHandler {
     def onReceive(a: Atom) {
-      if(filterRules.contains(name+"."+a.relation.name)) {
-        introduceAtom(a)
-      }
+      //if(filterRules.contains(name+"."+a.relation.name)) {
+        val convertAtom:Atom = new Atom(new Channel(a.relation.name), a.patterns)
+        introduceAtom(convertAtom)
+      //}
     }
   }
 

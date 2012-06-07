@@ -266,9 +266,9 @@ class CriojoCompiler extends JavaTokenParsers {
   def nativeCode: Parser[Any] = withSpace("("~>exps<~")") ~ withSpace(scalaCode) ~ withSpace("("~>exps<~")") ^^ {
 
     case (args1:List[Any])~code~(args2:List[Any]) => {
-      val arguments1:String = args1.foldLeft(""){ case(v,c) => if (v != "") { v+"::"+c } else { v+c } }
-      val arguments2:String = args2.foldLeft(""){ case(v,c) => if (v != "") { v+","+c } else { v+c } }
-      "NativeRel { case ("+arguments1+"::Nil) => "+code+"; case _ => }("+arguments2+")"
+      val arguments1:String = args1.foldLeft(""){ case(v,c) => { c+"::"+v }}
+      val arguments2:String = args2.foldLeft(""){ case(v,c) => if (v != "") { c+","+v } else { c+v } }
+      "NativeRel { case ("+arguments1+"Nil) => "+code+"; case _ => }("+arguments2+")"
     }
   }
 

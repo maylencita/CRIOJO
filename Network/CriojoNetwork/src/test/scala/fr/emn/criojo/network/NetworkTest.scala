@@ -22,6 +22,8 @@ class NetworkTest {
     MessageArgsParser.parse("true,1,2,true,\"abcd\",4")
     MessageArgsParser.parse("")
     MessageArgsParser.parse("1")
+    MessageArgsParser.parse("a.b.c")
+    MessageArgsParser.parse("a")
   }
 
   @Test

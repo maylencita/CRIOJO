@@ -101,14 +101,14 @@ class CompilerTest {
     assert(true)
   }
 
-//  @Test
+  @Test
   def computeFileTest() {
     var inputProgram:String = ""
     try {
       inputProgram = scala.io.Source.fromFile("program.criojo").mkString
     }
     catch {
-      case e:Exception => inputProgram = scala.io.Source.fromFile("/Users/jonathan/Documents/workspace_stage/CRIOJO/CriojoCompiler/program.criojo").mkString
+      case e:Exception => inputProgram = scala.io.Source.fromFile("/Users/jonathan/Documents/workspace_stage/CRIOJO_TESTTEST/CriojoCompiler/program.criojo").mkString
     }
     println (new CriojoCompiler().parse(inputProgram) )
 

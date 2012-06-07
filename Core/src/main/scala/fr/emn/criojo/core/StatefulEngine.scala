@@ -22,6 +22,8 @@ trait StatefulEngine extends Engine {
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)
 
+  override def reactionStrategy:ReactionStrategy = new LocalReactionStrategy()
+
   def executeRules(){
     while (rules.exists(r => r.execute)){}
   }
@@ -80,7 +82,7 @@ trait StatefulEngine extends Engine {
         }
 
         removeAtoms.foreach(a => removeAtom(a))
-        newAtoms.foreach(a => introduceAtom(a))
+        newAtoms.foreach(a => reactionStrategy.applyReaction(StatefulEngine.this, a))
       }
     }
 

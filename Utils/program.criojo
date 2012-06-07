@@ -1,16 +1,33 @@
 server {
 
-    ping {
+    a {
         {var cpt:Int = 0}
-        @token() -> (){cpt=cpt+1;println(cpt)}(),server.pong.@token()
-        Init() -> server.pong.@token()
+        @token(@ackV) -> @ackV(),server.b.@token(@ack)
+        @ack() -> (){cpt=cpt+1;println(cpt)}()
+        Init() -> server.b.@token(@ack)
     }
-    pong {
+    b {
         {var cpt:Int = 0}
-        @token() -> (){cpt=cpt+1;println(cpt)}(),server.ping.@token()
+        @token(@ackV) -> @ackV(),server.c.@token(@ack)
+        @ack() -> (){cpt=cpt+1;println(cpt)}()
+    }
+    c {
+        {var cpt:Int = 0}
+        @token(@ackV) -> @ackV(),server.a.@token(@ack)
+        @ack() -> (){cpt=cpt+1;println(cpt)}()
     }
 
     {
-        ping.introduceAtom(server.ping.Init())
+
+        a.enableSolutionTrace()
+        a.enableStreamingTrace()
+
+        b.enableSolutionTrace()
+        b.enableStreamingTrace()
+
+        c.enableSolutionTrace()
+        c.enableStreamingTrace()
+
+        a.introduceMolecule(a.Init())
     }
 }

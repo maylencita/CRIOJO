@@ -20,7 +20,7 @@ object VarChannel {
 
   def apply() = new VarChannel("VarChannel@" + getInstanceNum)
 
-  private def getInstanceNum() = {
+  private def getInstanceNum = {
     instanceNum += 1
     instanceNum
   }

@@ -1,9 +1,9 @@
 package fr.emn.criojo.core
 
 import datatype._
-import fr.emn.criojo.ext.expression.Relation.{Relation}
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-
+import Converters._
+import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relation}
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,7 +50,10 @@ case class Atom(relation:Relation, patterns: List[Term]) {
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
 
-  def applyValuation(valuation:Valuation):Atom = new Atom(relation, patterns.map({ pattern:Term => pattern.applyValuation(valuation).reduce() }))
+  def applyValuation(valuation:Valuation):Atom = new Atom(relation match {
+    case varChannel:VarChannel => ChannelLocationToRelation(varChannel.applyValuation(valuation).asInstanceOf[ChannelLocation])
+    case _ => relation
+  }, patterns.map({ pattern:Term => pattern.applyValuation(valuation).reduce() }))
 
   /** Applies the given substitutions to the atom.
    *

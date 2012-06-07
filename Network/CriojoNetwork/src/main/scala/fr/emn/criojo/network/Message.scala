@@ -8,6 +8,7 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
 import scala.util.parsing.combinator.JavaTokenParsers
+import fr.emn.criojo.ext.expression.Relation.ChannelLocation
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,8 +40,15 @@ case class MessageArgsParser(var e:List[Term]) extends JavaTokenParsers {
   val str = stringLiteral
   val bool: Parser[String] = "[true|false]".r
 
+  def url: Parser[String] = (urlPrefix.+)~id ^^ {case (u:List[String])~(s:String) => u.foldLeft("") {case (v,c) => v+c }+s }
+  def urlPrefix : Parser[String] = id~"." ^^ {case (s:String)~_ => s+"." }
+
   def args: Parser[List[Term]] = repsep(exp,",") ^^ { case exps => exps.foldLeft(List[Term]()){ (v,e) => v:::List(e) } }
-  def exp: Parser[Term] = "true" ^^ { case s => WrapScalaBoolean(s.toBoolean) } | "false" ^^ { case s => WrapScalaBoolean(s.toBoolean) } | fpt ^^ { case s => WrapScalaInt(s.toFloat.toInt) } | str ^^ { case s => WrapScalaString(s) } | dec ^^ { case s => WrapScalaInt(s.toFloat.toInt) } | id ^^ { case s => WrapScalaString(s) } | num ^^ { case s => WrapScalaInt(s.toDouble.toInt) }
+  def exp: Parser[Term] = "true" ^^ { case s => WrapScalaBoolean(s.toBoolean) } |
+    "false" ^^ { case s => WrapScalaBoolean(s.toBoolean) } | fpt ^^ { case s => WrapScalaInt(s.toFloat.toInt) } |
+    str ^^ { case s => WrapScalaString(s) } | dec ^^ { case s => WrapScalaInt(s.toFloat.toInt) } | url ^^ { case s:String => new ChannelLocation(s) } |
+    id ^^ { case s => WrapScalaString(s) } | num ^^ { case s => WrapScalaInt(s.toDouble.toInt) }
+
 }
 
 object Message {
