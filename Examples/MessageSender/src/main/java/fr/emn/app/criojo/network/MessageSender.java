@@ -88,8 +88,8 @@ public class MessageSender {
 		messageTextField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					String recipientName = (!userTextField.getText().trim().isEmpty()) ?
-							userTextField.getText().trim() : "NoName";
+					String recipientName = (!userTextField.getText().trim().isEmpty()) ? userTextField
+					    .getText().trim() : "NoName";
 					String msg = messageTextField.getText().trim();
 					messageTextField.setText("");
 					send(msg, recipientName);
@@ -160,43 +160,6 @@ public class MessageSender {
 		frame.add(messageTextField, gbc);
 	}
 
-
-	/**
-	 * Let user defined hot to connect on bus.
-	 */
-	private static BusConnector connect(BusConnectorFactory factory,
-	    BufferedReader bufferRead) {
-		BusConnector connector = null;
-		boolean stop = false;
-
-		while (!stop) {
-			System.out.print("Url to connect (empty to quit): ");
-			String choice = "";
-			try {
-				choice = bufferRead.readLine().trim();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			if (!choice.isEmpty()) {
-				try {
-					connector = factory.createConnector(choice);
-					stop = true;
-				} catch (BusConnectorFactoryException e) {
-					System.out.println("Wrong url, try again ;)\n" + e.getMessage());
-				} catch (BusConnectorException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-					stop = true;
-				}
-			} else {
-				stop = true;
-			}
-		}
-
-		return connector;
-	}
-
 	/**
 	 * Let User choose type of bus connection.
 	 */
@@ -236,23 +199,58 @@ public class MessageSender {
 
 		return factory;
 	}
-	
+
+	/**
+	 * Let user defined hot to connect on bus.
+	 */
+	private static BusConnector connect(BusConnectorFactory factory,
+	    BufferedReader bufferRead) {
+		BusConnector connector = null;
+		boolean stop = false;
+
+		while (!stop) {
+			System.out.print("Url to connect (empty to quit): ");
+			String choice = "";
+			try {
+				choice = bufferRead.readLine().trim();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			if (!choice.isEmpty()) {
+				try {
+					connector = factory.createConnector(choice);
+					stop = true;
+				} catch (BusConnectorFactoryException e) {
+					System.out.println("Wrong url, try again ;)\n" + e.getMessage());
+				} catch (BusConnectorException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+					stop = true;
+				}
+			} else {
+				stop = true;
+			}
+		}
+
+		return connector;
+	}
 
 	/**
 	 * Start new MessageSender, if user give correct informations.
 	 */
 	private static void startMessageSender(BusConnectorFactory factory,
-      BufferedReader bufferRead) {
-	  BusConnector connector;
-	  if (factory != null) {
+	    BufferedReader bufferRead) {
+		BusConnector connector;
+		if (factory != null) {
 			connector = connect(factory, bufferRead);
 
 			if (connector != null) {
 				new MessageSender(connector);
 			}
 		}
-  }
-	
+	}
+
 	public static void main(String[] args) {
 		BusConnectorFactory factory = null;
 
@@ -260,11 +258,11 @@ public class MessageSender {
 		    System.in));
 
 		factory = chooseFactory(bufferRead);
-		
+
 		System.out.println("\n* Defined connector of first MessageSender *");
 		startMessageSender(factory, bufferRead);
-		
-		System.out.println("\n* Defined connector of second MessageSender *");
-		startMessageSender(factory, bufferRead);
+
+		// System.out.println("\n* Defined connector of second MessageSender *");
+		// startMessageSender(factory, bufferRead);
 	}
 }

@@ -195,14 +195,25 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 		try {
 			session.createQueue(getQueueName(), getQueueName(), false);
 		} catch (HornetQException hqe) {
+			// 2.2.18 Version
 			switch (hqe.getCode()) {
 			case HornetQException.QUEUE_EXISTS:
-				System.err
-				    .println("[BUS] Queue " + getQueueName() + " already exists.");
+				System.err.println("[BUS] Queue "
+						+ getQueueName() + " already exists.");
 				break;
 			default:
 				throw hqe;
 			}
+
+			// 2.3.0 Version
+//			switch (hqe.getType()) {
+//			case QUEUE_EXISTS:
+//				System.err
+//				    .println("[BUS] Queue " + getQueueName() + " already exists.");
+//				break;
+//			default:
+//				throw hqe;
+//			}
 		}
 
 		// Create Producer and Consumer.
@@ -223,19 +234,34 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 	    HornetQException hqe) {
 		BusConnectorException be = null;
 
+		// 2.2.18 Version
 		switch (hqe.getCode()) {
 		case HornetQException.NOT_CONNECTED:
 			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
-			    hqe.getMessage());
+					hqe.getMessage());
 			break;
 		case HornetQException.OBJECT_CLOSED:
 			be = new BusConnectorException(BusConnectorException.CLOSED, name);
 			break;
 		default:
 			be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
-			    hqe.getMessage());
+					hqe.getMessage());
 		}
 
+		// 2.3.0 Version
+//		switch (hqe.getType()) {
+//		case NOT_CONNECTED:
+//			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
+//			    hqe.getMessage());
+//			break;
+//		case OBJECT_CLOSED:
+//			be = new BusConnectorException(BusConnectorException.CLOSED, name);
+//			break;
+//		default:
+//			be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
+//			    hqe.getMessage());
+//		}
+		
 		return be;
 	}
 

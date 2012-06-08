@@ -9,6 +9,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hornetq.version.git>2.3.0-SNAPSHOT</hornetq.version.git>
+    <hornetq.version.mvn>2.2.18.Final</hornetq.version.mvn>
   </properties>
 
   <dependencies>
@@ -23,7 +25,7 @@
     <dependency>
       <groupId>org.hornetq</groupId>
       <artifactId>hornetq-core</artifactId>
-      <version>2.2.18.Final</version>
+      <version>${hornetq.version.mvn}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.netty</groupId>
