@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fr.emn.app.criojo.network</groupId>
+  <artifactId>MessageSenderJS</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>MessageSenderJS</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <jetty.version>8.1.2.v20120308</jetty.version>
+  </properties>
+
+  <dependencies>
+    <!-- Bus API -->
+    <dependency>
+      <groupId>fr.emn.criojo.network</groupId>
+      <artifactId>BusSpec</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Bus Impl -->
+    <dependency>
+      <groupId>fr.emn.criojo.network</groupId>
+      <artifactId>BusHornetQImpl</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Jetty Server -->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>MessageSenderJS</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
+        <configuration>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <webAppConfig>
+            <contextPath>/clock-webapp</contextPath>
+            <descriptor>${basedir}/src/main/webapp/web.xml</descriptor>
+          </webAppConfig>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <fork>true</fork>
+          <meminitial>128m</meminitial>
+          <maxmem>512m</maxmem>
+          <source>1.6</source>
+          <target>1.6</target>
+          <minmemory>256m</minmemory>
+          <maxmemory>2048m</maxmemory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+

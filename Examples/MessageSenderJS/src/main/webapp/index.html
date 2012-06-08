@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Message Sender</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <style type="text/css">
+      #chatBox {
+        margin: 0;
+        padding-top: 20px;
+        list-style: none;
+        max-height: 200px;
+        max-width: 620px;
+        overflow: auto;
+      }
+      .chatLine {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .chatAuthor {
+        font-weight: bold;
+      }
+      .chatText {
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span8 offset2">
+          <fieldset>
+            <legend>MessageSender JS</legend>
+            <ul id="chatBox">
+            </ul>
+            <div class="form-actions">
+              <div id="chatConnectTool" class="input-append">
+                <input class="span6" id="chatName" type="text" maxlength="10"
+                placeholder="Name"/><button class="btn" type="button"
+                  id="chatConnect">Connect</button>
+              </div>
+              <div id="chatMessageTool" class="input-append"
+                style="display: none">
+                <input class="span2" id="chatReciptient" type="text"
+                placeholder="Recipient"/><input class="span4" id="chatMessage"
+                type="text" placeholder="Message"/><button class="btn"
+                type="button" id="chatSend">Send</button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+
+    <script type="application/javascript" src="stomp.js"></script>
+    <script type="application/javascript" src="BusConnectorHQSW.js"></script>
+    <script type="application/javascript">
+      var url = 'ws://localhost:61614/stomp';
+      var conn = false;
+      var name = "NoName";
+
+      // ***************************************************** Initialization **
+      function init() {
+        document.getElementById("chatName").focus();
+
+        if (!("WebSocket" in window)) {
+          console.error("Websockets NOT supported");
+          return;
+        }
+      }
+
+      // ******************************************* Message Sender Functions **
+      function connReceiveHandler(message) {
+        var authorSeparator = message.indexOf(':');
+        var author = message.substring(0, authorSeparator);
+        var text = message.substring(authorSeparator + 2);
+
+        // Author span
+        var authorSpan = document.createElement("span");
+        authorSpan.appendChild(document.createTextNode(author + ": "));
+        authorSpan.className = "chatAuthor";
+
+        // Text Span
+        var textSpan = document.createElement("span");
+        textSpan.appendChild(document.createTextNode(text));
+        textSpan.className = "chatText";
+
+        // New Line
+        var newLine = document.createElement("li");
+        newLine.appendChild(authorSpan);
+        newLine.appendChild(textSpan);
+        newLine.className = "chatLine";
+
+        var chatBox = document.getElementById("chatBox");
+        chatBox.appendChild(newLine);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function connConnected() {
+        document.getElementById("chatConnectTool").style.display = "none";
+        document.getElementById("chatMessageTool").style.display = "block";
+        document.getElementById("chatMessage").focus();
+      }
+
+      function connDebug(msg) {
+        console.log('[DEBUG] ' + msg);
+      }
+
+      // ************************************************* Listener Functions **
+      function onConnect() {
+        name = document.getElementById("chatName").value;
+        conn = new BusConnectorHQSW(url, name, connConnected,
+            connReceiveHandler, connDebug);
+      }
+
+      function onSend() {
+        var chatMessageInput = document.getElementById("chatMessage");
+        var recipientInput = document.getElementById("chatReciptient");
+
+        conn.send(name + ': ' + chatMessageInput.value, recipientInput.value);
+        chatMessageInput.value = "";
+      }
+
+      // LoadPageListener
+      window.addEventListener("load", init, false);
+
+      // ConnectListener
+      document.getElementById("chatConnect").addEventListener("click",
+          onConnect, false);
+      document.getElementById("chatName").addEventListener("keyup",
+          function(evt) { if (evt.keyCode == 13) { onConnect() } }, false);
+
+      // SendMessageListener
+      document.getElementById("chatSend").addEventListener("click",
+          onSend, false);
+      document.getElementById("chatMessage").addEventListener("keyup",
+          function(evt) { if (evt.keyCode == 13) { onSend() } }, false);
+    </script>
+  </body>
+</html>
+

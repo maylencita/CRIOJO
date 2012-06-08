@@ -1,0 +1,7 @@
+Ensure launch mvn install on main directory.
+
+launch project
+mvn compile
+mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.JettyLauncher
+Open http://localhost:8080/message-sender/ in your browser ...
+
