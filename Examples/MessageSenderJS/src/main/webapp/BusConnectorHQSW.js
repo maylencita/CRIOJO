@@ -37,7 +37,8 @@ BusConnectorHQSW.SUBSCRIPTION_ACK = "(-- ack of subscription --)";
  *
  * \param url         Url to HornetQ Stomp Over WebSocket Acceptor.
  * \param name        The connector name.
- * \param onConnect   callBack function call after connect to Acceptor succeed.
+ * \param onConnect   callBack function call after connect to Acceptor succeed
+ *                    and subscribe to correct queue.
  * \param onReceive   callback function call after receive message.
  * \param debug       debug function to print debug message.
  * \param login       The user login (may could access to
@@ -47,25 +48,39 @@ BusConnectorHQSW.SUBSCRIPTION_ACK = "(-- ack of subscription --)";
  */
 function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
     passcode) {
-  var me = this;
+  var _this = this;
   var onReceive = onReceive || false;
   var onConnect = onConnect || false;
   var debug = debug || false;
   var login = login || 'guest';
   var passcode = passcode || 'guest';
+
+  //! Number of attemp subscription on QUEUE + name.
   var subscribeAttempt = 0;
+
+  //! Time before new subscription on QUEUE + name.
   var subscribeWaitTime = BusConnectorHQSW.SUBSCRIPTION_TIME +
     (BusConnectorHQSW.SUBSCRIPTION_TIME / 5.);
+
+  //! Timer will launch subscription on QUEUE + name (get with setTimeout).
   var subscribeTimer = false;
+
+  //! Error message on subscription to QUEUE + name.
   var subscribeError = new RegExp('message: Address '
       + BusConnectorHQSW.QUEUE + name + ' has not been deployed');
 
   //! Stomp over WebSocket connector on HornetQ.
-  this.stomp = Stomp.client(url);
+  this.stomp = new Stomp.client(url);
+
+  //! Test if connector is disconnected (or not).
+  this.disconnected = true;
+
+  //! Successive Lost connection Number.
+  this.lostConnection = 0;
 
   //! Set debug mode.
   this.stomp.debug = function(debugMsg) {
-    if (debugMsg.startsWith("<<< ERROR")) {
+    if (debugMsg.startsWith('<<< ERROR')) {
       if (subscribeError.test(debugMsg)) {
         // ERROR on subscribtion to dedicated queue.
         // Try to reconnect after BusConnectorHQSW.SUBSCRIPTION_TIME;
@@ -73,20 +88,30 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
           if (debug) { debug(debugMsg); }
         } else {
           clearTimeout(subscribeTimer);
-          subscribeTimer = setTimeout(function() { me.subscribe() },
+          subscribeTimer = setTimeout(function() { _this.subscribe() },
               BusConnectorHQSW.SUBSCRIPTION_TIME);
         }
       } else {
         if (debug) { debug(debugMsg); }
       }
+    } else if (debugMsg.startsWith('Whoops! Lost connection')
+        && _this.lostConnection < 1) {
+      // Disconnected after time-out from server.
+      // Re-connect to server acceptor.
+      _this.lostConnection ++;
+      setTimeout(function() {
+        _this.stomp.connect(login, passcode, function() {
+          _this.lostConnection = 0;
+          _this.stomp.subscribe(BusConnectorHQSW.QUEUE + name, function(frame) {
+            if (onReceive) { onReceive(frame.body); }
+          });
+        });
+      }, 1);
     } else {
       // Forward error to user
       if (debug) { debug(debugMsg); }
     }
   }
-
-  //! Test if connector is disconnected (or not).
-  this.disconnected = false;
 
   /*!
    * Returns the connector name would be unique on Bus.
@@ -97,11 +122,20 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
     return name;
   }
 
+  /*!
+   * Subscribe to dedicated QUEUE + name queue.
+   *
+   * The connection is successfully when connector success to connect on 
+   * dedicated queue. This method use specific message SUBSCRIPTION_ACK sends to
+   * itself to ensure success subscription. If subscription is ok, the user
+   * method onConnect is call.
+   */
   this.subscribe = function() {
     subscribeAttempt ++;
 
-    me.stomp.subscribe(BusConnectorHQSW.QUEUE + name, function(frame) {
+    this.stomp.subscribe(BusConnectorHQSW.QUEUE + name, function(frame) {
       if (frame.body == BusConnectorHQSW.SUBSCRIPTION_ACK) {
+        _this.disconnected = false;
         onConnect();
       } else {
         if (onReceive) { onReceive(frame.body); }
@@ -110,13 +144,12 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
 
     // After subscription, send ack subscription to launch onConnect
     // This command will be executed exclusively if subscription works well.
-    setTimeout(function() {me.send(BusConnectorHQSW.SUBSCRIPTION_ACK, name);},
-        this.subscribeWaitTime);
+    setTimeout(function() {
+      _this.send(BusConnectorHQSW.SUBSCRIPTION_ACK, name);
+    }, subscribeWaitTime);
   }
 
-  /* ## MAIN ## */
-
-  //! Connect on Bus.
+  // ## MAIN -- Connect on Bus ##
   this.stomp.connect(login, passcode, function(frame) {
     // Once connected, ask to create new Queue.
     var createQueueHeader = {
@@ -128,19 +161,19 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
     var queueName = BusConnectorHQSW.QUEUE + name;
     var createQueueText = '["' + queueName + '", "' + queueName + '", ""]';
 
-    me.stomp.send(BusConnectorHQSW.MANAGEMENT_QUEUE, createQueueHeader,
+    _this.stomp.send(BusConnectorHQSW.MANAGEMENT_QUEUE, createQueueHeader,
       createQueueText);
 
     // Subscribe to new Queue.
-    me.subscribe();
+    _this.subscribe();
   });
 }
 
 /*!
  * Sends message using Bus to a specific recipient.
  *
- * \param message
- * \param recipientName
+ * \param message Message to send.
+ * \param recipientName The recipient name.
  */
 BusConnectorHQSW.prototype.send = function(message, recipientName) {
   this.stomp.send(BusConnectorHQSW.QUEUE + recipientName, {foo:1}, message);
@@ -148,11 +181,9 @@ BusConnectorHQSW.prototype.send = function(message, recipientName) {
 
 //! Disconnect the connector from Bus.
 BusConnectorHQSW.prototype.disconnect = function() {
-  var disconnected = this.disconnected;
-
-  this.stomp.disconnect(function() {
-    disconnected = true;
-  });
+  this.lostConnection ++;
+  this.stomp.disconnect();
+  this.disconnected = true;
 }
 
 /*!

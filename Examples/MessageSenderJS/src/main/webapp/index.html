@@ -29,7 +29,7 @@
       <div class="row">
         <div class="span8 offset2">
           <fieldset>
-            <legend>MessageSender JS</legend>
+            <legend id="chatTitle">MessageSenderJS</legend>
             <ul id="chatBox">
             </ul>
             <div class="form-actions">
@@ -58,10 +58,14 @@
       var conn = false;
       var name = "NoName";
 
+      if (typeof String.prototype.startsWith != 'function') {
+        String.prototype.startsWith = function (str){
+          return this.slice(0, str.length) == str;
+        };
+      }
+
       // ***************************************************** Initialization **
       function init() {
-        document.getElementById("chatName").focus();
-
         if (!("WebSocket" in window)) {
           console.error("Websockets NOT supported");
           return;
@@ -98,7 +102,7 @@
       function connConnected() {
         document.getElementById("chatConnectTool").style.display = "none";
         document.getElementById("chatMessageTool").style.display = "block";
-        document.getElementById("chatMessage").focus();
+        document.getElementById("chatTitle").textContent += ' ' + name;
       }
 
       function connDebug(msg) {
@@ -116,8 +120,13 @@
         var chatMessageInput = document.getElementById("chatMessage");
         var recipientInput = document.getElementById("chatReciptient");
 
-        conn.send(name + ': ' + chatMessageInput.value, recipientInput.value);
-        chatMessageInput.value = "";
+        if (chatMessageInput.value.startsWith('\\q')) {
+          // Disconnect
+          conn.disconnect();
+        } else {
+          conn.send(name + ': ' + chatMessageInput.value, recipientInput.value);
+          chatMessageInput.value = "";
+        }
       }
 
       // LoadPageListener
