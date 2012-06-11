@@ -1,8 +1,8 @@
 # MessageSender
-MessageSender is simply app use to test BusConnector.
+MessageSender is simply app to test BusConnector.
 
 This app offer an interface to connect on Bus with different implementation of
-BusConnector and send message over the bus.
+BusConnector and send message over the Bus.
 
 ## Compile
 
