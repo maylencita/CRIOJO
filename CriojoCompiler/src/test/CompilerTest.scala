@@ -102,13 +102,23 @@ class CompilerTest {
   }
 
   @Test
+  def webserverTest() {
+    val compiler = new CriojoCompiler()
+
+    println(compiler.parseAll(compiler.webserver,"web(pathToServer)").get)
+    println(compiler.parseAll(compiler.program," web(pathToServer) ").get)
+
+    assert(true)
+  }
+
+  @Test
   def computeFileTest() {
     var inputProgram:String = ""
     try {
       inputProgram = scala.io.Source.fromFile("program.criojo").mkString
     }
     catch {
-      case e:Exception => inputProgram = scala.io.Source.fromFile("/Users/jonathan/Documents/workspace_stage/CRIOJO_TESTTEST/CriojoCompiler/program.criojo").mkString
+      case e:Exception => inputProgram = scala.io.Source.fromFile("/Users/jonathan/Documents/workspace_stage/CRIOJO/CriojoCompiler/program.criojo").mkString
     }
     println (new CriojoCompiler().parse(inputProgram) )
 

@@ -23,7 +23,7 @@ class NetworkTest {
     MessageArgsParser.parse("")
     MessageArgsParser.parse("1")
     MessageArgsParser.parse("a.b.c")
-    MessageArgsParser.parse("a")
+    MessageArgsParser.parse("@a")
   }
 
   @Test

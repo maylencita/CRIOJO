@@ -14,46 +14,67 @@ java -jar compiler/CriojoCompiler.jar $1 | awk '
 	BEGIN {
 		dossier = "."
 		addresse = "unknown"
+		completePath = "unknown"
 		command = ""
+
+		print "#!/usr/bin/env bash"
+		print ""
 	}
 	
 	{
-		if($1 == "//file") {
-			addresse = $2".scala"
-			dossier = "servers/" $2
-			
-			print "mkdir " dossier
-			print "mkdir -p " dossier "/src/main/scala/application"
-			print "mkdir -p " dossier "/src/test/scala/application"
-			print "touch " dossier "/src/main/scala/application/" addresse
-			command = "echo \"// this is a script generated from criojo tools\" > " dossier "/src/main/scala/application/" addresse
-		}
-		else {
-			gsub(/\"/, "\\\"", $0)
-			command = "echo \""  $0 "\" >> " dossier "/src/main/scala/application/" addresse
-		}
-	
-		print command
-	}
+        if($1 == "//file") {
+            addresse = $2".scala"
+            dossier = "servers/" $2
+            completePath = dossier "/src/main/scala/application/"
+
+            print "mkdir " dossier
+            print "mkdir -p " dossier "/src/main/scala/application"
+            print "mkdir -p " dossier "/src/test/scala/application"
+            print "touch " dossier "/src/main/scala/application/" addresse
+            command = "echo \"// this is a script generated from criojo tools\" > " completePath addresse
+        }
+        else if($1 == "//fileweb") {
+            addresse = "AppLauncher.java"
+            dossier = "servers/web"
+            completePath = dossier "/src/main/java/application/"
+
+            print "mkdir " dossier
+            print "mkdir -p " completePath
+            print "mkdir -p " dossier "/src/test/java/application"
+            print "mkdir -p " dossier "/src/test/java/webapp/"
+            print "cp -r " $2 " " dossier "/src/main/java/webapp/"
+            print "touch " dossier "/src/main/java/application/" addresse
+            command = "echo \"// this is a script generated from criojo tools\" > " completePath addresse
+        }
+        else {
+            gsub(/\"/, "\\\"", $0)
+            command = "echo \""  $0 "\" >> " completePath addresse
+        }
+
+        print command
+    }
+
 	END {
 	}   
 ' > temp.temp
 
-old_IFS=$IFS     # sauvegarde du séparateur de champ  
-IFS=$'\n'  
-for line in $(cat temp.temp)
-do
-    a=$line
-    eval "$a"
-done
-IFS=$old_IFS     # rétablissement du séparateur de champ par défaut
+chmod +x temp.temp
+./temp.temp
 
 for folder in `ls servers/`; do
-    eval "cp -r conf servers/$folder/conf"
-    eval "cp -r lib servers/$folder/lib"
-    eval "cp script/pom.xml.template servers/$folder/pom.xml"
-    eval "cp script/run.sh servers/$folder/run.sh"
-    eval "chmod +x servers/$folder/run.sh"
+    if [ "$folder" != "web" ]; then
+        eval "cp -r conf/cham servers/$folder/conf"
+        eval "cp -r lib/cham servers/$folder/lib"
+        eval "cp script/cham/pom.xml.template servers/$folder/pom.xml"
+        eval "cp script/cham/run.sh servers/$folder/run.sh"
+        eval "chmod +x servers/$folder/run.sh"
+    else
+        eval "cp -r conf/web servers/$folder/conf"
+        eval "cp -r lib/web servers/$folder/lib"
+        eval "cp script/web/pom.xml.template servers/$folder/pom.xml"
+        eval "cp script/web/run.sh servers/$folder/run.sh"
+        eval "chmod +x servers/$folder/run.sh"
+    fi
 done
 
 eval "cp conf/hosts.xml servers/hosts.xml"

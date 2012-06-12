@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fr.emn.app.criojo.network</groupId>
+  <artifactId>MessageSenderJS</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>MessageSenderJS</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <jetty.version>8.1.2.v20120308</jetty.version>
+  <properties/>
+
+  </properties>
+
+  <dependencies>
+    <!-- Bus API -->
+    <dependency>
+        <groupId>fr.emn.criojo.network</groupId>
+        <artifactId>BusSpec</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <scope>compile</scope>
+    </dependency>
+
+    <!-- Bus Implementation -->
+    <dependency>
+        <groupId>fr.emn.criojo.network</groupId>
+        <artifactId>BusHornetQImpl</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <scope>compile</scope>
+    </dependency>
+
+    <!-- Jetty Server -->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>MessageSenderJS</finalName>
+
+    <plugins>
+
+
+    <!-- INSTALLING LOCAL JAR IN LOCAL REPOSITORY -->
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <executions>
+
+                        <!-- Bus Spec -->
+                        <execution>
+                            <id>install-bus-spec</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>install-file</goal>
+                            </goals>
+                            <configuration>
+                                <file>${basedir}/lib/BusSpec-1.0-SNAPSHOT.jar</file>
+
+                                <groupId>fr.emn.criojo.network</groupId>
+                                <artifactId>BusSpec</artifactId>
+                                <version>1.0-SNAPSHOT</version>
+                                <packaging>jar</packaging>
+                            </configuration>
+                        </execution>
+
+                        <!-- Bus Impl -->
+                        <execution>
+                            <id>install-bus-impl</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>install-file</goal>
+                            </goals>
+                            <configuration>
+                                <file>${basedir}/lib/BusHornetQImpl-1.0-SNAPSHOT.jar</file>
+
+                                <groupId>fr.emn.criojo.network</groupId>
+                                <artifactId>BusHornetQImpl</artifactId>
+                                <version>1.0-SNAPSHOT</version>
+                                <packaging>jar</packaging>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <fork>true</fork>
+          <meminitial>128m</meminitial>
+          <maxmem>512m</maxmem>
+          <source>1.6</source>
+          <target>1.6</target>
+          <minmemory>256m</minmemory>
+          <maxmemory>2048m</maxmemory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+

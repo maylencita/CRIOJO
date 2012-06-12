@@ -40,7 +40,7 @@ case class MessageArgsParser(var e:List[Term]) extends JavaTokenParsers {
   val str = stringLiteral
   val bool: Parser[String] = "[true|false]".r
 
-  def url: Parser[String] = (urlPrefix.+)~id ^^ {case (u:List[String])~(s:String) => u.foldLeft("") {case (v,c) => v+c }+s }
+  def url: Parser[String] = "@"~id ^^ {case _~(idChannel:String) => idChannel } | (urlPrefix.+)~id ^^ {case (u:List[String])~(s:String) => u.foldLeft("") {case (v,c) => v+c }+s }
   def urlPrefix : Parser[String] = id~"." ^^ {case (s:String)~_ => s+"." }
 
   def args: Parser[List[Term]] = repsep(exp,",") ^^ { case exps => exps.foldLeft(List[Term]()){ (v,e) => v:::List(e) } }

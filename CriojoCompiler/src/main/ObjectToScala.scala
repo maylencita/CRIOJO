@@ -35,7 +35,15 @@ object ObjectToScala {
     env.mapOfVarChannel.foldLeft("") { case(v,(k,p)) => v+"\t\t\tvar "+k+p+"\n"}
   }
 
-  def mainProgram(servers:List[Any]):String = servers.foldLeft(""){case(v,s) => v+s}
+  def mainProgram(webserver:Option[String], servers:List[Any]):String = {
+
+    val webserverString:String = webserver match {
+      case None => ""
+      case Some(s:String) => s
+    }
+
+    webserverString+"\n"+servers.foldLeft(""){case(v,s) => v+s}
+  }
 
   def server(name:String, chams:List[Any], env:ServerEnvironment):String = {
 
@@ -81,6 +89,69 @@ object ObjectToScala {
     "}\n"
   }
 
+  def webServer(path:String):String = {
+    "//fileweb "+path+"\n" +
+      "package application;\n" +
+      "\n"+
+      "import org.eclipse.jetty.server.Server;\n" +
+      "import org.eclipse.jetty.webapp.WebAppContext;\n" +
+      "import fr.emn.criojo.network.BusConnector;\n" +
+      "import fr.emn.criojo.network.BusConnectorException;\n" +
+      "import fr.emn.criojo.network.BusConnectorFactory;\n" +
+      "import fr.emn.criojo.network.BusConnectorFactoryException;\n" +
+      "import fr.emn.criojo.network.BusConnectorLocalHornetQWithManagementFactory;"+
+      "\n\n"+
+      "public class AppLauncher {\n "+
+      "public static BusConnector startHornetQWithManagement()\n" +
+      "\t\tthrows BusConnectorFactoryException, BusConnectorException {\n" +
+      "\t\tBusConnectorFactory factory = new BusConnectorLocalHornetQWithManagementFactory();\n" +
+      "\t\tBusConnector connector = factory.createConnector(\"5445:debug\");\n" +
+      "\t\treturn connector;\n" +
+      "\t}\n" +
+      "\tprivate static Server startJetty() throws Exception {\n" +
+      "\t\tServer server = new Server(8080);\n" +
+      "\t\tWebAppContext context = new WebAppContext();\n" +
+      "\t\tcontext.setDescriptor(\"/WEB-INF/web.xml\");\n" +
+      "\t\tcontext.setResourceBase(System.getProperties().getProperty(\"user.dir\")\n" +
+      "\t\t    + \"/src/main/java/webapp\");\n" +
+      "\t\tcontext.setContextPath(\"/message-sender\");\n" +
+      "\n" +
+      "\t\tserver.setHandler(context);\n" +
+      "\t\tserver.start();\n" +
+      "\n" +
+      "\t\treturn server;\n" +
+      "\t}"+
+      "\tpublic static void main(String[] args) {\n" +
+      "\t\tBusConnector connector = null;\n" +
+      "\t\tServer jetty = null;\n" +
+      "\t\ttry {\n" +
+      "\t\t\tconnector = startHornetQWithManagement();\n" +
+      "\t\t\tjetty = startJetty();\n" +
+      "\t\t\tSystem.out.println(\"Open http://localhost:8080/message-sender/\"\n" +
+      "\t\t\t    + \" in your browser ...\");\n" +
+      "\t\t\twhile(true) {Thread.sleep(500);}\n" +
+      "\t\t} catch (BusConnectorFactoryException e) {\n" +
+      "\t\t\te.printStackTrace();\n" +
+      "\t\t} catch (BusConnectorException e) {\n" +
+      "\t\t\te.printStackTrace();\n" +
+      "\t\t} catch (Exception e) {\n" +
+      "\t\t\te.printStackTrace();\n" +
+      "\t\t} finally {\n" +
+      "\t\t\tif (connector != null) {\n" +
+      "\t\t\t\tconnector.disconnect();\n" +
+      "\t\t\t}\n" +
+      "\t\t\tif (jetty != null) {\n" +
+      "\t\t\t\ttry {\n" +
+      "\t\t\t\t\tjetty.stop();\n" +
+      "\t\t\t\t} catch (Exception e) {\n" +
+      "\t\t\t\t\te.printStackTrace();\n" +
+      "\t\t\t\t}\n" +
+      "\t\t\t}\n" +
+      "\t\t}\n" +
+      "\t}\n"+
+      "}\n"
+  }
+  
   def firewall(name:String, env:FirewallEnvironment):String = {
     "\t\tval "+name+" = new Firewall {\n"+
     "\t\t\tpushToNames(\""+name+"\")\n"+

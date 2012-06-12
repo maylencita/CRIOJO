@@ -97,10 +97,14 @@ class CriojoCompiler extends JavaTokenParsers {
   def withSpace[T](inputParser:Parser[T]): Parser[Any] = spaces~>inputParser<~spaces
 
   // PROGRAM :=  (SERVER)*
-  def program: Parser[Any] = withSpace(rep(server)) ^^ {
-    case servers:List[Any] => ObjectToScala.mainProgram(servers)
+  def program: Parser[Any] = withSpace((withSpace(webserver).?)~withSpace(rep(server))) ^^ {
+    case (webserver:Option[String])~(servers:List[Any]) => ObjectToScala.mainProgram(webserver, servers)
   }
 
+  def webserver:Parser[Any] = withSpace("web("~id~")") ^^ {
+    case _~(path:String)~_ => ObjectToScala.webServer(path)
+  }
+  
   // SERVER := ID (CHAM | FIREWALL)*
   def server: Parser[Any] = withSpace(id~"{"~(withSpace(scalaCode).?)~withSpace(rep(cham | firewall))~(withSpace(scalaCode).?)~"}") ^^ {
     case (idServer:String)~_~(header:Option[String])~(chams:List[Any])~(footer:Option[String])~_ => {
@@ -163,7 +167,7 @@ class CriojoCompiler extends JavaTokenParsers {
   }
 
   def expsLeft: Parser[List[Any]] = repsep(expLeft, ",")
-  def expLeft: Parser[Any] = withSpace(fpt | str | dec | outChannelId | criojoId | num)
+  def expLeft: Parser[Any] = withSpace(fpt | str | dec | VarChannelChamdId | criojoId | num)
 
   // FOR RIGHT ATOMS
 
@@ -174,7 +178,7 @@ class CriojoCompiler extends JavaTokenParsers {
   } | withSpace(nativeCode)
 
   def expsRight: Parser[List[Any]] = repsep(expRight, ",")
-  def expRight: Parser[Any] = withSpace(fpt | str | dec | inChannelId | outChannelId | varId | num)
+  def expRight: Parser[Any] = withSpace(fpt | str | dec | VarChannelChamdId | outChannelId | varId | num)
 
   // END OF ATOMS DEFINITION
 
