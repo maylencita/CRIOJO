@@ -18,7 +18,7 @@ local connector use informations give by user to start a new node and connect
 on it.
 
 <pre><code>
-% mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.MessageSender
+% mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.AppLauncher
 
 Choose kind of connector. Here LocalHornetQ is choose that start Bus Node
 HornetQ and connect on it
@@ -45,7 +45,7 @@ a HornetQ cluster is already deployed with two nodes. One HornetQ server run
 on 10.0.0.1 and next on 10.0.0.2.
 
 <pre><code>
-% mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.MessageSender
+% mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.AppLauncher
 
 Choose kind of connector. Here RemoteHornetQ is choose to connect on existing
 Bus Node.
