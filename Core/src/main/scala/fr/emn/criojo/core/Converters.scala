@@ -7,7 +7,9 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 import fr.emn.criojo.ext.expression.ScalaString.ScalaString
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
-import fr.emn.criojo.ext.expression.Relation.Relation
+import fr.emn.criojo.ext.expression.Relation.constructor.Channel
+import fr.emn.criojo.ext.expression.Relation.constructor.OutChannel
+import fr.emn.criojo.ext.expression.Relation.{VarChannel, Relation, ChannelLocation}
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,4 +51,30 @@ object Converters {
   implicit def intToExpression(i:Int):ScalaInt = WrapScalaInt(i)
   implicit def stringToExpression(s:String):ScalaString = WrapScalaString(s)
   implicit def booleanToTerm(b:Boolean):ScalaBoolean = WrapScalaBoolean(b)
+
+  implicit def TermToRelation(t:Term):Relation = t match {
+    case cl:ChannelLocation => ChannelLocationToRelation(cl)
+    case _ => null
+  }
+
+  def TermToChannel(t:Term):Channel = t match {
+    case cl:ChannelLocation => ChannelLocationToChannel(cl)
+    case _ => null
+  }
+  implicit def ChannelLocationToChannel(cl:ChannelLocation):Channel = new Channel(cl.url, cl)
+
+  def TermToOutChannel(t:Term):OutChannel = t match {
+    case cl:ChannelLocation => ChannelLocationToOutChannel(cl)
+    case _ => null
+  }
+
+  def ChannelLocationToRelation(cl:ChannelLocation):Relation = if (cl.url contains ".")
+    ChannelLocationToOutChannel(cl)
+  else
+    ChannelLocationToChannel(cl)
+
+  implicit def ChannelLocationToOutChannel(cl:ChannelLocation):OutChannel = new OutChannel(cl.url, cl)
+
+  implicit def ChannelToChannelLocation(c:Channel):ChannelLocation = c.location
+  implicit def OutChannelToChannelLocation(oc:OutChannel):ChannelLocation = oc.location
 }

@@ -16,14 +16,16 @@ trait Engine extends RuleFactory{
   protected var rules:List[Rule] = List()
   protected var relations:List[Relation] = List()
 
+  def reactionStrategy:ReactionStrategy
+
   def executeRules()
   def introduceAtom(atom:Atom)
 
   def notifyRelationObservers(atom: Atom){
-    if (atom.relation != null)
+    if (atom.relation != null && atom.relation.isInstanceOf[LocalRelation])
       atom.relation.notifyObservers(atom)
     else
-      findRelation(atom.relation.name) match{
+      findRelation(atom.relation.name) match {
         case Some(relation) => relation.notifyObservers(atom)
         case _ => log(WARNING, this.getClass, "notifyRelationObservers", "Undefined relation " + atom.relation.name)
       }
@@ -31,6 +33,10 @@ trait Engine extends RuleFactory{
 
   def addRelation(relation:Relation) { relations :+= relation }
   def addRule(rule:Rule) {
+    
+    rule.body.foreach(a => addRelation(a.relation))
+    rule.head.foreach(a => addRelation(a.relation))
+
     rules :+= rule
   }
 

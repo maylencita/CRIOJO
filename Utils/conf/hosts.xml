@@ -1,19 +1,19 @@
 <servers>
 	<server>
 		<name>node1</name>
-		<ip>172.28.2.208</ip>
+		<ip>172.28.3.151</ip>
 		<username>root</username>
 		<password>password</password>
 	</server>
 	<server>
 		<name>node2</name>
-		<ip>172.28.2.28</ip>
+		<ip>172.28.3.243</ip>
 		<username>root</username>
 		<password>password</password>
 	</server>
 	<server>
 		<name>node3</name>
-		<ip>172.28.2.17</ip>
+		<ip>172.28.3.76</ip>
 		<username>root</username>
 		<password>password</password>
 	</server>
