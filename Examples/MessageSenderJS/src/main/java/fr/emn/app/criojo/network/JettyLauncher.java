@@ -1,5 +1,7 @@
 package fr.emn.app.criojo.network;
 
+import java.util.Properties;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -23,8 +25,8 @@ public class JettyLauncher {
 		WebAppContext context = new WebAppContext();
 
 		context.setDescriptor("/WEB-INF/web.xml");
-		context
-		    .setResourceBase("/Users/monkyl3x/prog/univ/emn/CRIOJO/Examples/MessageSenderJS/src/main/webapp");
+		context.setResourceBase(System.getProperties().getProperty("user.dir")
+		    + "/src/main/webapp");
 		context.setContextPath("/message-sender");
 
 		server.setHandler(context);
@@ -34,34 +36,35 @@ public class JettyLauncher {
 	}
 
 	public static void main(String[] args) {
-		BusConnector connector = null;
-		Server jetty = null;
-
-		try {
-			connector = startHornetQWithManagement();
-			new MessageSender(connector);
-			jetty = startJetty();
-
-			System.out.println("Open http://localhost:8080/message-sender/"
-			    + " in your browser ...");
-			System.in.read();
-		} catch (BusConnectorFactoryException e) {
-			e.printStackTrace();
-		} catch (BusConnectorException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (connector != null) {
-				connector.disconnect();
-			}
-			if (jetty != null) {
-				try {
-					jetty.stop();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		 BusConnector connector = null;
+		 Server jetty = null;
+		
+		 try {
+		
+		 connector = startHornetQWithManagement();
+		 new MessageSender(connector);
+		 jetty = startJetty();
+		
+		 System.out.println("Open http://localhost:8080/message-sender/"
+		 + " in your browser ...");
+		 System.in.read();
+		 } catch (BusConnectorFactoryException e) {
+		 e.printStackTrace();
+		 } catch (BusConnectorException e) {
+		 e.printStackTrace();
+		 } catch (Exception e) {
+		 e.printStackTrace();
+		 } finally {
+		 if (connector != null) {
+		 connector.disconnect();
+		 }
+		 if (jetty != null) {
+		 try {
+		 jetty.stop();
+		 } catch (Exception e) {
+		 e.printStackTrace();
+		 }
+		 }
+		 }
 	}
 }
