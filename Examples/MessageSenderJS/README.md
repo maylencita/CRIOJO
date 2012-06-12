@@ -31,7 +31,7 @@ implementation is specified in BusConnectorHQSW.js. This library required
 stomp-websocket from jmesnil (https://github.com/jmesnil/stomp-websocket).
 
 To launch example simply execute
-```mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.JettyLauncher```
+```mvn exec:java -Dexec.mainClass=fr.emn.app.criojo.network.AppLauncher```
 
 ## Know issue
 
