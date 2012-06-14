@@ -44,7 +44,8 @@ import org.hornetq.core.server.HornetQServers;
  */
 public class BusConnectorLocalHornetQ implements BusConnector {
 	protected static Lock l = new ReentrantLock();
-	public static final String QUEUE = "jms.queue.";
+	public static final String PERSONAL = "personal";
+	public static final String BROADCAST = "broadcast";
 	public static final String DEFAULT_BROADCAST_ADDRESS = "231.7.7.7";
 	public static final int DEFAULT_BROADCAST_PORT = 9876;
 	public static final int DEFAULT_STOMPWEBSOCKET_PORT = 61614;
@@ -58,8 +59,15 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	private final int broadcastPort;
 	private boolean disconected;
 
+	/**
+	 * Consume personal messages.
+	 */
+	protected ClientConsumer personalConsumer = null;
+	/**
+	 * Consume broadcast messages.
+	 */
+	protected ClientConsumer bcastConsumer = null;
 	protected ClientSession session = null;
-	protected ClientConsumer consumer = null;
 	protected ClientProducer producer = null;
 	protected ServerLocator locator = null;
 	protected ClientSessionFactory factory = null;
@@ -153,22 +161,28 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			// Use NullableSimpleString cause it is default Stomp message form.
 			msg.getBodyBuffer().writeNullableSimpleString(new SimpleString(message));
 			msg.setDurable(true);
-			producer.send(QUEUE + recipient, msg);
+			
+			// If recipient is empty, the message is broadcasted over the network.
+			if (!recipient.isEmpty()) {
+				producer.send(PERSONAL + "." + recipient, msg);
+			} else {
+				producer.send(BROADCAST, msg);
+			}
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
 		}
 	}
-	
+
 	@Override
 	public void broadcast(String message) throws BusConnectorException {
-		// TODO: Implements Broadcast.
+		send(message, "");
 	}
 
 	@Override
 	public void setReceiveHandler(final ReceiveHandler receiveHandler)
 	    throws BusConnectorException {
 		try {
-			consumer.setMessageHandler(new MessageHandler() {
+			MessageHandler mh = new MessageHandler() {
 				@Override
 				public void onMessage(ClientMessage message) {
 					try {
@@ -184,7 +198,10 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 						receiveHandler.onReceive(message.toString());
 					}
 				}
-			});
+			};
+			
+			bcastConsumer.setMessageHandler(mh);
+			personalConsumer.setMessageHandler(mh);
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
 		}
@@ -193,8 +210,11 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	@Override
 	public void disconnect() {
 		try {
-			if (consumer != null) {
-				consumer.close();
+			if (bcastConsumer != null) {
+				bcastConsumer.close();
+			}
+			if (personalConsumer != null) {
+				personalConsumer.close();
 			}
 			if (producer != null) {
 				producer.close();
@@ -258,8 +278,6 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 		try {
 			factory = locator.createSessionFactory();
 		} catch (HornetQException hqe) {
-
-			// 2.2.18 version
 			switch (hqe.getCode()) {
 			case HornetQException.NOT_CONNECTED:
 				// Start localhost HornetQ server on given port and broadcast address.
@@ -270,22 +288,10 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			default:
 				throw hornetQExceptionToBusException(hqe);
 			}
-
-			// 2.3.O version
-//			switch (hqe.getType()) {
-//			case NOT_CONNECTED:
-//				// Start localhost HornetQ server on given port and broadcast address.
-//				l.lock();
-//				startServer();
-//				l.unlock();
-//				break;
-//			default:
-//				throw hornetQExceptionToBusException(hqe);
-//			}
 		}
 
-		session = factory.createSession(login, password, false, true, true, false,
-		    0);
+		session = factory
+				.createSession(login, password, false, true, true, false, 0);
 	}
 
 	/**
@@ -299,33 +305,13 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 */
 	private void startQueueProducerConsumer() throws HornetQException {
 		// Create Queue.
-		try {
-			session.createQueue(getQueueName(), getQueueName(), false);
-		} catch (HornetQException hqe) {
-			// 2.2.18 Version
-			switch (hqe.getCode()) {
-			case HornetQException.QUEUE_EXISTS:
-				System.err.println("[BUS] Queue "
-						+ getQueueName() + " already exists.");
-				break;
-			default:
-				 throw hqe;
-			}
-
-			// 2.3.0 version
-//			switch (hqe.getType()) {
-//			case QUEUE_EXISTS:
-//				System.err
-//				    .println("[BUS] Queue " + getQueueName() + " already exists.");
-//				break;
-//			default:
-//				throw hqe;
-//			}
-		}
+		deployQueue(BROADCAST, getBroadcastQueueName());
+		deployQueue(getPersonalQueueName(), getPersonalQueueName());
 
 		// Create Producer and Consumer.
 		producer = session.createProducer();
-		consumer = session.createConsumer(getQueueName());
+		bcastConsumer = session.createConsumer(getBroadcastQueueName());
+		personalConsumer = session.createConsumer(getPersonalQueueName());
 
 		session.start();
 	}
@@ -464,6 +450,30 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	}
 
 	/**
+	 * Deploy HornetQ Queue and handle error.
+	 * 
+	 * @param address
+	 *          Address to deploy queue.
+	 * @param name
+	 *          Name of queue.
+	 * @throws HornetQException
+	 */
+	private void deployQueue(String address, String name) throws HornetQException {
+		try {
+			session.createQueue(address, name, false);
+		} catch (HornetQException hqe) {
+			switch (hqe.getCode()) {
+			case HornetQException.QUEUE_EXISTS:
+				System.err
+				    .println("[BUS] Queue " + name + " already exists.");
+				break;
+			default:
+				throw hqe;
+			}
+		}
+	}
+	
+	/**
 	 * Transforms a HornetQException to BusException.
 	 * 
 	 * @param hqe
@@ -488,20 +498,6 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 					 hqe.getMessage());
 		 }
 
-		// 2.3.0 Version
-//		switch (hqe.getType()) {
-//		case NOT_CONNECTED:
-//			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
-//			    hqe.getMessage());
-//			break;
-//		case OBJECT_CLOSED:
-//			be = new BusConnectorException(BusConnectorException.CLOSED, name);
-//			break;
-//		default:
-//			be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
-//			    hqe.getMessage());
-//		}
-
 		return be;
 	}
 
@@ -510,10 +506,19 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 * 
 	 * @return The HornetQ queue name.
 	 */
-	public String getQueueName() {
-		return QUEUE + name;
+	public String getPersonalQueueName() {
+		return PERSONAL + "." + getName();
 	}
 
+	/**
+	 * Returns the queue name were using to store broadcasted msg of bus connector.
+	 * 
+	 * @return The HornetQ queue name.
+	 */
+	public String getBroadcastQueueName() {
+	  return BROADCAST + "." + getName();
+  }
+	
 	@Override
 	public String getName() {
 		return name;

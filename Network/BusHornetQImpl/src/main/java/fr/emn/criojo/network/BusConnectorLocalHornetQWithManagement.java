@@ -22,8 +22,8 @@ import org.hornetq.core.server.HornetQServers;
  * manage HornetQ node.
  */
 public class BusConnectorLocalHornetQWithManagement extends BusConnectorLocalHornetQ {
-	public static final SimpleString MANAGEMENT_QUEUE = new SimpleString(QUEUE
-	    + "hornetq.management");
+	public static final SimpleString MANAGEMENT_QUEUE = new SimpleString(
+	    "jms.queue.hornetq.management");
 
 	/**
 	 * BusConnection Using HornetQ Message Oriented Middleware.

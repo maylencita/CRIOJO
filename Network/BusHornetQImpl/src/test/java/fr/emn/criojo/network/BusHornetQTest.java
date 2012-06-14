@@ -37,7 +37,7 @@ public class BusHornetQTest {
 		final String CONNECTOR_LOGIN_2 = testProps.getProperty(REQUIRED_PROPS[6]);
 		final String CONNECTOR_PASSWORD_2 = testProps
 		    .getProperty(REQUIRED_PROPS[7]);
-
+		
 		/**
 		 * <ol>
 		 * <li>Connector 1 connect on Bus node 1,</li>
