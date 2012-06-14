@@ -155,7 +155,7 @@ class CriojoCompiler extends JavaTokenParsers {
   // FOR GENERIC ATOMS
 
   def exps: Parser[List[Any]] = repsep(exp, ",")
-  def exp: Parser[Any] = fpt | str | dec | criojoId | num
+  def exp: Parser[Any] = fpt | str | dec | criojoId | VarChannelChamdId | num
 
   // ATOMS DEFINITION
   // FOR LEFT ATOMS

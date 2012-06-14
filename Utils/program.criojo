@@ -2,33 +2,28 @@ web(webapp)
 
 server {
 
-    a {
-        {var cpt:Int = 0}
-        @token(@ackV,@toClient) -> @ackV(),server.b.@token(@ack,@toClient)
-        @ack() -> (){cpt=cpt+1;println(cpt)}()
-        Init() -> server.b.@token(@ack)
-        @launch(@toClient) -> server.b.@token(@ack,@toClient)
-    }
-    b {
-        {var cpt:Int = 0}
-        @token(@ackV,@toClient) -> @ackV(),server.c.@token(@ack,@toClient)
-        @ack() -> (){cpt=cpt+1;println(cpt)}()
-    }
-    c {
-        {var cpt:Int = 0}
-        @token(@ackV,@toClient) -> (){Thread.sleep(1000);}(),@ackV(),server.a.@token(@ack,@toClient),@toClient("hello")
-        @ack() -> (){cpt=cpt+1;println(cpt)}()
+    chat {
+        [message:string]
+        {
+            var listOfClients:List[String] = List()
+        }
+
+        @inscription(@toClient) -> (chan){
+                chan match {
+                    case loc:ChannelLocation => listOfClients = loc.url :: listOfClients
+                    case _ =>
+                }
+            }(@toClient),@toClient("you are registered!")
+
+        @displayAll(@toClient, message) -> (chan, m){
+                listOfClients.foreach({c => {
+                  this.reactionStrategy.applyReaction(this, new OutChannel(c)(m))
+                }})
+            }(@toClient, message)
     }
 
     {
-
-        a.enableSolutionTrace()
-        a.enableStreamingTrace()
-
-        b.enableSolutionTrace()
-        b.enableStreamingTrace()
-
-        c.enableSolutionTrace()
-        c.enableStreamingTrace()
+        chat.enableSolutionTrace()
+        chat.enableStreamingTrace()
     }
 }
