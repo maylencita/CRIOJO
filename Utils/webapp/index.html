@@ -1,0 +1,249 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>Chat Application powered by Criojo</title> 
+	<link rel="stylesheet"  href="css/jquery.mobile-1.1.0.min.css" />  
+	<link rel="stylesheet" href="css/jqm-docs.css"/>
+
+	<script src="lib/jquery.js"></script>
+	<script>
+	    $(document).bind('mobileinit',function(){
+	
+	        $.extend(  $.mobile , {
+	                    ajaxFormsEnabled: false,
+	            ajaxLinksEnabled: false,
+	            ajaxEnabled: false
+	
+	        });
+	    });
+	
+	</script>
+	<script src="lib/jquery.mobile-1.1.0.min.js"></script>
+	<script src="lib/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://jquery-ui.googlecode.com/svn/trunk/ui/i18n/jquery.ui.datepicker-fr.js" charset="utf-8"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" charset="utf-8"></script>
+	
+	<link rel="stylesheet" href="css/application.css"/>
+
+
+	<script type="text/x-jquery-tmpl" id="contactTemplate">
+	    <li><a>${name}</a></li>
+  	</script>
+  	
+ 	<script type="text/x-jquery-tmpl" id="messageTemplate">
+	    <li>
+	    	<a href="#">
+	    		<h3>${name}</h3>
+	    		<p>${text}</p>
+	    		<p class="ui-li-aside"><strong>9:18</strong>AM</p>
+			</a>
+		</li>
+  	</script>
+	
+	<script type="text/x-jquery-tmpl" id="dateTemplate">
+	    <li data-role="list-divider">${date}</li>
+  	</script>
+
+	<script type="application/javascript" src="lib/stomp.js"></script>
+    <script type="application/javascript" src="lib/BusConnectorHQSW.js"></script>
+    <script type="application/javascript">
+      var url = 'ws://172.20.143.162:61614/stomp';
+      var conn = false;
+      var name = "NoName";
+      var login = "none";
+  		
+      if (typeof String.prototype.startsWith != 'function') {
+        String.prototype.startsWith = function (str){
+          return this.slice(0, str.length) == str;
+        };
+      }
+
+      // ***************************************************** Initialization **
+      function init() {
+        if (!("WebSocket" in window)) {
+          console.error("Websockets NOT supported");
+          return;
+        }
+      }
+
+      // ******************************************* Message Sender Functions **
+      
+      function parseMessage(message) {
+      		var truc = message;
+      }
+      
+      function connReceiveHandler(message) {
+      	console.log(message);
+      }
+
+      function connConnected() {
+      	criojoInscription()
+      	$.mobile.changePage ($("#app-criojo"));
+      }
+
+      function connDebug(msg) {
+        console.log('[DEBUG] ' + msg);
+      }
+
+      // ************************************************* Listener Functions **
+      
+      function onConnect() {
+        name = "user."+document.getElementById("chatName").value;
+        conn = new BusConnectorHQSW(url, name, connConnected,
+            connReceiveHandler, connDebug);
+      }
+
+      function onSend() {
+        var chatMessageInput = document.getElementById("input-span");
+        var recipientInput = "chat.server"
+
+        if (chatMessageInput.value.startsWith('\\q')) {
+          // Disconnect
+          conn.disconnect();
+        } else {
+        	criojoSendMessage(chatMessageInput.value)
+          	//conn.send(name + ': ' + chatMessageInput.value, recipientInput.value);
+          	chatMessageInput.value = "";
+        }
+      }
+	
+	// ************************************************* Channel Functions **	
+		
+		function criojoInscription() {
+			conn.send("{'to':'server.chat'; 'from':'user."+login+".in'; 'channel':'server.chat.inscription';'args':'user."+login+".in'}", "server.chat");
+		}
+		
+		function criojoSendMessage(text) {
+			conn.send("{'to':'server.chat'; 'from':'user.jonathan.in'; 'channel':'server.chat.displayAll';'args':'user.jonathan.in,\""+text+"\" '}", "server.chat");
+		}
+	
+	// ************************************************* Application Functions **	
+      // LoadPageListener
+      window.addEventListener("load", init, false);
+  		
+  		function refreshListView() {
+    		this.$("#list-messages").listview("refresh");
+    		this.$("#contacts").listview("refresh");
+	    };
+
+  		function addContact(contact) {
+  			var contacts = [{name:contact}]
+  			$( "#contactTemplate" ).tmpl(contacts).appendTo("#contacts");
+  			refreshListView();
+  		};
+
+  		function addDateHeader(date) {
+  			var messages = [{date:date}]
+  			$( "#dateTemplate" ).tmpl(messages).appendTo("#list-messages");
+  			refreshListView();
+  		};
+		
+  		function addMessage(author, text) {
+  			var messages = [{name:author, text:text}]
+  			$( "#messageTemplate" ).tmpl(messages).appendTo("#list-messages");
+  			refreshListView();
+  		};
+		
+		
+		
+  		$(document).ready(function() {
+  			
+  			
+	  		$("#login a.ok").bind ("click", function (event)
+			{
+			  login = $("#login input").val ();
+			  login = $.trim (login);
+			});
+  			
+  			
+  			// ConnectListener
+      document.getElementById("chatConnect").addEventListener("click", onConnect, false);
+      document.getElementById("chatName").addEventListener("keyup",
+          function(evt) { if (evt.keyCode == 13) { onConnect() } }, false);
+
+      // SendMessageListener
+      document.getElementById("send-button-span").addEventListener("click",
+          onSend, false);
+      document.getElementById("input-span").addEventListener("keyup",
+          function(evt) { if (evt.keyCode == 13) { onSend() } }, false);
+  			
+  			var today = $.datepicker.formatDate('DD, MM d, yy', new Date(), {dayNamesShort: $.datepicker.regional['fr'].dayNamesShort, dayNames: $.datepicker.regional['fr'].dayNames, monthNamesShort: $.datepicker.regional['fr'].monthNamesShort, monthNAmes: $.datepicker.regional['fr'].monthNames});
+		  addDateHeader(today)
+		  
+		  //addMessage("Jonathan", "Hello from Jonathan!")
+		  //addMessage("Guest", "Hello from Guest!")
+		  
+		  //addContact("Jean")
+		});
+		
+  	</script>
+  	
+</head> 
+<body> 
+
+	<div data-role=page id=login>
+		<div data-role=header>
+			<h1>Login</h1>
+		</div>
+		<div data-role=content>	
+			<p class=info1> Choose your login </p>
+			<span class=span-input>Login </span>
+			<input id="chatName" type=text /><br /><br /><br />
+			<a id="chatConnect" href=# data-role=button class=ok> Okay! </a>
+		</div>
+	</div>
+
+	<div data-role="page" id="app-criojo" class="type-interior">
+
+		<div data-role="header" class="header-docs" data-theme="a">
+			<a>Contacts</a>
+			<h1>Chat application</h1>
+			<a href="https://github.com/maylencita/CRIOJO">powered by Criojo</a>
+		</div><!-- /header -->
+
+		<div id="my-app" data-role="content" class="content">
+			<div class="content-primary">
+			
+				<div id="messages">
+					<ul data-role="listview" data-theme="d" data-divider-theme="d" id="list-messages" id="items">
+					</ul>					
+				</div>
+			</div><!--/content-primary -->	
+			
+				
+			<div id="textinput-box">
+				<span><input id="input-span" type="text" placeholder="Type your message here"/></span>
+				<span id="send-button-span"><a data-role="button" data-theme="f">send</a></span>
+			</div>
+			
+			<div class="content-secondary">
+	
+				<div data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="d">
+	
+					<h1>More in this section</h1>
+
+					<ul id="contacts" data-role="listview" data-theme="c" data-dividertheme="d">
+
+						<li data-role="list-divider">Contacts list</li>
+
+					</ul>
+				</div>
+			</div>
+			
+			<div class="separator">
+			</div>		
+	
+			</div><!-- /content -->
+
+			<div data-role="footer" class="footer-docs" data-theme="a">
+					<p>&copy; 2012 The Criojo team</p>
+			</div>
+
+		</div><!-- /page -->
+
+
+
+		</body>
+		</html>
