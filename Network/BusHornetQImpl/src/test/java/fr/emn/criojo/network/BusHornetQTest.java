@@ -11,15 +11,36 @@ import java.util.Properties;
 import org.junit.Test;
 
 public class BusHornetQTest {
+
+	/**
+	 * Connector 1:
+	 * <ol>
+	 * <li>Connector 1 connect on Bus node 1,</li>
+	 * <li>Send message in lower case to connector 2,</li>
+	 * <li>Wait is message return in upper case,</li>
+	 * <li>Disconnect from Bus.</li>
+	 * </ol>
+	 * 
+	 * Connector 2:
+	 * <ol>
+	 * <li>Connector connect on Bus Node 2,</li>
+	 * <li>Wait message on dedicated queue,</li>
+	 * <li>On message receive, return message in Upper Case</li>
+	 * <li>Disconnect from Bus.</li>
+	 * </ol>
+	 */
 	@Test
-	public void cloudLocalTest() throws FileNotFoundException, IOException,
+	public void cloudLocalSendTest() throws FileNotFoundException, IOException,
 	    RequiredPropertiesException {
 		// Load properties
-		final String[] REQUIRED_PROPS = { "cloudLocalTest.busNodePort.1",
-		    "cloudLocalTest.connectorName.1", "cloudLocalTest.connectorLogin.1",
-		    "cloudLocalTest.connectorPassword.1", "cloudLocalTest.busNodePort.2",
-		    "cloudLocalTest.connectorName.2", "cloudLocalTest.connectorLogin.2",
-		    "cloudLocalTest.connectorPassword.2" };
+		final String[] REQUIRED_PROPS = { "cloudLocalSendTest.busNodePort.1",
+		    "cloudLocalSendTest.connectorName.1",
+		    "cloudLocalSendTest.connectorLogin.1",
+		    "cloudLocalSendTest.connectorPassword.1",
+		    "cloudLocalSendTest.busNodePort.2",
+		    "cloudLocalSendTest.connectorName.2",
+		    "cloudLocalSendTest.connectorLogin.2",
+		    "cloudLocalSendTest.connectorPassword.2" };
 		Properties testProps = loadTestProperties(REQUIRED_PROPS);
 
 		// First connector arguments.
@@ -37,25 +58,15 @@ public class BusHornetQTest {
 		final String CONNECTOR_LOGIN_2 = testProps.getProperty(REQUIRED_PROPS[6]);
 		final String CONNECTOR_PASSWORD_2 = testProps
 		    .getProperty(REQUIRED_PROPS[7]);
-		
-		/**
-		 * <ol>
-		 * <li>Connector 1 connect on Bus node 1,</li>
-		 * <li>Send message in lower case to connector 2,</li>
-		 * <li>Wait is message return in upper case,</li>
-		 * <li>Disconnect from Bus.</li>
-		 * </ol>
-		 */
-		class Connector1 extends Thread {
-			final String SENTENCE = "live long and prosper";
-			private BusConnector conn = null;
-			private Ack ack = null;
 
+		// Main Test
+		Connector connector1 = new Connector() {
 			public void run() {
 				try {
+					final String SENTENCE = "live long and prosper";
 					conn = new BusConnectorLocalHornetQ(BUS_NODE_PORT_1,
 					    CONNECTOR_NAME_1, CONNECTOR_LOGIN_1, CONNECTOR_PASSWORD_1);
-					
+
 					ack = new AckConnector1(SENTENCE);
 					conn.setReceiveHandler(ack);
 					conn.send(SENTENCE, CONNECTOR_NAME_2);
@@ -63,8 +74,6 @@ public class BusHornetQTest {
 					while (!ack.isAck()) {
 						Thread.sleep(1000);
 					}
-
-					conn.disconnect();
 				} catch (BusConnectorException e) {
 					fail(e.getMessage());
 				} catch (InterruptedException e) {
@@ -72,27 +81,17 @@ public class BusHornetQTest {
 				} finally {
 					if (conn != null) {
 						conn.disconnect();
+						BusConnectorLocalHornetQ connloc;
+						connloc = (BusConnectorLocalHornetQ) conn;
+						if (connloc.hasServer()) {
+							connloc.stopServer();
+						}
 					}
 				}
 			}
+		};
 
-			public boolean isAck() {
-				return (ack != null) ? ack.isAck() : false;
-			}
-		}
-
-		/**
-		 * <ol>
-		 * <li>Connector connect on Bus Node 2,</li>
-		 * <li>Wait message on dedicated queue,</li>
-		 * <li>On message receive, return message in Upper Case</li>
-		 * <li>Disconnect from Bus.</li>
-		 * </ol>
-		 */
-		class Connector2 extends Thread {
-			private BusConnector conn = null;
-			private Ack ack = null;
-
+		Connector connector2 = new Connector() {
 			public void run() {
 				try {
 					conn = new BusConnectorLocalHornetQ(BUS_NODE_PORT_2,
@@ -104,8 +103,6 @@ public class BusHornetQTest {
 					while (!ack.isAck()) {
 						Thread.sleep(1000);
 					}
-
-					conn.disconnect();
 				} catch (BusConnectorException e) {
 					fail(e.getMessage());
 				} catch (InterruptedException e) {
@@ -113,14 +110,15 @@ public class BusHornetQTest {
 				} finally {
 					if (conn != null) {
 						conn.disconnect();
+						BusConnectorLocalHornetQ connloc;
+						connloc = (BusConnectorLocalHornetQ) conn;
+						if (connloc.hasServer()) {
+							connloc.stopServer();
+						}
 					}
 				}
 			}
-		}
-
-		// Main Test
-		Connector1 connector1 = new Connector1();
-		Connector2 connector2 = new Connector2();
+		};
 
 		connector2.start();
 		connector1.start();
@@ -134,7 +132,185 @@ public class BusHornetQTest {
 		assertTrue("Error on Transmited message over Network", connector1.isAck());
 	}
 
+	/**
+	 * Connector 1:
+	 * <ol>
+	 * <li>Connector 1 connect on Bus node 1,</li>
+	 * <li>Broadcast SENTENCE to all connectors,</li>
+	 * <li>Acknowledge message reception if message equal SENTENCE</li>
+	 * <li>Disconnect from Bus.</li>
+	 * </ol>
+	 * 
+	 * Connector 2:
+	 * <ol>
+	 * <li>Connector 2 connect on Bus node 2,</li>
+	 * <li>Acknowledge message reception if message equal SENTENCE</li>
+	 * <li>Disconnect from Bus.</li>
+	 * </ol>
+	 * 
+	 * Connector 3:
+	 * <ol>
+	 * <li>Connector 3 connect on Bus node 3,</li>
+	 * <li>Acknowledge message reception if message equal SENTENCE</li>
+	 * <li>Disconnect from Bus.</li>
+	 * </ol>
+	 */
+	@Test
+	public void cloudLocalBroadcastTest() throws FileNotFoundException,
+	    IOException, RequiredPropertiesException {
+		// Load properties
+		final String[] REQUIRED_PROPS = { "cloudLocalBroadcastTest.busNodePort.1",
+		    "cloudLocalBroadcastTest.connectorName.1",
+		    "cloudLocalBroadcastTest.connectorLogin.1",
+		    "cloudLocalBroadcastTest.connectorPassword.1",
+		    "cloudLocalBroadcastTest.busNodePort.2",
+		    "cloudLocalBroadcastTest.connectorName.2",
+		    "cloudLocalBroadcastTest.connectorLogin.2",
+		    "cloudLocalBroadcastTest.connectorPassword.2",
+		    "cloudLocalBroadcastTest.busNodePort.3",
+		    "cloudLocalBroadcastTest.connectorName.3",
+		    "cloudLocalBroadcastTest.connectorLogin.3",
+		    "cloudLocalBroadcastTest.connectorPassword.3" };
+		Properties testProps = loadTestProperties(REQUIRED_PROPS);
+
+		// First connector arguments.
+		final int BUS_NODE_PORT_1 = Integer.parseInt(testProps
+		    .getProperty(REQUIRED_PROPS[0]));
+		final String CONNECTOR_NAME_1 = testProps.getProperty(REQUIRED_PROPS[1]);
+		final String CONNECTOR_LOGIN_1 = testProps.getProperty(REQUIRED_PROPS[2]);
+		final String CONNECTOR_PASSWORD_1 = testProps
+		    .getProperty(REQUIRED_PROPS[3]);
+
+		// Second connector arguments.
+		final int BUS_NODE_PORT_2 = Integer.parseInt(testProps
+		    .getProperty(REQUIRED_PROPS[4]));
+		final String CONNECTOR_NAME_2 = testProps.getProperty(REQUIRED_PROPS[5]);
+		final String CONNECTOR_LOGIN_2 = testProps.getProperty(REQUIRED_PROPS[6]);
+		final String CONNECTOR_PASSWORD_2 = testProps
+		    .getProperty(REQUIRED_PROPS[7]);
+
+		// Third connector arguments.
+		final int BUS_NODE_PORT_3 = Integer.parseInt(testProps
+		    .getProperty(REQUIRED_PROPS[8]));
+		final String CONNECTOR_NAME_3 = testProps.getProperty(REQUIRED_PROPS[9]);
+		final String CONNECTOR_LOGIN_3 = testProps.getProperty(REQUIRED_PROPS[10]);
+		final String CONNECTOR_PASSWORD_3 = testProps
+		    .getProperty(REQUIRED_PROPS[11]);
+
+		final String SENTENCE = "live long and prosper";
+
+		// Main Test
+		Connector connector1 = new Connector() {
+			public void run() {
+				try {
+					conn = new BusConnectorLocalHornetQ(BUS_NODE_PORT_1,
+					    CONNECTOR_NAME_1, CONNECTOR_LOGIN_1, CONNECTOR_PASSWORD_1);
+
+					ack = new AckSpecificMessage(SENTENCE, this.getClass().getName());
+					conn.setReceiveHandler(ack);
+					conn.broadcast(SENTENCE);
+
+					while (!ack.isAck()) {
+						Thread.sleep(1000);
+					}
+				} catch (BusConnectorException e) {
+					fail(e.getMessage());
+				} catch (InterruptedException e) {
+					fail(e.getMessage());
+				} finally {
+					if (conn != null) {
+						conn.disconnect();
+						BusConnectorLocalHornetQ connloc;
+						connloc = (BusConnectorLocalHornetQ) conn;
+						if (connloc.hasServer()) {
+							connloc.stopServer();
+						}
+					}
+				}
+			}
+		};
+
+		Connector connector2 = new Connector() {
+			public void run() {
+				try {
+					conn = new BusConnectorLocalHornetQ(BUS_NODE_PORT_2,
+					    CONNECTOR_NAME_2, CONNECTOR_LOGIN_2, CONNECTOR_PASSWORD_2);
+					ack = new AckSpecificMessage(SENTENCE, this.getClass().getName());
+					conn.setReceiveHandler(ack);
+
+					while (!ack.isAck()) {
+						Thread.sleep(1000);
+					}
+				} catch (BusConnectorException e) {
+					fail(e.getMessage());
+				} catch (InterruptedException e) {
+					fail(e.getMessage());
+				} finally {
+					if (conn != null) {
+						conn.disconnect();
+						BusConnectorLocalHornetQ connloc;
+						connloc = (BusConnectorLocalHornetQ) conn;
+						if (connloc.hasServer()) {
+							connloc.stopServer();
+						}
+					}
+				}
+			}
+		};
+		
+		Connector connector3 = new Connector() {
+			public void run() {
+				try {
+					conn = new BusConnectorLocalHornetQ(BUS_NODE_PORT_3,
+					    CONNECTOR_NAME_3, CONNECTOR_LOGIN_3, CONNECTOR_PASSWORD_3);
+					ack = new AckSpecificMessage(SENTENCE, this.getClass().getName());
+					conn.setReceiveHandler(ack);
+
+					while (!ack.isAck()) {
+						Thread.sleep(1000);
+					}
+				} catch (BusConnectorException e) {
+					fail(e.getMessage());
+				} catch (InterruptedException e) {
+					fail(e.getMessage());
+				} finally {
+					if (conn != null) {
+						conn.disconnect();
+						BusConnectorLocalHornetQ connloc;
+						connloc = (BusConnectorLocalHornetQ) conn;
+						if (connloc.hasServer()) {
+							connloc.stopServer();
+						}
+					}
+				}
+			}
+		};
+
+		connector3.start();
+		connector2.start();
+		connector1.start();
+
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue("Error on Broadcasting message over Network",
+		    (connector1.isAck() && connector2.isAck() && connector3.isAck()));
+	}
+
 	// ************************************************************ Test Utils **
+	/**
+	 * Defined a connector for test
+	 */
+	abstract class Connector extends Thread {
+		protected BusConnector conn = null;
+		protected Ack ack = null;
+		public boolean isAck() {
+			return (ack != null) ? ack.isAck() : false;
+		}
+	}
 
 	/**
 	 * An Ack for message control.
@@ -144,6 +320,27 @@ public class BusHornetQTest {
 
 		public boolean isAck() {
 			return ack;
+		}
+	}
+
+	/**
+	 * Ack if receive message is equal to a specific given message.
+	 */
+	class AckSpecificMessage extends Ack {
+		private String specificMsg;
+		private String extraName;
+
+		public AckSpecificMessage(String specificMsg, String extraName) {
+			this.specificMsg = specificMsg;
+			this.extraName = extraName;
+		}
+
+		@Override
+		public void onReceive(String msg) {
+			System.out.println("Receive on " + extraName + ": " + msg);
+			if (specificMsg.equals(msg)) {
+				ack = true;
+			}
 		}
 	}
 
@@ -162,7 +359,7 @@ public class BusHornetQTest {
 
 		@Override
 		public void onReceive(String message) {
-			System.out.println("Reception on connector1: " + message);
+			System.out.println("Receive on connector1: " + message);
 			if (message.equals(msg.toUpperCase())) {
 				ack = true;
 			}
@@ -186,7 +383,8 @@ public class BusHornetQTest {
 
 		@Override
 		public void onReceive(String message) {
-			System.out.println("Reception on connector2: " + message);
+			System.out.println("Receive on connector2: " + message);
+
 			try {
 				conn.send(message.toUpperCase(), to);
 				ack = true;
