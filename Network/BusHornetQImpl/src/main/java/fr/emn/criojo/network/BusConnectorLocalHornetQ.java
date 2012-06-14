@@ -114,8 +114,8 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 		try {
 			l.lock();
 			connect();
-			l.unlock();
 			startQueueProducerConsumer();
+			l.unlock();
 		} catch (Exception e) {
 			throw new BusConnectorException(e.getMessage());
 		}
@@ -332,25 +332,6 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	}
 
 	/**
-	 * Returns the host value.
-	 * 
-	 * @return The host value;
-	 */
-	public static String getHost() {
-		if (hostValue == null) {
-			hostValue = "127.0.0.1";
-
-			try {
-				hostValue = InetAddress.getLocalHost().getHostAddress();
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return hostValue;
-	}
-
-	/**
 	 * Deploy HornetQ Queue and handle error.
 	 * 
 	 * @param address
@@ -451,6 +432,25 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 */
 	public int openedConnectionServer() {
 		return server.getHornetQServerControl().getConnectionCount();
+	}
+	
+	/**
+	 * Returns the host value.
+	 * 
+	 * @return The host value;
+	 */
+	public static String getHost() {
+		if (hostValue == null) {
+			hostValue = "127.0.0.1";
+
+			try {
+				hostValue = InetAddress.getLocalHost().getHostAddress();
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return hostValue;
 	}
 	
 	@Override

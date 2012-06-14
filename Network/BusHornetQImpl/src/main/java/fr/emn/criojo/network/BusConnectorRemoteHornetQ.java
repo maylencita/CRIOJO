@@ -32,7 +32,8 @@ import org.hornetq.core.remoting.impl.netty.TransportConstants;
  * @see http://www.jboss.org/hornetq
  */
 public class BusConnectorRemoteHornetQ implements BusConnector {
-	public static final String QUEUE = "jms.queue.";
+	public static final String PERSONAL = "personal";
+	public static final String BROADCAST = "broadcast";
 
 	private final String host;
 	private final int port;
@@ -41,8 +42,15 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 	private final String password;
 	private boolean disconected;
 
+	/**
+	 * Consume personal messages.
+	 */
+	protected ClientConsumer personalConsumer = null;
+	/**
+	 * Consume broadcast messages.
+	 */
+	protected ClientConsumer bcastConsumer = null;
 	private ClientSession session = null;
-	private ClientConsumer consumer = null;
 	private ClientProducer producer = null;
 	private ServerLocator locator = null;
 	private ClientSessionFactory factory = null;
@@ -89,17 +97,28 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 			// Use NullableSimpleString cause it is default Stomp message form.
 			msg.getBodyBuffer().writeNullableSimpleString(new SimpleString(message));
 			msg.setDurable(true);
-			producer.send(QUEUE + recipient, msg);
+			
+			// If recipient is empty, the message is broadcasted over the network.
+			if (!recipient.isEmpty()) {
+				producer.send(PERSONAL + "." + recipient, msg);
+			} else {
+				producer.send(BROADCAST, msg);
+			}
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
 		}
+	}
+	
+	@Override
+	public void broadcast(String message) throws BusConnectorException {
+		send(message, "");
 	}
 
 	@Override
 	public void setReceiveHandler(final ReceiveHandler receiveHandler)
 	    throws BusConnectorException {
 		try {
-			consumer.setMessageHandler(new MessageHandler() {
+			MessageHandler mh = new MessageHandler() {
 				@Override
 				public void onMessage(ClientMessage message) {
 					try {
@@ -115,22 +134,23 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 						receiveHandler.onReceive(message.toString());
 					}
 				}
-			});
+			};
+			
+			bcastConsumer.setMessageHandler(mh);
+			personalConsumer.setMessageHandler(mh);
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
 		}
 	}
 	
 	@Override
-	public void broadcast(String message) throws BusConnectorException {
-		// TODO: Implements Broadcast.
-	}
-	
-	@Override
 	public void disconnect() {
 		try {
-			if (consumer != null) {
-				consumer.close();
+			if (bcastConsumer != null) {
+				bcastConsumer.close();
+			}
+			if (personalConsumer != null) {
+				personalConsumer.close();
 			}
 			if (producer != null) {
 				producer.close();
@@ -182,8 +202,8 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 			throw hornetQExceptionToBusException(hqe);
 		}
 
-		session = factory.createSession(login, password, false, true, true, false,
-		    0);
+		session = factory
+				.createSession(login, password, false, true, true, false, 0);
 	}
 
 	/**
@@ -197,37 +217,41 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 	 */
 	private void startQueueProducerConsumer() throws HornetQException {
 		// Create Queue.
+		deployQueue(BROADCAST, getBroadcastQueueName());
+		deployQueue(getPersonalQueueName(), getPersonalQueueName());
+
+		// Create Producer and Consumer.
+		producer = session.createProducer();
+		bcastConsumer = session.createConsumer(getBroadcastQueueName());
+		personalConsumer = session.createConsumer(getPersonalQueueName());
+
+		session.start();
+	}
+	
+	/**
+	 * Deploy HornetQ Queue and handle error.
+	 * 
+	 * @param address
+	 *          Address to deploy queue.
+	 * @param name
+	 *          Name of queue.
+	 * @throws HornetQException
+	 */
+	private void deployQueue(String address, String name) throws HornetQException {
 		try {
-			session.createQueue(getQueueName(), getQueueName(), false);
+			session.createQueue(address, name, false);
 		} catch (HornetQException hqe) {
-			// 2.2.18 Version
 			switch (hqe.getCode()) {
 			case HornetQException.QUEUE_EXISTS:
-				System.err.println("[BUS] Queue "
-						+ getQueueName() + " already exists.");
+				System.err
+				    .println("[BUS] Queue " + name + " already exists.");
 				break;
 			default:
 				throw hqe;
 			}
-
-			// 2.3.0 Version
-//			switch (hqe.getType()) {
-//			case QUEUE_EXISTS:
-//				System.err
-//				    .println("[BUS] Queue " + getQueueName() + " already exists.");
-//				break;
-//			default:
-//				throw hqe;
-//			}
 		}
-
-		// Create Producer and Consumer.
-		producer = session.createProducer();
-		consumer = session.createConsumer(getQueueName());
-
-		session.start();
 	}
-
+	
 	/**
 	 * Transforms a HornetQException to BusException.
 	 * 
@@ -239,7 +263,6 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 	    HornetQException hqe) {
 		BusConnectorException be = null;
 
-		// 2.2.18 Version
 		switch (hqe.getCode()) {
 		case HornetQException.NOT_CONNECTED:
 			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
@@ -253,20 +276,6 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 					hqe.getMessage());
 		}
 
-		// 2.3.0 Version
-//		switch (hqe.getType()) {
-//		case NOT_CONNECTED:
-//			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
-//			    hqe.getMessage());
-//			break;
-//		case OBJECT_CLOSED:
-//			be = new BusConnectorException(BusConnectorException.CLOSED, name);
-//			break;
-//		default:
-//			be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
-//			    hqe.getMessage());
-//		}
-		
 		return be;
 	}
 
@@ -275,9 +284,18 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 	 * 
 	 * @return The HornetQ queue name.
 	 */
-	public String getQueueName() {
-		return QUEUE + name;
+	public String getPersonalQueueName() {
+		return PERSONAL + "." + getName();
 	}
+
+	/**
+	 * Returns the queue name were using to store broadcasted msg of bus connector.
+	 * 
+	 * @return The HornetQ queue name.
+	 */
+	public String getBroadcastQueueName() {
+	  return BROADCAST + "." + getName();
+  }
 
 	/**
 	 * Returns the HornetQ address used to establish connection.
