@@ -120,7 +120,12 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 			throw hornetQExceptionToBusException(hqe);
 		}
 	}
-
+	
+	@Override
+	public void broadcast(String message) throws BusConnectorException {
+		// TODO: Implements Broadcast.
+	}
+	
 	@Override
 	public void disconnect() {
 		try {
