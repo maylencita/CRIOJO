@@ -7,6 +7,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
@@ -22,6 +24,8 @@ public class MessageSender {
 	private JFrame frame;
 	private JTextArea messageBufferTextArea;
 	private JTextField messageTextField, userTextField;
+	
+	private static int frameInstance = 0;
 
 	public MessageSender(BusConnector conn) {
 		this.conn = conn;
@@ -39,6 +43,8 @@ public class MessageSender {
 			frame.setSize(300, 300);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
+			
+			++ frameInstance;
 		} catch (BusConnectorException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +52,13 @@ public class MessageSender {
 
 	public void send(String msg, String recipientName) {
 		try {
-			conn.send(name + ": " + msg, recipientName);
+			String sendMsg = name + ": " + msg;
+			
+			if (recipientName.equals("*")) {
+				conn.broadcast(sendMsg);
+			} else {
+				conn.send(sendMsg, recipientName);
+			}
 		} catch (BusConnectorException e) {
 			e.printStackTrace();
 		}
@@ -81,13 +93,23 @@ public class MessageSender {
 		messageTextField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					String recipientName = (!userTextField.getText().trim().isEmpty()) ? userTextField
-					    .getText().trim() : "NoName";
+					String recipientName = (!userTextField.getText().trim().isEmpty())
+							? userTextField.getText().trim() : "NoName";
 					String msg = messageTextField.getText().trim();
 					messageTextField.setText("");
 					send(msg, recipientName);
 				}
 			}
+		});
+		
+		// On close
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				conn.disconnect();
+				if (-- frameInstance == 0) {
+					System.exit(0);
+				}
+      }
 		});
 
 		// Every new msg receive, msg is added to buffer

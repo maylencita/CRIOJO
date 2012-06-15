@@ -42,10 +42,8 @@ import org.hornetq.core.server.HornetQServers;
  * 
  * @see http://www.jboss.org/hornetq
  */
-public class BusConnectorLocalHornetQ implements BusConnector {
+public class BusConnectorLocalHornetQ implements BusConnectorHornetQ {
 	protected static Lock l = new ReentrantLock();
-	public static final String PERSONAL = "personal";
-	public static final String BROADCAST = "broadcast";
 	public static final String DEFAULT_BROADCAST_ADDRESS = "231.7.7.7";
 	public static final int DEFAULT_BROADCAST_PORT = 9876;
 	public static final int DEFAULT_STOMPWEBSOCKET_PORT = 61614;
@@ -63,10 +61,12 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 * Consume personal messages.
 	 */
 	protected ClientConsumer personalConsumer = null;
+	
 	/**
 	 * Consume broadcast messages.
 	 */
 	protected ClientConsumer bcastConsumer = null;
+	
 	protected ClientSession session = null;
 	protected ClientProducer producer = null;
 	protected ServerLocator locator = null;
@@ -189,8 +189,12 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 					}
 					// Use NullableSimpleString cause it is default Stomp message form.
 					try {
-						receiveHandler.onReceive(message.getBodyBuffer()
-						    .readNullableSimpleString().toString());
+						String msg = message.getBodyBuffer().readNullableSimpleString()
+								.toString();
+						
+						if (!msg.startsWith(ACK_MESSAGE)) {
+							receiveHandler.onReceive(msg);
+						}
 					} catch (NullPointerException npe) {
 						receiveHandler.onReceive(message.toString());
 					}

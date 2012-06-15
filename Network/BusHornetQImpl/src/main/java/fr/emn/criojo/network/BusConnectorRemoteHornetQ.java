@@ -31,10 +31,7 @@ import org.hornetq.core.remoting.impl.netty.TransportConstants;
  * 
  * @see http://www.jboss.org/hornetq
  */
-public class BusConnectorRemoteHornetQ implements BusConnector {
-	public static final String PERSONAL = "personal";
-	public static final String BROADCAST = "broadcast";
-
+public class BusConnectorRemoteHornetQ implements BusConnectorHornetQ {
 	private final String host;
 	private final int port;
 	private final String name;
@@ -128,8 +125,12 @@ public class BusConnectorRemoteHornetQ implements BusConnector {
 					}
 					// Use NullableSimpleString cause it is default Stomp message form.
 					try {
-						receiveHandler.onReceive(message.getBodyBuffer()
-						    .readNullableSimpleString().toString());
+						String msg = message.getBodyBuffer().readNullableSimpleString()
+								.toString();
+						
+						if (!msg.startsWith(ACK_MESSAGE)) {
+							receiveHandler.onReceive(msg);
+						}
 					} catch (NullPointerException npe) {
 						receiveHandler.onReceive(message.toString());
 					}
