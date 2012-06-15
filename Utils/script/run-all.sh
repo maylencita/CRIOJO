@@ -112,7 +112,7 @@ run () {
 	
 	password=$(get_host_password "hosts.xml" $2)
 
-	eval "expect ssh_execute.sh $password $username@$ip \"bash /opt/local/criojo/servers/$1/run.sh &\""
+	eval "expect ssh_execute.sh $password $username@$ip \" cd /opt/local/criojo/servers/$1/; ./run.sh &\""
 	
 	echo "Done!"
 }

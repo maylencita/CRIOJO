@@ -67,6 +67,7 @@ object ObjectToScala {
     "import fr.emn.criojo.ext.expression.ScalaString.VarScalaString\n"+
     "import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt\n"+
     "import fr.emn.criojo.ext.expression.ScalaBoolean.VarScalaBoolean\n"+
+    "import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel}\n"+
     "\n\n"+
     "object criojoMain {\n " +
     "\tvar listOfNames:List[String] = List()\n"+
