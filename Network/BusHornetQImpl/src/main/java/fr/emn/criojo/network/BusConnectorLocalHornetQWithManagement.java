@@ -71,7 +71,14 @@ public class BusConnectorLocalHornetQWithManagement extends BusConnectorLocalHor
 	    String password) throws BusConnectorException {
 		super(port, name, login, password);
 	}
-
+	
+	@Override
+	protected void startServer() throws Exception {
+		super.startServer();
+		server.deployQueue(MANAGEMENT_QUEUE, MANAGEMENT_QUEUE, null, false, false);
+	}
+	
+	@Override
 	protected String configurationXML() {
 		return "<configuration xmlns=\"urn:hornetq\""
 		    + "\n               xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
@@ -151,15 +158,5 @@ public class BusConnectorLocalHornetQWithManagement extends BusConnectorLocalHor
 		    + "\n	    </security-setting>"
 		    + "\n   </security-settings>"
 		    + "\n</configuration>";
-	}
-	
-	/**
-	 * Start Local HornetQ Server with Management Queue.
-	 * 
-	 * @throws Exception
-	 */
-	protected void startServer() throws Exception {
-		super.startServer();
-		server.deployQueue(MANAGEMENT_QUEUE, MANAGEMENT_QUEUE, null, false, false);
 	}
 }

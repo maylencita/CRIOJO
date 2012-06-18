@@ -4,12 +4,12 @@ public interface BusConnectorHornetQ extends BusConnector {
 	/**
 	 * Queue suffix address for personal message.
 	 */
-	public static final String PERSONAL = "personal";
+	public static final String PERSONAL = "jms.personal";
 	
 	/**
 	 * Queue address for broadcast message.
 	 */
-	public static final String BROADCAST = "broadcast";
+	public static final String BROADCAST = "jms.broadcast";
 	
 	/**
 	 * Acknowledgment message from success subscription.

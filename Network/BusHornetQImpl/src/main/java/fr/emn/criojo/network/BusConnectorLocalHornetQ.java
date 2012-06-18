@@ -38,7 +38,7 @@ import org.hornetq.core.server.HornetQServers;
  * This connector comes with an implementation of HornetQ server. If no server
  * start on {@link BusConnectorLocalHornetQ}.getHost with given port, the
  * connector start a new HornetQ server. To connect to bus, the HornetQ server
- * configuration will specifying connectors using Netty implementation. Server
+ * configuration will specifying connectors using Netty implementation.
  * 
  * @see http://www.jboss.org/hornetq
  */

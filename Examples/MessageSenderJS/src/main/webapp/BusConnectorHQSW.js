@@ -259,10 +259,10 @@ SubscriberManager.updateDebug = function() {
 function BusConnectorHQSW() {}
 
 //! Personal Queue name prefix.
-BusConnectorHQSW.PERSONAL = 'personal';
+BusConnectorHQSW.PERSONAL = 'jms.personal';
 
 //! Broadcast Queue name prefix.
-BusConnectorHQSW.BROADCAST = 'broadcast';
+BusConnectorHQSW.BROADCAST = 'jms.broadcast';
 
 //! Management Queue name.
 BusConnectorHQSW.MANAGEMENT_QUEUE = 'jms.queue.hornetq.management';
