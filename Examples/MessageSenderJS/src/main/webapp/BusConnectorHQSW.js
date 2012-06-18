@@ -362,16 +362,6 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
 
   // ## MAIN ##
   
-  // Personal Queue
-  SubscriberManager.addSubscriber(new Subscriber(this.getPersonalQueueName(),
-      this.stomp, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
-      BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive));
-
-  // Broadcast Queue
-  SubscriberManager.addSubscriber(new Subscriber(this.getBroadcastQueueName(),
-      this.stomp, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
-      BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive));
-
   // Connect on Bus
   this.stomp.connect(login, passcode, function(frame) {
     // Once connected, ask to create new Queues.
@@ -379,6 +369,17 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
     deployQueue(_this.getPersonalQueueName(), _this.getPersonalQueueName());
 
     // Subscribe to new Queue.
+  
+    // Personal Queue
+    SubscriberManager.addSubscriber(new Subscriber(_this.getPersonalQueueName(),
+        _this.stomp, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
+        BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive));
+
+    // Broadcast Queue
+    SubscriberManager.addSubscriber(new Subscriber(_this.getBroadcastQueueName(),
+        _this.stomp, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
+        BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive));
+
     SubscriberManager.startSubscriptions();
   });
 }
