@@ -74,49 +74,62 @@ function uniqid (prefix, more_entropy) {
   return retId;
 }
 
-function Subscriber() {}
-
-//! Store all subscribers.
-Subscriber.SUBSCRIBERS = [];
-
-//! Callback function call after all subscriber subscribe is acknoledge.
-Subscriber.connectCallback = function() {};
-
-//! Test if all subscriber subscribe successfully to launch connectCallback.
-Subscriber.tryLaunchConnectCallback = function() {
-  console.log("Try launch onConnect");
-  if (Subscriber.SUBSCRIBERS.forall(function(sm) { return sm.isAck; })) {
-    Subscriber.connectCallback();
-  }
-}
-
 /*!
  * \class   Subscriber
+ * \brief   Subscriber help user to subscribe to a given queue.
+ *
+ * This class help user to subscribe to a given queue. The process is the
+ * following :
+ \verbatim 
+          +------------------+ 
+       -->|AskForSubscription|<----------------------------+
+          +------------------+                             |
+                    |                             +-----------------+
+                    |                             |WaitSubscribeTime|
+                    |                             +-----------------+
+                    |                                      ^
+                    v                                      |
+            _______/\_______                       _______/\_______   
+           /                \ notExistingQueueMsg /                \  
+           | SendAckMessage |-------------------->| IncrAttemptNum |  
+           \_______  _______/                     \_______  _______/  
+                   \/       |___                          \/          
+                    |ackMsg     \_errorMsg                 |maxAttempt
+                    |                 \_____               |
+                    v                       \_____         v
+          +-----------------+                     \->+----------+
+          | AckSubscription |                        |PrintError|
+          +-----------------+                        +----------+
+ \endvarbatim
+ *
+ * \param queueName   The Queue Name to subscribe.
+ * \param stompClient The stomp client use to deal with HornetQ node.
+ * \param subscribeMaxAttempt Max attempt of subscription.
+ * \param subscribeTime Time between each subscription attempt.
+ * \param debugCallback callback of message error.
+ * \param receiveCallback callback of receive message.
  */
-function Subscriber(queueName, connector, subscribeMaxAttempt,
+function Subscriber(queueName, stompClient, subscribeMaxAttempt,
     subscribeTime, debugCallback, receiveCallback) {
   var _this = this;
-
-  //! The Queue adresse to subscribe.
   this.queueName = queueName;
-
-  //! Max attempt for subscription.
+  this.stompClient = stompClient;
   this.subscribeMaxAttempt = subscribeMaxAttempt;
-
-  //! Laps time between subscription attempt (in ms).
   this.subscribeTime = subscribeTime;
+  this.debugCallback = debugCallback || false;
+  this.receiveCallback = receiveCallback || false;
 
   //! Acknoledgment subscription message.
   //! FIXME: have a better ack message. This message is forbiden to emit on
-  //! network, riqque of trouble during receive message process.
+  //! network, risque of trouble during receive message process.
   this.subscribeAckMessage = '##---## Ack of ' + queueName + ' - ' + uniqid()
     + ' ##---##';
 
   //! Number of attemp subscription on queue.
   this.subscribeAttempt = 0;
 
-  //! Time before new subscription on queue.
-  this.subscribeWaitTime = this.subscribeTime + (this.subscribeTime / 5.);
+  //! Time before send ack message.
+  this.subscribeWaitTime = this.subscribeTime + (this.subscribeTime / 2.);
 
   //! Timer will launch subscription on queue (get with setTimeout).
   this.subscribeTimer = false;
@@ -127,39 +140,31 @@ function Subscriber(queueName, connector, subscribeMaxAttempt,
 
   //! Defined if subscription is do
   this.isAck = false;
-
-  //! Debug function to print debug message.
-  this.debugCallback = debugCallback || false;
-
-  //! Callback function call after receive message.
-  this.receiveCallback = receiveCallback || false;
-
-  //! The bus connector which try to subscribe.
-  this.connector = connector;
-
-  // ## MAIN -- Connect on Bus ##
-  Subscriber.SUBSCRIBERS.push(this);
 }
 
 /*!
  * Subscribe to queueName.
  *
  * The connection is successfully when connector success to connect on 
- * dedicated queue. This method use specific message subscribeAckMessage sends to
- * itself to ensure success subscription. When all subscription are ok, the
- * methode connectCallback is call.
+ * dedicated queue. This method use specific message subscribeAckMessage sends
+ * to itself to ensure success subscription. When subscription is success,
+ * the subscribedCallback is call.
+ *
+ * \param subscribedCallback  call after sucessful subscription.
  */
-Subscriber.prototype.subscribe = function() {
+Subscriber.prototype.subscribe = function(subscribedCallback) {
   var _this = this;
+  var subscribedCallback = subscribedCallback || false;
+
   this.subscribeAttempt ++;
 
-  this.connector.stomp.subscribe(this.queueName, function(frame) {
+  this.stompClient.subscribe(this.queueName, function(frame) {
     // When a ack message is received and current not ack subscription,
-    // the subscription is ack and we try to launch connectCallback;
+    // the subscription is ack and notify caller;
     if (frame.body == _this.subscribeAckMessage
         && !_this.isAck) {
       _this.isAck = true;
-      Subscriber.tryLaunchConnectCallback();
+      if (subscribedCallback) { subscribedCallback(); }
     } else if (!frame.body.startsWith('##---## Ack of ')) {
       if (_this.receiveCallback) { _this.receiveCallback(frame.body); }
     }
@@ -170,7 +175,7 @@ Subscriber.prototype.subscribe = function() {
   setTimeout(function() {
     var queueName = (_this.queueName.startsWith(BusConnectorHQSW.BROADCAST)) 
         ? BusConnectorHQSW.BROADCAST : _this.queueName;
-    _this.connector.stomp.send(queueName, {foo:1}, _this.subscribeAckMessage);
+    _this.stompClient.send(queueName, {foo:1}, _this.subscribeAckMessage);
   }, this.subscribeWaitTime);
 }
 
@@ -181,6 +186,72 @@ Subscriber.prototype.tryNew = function() {
   } else {
     clearTimeout(this.subscribeTimer);
     this.subscribeTimer = setTimeout(this.subscribe, this.subscribeTime);
+  }
+}
+
+/*!
+ * Singleton SubscriberManager manage a set of subscriber.
+ *
+ * \param 
+ * \param subscribedCallback  
+ */
+function SubscriberManager() {}
+
+//! List of subscribers
+SubscriberManager.subscribers = [];
+
+//! The stomp client use to deal with HornetQ.
+SubscriberManager.stompClient = false;
+
+//! Function call when all subscription are done.
+SubscriberManager.subscribedCallback = false;
+
+//! Add a subscriber to manager.
+SubscriberManager.addSubscriber = function(subscriber) {
+  SubscriberManager.subscribers.push(subscriber);
+}
+
+//! Test if all subscriber subscribe successfully.
+SubscriberManager.allHaveSubscribed = function() {
+  return SubscriberManager.subscribers.forall(function(s) { return s.isAck; });
+}
+
+//! Start subscription.
+//! This method will change the stompClient.debug function. Ensure your already
+//! set debug function before call startSubscriptions.
+SubscriberManager.startSubscriptions = function() {
+  // When all subscription are successfull, subscribedCallback is call.
+  var launchSubscribedCallback = function () {
+      if (SubscriberManager.allHaveSubscribed) {
+        if (SubscriberManager.subscribedCallback) {
+          SubscriberManager.subscribedCallback();
+        }
+      }
+  };
+
+  SubscriberManager.updateDebug();
+  for (var i = 0; i < SubscriberManager.subscribers.length; ++i) {
+    SubscriberManager.subscribers[i].subscribe(launchSubscribedCallback);
+  }
+}
+
+//! Change the debug function of stomp client to catch subscription errors.
+SubscriberManager.updateDebug = function() {
+  var stompDebug = SubscriberManager.stompClient.debug || false;
+
+  SubscriberManager.stompClient.debug = function (debugMsg) {
+    if (debugMsg.startsWith('<<< ERROR')) {
+      for (var i = 0; i < SubscriberManager.subscribers.length; ++i) {
+        var subscriber = SubscriberManager.subscribers[i];
+
+        if (subscriber.subscribeError.test(debugMsg)) {
+          subscriber.tryNew();
+        }
+      }
+    }
+
+    // Forward message to upper layer.
+    if (stompDebug) { stompDebug(debugMsg); }
   }
 }
 
@@ -227,40 +298,27 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
   var _this = this;
   var login = login || 'guest';
   var passcode = passcode || 'guest';
-
-  //! Connector name.
   this.name = name;
 
   //! Stomp over WebSocket connector on HornetQ.
   this.stomp = new Stomp.client(url);
 
+  //! Manage subscriptions.
+  SubscriberManager.stompClient = this.stomp;
+  SubscriberManager.subscribedCallback = function() {
+    _this.disconnected = false;
+    if (onConnect) { onConnect(); }
+  }
+
   //! Test if connector is disconnected (or not).
   this.disconnected = true;
-
-  //! Subscriber of Personal Queue.
-  var personalSubscriber = new Subscriber(this.getPersonalQueueName(),
-      this, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
-      BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive);
-
-  //! Subscriber of Broadcast Queue.
-  var broadcastSubscriber = new Subscriber(this.getBroadcastQueueName(),
-      this, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
-      BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive);
 
   //! Successive Lost connection Number.
   this.lostConnection = 0;
 
   //! Set debug mode.
   this.stomp.debug = function(debugMsg) {
-    if (debugMsg.startsWith('<<< ERROR')) {
-      if (personalSubscriber.subscribeError.test(debugMsg)) {
-        personalSubscriber.tryNew();
-      } else if (broadcastSubscriber.subscribeError.test(debugMsg)) {
-        broadcastSubscriber.tryNew();
-      } else {
-        if (debug) { debug(debugMsg); }
-      }
-    } else if (debugMsg.startsWith('Whoops! Lost connection')
+    if (debugMsg.startsWith('Whoops! Lost connection')
         && _this.lostConnection < 1) {
       // Disconnected after time-out from server.
       // Re-connect to server acceptor.
@@ -276,10 +334,10 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
           });
         });
       }, 1);
-    } else {
-      // Forward error to user
-      if (debug) { debug(debugMsg); }
     }
+
+    // Forward error to user
+    if (debug) { debug(debugMsg); }
   }
 
   /*!
@@ -302,20 +360,26 @@ function BusConnectorHQSW(url, name, onConnect, onReceive, debug, login,
     _this.stomp.send(BusConnectorHQSW.MANAGEMENT_QUEUE, header, request);
   }
 
-  // ## MAIN -- Connect on Bus ##
-  Subscriber.connectCallback = function() {
-    _this.disconnected = false;
-    if (onConnect) { onConnect(); }
-  }
+  // ## MAIN ##
+  
+  // Personal Queue
+  SubscriberManager.addSubscriber(new Subscriber(this.getPersonalQueueName(),
+      this.stomp, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
+      BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive));
 
+  // Broadcast Queue
+  SubscriberManager.addSubscriber(new Subscriber(this.getBroadcastQueueName(),
+      this.stomp, BusConnectorHQSW.SUBSCRIPTION_MAX_ATTEMPT,
+      BusConnectorHQSW.SUBSCRIPTION_TIME, debug, onReceive));
+
+  // Connect on Bus
   this.stomp.connect(login, passcode, function(frame) {
     // Once connected, ask to create new Queues.
     deployQueue(BusConnectorHQSW.BROADCAST, _this.getBroadcastQueueName());
     deployQueue(_this.getPersonalQueueName(), _this.getPersonalQueueName());
 
     // Subscribe to new Queue.
-    personalSubscriber.subscribe();
-    broadcastSubscriber.subscribe();
+    SubscriberManager.startSubscriptions();
   });
 }
 
