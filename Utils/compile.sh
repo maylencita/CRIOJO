@@ -97,3 +97,8 @@ if [ -f temp.temp ]
 then
     rm temp.temp
 fi
+
+if [ -f unknownunknown ]
+then
+    rm unknownunknown
+fi

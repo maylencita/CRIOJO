@@ -1,7 +1,5 @@
-class Message
-    constructor: (@text) ->
-
-    toString: () ->
-        "a generated string"
-
-message = new Message "a message"
+class Connector
+  init: () ->
+    if (!("WebSocket" in window))
+      console.error("Websockets NOT supported")
+      return

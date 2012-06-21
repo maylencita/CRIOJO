@@ -22,7 +22,9 @@
 	</script>
 	<script src="lib/jquery.mobile-1.1.0.min.js"></script>
 	<script src="lib/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
-	<script src="http://jquery-ui.googlecode.com/svn/trunk/ui/i18n/jquery.ui.datepicker-fr.js" charset="utf-8"></script>
+    <script src="src/connector.js"></script>
+
+    <script src="http://jquery-ui.googlecode.com/svn/trunk/ui/i18n/jquery.ui.datepicker-fr.js" charset="utf-8"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" charset="utf-8"></script>
 	
 	<link rel="stylesheet" href="css/application.css"/>
@@ -49,84 +51,35 @@
 	<script type="application/javascript" src="lib/stomp.js"></script>
     <script type="application/javascript" src="lib/BusConnectorHQSW.js"></script>
     <script type="application/javascript">
-      var url = 'ws://172.20.143.162:61614/stomp';
-      var conn = false;
-      var name = "NoName";
-      var login = "none";
-  		
-      if (typeof String.prototype.startsWith != 'function') {
-        String.prototype.startsWith = function (str){
-          return this.slice(0, str.length) == str;
-        };
-      }
 
-      // ***************************************************** Initialization **
-      function init() {
-        if (!("WebSocket" in window)) {
-          console.error("Websockets NOT supported");
-          return;
+
+        var url = 'ws://172.17.3.108:61614/stomp';
+        var remoteActorName = 'server.chat';
+        var connector;
+
+        var login = "noname"
+        // LoadPageListener
+        //window.addEventListener("load", init, false);
+
+        function busNameToName(name) {
+            var newName = name.split(".")
+            if(newName.length==3)
+                return newName[1]
+            if(newName.length==2)
+                return newName[1]
+
+            return name
         }
-      }
 
-      // ******************************************* Message Sender Functions **
-      
-      function parseMessage(message) {
-      		var truc = message;
-      }
-      
-      function connReceiveHandler(message) {
-      	console.log(message);
-      }
-
-      function connConnected() {
-      	criojoInscription()
-      	$.mobile.changePage ($("#app-criojo"));
-      }
-
-      function connDebug(msg) {
-        console.log('[DEBUG] ' + msg);
-      }
-
-      // ************************************************* Listener Functions **
-      
-      function onConnect() {
-        name = "user."+document.getElementById("chatName").value;
-        conn = new BusConnectorHQSW(url, name, connConnected,
-            connReceiveHandler, connDebug);
-      }
-
-      function onSend() {
-        var chatMessageInput = document.getElementById("input-span");
-        var recipientInput = "chat.server"
-
-        if (chatMessageInput.value.startsWith('\\q')) {
-          // Disconnect
-          conn.disconnect();
-        } else {
-        	criojoSendMessage(chatMessageInput.value)
-          	//conn.send(name + ': ' + chatMessageInput.value, recipientInput.value);
-          	chatMessageInput.value = "";
-        }
-      }
-	
-	// ************************************************* Channel Functions **	
-		
-		function criojoInscription() {
-			conn.send("{'to':'server.chat'; 'from':'user."+login+".in'; 'channel':'server.chat.inscription';'args':'user."+login+".in'}", "server.chat");
-		}
-		
-		function criojoSendMessage(text) {
-			conn.send("{'to':'server.chat'; 'from':'user.jonathan.in'; 'channel':'server.chat.displayAll';'args':'user.jonathan.in,\""+text+"\" '}", "server.chat");
-		}
-	
-	// ************************************************* Application Functions **	
-      // LoadPageListener
-      window.addEventListener("load", init, false);
-  		
   		function refreshListView() {
     		this.$("#list-messages").listview("refresh");
     		this.$("#contacts").listview("refresh");
 	    };
+
+        function clearContacts() {
+            $("#contacts").children().remove('.ui-btn');
+            refreshListView();
+        }
 
   		function addContact(contact) {
   			var contacts = [{name:contact}]
@@ -145,37 +98,82 @@
   			$( "#messageTemplate" ).tmpl(messages).appendTo("#list-messages");
   			refreshListView();
   		};
-		
-		
-		
-  		$(document).ready(function() {
-  			
-  			
-	  		$("#login a.ok").bind ("click", function (event)
-			{
-			  login = $("#login input").val ();
-			  login = $.trim (login);
-			});
-  			
-  			
-  			// ConnectListener
-      document.getElementById("chatConnect").addEventListener("click", onConnect, false);
-      document.getElementById("chatName").addEventListener("keyup",
-          function(evt) { if (evt.keyCode == 13) { onConnect() } }, false);
 
-      // SendMessageListener
-      document.getElementById("send-button-span").addEventListener("click",
-          onSend, false);
-      document.getElementById("input-span").addEventListener("keyup",
-          function(evt) { if (evt.keyCode == 13) { onSend() } }, false);
-  			
-  			var today = $.datepicker.formatDate('DD, MM d, yy', new Date(), {dayNamesShort: $.datepicker.regional['fr'].dayNamesShort, dayNames: $.datepicker.regional['fr'].dayNames, monthNamesShort: $.datepicker.regional['fr'].monthNamesShort, monthNAmes: $.datepicker.regional['fr'].monthNames});
-		  addDateHeader(today)
-		  
-		  //addMessage("Jonathan", "Hello from Jonathan!")
-		  //addMessage("Guest", "Hello from Guest!")
-		  
-		  //addContact("Jean")
+        function scrollMessagesDown() {
+            var obj = $(".content-primary")[0]
+            var scrollHeight = Math.max(obj.scrollHeight, obj.clientHeight);
+            obj.scrollTop = scrollHeight - obj.clientHeight;
+        }
+
+        function onCommunicationEstablished() {
+
+            connector.setChannelListener("connectionOK", function(message) {
+                $.mobile.changePage ($("#app-criojo"));
+                document.getElementById("send-button-span").addEventListener("click",
+                        makeSend, false);
+                document.getElementById("input-span").addEventListener("keyup",
+                        function(evt) { if (evt.keyCode == 13) { makeSend() } }, false);
+
+
+                var today = $.datepicker.formatDate('DD, MM d, yy', new Date(), {dayNamesShort: $.datepicker.regional['fr'].dayNamesShort, dayNames: $.datepicker.regional['fr'].dayNames, monthNamesShort: $.datepicker.regional['fr'].monthNamesShort, monthNAmes: $.datepicker.regional['fr'].monthNames});
+                addDateHeader(today)
+                //setInterval(function() {
+                    connector.send(remoteActorName, "@"+login+".refreshContacts", "@server.chat.getAllUsers", ["@"+login+".refreshContacts"])
+                //}, 2000)
+
+            })
+
+            connector.setChannelListener("connectionKO", function(message) {
+                console.log("<la connection est ko!>")
+            })
+
+            connector.setChannelListener("newComer", function(message) {
+                addContact(busNameToName(message.args[0]))
+                console.log("<quelqu'un est arrive!>")
+            })
+
+            connector.setChannelListener("refreshContacts", function(message) {
+                clearContacts();
+                var contacts = message.args[0].split(";")
+
+                for(i=0;i<contacts.length;i++) {
+                    addContact(busNameToName(contacts[i]))
+                }
+
+                console.log("<on rafraichit les contacts!>")
+            })
+
+            connector.setChannelListener("in", function(message) {
+                addMessage(busNameToName(message.args[0]), message.args[1])
+                $("#list-messages").animate({scrollTop: 1000}, 800);
+                scrollMessagesDown()
+                console.log("<message reçu!>")
+            })
+
+            connector.send(remoteActorName, "@"+login+".connectionOK", "@server.chat.inscription", ["@"+login+".connectionOK", "@"+login+".in"])
+        }
+
+		function makeSend() {
+            var messageText = $("#input-span").val()
+
+            connector.send(remoteActorName, "@"+login+".in", "@server.chat.displayAll", [login, messageText])
+            $("#input-span").val("")
+            console.log("<your message has been sent!>")
+        }
+
+  		$(document).ready(function() {
+
+            document.getElementById("chatConnect").addEventListener("click", function() {
+
+                login = "user."+document.getElementById("chatName").value;
+
+                connector = new Connector();
+                connector.addConnectorEvent("connect", onCommunicationEstablished)
+                connector.connect(url, login)
+
+            }, false);
+            document.getElementById("chatName").addEventListener("keyup",
+                  function(evt) { if (evt.keyCode == 13) { onConnect() } }, false);
 		});
 		
   	</script>
@@ -245,5 +243,5 @@
 
 
 
-		</body>
-		</html>
+    </body>
+</html>

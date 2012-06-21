@@ -1,0 +1,35 @@
+body {
+    margin: 0px;
+}
+
+#wrapper {
+
+    position: absolute;
+    height: 720px;
+    width: 960px;
+}
+
+#background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url('../img/Autotiles/solnormal.png') 0 -45px;
+}
+
+#scene {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#debug {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.player {
+    position: absolute;
+    height: 48px;
+    width: 32px;
+}

@@ -3,23 +3,37 @@ web(webapp)
 server {
 
     chat {
-        [message:string]
+        [login:string,message:string]
         {
+            def root(s:String):String = s.substring(0,s.length-2)
             var listOfClients:List[String] = List()
         }
 
-        @inscription(@toClient) -> (chan){
+        @inscription(@connectionOK, @toClient) -> (chan){
                 chan match {
-                    case loc:ChannelLocation => listOfClients = loc.url :: listOfClients
+                    case loc:ChannelLocation => if(!listOfClients.contains(loc.url)){
+                        // on notifie les autres clients
+                        listOfClients.foreach({c => {
+                          this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"newComer")(loc))
+                        }})
+                        // on ajoute le client à la liste des clients
+                        listOfClients = loc.url :: listOfClients
+                    } else {println("client<"+loc.url+": already registered!>")}
                     case _ =>
                 }
-            }(@toClient),@toClient("you are registered!")
+            }(@toClient),@connectionOK("you are registered!")
 
-        @displayAll(@toClient, message) -> (chan, m){
+        @displayAll(login, message) -> (username, m){
+                // on envoie le message à tous les clients, y compris l'expediteur
                 listOfClients.foreach({c => {
-                  this.reactionStrategy.applyReaction(this, new OutChannel(c)(m))
+                  this.reactionStrategy.applyReaction(this, new OutChannel(c)(username,m))
                 }})
-            }(@toClient, message)
+            }(login, message)
+
+        @getAllUsers(@toClient) -> (chan){
+                var clients:String = listOfClients.foldLeft(""){case(v,c) => if (v=="") v+c else v+";"+c}
+                this.reactionStrategy.applyReaction(this, chan(clients))
+            }(@toClient)
     }
 
     {
