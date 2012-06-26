@@ -79,21 +79,6 @@ trait Engine extends RuleFactory{
         cg.observed.foreach{ relation => relation.addObserver(cg) }
       case _ =>
     }
-    rule.body.foreach{a =>
-//--- Normaly, not necessary
-//      a.relation = headVars.find(hv => hv.name == a.relName) match{
-//        case Some(hv) => hv.relation
-//        case _=> getRelation(a.relName)
-//      }
-//      a.patterns.foreach{
-//        case rv: VarChannel if(!headVars.contains(rv)) =>
-//          findRelation(rv.name) match{
-//            case Some(r) => rv.relation = r
-//            case _ => log(WARNING, this.getClass, "addRule", "Undefined relation variable " + rv.name);
-//          }
-//        case _ =>
-//      }
-    }
   }
 
   def printRules: String = rules.mkString("","\n","")
