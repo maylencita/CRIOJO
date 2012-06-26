@@ -84,10 +84,10 @@ case class Atom(relation:Relation, patterns: List[Term]) {
 
   /** Returns true if the given variable is in this atom.
    *
-   * @param v a [[fr.emn.criojo.core.Variable]]
+   * @param v a [[fr.emn.criojo.core.datatype.Variable]]
    * @return true if the variable is in the list of patterns
    */
-  def hasVariable(v: Variable): Boolean = {
+  def hasVariable(v: Variable) = {
     this.patterns.contains(v)
   }
 

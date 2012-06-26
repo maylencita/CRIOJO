@@ -168,18 +168,18 @@
 ////      rules(
 ////
 ////        // INITIATION
-////        (R1_COO_R2(n1) &: H2O(n2)) --> {Min(n1, n2) GreaterThan 0} ?: (R1_COO_R2(n1 - Min(n1, n2)) & H2O(n2 - Min(n1, n2)) & EXPLODE_R1_COO_R2(Min(n1, n2)) & EXPLODE_H2O(Min(n1, n2))),
+////        (R1_COO_R2(n1) &: H2O(n2)) --> {Min(n1, n2) > 0} ?: (R1_COO_R2(n1 - Min(n1, n2)) & H2O(n2 - Min(n1, n2)) & EXPLODE_R1_COO_R2(Min(n1, n2)) & EXPLODE_H2O(Min(n1, n2))),
 ////
 ////        // DIVISION
 ////        (EXPLODE_R1_COO_R2(n1) &: R1(n2) &: R2(n3) &: COO(n4)) --> (R1(n2 + n1) & R2(n3 + n1) & COO(n4 + n1)),
 ////        (EXPLODE_H2O(n1) &: H(n2) &: O(n3)) --> (H(n2 + n1*2) & O(n3 + n1)),
 ////
 ////        // SUB DIVISION
-////        (COO(n1) &: C(n2) &: O(n3)) --> {n1 GreaterThan 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
+////        (COO(n1) &: C(n2) &: O(n3)) --> {n1 > 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
 ////
 ////        // RECOMPOSITION
-////        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {Min(n1, n2, n3) GreaterThan 0} ?: (R2(n1 - Min(n1, n2, n3)) & O(n2 - Min(n1, n2, n3)) & H(n3 - Min(n1, n2, n3)) & R2_OH(n4 + Min(n1, n2, n3))),
-////        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {Min(n1, n2, n3 / 2, n4) GreaterThan 0} ?: (R1_COOH(n5 + Min(n1, n2, n3 / 2, n4)) & R1(n1 - Min(n1, n2, n3 / 2, n4)) & C(n2 - Min(n1, n2, n3 / 2, n4)) & O(n3 -  Min(n1, n2, n3 / 2, n4)) & H(n4 -Min(n1, n2, n3 / 2, n4)))
+////        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {Min(n1, n2, n3) > 0} ?: (R2(n1 - Min(n1, n2, n3)) & O(n2 - Min(n1, n2, n3)) & H(n3 - Min(n1, n2, n3)) & R2_OH(n4 + Min(n1, n2, n3))),
+////        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {Min(n1, n2, n3 / 2, n4) > 0} ?: (R1_COOH(n5 + Min(n1, n2, n3 / 2, n4)) & R1(n1 - Min(n1, n2, n3 / 2, n4)) & C(n2 - Min(n1, n2, n3 / 2, n4)) & O(n3 -  Min(n1, n2, n3 / 2, n4)) & H(n4 -Min(n1, n2, n3 / 2, n4)))
 ////      )
 ////    }
 ////
