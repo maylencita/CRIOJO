@@ -57,9 +57,9 @@ class CalculationTest {
 
 
       rules(
-        gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
-        gcd(x,y) --> {x GreaterThan y} ?: gcd(x -y,y),
-        gcd(x,y) --> {x Equal y} ?: Result(y)
+        gcd(x,y) --> {x < y} ?: gcd(y,x),
+        gcd(x,y) --> {x > y} ?: gcd(x -y,y),
+        gcd(x,y) --> {x <=> y} ?: Result(y)
       )
     }
     fCham.enableStreamingTrace()
@@ -119,9 +119,9 @@ class CalculationTest {
 
       rules(
         (fibo(n) & Session(s)) --> (Fibo(n,s) & WaitResult(s,n) & Session(s+1)),
-        Fibo(n,r) --> (Abs(Result(r,n)) && {n GreaterThan 1}) ?: (Fibo(n-1,r) & Fibo(n-2,r)),
-        (Result(n1,v1) & Result(n2,v2)) --> ({n1 Equal (n2+1)}) ?: Result(n1+1,v1+v2),
-        Fibo(n,r) --> {n LessThan  2} ?: Result(n,1),
+        Fibo(n,r) --> (Abs(Result(r,n)) && {n > 1}) ?: (Fibo(n-1,r) & Fibo(n-2,r)),
+        (Result(n1,v1) & Result(n2,v2)) --> ({n1 <=> (n2+1)}) ?: Result(1 + n1, v1 + v2),
+        Fibo(n,r) --> {n <  2} ?: Result(n,1),
         (WaitResult(r,n) & Result(n,v)) --> Bingo(v)
       )
     }
@@ -194,9 +194,9 @@ class CalculationTest {
 
 
       rules(
-        gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
-        gcd(x,y) --> {x GreaterThan y} ?: gcd(x-y,y),
-        gcd(x,y) --> {x Equal y} ?: (Result(y) & PrintInt(y))
+        gcd(x,y) --> {x < y} ?: gcd(y,x),
+        gcd(x,y) --> {x > y} ?: gcd(x-y,y),
+        gcd(x,y) --> {x <=> y} ?: (Result(y) & PrintInt(y))
       )
     }
 //    import chemicalMachine.{num2fun,gcd}
@@ -222,12 +222,12 @@ class CalculationTest {
       val x,y = VarScalaInt()
 
       rules(
-        gcd(x,y) --> {x LessThan y} ?: gcd(y,x),
+        gcd(x,y) --> {x <=> y} ?: gcd(y,x),
         gcd(x,y) --> {
           var i=2;
           println("in the guard...");
-          x GreaterThan y} ?: gcd(LazyExpression({println("in the body...");x-y}),y),
-        gcd(x,y) --> {x Equal y} ?: (Result(y) & PrintInt(y))
+          x > y} ?: gcd(LazyExpression({println("in the body...");x-y}),y),
+        gcd(x,y) --> {x <=> y} ?: (Result(y) & PrintInt(y))
       )
     }
 //    import chemicalMachine.{num2fun,gcd}
@@ -262,18 +262,18 @@ class CalculationTest {
       rules(
 
         // INITIATION
-        (R1_COO_R2(n1) &: H2O(n2)) --> {ScalaInt.Min(n1, n2) GreaterThan 0} ?: (R1_COO_R2(n1 - ScalaInt.Min(n1, n2)) & H2O(n2 - ScalaInt.Min(n1, n2)) & EXPLODE_R1_COO_R2(ScalaInt.Min(n1, n2)) & EXPLODE_H2O(ScalaInt.Min(n1, n2))),
+        (R1_COO_R2(n1) &: H2O(n2)) --> {ScalaInt.Min(n1, n2) > 0} ?: (R1_COO_R2(n1 - ScalaInt.Min(n1, n2)) & H2O(n2 - ScalaInt.Min(n1, n2)) & EXPLODE_R1_COO_R2(ScalaInt.Min(n1, n2)) & EXPLODE_H2O(ScalaInt.Min(n1, n2))),
 
         // DIVISION
         (EXPLODE_R1_COO_R2(n1) &: R1(n2) &: R2(n3) &: COO(n4)) --> (R1(n2 + n1) & R2(n3 + n1) & COO(n4 + n1)),
         (EXPLODE_H2O(n1) &: H(n2) &: O(n3)) --> (H(n2 + n1*2) & O(n3 + n1)),
 
         // SUB DIVISION
-        (COO(n1) &: C(n2) &: O(n3)) --> {n1 GreaterThan 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
+        (COO(n1) &: C(n2) &: O(n3)) --> {n1 > 0} ?: (COO(0) & C(n2 + n1) & O(n3 + n1*2)),
 
         // RECOMPOSITION
-        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {ScalaInt.Min(n1, n2, n3) GreaterThan 0} ?: (R2(n1 - ScalaInt.Min(n1, n2, n3)) & O(n2 - ScalaInt.Min(n1, n2, n3)) & H(n3 - ScalaInt.Min(n1, n2, n3)) & R2_OH(n4 + ScalaInt.Min(n1, n2, n3))),
-        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {ScalaInt.Min(n1, n2, n3 / 2, n4) GreaterThan 0} ?: (R1_COOH(n5 + ScalaInt.Min(n1, n2, n3 / 2, n4)) & R1(n1 - ScalaInt.Min(n1, n2, n3 / 2, n4)) & C(n2 - ScalaInt.Min(n1, n2, n3 / 2, n4)) & O(n3 -  ScalaInt.Min(n1, n2, n3 / 2, n4)) & H(n4 -ScalaInt.Min(n1, n2, n3 / 2, n4)))
+        (R2(n1) &: O(n2) &: H(n3) &: R2_OH(n4)) --> {ScalaInt.Min(n1, n2, n3) > 0} ?: (R2(n1 - ScalaInt.Min(n1, n2, n3)) & O(n2 - ScalaInt.Min(n1, n2, n3)) & H(n3 - ScalaInt.Min(n1, n2, n3)) & R2_OH(n4 + ScalaInt.Min(n1, n2, n3))),
+        (R1(n1) &: C(n2) &: O(n3) &: H(n4) &: R1_COOH(n5)) --> {ScalaInt.Min(n1, n2, n3 / 2, n4) > 0} ?: (R1_COOH(n5 + ScalaInt.Min(n1, n2, n3 / 2, n4)) & R1(n1 - ScalaInt.Min(n1, n2, n3 / 2, n4)) & C(n2 - ScalaInt.Min(n1, n2, n3 / 2, n4)) & O(n3 -  ScalaInt.Min(n1, n2, n3 / 2, n4)) & H(n4 -ScalaInt.Min(n1, n2, n3 / 2, n4)))
       )
     }
 
@@ -362,7 +362,7 @@ class CalculationTest {
         (IsItEquivalent(x, y) & Session(s)) --> (AreInRelation(x, y, s) & Session(s+1)),
         (AreInRelation(x, w, n) & AreConnected(x, y) & Session(s)) --> {x NotEqual y} ?: (AreInRelation(x, w, n) & PUSH(s, n, x) & AreInRelation(y, w, s) & Session(s+1)),
         AreInRelation(x, y, n) --> {x Equal y} ?: (PrintInt(x) & POP(n)),
-        (POP(j) &: PUSH(i, n, x)) --> {i Equal j} ?: (PrintInt(x) & POP(n))
+        (POP(j) &: PUSH(i, n, x)) --> {i <=> j} ?: (PrintInt(x) & POP(n))
       )
     }
 
@@ -407,10 +407,10 @@ class CalculationTest {
       }
 
       rules(
-        (Sierpinski(x, y, l, n)) --> {n Equal 0} ?: Print(x,y,l),
+        (Sierpinski(x, y, l, n)) --> {n <=> 0} ?: Print(x,y,l),
 
         Sierpinski(x, y, l, n)
-          --> {n GreaterThan 0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
+          --> {n > 0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
       )
       //DEBUG_MODE = true
     }

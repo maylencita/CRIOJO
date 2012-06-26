@@ -17,7 +17,7 @@ case class EqualScalaInt(x: ScalaInt, y: ScalaInt) extends ScalaBoolean {
     val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaInt]
     val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaInt]
 
-    expr1 Equal expr2
+    expr1 <=> expr2
   }
 
   override def reduce(): Expression = {
