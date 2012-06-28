@@ -28,7 +28,7 @@ trait ScalaInt extends Pattern with Expression {
 
   final def <(that: ScalaInt): ScalaBoolean = ! (this >= that)
   
-  final def <=(that: ScalaInt): ScalaBoolean = ! (this >= that)
+  final def <=(that: ScalaInt): ScalaBoolean = ! (this > that)
 
   final def getValue(): Int = reduce() match {
     case i: ScalaInt => i.value

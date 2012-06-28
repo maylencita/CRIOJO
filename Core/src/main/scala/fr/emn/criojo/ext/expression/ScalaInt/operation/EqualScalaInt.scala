@@ -9,8 +9,7 @@ case class EqualScalaInt(x: ScalaInt, y: ScalaInt) extends ScalaBoolean {
   override def getValuation(expr: Expression): Valuation = expr match {
     case expr: EqualScalaInt =>
       x.getValuation(expr.x).union(y.getValuation(expr.y))
-    case _ =>
-      throw new PatternNotMatchingException()
+    case _ => throw new PatternNotMatchingException()
   }
 
   override def applyValuation(valuation: Valuation): Expression = {

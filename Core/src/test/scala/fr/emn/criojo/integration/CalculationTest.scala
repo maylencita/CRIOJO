@@ -360,8 +360,8 @@ class CalculationTest {
 
       rules(
         (IsItEquivalent(x, y) & Session(s)) --> (AreInRelation(x, y, s) & Session(s+1)),
-        (AreInRelation(x, w, n) & AreConnected(x, y) & Session(s)) --> {x NotEqual y} ?: (AreInRelation(x, w, n) & PUSH(s, n, x) & AreInRelation(y, w, s) & Session(s+1)),
-        AreInRelation(x, y, n) --> {x Equal y} ?: (PrintInt(x) & POP(n)),
+        (AreInRelation(x, w, n) & AreConnected(x, y) & Session(s)) --> {x !<=> y} ?: (AreInRelation(x, w, n) & PUSH(s, n, x) & AreInRelation(y, w, s) & Session(s+1)),
+        AreInRelation(x, y, n) --> {x <=> y} ?: (PrintInt(x) & POP(n)),
         (POP(j) &: PUSH(i, n, x)) --> {i <=> j} ?: (PrintInt(x) & POP(n))
       )
     }
