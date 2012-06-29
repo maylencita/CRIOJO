@@ -24,7 +24,7 @@ trait Term {
     *         <code>false</code> otherwise.
     */
   def matches(exp: Expression): Boolean =
-    throw new Exception("Not implemented in TERM")
+    throw new ProhibitedOperation
 
   /** Get valuation from an expression.
     *
@@ -39,7 +39,7 @@ trait Term {
     *         empty valuation otherwise.
     */
   def getValuation(exp: Expression): Valuation =
-    throw new Exception("Not implemented in TERM")
+    throw new ProhibitedOperation
 
   /** Transform the current pattern in expression.
     *
@@ -53,7 +53,7 @@ trait Term {
     * @return An expression from current pattern.
     */
   def applyValuation(valuation: Valuation): Expression =
-    throw new Exception("Not implemented in TERM")
+    throw new ProhibitedOperation
 
   /** Reduce an expression.
     *
@@ -65,5 +65,5 @@ trait Term {
     * @return The expression with only constructor (no operation).
     */
   def reduce(): Expression =
-    throw new Exception("Not implemented in TERM")
+    throw new ProhibitedOperation
 }
