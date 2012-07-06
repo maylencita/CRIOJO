@@ -1,4 +1,10 @@
 <servers>
+    <server>
+        <name>local</name>
+        <ip>127.0.0.1</ip>
+        <username>jonathan</username>
+        <password>badock</password>
+    </server>
 	<server>
 		<name>node1</name>
 		<ip>172.28.3.151</ip>

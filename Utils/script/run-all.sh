@@ -112,7 +112,7 @@ run () {
 	
 	password=$(get_host_password "hosts.xml" $2)
 
-	eval "expect ssh_execute.sh $password $username@$ip \" cd /opt/local/criojo/servers/$1/; ./run.sh &\""
+	eval "expect ssh_execute.sh $password $username@$ip \" cd /opt/local/criojo/servers/$1/; ./run.sh &\"&"
 	
 	echo "Done!"
 }
@@ -126,8 +126,20 @@ if ! command_exists xpath ; then
     apt-get install -y libxml-xpath-perl
 fi
 
+# start web
 for server in `ls -d */`; do
-	
-	node=$(get_mapping_node_name "mappings.xml" ${server%%?})
-	run $server $node
+
+	if [ "$server" = "web" ]; then
+	    node=$(get_mapping_node_name "mappings.xml" ${server%%?})
+	    run $server $node
+	fi
+done
+
+#start the nodes
+for server in `ls -d */`; do
+
+	if [ "$server" != "web" ]; then
+	    node=$(get_mapping_node_name "mappings.xml" ${server%%?})
+	    run $server $node
+	fi
 done

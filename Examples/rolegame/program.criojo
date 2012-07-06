@@ -1,0 +1,304 @@
+web(webapp)
+
+server {
+    {
+
+        val HORIZONTAL_SIZE     = 30
+        val VERTICAL_SIZE       = 15
+
+        val EMPTY:Int = -1
+        val PLAYER:Int = 100
+
+        var nextPlayerId = 0
+        def getNextPlayerId():Int = {
+            nextPlayerId = nextPlayerId+1
+            nextPlayerId-1
+        }
+
+        class PNJ(tab:Array[Array[Int]], val id:Int, var x:Int, var y:Int) {
+
+          setPosition(x,y)
+          def setPosition(_x:Int, _y:Int) {
+            if(tab(_x)(_y) == EMPTY) {
+
+              if (x != -1 && y != -1)
+                tab(x)(y) = EMPTY
+
+              x = _x
+              y = _y
+
+              tab(_x)(_y) = 1
+            }
+          }
+
+          def makeRandomMove(){
+              var randomNumber = Math.floor(Math.random*100)
+              if(randomNumber>75) {
+                var orientation = Math.floor(Math.random*4)
+
+
+                var dx = 0;
+                var dy = 0;
+
+                orientation match {
+                  case 0 => dy=1;
+                  case 1 => dx=0-1;
+                  case 2 => dy=0-1;
+                  case 3 => dx=1;
+                }
+
+
+
+                  if(x+dx<0)
+                      dx = 0
+                  if(x+dx>=HORIZONTAL_SIZE)
+                      dx = 0
+
+                  if(y+dy<0)
+                      dy = 0
+                  if(y+dy>=VERTICAL_SIZE)
+                      dy = 0
+
+                if(tab(x+dx)(y+dy) == EMPTY) {
+                  tab(x)(y) = EMPTY
+                  tab(x+dx)(y+dy) = 1
+
+                  x = x+dx
+                  y= y+dy
+                }
+
+              }
+            }
+          }
+
+    }
+    timerserver {
+        @tick() -> server.map1.@tick(),server.map2.@tick(),(){Thread.sleep(1000)}(),@tick()
+    }
+    map1 {
+        [user:string,login:string,message:string,x:int,y:int,dx:int,dy:int,id:int]
+        {
+            def root(s:String):String = s.substring(0,s.length-2)
+            var listOfClients:List[String] = List()
+            var mapTiles = Array.fill(30,15)(EMPTY)
+            var startX = 0
+            var startY = 0
+            var kindOfTile = "solnormal.png"
+            var listOfPNJs:List[PNJ] = List()
+
+            // create the grotte
+            for(i <- 0 to 2) {
+                for(j <- 0 to 2) {
+                    mapTiles(i+10)(j) = 1
+                }
+            }
+            // the entry
+            mapTiles(11)(2) = EMPTY
+
+            listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 10, 10) :: listOfPNJs
+            listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 12, 14) :: listOfPNJs
+            listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 14, 14) :: listOfPNJs
+            listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 20, 10) :: listOfPNJs
+            listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 22, 14) :: listOfPNJs
+            listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 24, 14) :: listOfPNJs
+        }
+
+        @inscription(@connectionOK, @toClient) -> (chan,cok){
+                chan match {
+                    case loc:ChannelLocation => if(!listOfClients.contains(loc.url)){
+
+                        var id = getNextPlayerId()
+
+                        this.reactionStrategy.applyReaction(this, cok(id,startX,startY,kindOfTile))
+
+                        this.reactionStrategy.applyReaction(this, new OutChannel(root(loc.url)+"createGrotte")(10,0))
+                        // on notifie les autres clients
+                        listOfClients.foreach({c => {
+                          this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"newComer")(loc))
+                        }})
+                        listOfPNJs.foreach({p => {
+                          // tell the clients to draw the pnjs
+                          this.reactionStrategy.applyReaction(this, new OutChannel(root(loc.url)+"createPNJ")(p.id,p.x,p.y))
+                        }})
+                        // on ajoute le client à la liste des clients
+                        listOfClients = loc.url :: listOfClients
+                    } else {println("client<"+loc.url+": already registered!>")}
+                    case _ =>
+                }
+            }(@toClient,@connectionOK)
+
+        @canIMove(x,y,dx,dy,@Kok,@Kko,@notif,id) -> (xt,yt,dxt,dyt,kokt,kkot,notift,idt){
+
+            import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+            import fr.emn.criojo.core.datatype.Term
+
+            def get(i:Term):Int = i match {
+                case WrapScalaInt(n) => n
+                case _ => 0
+            }
+            var x = get(xt)
+            var y = get(yt)
+            var dx = get(dxt)
+            var dy = get(dyt)
+            var id = get(idt)
+            // check if the tile is empty
+            if((x+dx)<30 && (x+dx)>=0 && (y+dy)<15 && (y+dy)>=0 && mapTiles(x+dx)(y+dy) == EMPTY) {
+                // server confirms the move
+                if(x+dx == 11 && y+dy == 2) {
+
+                     mapTiles(11)(2) = EMPTY
+                     mapTiles(11)(3) = EMPTY
+                     this.reactionStrategy.applyReaction(this, notift("changeWorld"))
+                     this.reactionStrategy.applyReaction(this, changing(notift))
+
+                }
+                else {
+                    this.reactionStrategy.applyReaction(this, kokt(x+dx,y+dy,id))
+                    mapTiles(x)(y) = EMPTY
+                    mapTiles(x+dx)(y+dy) = PLAYER + id
+
+                    listOfClients.foreach({c => {
+                        // tell the clients to move the player
+                        //this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"movePlayer")(idt,x+dx,y+dy))
+                    }})
+                }
+            }
+            else {
+                // server cancels the move
+                this.reactionStrategy.applyReaction(this, kkot(xt,yt))
+            }
+        }(x,y,dx,dy,@Kok,@Kko,@notif,id)
+
+        @tick() -> (){
+             listOfPNJs.foreach(p => {
+                p.makeRandomMove()
+
+                listOfClients.foreach({c => {
+                  // tell the clients to move the player
+                  this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"movePNJ")(p.id,p.x,p.y))
+                }})
+              })
+            }()
+
+        @makechange(@notifuser) -> @notifuser("connectToMe",@inscription)
+        @changing(@notifuser) -> (){
+             listOfClients = List()
+         }(),server.map2.@makechange(@notifuser)
+    }
+
+    map2 {
+            [user:string,login:string,message:string,x:int,y:int,dx:int,dy:int,id:int]
+            {
+                def root(s:String):String = s.substring(0,s.length-2)
+                var listOfClients:List[String] = List()
+                var mapTiles = Array.fill(30,15)(EMPTY)
+                var startX = 0
+                var startY = 0
+                var kindOfTile = "solgrotte.png"
+                var listOfPNJs:List[PNJ] = List()
+
+                // create the grotte
+                for(i <- 0 to 2) {
+                    for(j <- 0 to 2) {
+                        mapTiles(i+12)(j) = 1
+                    }
+                }
+                // the entry
+                mapTiles(13)(2) = EMPTY
+
+                listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 10, 10) :: listOfPNJs
+                listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 12, 14) :: listOfPNJs
+                listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 14, 14) :: listOfPNJs
+                listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 20, 10) :: listOfPNJs
+                listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 22, 14) :: listOfPNJs
+                listOfPNJs = new PNJ(mapTiles, getNextPlayerId(), 24, 14) :: listOfPNJs
+            }
+
+            @inscription(@connectionOK, @toClient) -> (chan,cok){
+                    chan match {
+                        case loc:ChannelLocation => if(!listOfClients.contains(loc.url)){
+
+                            var id = getNextPlayerId()
+
+                            this.reactionStrategy.applyReaction(this, cok(id,startX,startY,kindOfTile))
+
+                            this.reactionStrategy.applyReaction(this, new OutChannel(root(loc.url)+"createGrotte")(12,0))
+                            // on notifie les autres clients
+                            listOfClients.foreach({c => {
+                              this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"newComer")(loc))
+                            }})
+                            listOfPNJs.foreach({p => {
+                              // tell the clients to draw the pnjs
+                              this.reactionStrategy.applyReaction(this, new OutChannel(root(loc.url)+"createPNJ")(p.id,p.x,p.y))
+                            }})
+                            // on ajoute le client à la liste des clients
+                            listOfClients = loc.url :: listOfClients
+                        } else {println("client<"+loc.url+": already registered!>")}
+                        case _ =>
+                    }
+                }(@toClient,@connectionOK)
+
+            @canIMove(x,y,dx,dy,@Kok,@Kko,@notif,id) -> (xt,yt,dxt,dyt,kokt,kkot,notift,idt){
+
+                import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+                import fr.emn.criojo.core.datatype.Term
+
+                def get(i:Term):Int = i match {
+                    case WrapScalaInt(n) => n
+                    case _ => 0
+                }
+                var x = get(xt)
+                var y = get(yt)
+                var dx = get(dxt)
+                var dy = get(dyt)
+                var id = get(idt)
+                // check if the tile is empty
+                if((x+dx)<30 && (x+dx)>=0 && (y+dy)<15 && (y+dy)>=0 && mapTiles(x+dx)(y+dy) == EMPTY) {
+                    // server confirms the move
+                    if(x+dx == 13 && y+dy == 2) {
+                         mapTiles(13)(2) = EMPTY
+                         mapTiles(13)(3) = EMPTY
+                         this.reactionStrategy.applyReaction(this, notift("changeWorld"))
+                         this.reactionStrategy.applyReaction(this, changing(notift))
+                    }
+                    else {
+                        this.reactionStrategy.applyReaction(this, kokt(x+dx,y+dy,id))
+                        mapTiles(x)(y) = EMPTY
+                        mapTiles(x+dx)(y+dy) = PLAYER + id
+
+                        listOfClients.foreach({c => {
+                            // tell the clients to move the player
+                            //this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"movePlayer")(idt,x+dx,y+dy))
+                        }})
+                    }
+                }
+                else {
+                    // server cancels the move
+                    this.reactionStrategy.applyReaction(this, kkot(xt,yt))
+                }
+            }(x,y,dx,dy,@Kok,@Kko,@notif,id)
+
+            @tick() -> (){
+                 listOfPNJs.foreach(p => {
+                    p.makeRandomMove()
+
+                    listOfClients.foreach({c => {
+                      // tell the clients to move the player
+                      this.reactionStrategy.applyReaction(this, new OutChannel(root(c)+"movePNJ")(p.id,p.x,p.y))
+                    }})
+                  })
+                }()
+            @makechange(@notifuser) -> @notifuser("connectToMe",@inscription)
+            @changing(@notifuser) -> (){
+                listOfClients = List()
+            }(),server.map1.@makechange(@notifuser)
+        }
+
+    {
+        timerserver.enableStreamingTrace()
+        map1.enableStreamingTrace()
+        map2.enableStreamingTrace()
+
+        timerserver.introduceAtom(timerserver.tick().head)
+    }
+}

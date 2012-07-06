@@ -67,13 +67,17 @@ for folder in `ls servers/`; do
         eval "cp -r lib/cham servers/$folder/lib"
         eval "cp script/cham/pom.xml.template servers/$folder/pom.xml"
         eval "cp script/cham/run.sh servers/$folder/run.sh"
+        eval "cp script/cham/stop.sh servers/$folder/stop.sh"
         eval "chmod +x servers/$folder/run.sh"
+        eval "chmod +x servers/$folder/stop.sh"
     else
         eval "cp -r conf/web servers/$folder/conf"
         eval "cp -r lib/web servers/$folder/lib"
         eval "cp script/web/pom.xml.template servers/$folder/pom.xml"
         eval "cp script/web/run.sh servers/$folder/run.sh"
+        eval "cp script/web/stop.sh servers/$folder/stop.sh"
         eval "chmod +x servers/$folder/run.sh"
+        eval "chmod +x servers/$folder/stop.sh"
     fi
 done
 
@@ -85,8 +89,10 @@ eval "cp script/ssh_copy.sh servers/ssh_copy.sh"
 eval "cp script/ssh_copy_directory.sh servers/ssh_copy_directory.sh"
 eval "cp script/ssh_execute.sh servers/ssh_execute.sh"
 eval "cp script/run-all.sh servers/run-all.sh"
+eval "cp script/stop-all.sh servers/stop-all.sh"
 eval "chmod +x servers/deploy.sh"
 eval "chmod +x servers/run-all.sh"
+eval "chmod +x servers/stop-all.sh"
 
 if [ -f program.compiled.criojo ]
 then

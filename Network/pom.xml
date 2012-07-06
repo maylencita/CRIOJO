@@ -61,7 +61,7 @@
     <!-- Criojo -->
     <dependency>
       <groupId>fr.emn.criojo</groupId>
-      <artifactId>CRIOJO-Core</artifactId>
+      <artifactId>Core</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 

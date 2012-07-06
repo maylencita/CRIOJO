@@ -3,6 +3,7 @@ package scala.fr.emn.criojo.network
 import fr.emn.criojo.core.{Engine, Atom, LocalReactionStrategy}
 import fr.emn.criojo.ext.expression.Relation.constructor.{OutChannel, Channel, LocalRelation}
 import fr.emn.criojo.network.ActorCham
+import fr.emn.criojo.core.impur.NativeRelation
 
 
 /**
@@ -21,7 +22,10 @@ class NetworkReactionStrategy extends LocalReactionStrategy {
   
   override def applyReaction(engine:Engine, atom:Atom) {
     atom.relation match {
-      case l:LocalRelation => super.applyReaction(engine, atom)
+      case l:LocalRelation => l match {
+          case r:NativeRelation => r.execute(atom)
+          case _ =>super.applyReaction(engine, atom)
+        }
       case k:Channel => super.applyReaction(engine, atom)
       case k:OutChannel => engine match {
         case a:ActorCham => {

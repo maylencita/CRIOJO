@@ -63,7 +63,7 @@
         <!-- Criojo -->
         <dependency>
             <groupId>fr.emn.criojo</groupId>
-            <artifactId>CRIOJO-Core</artifactId>
+            <artifactId>Core</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -171,10 +171,10 @@
                             <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <file>${basedir}/lib/CRIOJO-core-1.0-SNAPSHOT.jar</file>
+                            <file>${basedir}/lib/Core-1.0-SNAPSHOT.jar</file>
 
-                            <groupId>fr.emn.criojo.network</groupId>
-                            <artifactId>CRIOJO-Core</artifactId>
+                            <groupId>fr.emn.criojo</groupId>
+                            <artifactId>Core</artifactId>
                             <version>1.0-SNAPSHOT</version>
                             <packaging>jar</packaging>
                         </configuration>
