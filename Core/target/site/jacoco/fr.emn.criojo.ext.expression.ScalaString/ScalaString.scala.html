@@ -3,24 +3,28 @@
 import operation._
 import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
+import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
+import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 
 /** Wrap Scala String type in Criojo */
-<span class="fc" id="L8">trait ScalaString extends Pattern with Expression {</span>
+<span class="fc" id="L10">trait ScalaString extends Pattern with Expression {</span>
   def value: String = {
-<span class="nc" id="L10">    throw new NoValueDefined()</span>
+<span class="nc" id="L12">    throw new NoValueDefined()</span>
   }
 
-  final def +(that: ScalaString): ScalaString = {
-<span class="nc" id="L14">    new AddScalaString(this, that)</span>
-  }
+<span class="fc" id="L15">  final def length: ScalaInt = new LengthScalaString(this)</span>
 
-<span class="fc" id="L17">  final def Equal(that: ScalaString): ScalaBoolean = new EqualScalaString(this, that)</span>
+<span class="fc" id="L17">  final def +(that: ScalaString): ScalaString = new AddScalaString(this, that)</span>
 
-<span class="fc" id="L19">  final def NotEqual(that: ScalaString): ScalaBoolean = !Equal(that)</span>
+<span class="fc" id="L19">  final def &lt;=&gt;(that: ScalaString): ScalaBoolean = new EqualScalaString(this, that)</span>
 
-<span class="pc bpc" id="L21" title="1 of 2 branches missed.">  final def getValue(): String = reduce() match {</span>
-<span class="fc" id="L22">    case i: ScalaString =&gt; i.value</span>
-<span class="nc" id="L23">    case _ =&gt; throw new NoValueDefined()</span>
+<span class="fc" id="L21">  final def !&lt;=&gt;(that: ScalaString): ScalaBoolean = !(this &lt;=&gt; that)</span>
+
+<span class="fc" id="L23">  final def isEmpty: ScalaBoolean = this.length &lt;=&gt; WrapScalaInt(0)</span>
+
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">  final def getValue: String = reduce() match {</span>
+<span class="fc" id="L26">    case i: ScalaString =&gt; i.value</span>
+<span class="nc" id="L27">    case _ =&gt; throw new NoValueDefined()</span>
   }
 }
 

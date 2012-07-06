@@ -24,7 +24,7 @@
     *         &lt;code&gt;false&lt;/code&gt; otherwise.
     */
   def matches(exp: Expression): Boolean =
-<span class="nc" id="L27">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+<span class="nc" id="L27">    throw new ProhibitedOperation</span>
 
   /** Get valuation from an expression.
     *
@@ -39,7 +39,7 @@
     *         empty valuation otherwise.
     */
   def getValuation(exp: Expression): Valuation =
-<span class="nc" id="L42">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+<span class="nc" id="L42">    throw new ProhibitedOperation</span>
 
   /** Transform the current pattern in expression.
     *
@@ -53,7 +53,7 @@
     * @return An expression from current pattern.
     */
   def applyValuation(valuation: Valuation): Expression =
-<span class="nc" id="L56">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+<span class="nc" id="L56">    throw new ProhibitedOperation</span>
 
   /** Reduce an expression.
     *
@@ -65,6 +65,6 @@
     * @return The expression with only constructor (no operation).
     */
   def reduce(): Expression =
-<span class="nc" id="L68">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+<span class="nc" id="L68">    throw new ProhibitedOperation</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

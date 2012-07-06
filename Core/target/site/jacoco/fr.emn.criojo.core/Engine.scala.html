@@ -36,14 +36,14 @@ trait Engine extends RuleFactory{
 <span class="nc bnc" id="L36" title="All 6 branches missed.">  def findRelation(relName:String):Option[Relation] = relations.find(_.name == relName)</span>
 
 <span class="nc bnc" id="L38" title="All 2 branches missed.">  def getRelation(relName:String):Relation = findRelation(relName) match{</span>
-      case Some(r) =&gt; r
-      case _ =&gt;
-<span class="nc bnc" id="L41" title="All 2 branches missed.">        if(relName startsWith (&quot;$&quot;))</span>
-<span class="nc" id="L42">          new LocalRelation(relName)</span>
-        else{
-<span class="nc" id="L44">          log(WARNING, this.getClass, &quot;findRelation&quot;,&quot;Undefined relation &quot; + relName)</span>
-<span class="nc" id="L45">          new LocalRelation(&quot;Undefined&quot;)</span>
-        }
+    case Some(r) =&gt; r
+    case _ =&gt;
+<span class="nc bnc" id="L41" title="All 2 branches missed.">      if(relName startsWith (&quot;$&quot;))</span>
+<span class="nc" id="L42">        new LocalRelation(relName)</span>
+      else{
+<span class="nc" id="L44">        log(WARNING, this.getClass, &quot;findRelation&quot;,&quot;Undefined relation &quot; + relName)</span>
+<span class="nc" id="L45">        new LocalRelation(&quot;Undefined&quot;)</span>
+      }
   }
 
   def initRules(ruleDefs:List[RuleFactory =&gt; Rule]){

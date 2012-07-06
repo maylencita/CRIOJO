@@ -102,10 +102,10 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
 
   /** Returns true if the given variable is in this atom.
    *
-   * @param v a [[fr.emn.criojo.core.Variable]]
+   * @param v a [[fr.emn.criojo.core.datatype.Variable]]
    * @return true if the variable is in the list of patterns
    */
-  def hasVariable(v: Variable): Boolean = {
+  def hasVariable(v: Variable) = {
 <span class="nc" id="L109">    this.patterns.contains(v)</span>
   }
 

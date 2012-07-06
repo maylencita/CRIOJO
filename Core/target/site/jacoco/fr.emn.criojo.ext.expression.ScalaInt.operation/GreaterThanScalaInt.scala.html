@@ -17,7 +17,7 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 <span class="fc" id="L17">    val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
 <span class="fc" id="L18">    val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
 
-<span class="fc" id="L20">    expr1 GreaterThan expr2</span>
+<span class="fc" id="L20">    expr1 &gt; expr2</span>
   }
 
   override def reduce(): Expression = {

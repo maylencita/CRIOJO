@@ -27,7 +27,7 @@ class IPIPIPTest {
 
 
       rules(
-        (L(x, u) & L(y, v))  --> {(y Equal (x + 1)) && (v GreaterThan u)} ?: (L(x, v) & L(y, u))
+        (L(x, u) & L(y, v))  --> {(y <=> (x + 1)) && (v >= u)} ?: (L(x, v) & L(y, u))
       )
     }
     fCham.enableStreamingTrace()

@@ -12,8 +12,8 @@ case class WrapScalaInt(i: Int) extends ScalaInt {
 
   override def reduce(): Expression = this
 
-  override def matches(expr:Expression):Boolean = expr match {
-    case WrapScalaInt(j) if(i==j) => true
+  override def matches(expr: Expression):Boolean = expr match {
+    case WrapScalaInt(j) if (i==j) => true
     case _ => false
   }
 

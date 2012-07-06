@@ -2,13 +2,15 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 Core,fr.emn.criojo.util,Logger.,139,37,2,0,14,8,20,4,19,4
 Core,fr.emn.criojo.util,Logger,80,0,0,0,0,0,20,0,20,0
 Core,fr.emn.criojo.util,Logger..anonfun.log.new Serializable() {...},35,0,0,0,2,0,5,0,5,0
-Core,fr.emn.criojo.ext.expression.ScalaString.operation,AddScalaString,253,0,31,0,12,0,44,0,28,0
-Core,fr.emn.criojo.ext.expression.ScalaString.operation,EqualScalaString,197,62,34,3,7,5,39,8,21,7
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,AddScalaString,149,64,23,0,1,5,34,8,22,8
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,LengthScalaString.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,EqualScalaString,151,62,26,3,1,5,35,8,21,7
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,LengthScalaString,133,55,16,0,1,4,30,10,22,10
 Core,fr.emn.criojo.ext.expression.ScalaString.operation,EqualScalaString.,40,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaString.operation,AddScalaString.,40,0,2,0,1,0,8,0,7,0
-Core,fr.emn.criojo.ext.expression.ScalaBoolean.constructor,WrapScalaBoolean,138,18,18,0,6,2,32,3,23,3
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.constructor,WrapScalaBoolean,94,62,13,5,5,3,27,8,18,8
 Core,fr.emn.criojo.ext.expression.ScalaBoolean.constructor,WrapScalaBoolean.,33,0,2,0,1,0,8,0,7,0
-Core,fr.emn.criojo.ext.expression.ScalaBoolean,ScalaBoolean.class,14,22,1,1,3,5,3,4,2,4
+Core,fr.emn.criojo.ext.expression.ScalaBoolean,ScalaBoolean.class,8,28,1,1,2,6,2,5,1,5
 Core,fr.emn.criojo.ext.expression.ScalaBoolean,VarScalaBoolean,128,0,16,0,2,0,28,0,20,0
 Core,fr.emn.criojo.ext.expression.ScalaBoolean,VarScalaBoolean.,58,0,2,0,6,0,10,0,9,0
 Core,fr.emn.criojo.lang,Nu.,32,0,2,0,1,0,8,0,7,0
@@ -37,12 +39,14 @@ Core,fr.emn.criojo.lang,Empty,81,0,0,0,0,0,23,0,23,0
 Core,fr.emn.criojo.lang,Molecule..anonfun..minus.minus.greater.new Serializable() {...},4,38,1,1,0,1,1,4,0,4
 Core,fr.emn.criojo.lang,ChamGuard.class,6,7,0,0,1,2,1,2,1,2
 Core,fr.emn.criojo.lang,Applicable.class,8,0,0,0,2,0,2,0,2,0
-Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,NotScalaBoolean,149,37,20,2,7,4,31,5,21,4
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,NotScalaBoolean,143,43,20,2,7,4,29,7,19,6
 Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,NotScalaBoolean.,32,0,2,0,1,0,8,0,7,0
-Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,AndScalaBoolean,251,0,35,0,12,0,46,0,28,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,AndScalaBoolean,201,50,32,3,7,5,40,6,23,5
 Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,OrScalaBoolean,193,58,31,4,7,5,37,9,21,7
 Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,OrScalaBoolean.,40,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,AndScalaBoolean.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaList,ScalaList.class,8,17,1,1,2,4,2,3,1,3
+Core,fr.emn.criojo.ext.expression.ScalaList,NoValueDefined,3,0,0,0,1,0,1,0,1,0
 Core,fr.emn.criojo.core,NormalRule..anonfun.applyReaction.1..anonfun.apply.new Serializable() {...},4,30,1,1,0,3,1,4,0,4
 Core,fr.emn.criojo.core,PresenceGuard,131,42,23,0,1,5,28,4,16,4
 Core,fr.emn.criojo.core,RuleFactory.class,11,1,0,0,1,1,1,1,1,1
@@ -136,7 +140,7 @@ Core,fr.emn.criojo.core,NormalRule..anonfun.addToExecution.new Serializable() {.
 Core,fr.emn.criojo.core,Rule..anonfun.innerEq.1.new Serializable() {...},37,0,2,0,1,0,6,0,5,0
 Core,fr.emn.criojo.core,LocalReactionStrategy,5,42,1,7,0,8,1,5,0,2
 Core,fr.emn.criojo.core,EmptyGuard,7,0,0,0,0,0,2,0,2,0
-Core,fr.emn.criojo.ext.debug,DebugCham..anonfun.printSolution.new Serializable() {...},3,57,2,4,1,8,2,5,0,4
+Core,fr.emn.criojo.ext.debug,DebugCham..anonfun.printSolution.new Serializable() {...},0,60,1,5,0,9,1,6,0,4
 Core,fr.emn.criojo.ext.debug,Solution.class,183,0,16,0,24,0,27,0,19,0
 Core,fr.emn.criojo.ext.debug,Solution.,23,0,0,0,3,0,4,0,4,0
 Core,fr.emn.criojo.ext.debug,DebugCham.DebugStatefulRule..anonfun.new Serializable() {...},0,20,0,0,0,1,0,4,0,4
@@ -175,7 +179,7 @@ Core,fr.emn.criojo.ext,EqClassList..anonfun.toString.new Serializable() {...},18
 Core,fr.emn.criojo.ext,LocalCHAM,3,0,0,0,1,0,1,0,1,0
 Core,fr.emn.criojo.ext,StandardSolution,3,0,0,0,1,0,1,0,1,0
 Core,fr.emn.criojo.ext,StandardCHAM,3,0,0,0,1,0,1,0,1,0
-Core,fr.emn.criojo.ext.expression.ScalaString.constructor,WrapScalaString,51,123,10,16,1,8,18,21,10,16
+Core,fr.emn.criojo.ext.expression.ScalaString.constructor,WrapScalaString,43,137,10,16,1,8,16,25,8,20
 Core,fr.emn.criojo.ext.expression.ScalaString.constructor,WrapScalaString.,32,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.Relation,ChannelLocation,17,18,2,0,4,4,3,5,2,5
 Core,fr.emn.criojo.ext.expression.Relation,Relation.class,0,17,0,0,0,3,0,3,0,3
@@ -203,12 +207,14 @@ Core,fr.emn.criojo.ext.expression.Relation.constructor,Channel.,40,0,2,0,1,0,8,0
 Core,fr.emn.criojo.ext.expression.Relation.constructor,LocalRelation.,32,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.Relation.constructor,LocalRelation,110,20,16,0,2,1,22,4,14,4
 Core,fr.emn.criojo.ext.expression.Relation.constructor,Channel,124,34,23,0,1,2,27,6,15,6
+Core,fr.emn.criojo.ext.expression.ScalaList.constructor,WrapScalaList.,27,0,2,0,1,0,7,0,6,0
+Core,fr.emn.criojo.ext.expression.ScalaList.constructor,WrapScalaList,131,27,26,0,6,3,29,6,16,6
 Core,fr.emn.criojo.ext.expression.ScalaInt.constructor,WrapScalaInt,52,134,4,14,1,8,16,26,12,21
 Core,fr.emn.criojo.ext.expression.ScalaInt.constructor,WrapScalaInt.,33,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaString,VarScalaString.,17,41,2,0,1,5,4,6,3,6
 Core,fr.emn.criojo.ext.expression.ScalaString,NoValueDefined,3,0,0,0,1,0,1,0,1,0
-Core,fr.emn.criojo.ext.expression.ScalaString,VarScalaString,53,75,7,9,1,2,17,11,11,9
-Core,fr.emn.criojo.ext.expression.ScalaString,ScalaString.class,14,22,1,1,3,5,3,4,2,4
+Core,fr.emn.criojo.ext.expression.ScalaString,VarScalaString,49,85,7,9,1,2,16,14,10,12
+Core,fr.emn.criojo.ext.expression.ScalaString,ScalaString.class,8,41,1,1,2,8,2,7,1,7
 Core,fr.emn.criojo.core.datatype,TopValuation.,5,26,0,0,1,8,2,9,2,9
 Core,fr.emn.criojo.core.datatype,EmptyVal,47,5,0,0,9,1,13,1,13,1
 Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.intersect.new Serializable() {...},8,39,4,4,0,1,3,5,0,4
@@ -218,6 +224,7 @@ Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.restrict.new Serializable
 Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.recursiveNot.new Serializable() {...},4,27,1,1,0,1,1,4,0,4
 Core,fr.emn.criojo.core.datatype,NullAssignment.,12,0,0,0,1,0,3,0,3,0
 Core,fr.emn.criojo.core.datatype,ValuationList,12,174,0,6,1,23,1,14,1,11
+Core,fr.emn.criojo.core.datatype,ProhibitedOperation,20,0,2,0,4,0,3,0,2,0
 Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.apply.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
 Core,fr.emn.criojo.core.datatype,Valuation.,0,25,0,0,0,3,0,4,0,4
 Core,fr.emn.criojo.core.datatype,BottomValuation.,18,19,0,0,4,4,7,5,7,5
@@ -239,7 +246,7 @@ Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.new Serializable() {...}
 Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.unary_.bang.new Serializable() {...},0,15,0,0,0,1,0,4,0,4
 Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.fr.emn.criojo.core.datatype.ValuationList..intersect.new Serializable() {...},0,46,0,2,0,5,0,5,0,4
 Core,fr.emn.criojo.core.datatype,NormalForm..anonfun.isNormalForm.new Serializable() {...},2,18,1,1,0,1,1,4,0,4
-Core,fr.emn.criojo.core.datatype,Term.class,20,1,0,0,4,1,4,1,4,1
+Core,fr.emn.criojo.core.datatype,Term.class,16,1,0,0,4,1,4,1,4,1
 Core,fr.emn.criojo.core.datatype,NormalForm,13,114,1,9,0,10,4,11,3,7
 Core,fr.emn.criojo.core.datatype,NormalForm.,0,26,0,0,0,4,0,5,0,5
 Core,fr.emn.criojo.core.datatype,BottomValuation,67,0,0,0,0,0,19,0,19,0
@@ -249,21 +256,24 @@ Core,fr.emn.criojo.core.datatype,Valuation..anonfun.apply.new Serializable() {..
 Core,fr.emn.criojo.core.datatype,NullAssignment,77,0,0,0,0,0,22,0,22,0
 Core,fr.emn.criojo.core.datatype,Assignment,17,112,11,15,0,10,8,14,0,9
 Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.intersect.new Serializable() {...},0,29,0,0,0,3,0,4,0,4
-Core,fr.emn.criojo.ext.expression.ScalaInt,ScalaInt.class,18,60,1,1,4,11,4,10,3,10
+Core,fr.emn.criojo.ext.expression.ScalaInt,ScalaInt.class,8,70,1,1,2,13,2,12,1,12
 Core,fr.emn.criojo.ext.expression.ScalaInt,VarScalaInt,54,102,7,9,0,3,17,18,11,16
 Core,fr.emn.criojo.ext.expression.ScalaInt,ScalaInt.,0,14,0,0,0,2,0,3,0,3
 Core,fr.emn.criojo.ext.expression.ScalaInt,VarScalaInt.,17,41,2,0,1,5,4,6,3,6
 Core,fr.emn.criojo.ext.expression.ScalaInt,NoValueDefined,3,0,0,0,1,0,1,0,1,0
 Core,fr.emn.criojo.core.factory,DefaultFactory.class,17,1,0,0,3,1,3,1,3,1
-Core,fr.emn.criojo.ext.expression.ScalaInt.operation,AddScalaInt,228,48,31,0,7,5,46,5,30,5
-Core,fr.emn.criojo.ext.expression.ScalaInt.operation,EqualScalaInt,196,54,31,2,8,5,38,7,22,6
+Core,fr.emn.criojo.ext.expression.ScalaList.operation,ForAllScalaList.,33,0,2,0,1,0,7,0,6,0
+Core,fr.emn.criojo.ext.expression.ScalaList.operation,ForAllScalaList..anonfun.reduce.new Serializable() {...},4,23,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.ext.expression.ScalaList.operation,ForAllScalaList,197,39,35,0,9,4,39,5,21,5
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,AddScalaInt,225,51,31,0,7,5,45,6,29,6
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,EqualScalaInt,189,61,31,2,8,5,36,9,20,8
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt.,32,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,GreaterThanScalaInt.,40,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,CrossScalaInt,225,51,31,0,7,5,45,6,29,6
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,DivideScalaInt.,40,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,CrossScalaInt.,40,0,2,0,1,0,8,0,7,0
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinusScalaInt,228,48,31,0,7,5,46,5,30,5
-Core,fr.emn.criojo.ext.expression.ScalaInt.operation,GreaterThanScalaInt,192,58,31,2,8,5,37,8,21,7
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,GreaterThanScalaInt,189,61,31,2,8,5,36,9,20,8
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt..anonfun.applyValuation.new Serializable() {...},0,21,0,0,0,2,0,4,0,4
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt,153,86,19,5,4,6,37,8,26,7
 Core,fr.emn.criojo.ext.expression.ScalaInt.operation,DivideScalaInt,225,51,31,0,7,5,45,6,29,6

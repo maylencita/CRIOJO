@@ -38,13 +38,12 @@ import org.hornetq.core.server.HornetQServers;
  * This connector comes with an implementation of HornetQ server. If no server
  * start on {@link BusConnectorLocalHornetQ}.getHost with given port, the
  * connector start a new HornetQ server. To connect to bus, the HornetQ server
- * configuration will specifying connectors using Netty implementation. Server
+ * configuration will specifying connectors using Netty implementation.
  * 
  * @see http://www.jboss.org/hornetq
  */
-public class BusConnectorLocalHornetQ implements BusConnector {
+public class BusConnectorLocalHornetQ implements BusConnectorHornetQ {
 	protected static Lock l = new ReentrantLock();
-	public static final String QUEUE = "jms.queue.";
 	public static final String DEFAULT_BROADCAST_ADDRESS = "231.7.7.7";
 	public static final int DEFAULT_BROADCAST_PORT = 9876;
 	public static final int DEFAULT_STOMPWEBSOCKET_PORT = 61614;
@@ -58,17 +57,21 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	private final int broadcastPort;
 	private boolean disconected;
 
+	/**
+	 * Consume personal messages.
+	 */
+	protected ClientConsumer personalConsumer = null;
+	
+	/**
+	 * Consume broadcast messages.
+	 */
+	protected ClientConsumer bcastConsumer = null;
+	
 	protected ClientSession session = null;
-	protected ClientConsumer consumer = null;
 	protected ClientProducer producer = null;
 	protected ServerLocator locator = null;
 	protected ClientSessionFactory factory = null;
-
-	/**
-	 * To each port a new server is started. This structure keep for each port the
-	 * server started and number of instance connected on it.
-	 */
-	protected static Map<Integer, InstanceServer> servers = new HashMap<Integer, InstanceServer>();
+	protected HornetQServer server = null;
 	protected static String hostValue = null;
 
 	/**
@@ -109,8 +112,10 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 		this.disconected = false;
 
 		try {
+			l.lock();
 			connect();
 			startQueueProducerConsumer();
+			l.unlock();
 		} catch (Exception e) {
 			throw new BusConnectorException(e.getMessage());
 		}
@@ -153,17 +158,28 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			// Use NullableSimpleString cause it is default Stomp message form.
 			msg.getBodyBuffer().writeNullableSimpleString(new SimpleString(message));
 			msg.setDurable(true);
-			producer.send(QUEUE + recipient, msg);
+			
+			// If recipient is empty, the message is broadcasted over the network.
+			if (!recipient.isEmpty()) {
+				producer.send(PERSONAL + "." + recipient, msg);
+			} else {
+				producer.send(BROADCAST, msg);
+			}
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
 		}
 	}
 
 	@Override
+	public void broadcast(String message) throws BusConnectorException {
+		send(message, "");
+	}
+
+	@Override
 	public void setReceiveHandler(final ReceiveHandler receiveHandler)
 	    throws BusConnectorException {
 		try {
-			consumer.setMessageHandler(new MessageHandler() {
+			MessageHandler mh = new MessageHandler() {
 				@Override
 				public void onMessage(ClientMessage message) {
 					try {
@@ -173,13 +189,20 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 					}
 					// Use NullableSimpleString cause it is default Stomp message form.
 					try {
-						receiveHandler.onReceive(message.getBodyBuffer()
-						    .readNullableSimpleString().toString());
+						String msg = message.getBodyBuffer().readNullableSimpleString()
+								.toString();
+						
+						if (!msg.startsWith(ACK_MESSAGE)) {
+							receiveHandler.onReceive(msg);
+						}
 					} catch (NullPointerException npe) {
 						receiveHandler.onReceive(message.toString());
 					}
 				}
-			});
+			};
+			
+			bcastConsumer.setMessageHandler(mh);
+			personalConsumer.setMessageHandler(mh);
 		} catch (HornetQException hqe) {
 			throw hornetQExceptionToBusException(hqe);
 		}
@@ -188,8 +211,11 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	@Override
 	public void disconnect() {
 		try {
-			if (consumer != null) {
-				consumer.close();
+			if (bcastConsumer != null) {
+				bcastConsumer.close();
+			}
+			if (personalConsumer != null) {
+				personalConsumer.close();
 			}
 			if (producer != null) {
 				producer.close();
@@ -202,21 +228,6 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 			}
 			if (locator != null) {
 				locator.close();
-			}
-			if (servers.containsKey(port)) {
-				servers.get(port).decr();
-				if (servers.get(port).hasInstance()) {
-					try {
-						// FIXME:
-						// Server only count instance from current jvm.
-						// If other connector are connected on server from other jvm,
-						// those connectors are not counted, so this instruction may kill
-						// connectors from other jvm.
-						servers.get(port).server.stop();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
 			}
 		} catch (HornetQException hqe) {
 			hornetQExceptionToBusException(hqe).printStackTrace();
@@ -253,34 +264,18 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 		try {
 			factory = locator.createSessionFactory();
 		} catch (HornetQException hqe) {
-
-			// 2.2.18 version
 			switch (hqe.getCode()) {
 			case HornetQException.NOT_CONNECTED:
 				// Start localhost HornetQ server on given port and broadcast address.
-				l.lock();
 				startServer();
-				l.unlock();
 				break;
 			default:
 				throw hornetQExceptionToBusException(hqe);
 			}
-
-			// 2.3.O version
-//			switch (hqe.getType()) {
-//			case NOT_CONNECTED:
-//				// Start localhost HornetQ server on given port and broadcast address.
-//				l.lock();
-//				startServer();
-//				l.unlock();
-//				break;
-//			default:
-//				throw hornetQExceptionToBusException(hqe);
-//			}
 		}
 
-		session = factory.createSession(login, password, false, true, true, false,
-		    0);
+		session = factory
+				.createSession(login, password, false, true, true, false, 0);
 	}
 
 	/**
@@ -294,33 +289,13 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 */
 	private void startQueueProducerConsumer() throws HornetQException {
 		// Create Queue.
-		try {
-			session.createQueue(getQueueName(), getQueueName(), false);
-		} catch (HornetQException hqe) {
-			// 2.2.18 Version
-			switch (hqe.getCode()) {
-			case HornetQException.QUEUE_EXISTS:
-				System.err.println("[BUS] Queue "
-						+ getQueueName() + " already exists.");
-				break;
-			default:
-				 throw hqe;
-			}
-
-			// 2.3.0 version
-//			switch (hqe.getType()) {
-//			case QUEUE_EXISTS:
-//				System.err
-//				    .println("[BUS] Queue " + getQueueName() + " already exists.");
-//				break;
-//			default:
-//				throw hqe;
-//			}
-		}
+		deployQueue(BROADCAST, getBroadcastQueueName());
+		deployQueue(getPersonalQueueName(), getPersonalQueueName());
 
 		// Create Producer and Consumer.
 		producer = session.createProducer();
-		consumer = session.createConsumer(getQueueName());
+		bcastConsumer = session.createConsumer(getBroadcastQueueName());
+		personalConsumer = session.createConsumer(getPersonalQueueName());
 
 		session.start();
 	}
@@ -331,97 +306,18 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	 * @throws Exception
 	 */
 	protected void startServer() throws Exception {
-		if (!servers.containsKey(port)) {
-			String confFile = "<configuration xmlns=\"urn:hornetq\""
-			    + "\n               xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-			    + "\n               xsi:schemaLocation=\"urn:hornetq /schema/hornetq-configuration.xsd\">"
-			    + "\n"
-			    + "\n   <clustered>true</clustered>"
-			    + "\n   "
-			    + "\n   <paging-directory>${build.directory}/data/paging</paging-directory>"
-			    + "\n   "
-			    + "\n   <bindings-directory>${build.directory}/data/bindings</bindings-directory>"
-			    + "\n   "
-			    + "\n   <journal-directory>${build.directory}/data/journal</journal-directory>"
-			    + "\n   "
-			    + "\n   <large-messages-directory>${build.directory}/data/large-messages</large-messages-directory>"
-			    + "\n"
-			    + "\n   <connectors>"
-			    + "\n      <connector name=\"netty\">"
-			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyConnectorFactory</factory-class>"
-			    + "\n         <param key=\"host\"  value=\"" + getHost() + "\"/>"
-			    + "\n         <param key=\"port\"  value=\"" + port + "\"/>"
-			    + "\n      </connector>"
-			    + "\n   </connectors>"
-			    + "\n"
-			    + "\n   <acceptors>"
-			    + "\n      <acceptor name=\"netty\">"
-			    + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
-			    + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
-			    + "\n         <param key=\"port\"  value=\"" + port + "\"/>"
-			    + "\n      </acceptor>"
-			    + "\n      "
-			    + "\n      <acceptor name=\"stomp-acceptor\">"
-			    + "\n        <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"   
-			    + "\n        <param key=\"protocol\" value=\"stomp_ws\" />"
-			    + "\n        <param key=\"port\" value=\"" + getStompWebSocketPort() + "\" />"
-			    + "\n      </acceptor>"
-			    + "\n   </acceptors>"
-			    + "\n"
-			    + "\n   <broadcast-groups>"
-			    + "\n      <broadcast-group name=\"bg-group1\">"
-			    + "\n         <group-address>" + broadcastAddress + "</group-address>"
-			    + "\n         <group-port>" + broadcastPort + "</group-port>"
-			    + "\n         <broadcast-period>5000</broadcast-period>"
-			    + "\n         <connector-ref>netty</connector-ref>"
-			    + "\n      </broadcast-group>"
-			    + "\n   </broadcast-groups>"
-			    + "\n"
-			    + "\n   <discovery-groups>"
-			    + "\n      <discovery-group name=\"dg-group1\">"
-			    + "\n         <group-address>" + broadcastAddress + "</group-address>"
-			    + "\n         <group-port>" + broadcastPort + "</group-port>"
-			    + "\n         <refresh-timeout>10000</refresh-timeout>"
-			    + "\n      </discovery-group>"
-			    + "\n   </discovery-groups>"
-			    + "\n   "
-			    + "\n   <cluster-connections>"
-			    + "\n      <cluster-connection name=\"my-cluster\">"
-			    + "\n         <address>jms</address>	 "
-			    + "\n         <connector-ref>netty</connector-ref>"
-			    + "\n	      <discovery-group-ref discovery-group-name=\"dg-group1\"/>"
-			    + "\n      </cluster-connection>"
-			    + "\n   </cluster-connections>"
-			    + "\n   "
-			    + "\n   <security-settings>"
-			    + "\n      <security-setting match=\"#\">"
-			    + "\n         <permission type=\"createDurableQueue\" roles=\"guest\"/>"
-			    + "\n         <permission type=\"deleteDurableQueue\" roles=\"guest\"/>"
-			    + "\n         <permission type=\"createNonDurableQueue\" roles=\"guest\"/>"
-			    + "\n         <permission type=\"deleteNonDurableQueue\" roles=\"guest\"/>"
-			    + "\n         <permission type=\"consume\" roles=\"guest\"/>"
-			    + "\n         <permission type=\"send\" roles=\"guest\"/>"
-			    + "\n      </security-setting>"
-			    + "\n   </security-settings>"
-			    + "\n"
-			    + "\n</configuration>";
-			Configuration configuration = new FileConfigurationParser()
-			    .parseMainConfig(new ByteArrayInputStream(confFile.getBytes()));
+		Configuration configuration = new FileConfigurationParser()
+		    .parseMainConfig(new ByteArrayInputStream(configurationXML().getBytes()));
 
-			configuration.setPersistenceEnabled(false);
-			configuration.setSecurityEnabled(false);
+		configuration.setPersistenceEnabled(false);
+		configuration.setSecurityEnabled(false);
 
-			configuration.getAcceptorConfigurations().add(
-			    new TransportConfiguration(NettyAcceptorFactory.class.getName()));
+		configuration.getAcceptorConfigurations().add(
+		    new TransportConfiguration(NettyAcceptorFactory.class.getName()));
 
-			System.err.println("[BUS] Start local server using " + confFile);
-			HornetQServer server = HornetQServers.newHornetQServer(configuration);
-			server.start();
-
-			servers.put(port, new InstanceServer(server));
-		} else {
-			servers.get(port).incr();
-		}
+		System.err.println("[BUS] Start local server using " + configurationXML());
+		server = HornetQServers.newHornetQServer(configuration);
+		server.start();
 
 		TransportConfiguration tConfiguration = null;
 		Map<String, Object> connectionParams = new HashMap<String, Object>();
@@ -440,6 +336,109 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	}
 
 	/**
+	 * Deploy HornetQ Queue and handle error.
+	 * 
+	 * @param address
+	 *          Address to deploy queue.
+	 * @param name
+	 *          Name of queue.
+	 * @throws HornetQException
+	 */
+	private void deployQueue(String address, String name) throws HornetQException {
+		try {
+			session.createQueue(address, name, false);
+		} catch (HornetQException hqe) {
+			switch (hqe.getCode()) {
+			case HornetQException.QUEUE_EXISTS:
+				System.err
+				    .println("[BUS] Queue " + name + " already exists.");
+				break;
+			default:
+				throw hqe;
+			}
+		}
+	}
+	
+	/**
+	 * Transforms a HornetQException to BusException.
+	 * 
+	 * @param hqe
+	 *          The HorneQException
+	 * @return The BusException.
+	 */
+	private BusConnectorException hornetQExceptionToBusException(
+	    HornetQException hqe) {
+		BusConnectorException be = null;
+
+		switch (hqe.getCode()) {
+		case HornetQException.NOT_CONNECTED:
+			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
+					hqe.getMessage());
+			break;
+		 case HornetQException.OBJECT_CLOSED:
+			 be = new BusConnectorException(BusConnectorException.CLOSED, name);
+			 break;
+		 default:
+			 be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
+					 hqe.getMessage());
+		 }
+
+		return be;
+	}
+
+	/**
+	 * Returns the queue name were using to store received msg of bus connector.
+	 * 
+	 * @return The HornetQ queue name.
+	 */
+	public String getPersonalQueueName() {
+		return PERSONAL + "." + getName();
+	}
+
+	/**
+	 * Returns the queue name were using to store broadcasted msg of bus connector.
+	 * 
+	 * @return The HornetQ queue name.
+	 */
+	public String getBroadcastQueueName() {
+	  return BROADCAST + "." + getName();
+  }
+	
+	/**
+	 * Test if current instance run server.
+	 * 
+	 * @return <code>true</code> if connector run server, <code>else</code>
+	 *         otherwise
+	 */
+	public boolean hasServer() {
+		return (server != null);
+	}
+
+	/**
+	 * Stop the server.
+	 * 
+	 * Server is stopped if current connector run a server.
+	 */
+	public void stopServer() {
+		if (server != null) {
+			try {
+	      server.stop();	      
+      } catch (Exception e) {
+	      e.printStackTrace();
+      }
+		}
+	}
+	
+	/**
+	 * Count number of connection still open on server.
+	 * 
+	 * @return Number of connection open on server.
+	 */
+	public int openedConnectionServer() {
+		return server.getHornetQServerControl().getConnectionCount();
+	}
+	
+	/**
 	 * Returns the host value.
 	 * 
 	 * @return The host value;
@@ -457,58 +456,7 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 
 		return hostValue;
 	}
-
-	/**
-	 * Transforms a HornetQException to BusException.
-	 * 
-	 * @param hqe
-	 *          The HorneQException
-	 * @return The BusException.
-	 */
-	private BusConnectorException hornetQExceptionToBusException(
-	    HornetQException hqe) {
-		BusConnectorException be = null;
-
-		// 2.2.18 Version
-		switch (hqe.getCode()) {
-		case HornetQException.NOT_CONNECTED:
-			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
-					hqe.getMessage());
-			break;
-		 case HornetQException.OBJECT_CLOSED:
-			 be = new BusConnectorException(BusConnectorException.CLOSED, name);
-			 break;
-		 default:
-			 be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
-					 hqe.getMessage());
-		 }
-
-		// 2.3.0 Version
-//		switch (hqe.getType()) {
-//		case NOT_CONNECTED:
-//			be = new BusConnectorException(BusConnectorException.NOT_CONNECTED,
-//			    hqe.getMessage());
-//			break;
-//		case OBJECT_CLOSED:
-//			be = new BusConnectorException(BusConnectorException.CLOSED, name);
-//			break;
-//		default:
-//			be = new BusConnectorException(BusConnectorException.INTERNAL_ERROR,
-//			    hqe.getMessage());
-//		}
-
-		return be;
-	}
-
-	/**
-	 * Returns the queue name were using to store received msg of bus connector.
-	 * 
-	 * @return The HornetQ queue name.
-	 */
-	public String getQueueName() {
-		return QUEUE + name;
-	}
-
+	
 	@Override
 	public String getName() {
 		return name;
@@ -537,28 +485,86 @@ public class BusConnectorLocalHornetQ implements BusConnector {
 	public int getBroadcastPort() {
 		return broadcastPort;
 	}
+	
 
 	/**
-	 * Structure to count number of instance on a specific server.
+	 * Returns HornetQ Configuration XML stream 
+	 * 
+	 * @return HornetQ Configuration XML stream
 	 */
-	protected class InstanceServer {
-		private int instance = 0;
-		private HornetQServer server = null;
-
-		public InstanceServer(HornetQServer server) {
-			this.server = server;
-		}
-
-		public void incr() {
-			++instance;
-		}
-
-		public void decr() {
-			--instance;
-		}
-
-		public boolean hasInstance() {
-			return instance > 0;
-		}
-	}
+	protected String configurationXML() {
+	  return "<configuration xmlns=\"urn:hornetq\""
+	      + "\n               xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+	      + "\n               xsi:schemaLocation=\"urn:hornetq /schema/hornetq-configuration.xsd\">"
+	      + "\n"
+	      + "\n   <clustered>true</clustered>"
+	      + "\n   "
+	      + "\n   <paging-directory>${build.directory}/data/paging</paging-directory>"
+	      + "\n   "
+	      + "\n   <bindings-directory>${build.directory}/data/bindings</bindings-directory>"
+	      + "\n   "
+	      + "\n   <journal-directory>${build.directory}/data/journal</journal-directory>"
+	      + "\n   "
+	      + "\n   <large-messages-directory>${build.directory}/data/large-messages</large-messages-directory>"
+	      + "\n"
+	      + "\n   <connectors>"
+	      + "\n      <connector name=\"netty\">"
+	      + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyConnectorFactory</factory-class>"
+	      + "\n         <param key=\"host\"  value=\"" + getHost() + "\"/>"
+	      + "\n         <param key=\"port\"  value=\"" + port + "\"/>"
+	      + "\n      </connector>"
+	      + "\n   </connectors>"
+	      + "\n"
+	      + "\n   <acceptors>"
+	      + "\n      <acceptor name=\"netty\">"
+	      + "\n         <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"
+	      + "\n         <param key=\"host\"  value=\"0.0.0.0\"/>"
+	      + "\n         <param key=\"port\"  value=\"" + port + "\"/>"
+	      + "\n      </acceptor>"
+	      + "\n      "
+	      + "\n      <acceptor name=\"stomp-acceptor\">"
+	      + "\n        <factory-class>org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory</factory-class>"   
+	      + "\n        <param key=\"protocol\" value=\"stomp_ws\" />"
+	      + "\n        <param key=\"port\" value=\"" + getStompWebSocketPort() + "\" />"
+	      + "\n      </acceptor>"
+	      + "\n   </acceptors>"
+	      + "\n"
+	      + "\n   <broadcast-groups>"
+	      + "\n      <broadcast-group name=\"bg-group1\">"
+	      + "\n         <group-address>" + broadcastAddress + "</group-address>"
+	      + "\n         <group-port>" + broadcastPort + "</group-port>"
+	      + "\n         <broadcast-period>5000</broadcast-period>"
+	      + "\n         <connector-ref>netty</connector-ref>"
+	      + "\n      </broadcast-group>"
+	      + "\n   </broadcast-groups>"
+	      + "\n"
+	      + "\n   <discovery-groups>"
+	      + "\n      <discovery-group name=\"dg-group1\">"
+	      + "\n         <group-address>" + broadcastAddress + "</group-address>"
+	      + "\n         <group-port>" + broadcastPort + "</group-port>"
+	      + "\n         <refresh-timeout>10000</refresh-timeout>"
+	      + "\n      </discovery-group>"
+	      + "\n   </discovery-groups>"
+	      + "\n   "
+	      + "\n   <cluster-connections>"
+	      + "\n      <cluster-connection name=\"my-cluster\">"
+	      + "\n         <address>jms</address>	 "
+	      + "\n         <connector-ref>netty</connector-ref>"
+	      + "\n	      <discovery-group-ref discovery-group-name=\"dg-group1\"/>"
+	      + "\n      </cluster-connection>"
+	      + "\n   </cluster-connections>"
+	      + "\n   "
+	      + "\n   <security-settings>"
+	      + "\n      <security-setting match=\"#\">"
+	      + "\n         <permission type=\"createDurableQueue\" roles=\"guest\"/>"
+	      + "\n         <permission type=\"deleteDurableQueue\" roles=\"guest\"/>"
+	      + "\n         <permission type=\"createNonDurableQueue\" roles=\"guest\"/>"
+	      + "\n         <permission type=\"deleteNonDurableQueue\" roles=\"guest\"/>"
+	      + "\n         <permission type=\"consume\" roles=\"guest\"/>"
+	      + "\n         <permission type=\"send\" roles=\"guest\"/>"
+	      + "\n      </security-setting>"
+	      + "\n   </security-settings>"
+	      + "\n"
+	      + "\n</configuration>";
+  }
 }

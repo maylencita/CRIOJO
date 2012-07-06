@@ -119,12 +119,17 @@
       function onSend() {
         var chatMessageInput = document.getElementById("chatMessage");
         var recipientInput = document.getElementById("chatReciptient");
+        var msg = name + ': ' + chatMessageInput.value;
 
         if (chatMessageInput.value.startsWith('\\q')) {
           // Disconnect
           conn.disconnect();
         } else {
-          conn.send(name + ': ' + chatMessageInput.value, recipientInput.value);
+          if (recipientInput.value == '*') {
+            conn.broadcast(msg);
+          } else {
+            conn.send(msg, recipientInput.value);
+          }
           chatMessageInput.value = "";
         }
       }

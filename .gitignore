@@ -4,6 +4,8 @@
 *.iws
 .idea/
 
+**/.DS_Store
+
 **/data/
 
 # IGNORE VIM FILES

@@ -25,10 +25,10 @@ class ExpressionTest {
         ,(ack()) --> (NativeRel { case (Nil) => {cpt=cpt+1;println(cpt)}; case _ => }())
       )
 
-//      var truc:Relation = ackV.getValuation(ack).get(ackV)._2
-//      println(truc)
-//      truc = ackV.getValuation(aTotoken).get(ackV)._2
-//      println(truc)
+      //      var truc:Relation = ackV.getValuation(ack).get(ackV)._2
+      //      println(truc)
+      //      truc = ackV.getValuation(aTotoken).get(ackV)._2
+      //      println(truc)
     }
     a.enableSolutionTrace()
     a.enableStreamingTrace()

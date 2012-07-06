@@ -12,8 +12,8 @@ import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
 
 <span class="fc" id="L13">  override def reduce(): Expression = this</span>
 
-<span class="pc bpc" id="L15" title="2 of 4 branches missed.">  override def matches(expr:Expression):Boolean = expr match {</span>
-<span class="pc bpc" id="L16" title="1 of 2 branches missed.">    case WrapScalaInt(j) if(i==j) =&gt; true</span>
+<span class="pc bpc" id="L15" title="2 of 4 branches missed.">  override def matches(expr: Expression):Boolean = expr match {</span>
+<span class="pc bpc" id="L16" title="1 of 2 branches missed.">    case WrapScalaInt(j) if (i==j) =&gt; true</span>
     case _ =&gt; false
   }
 

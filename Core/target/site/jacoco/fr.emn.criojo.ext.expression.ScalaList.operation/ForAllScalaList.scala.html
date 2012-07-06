@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ForAllScalaList.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.expression.ScalaList.operation</a> &gt; <span class="el_source">ForAllScalaList.scala</span></div><h1>ForAllScalaList.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.expression.ScalaList.operation
+
+import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
+import fr.emn.criojo.core.datatype.{PatternNotMatchingException, Valuation, Expression, Pattern}
+import fr.emn.criojo.ext.expression.ScalaList.ScalaList
+import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
+
+<span class="pc bnc" id="L8" title="All 25 branches missed.">case class ForAllScalaList[A &lt;: Pattern with Expression](f: (A) =&gt; ScalaBoolean,</span>
+<span class="pc" id="L9">    l: ScalaList[A]) extends ScalaBoolean {</span>
+<span class="nc bnc" id="L10" title="All 2 branches missed.">  override def matches(expr: Expression): Boolean = expr match {</span>
+<span class="nc bnc" id="L11" title="All 8 branches missed.">    case ForAllScalaList(ff, ll) =&gt; f == ff &amp;&amp; l.matches(ll)</span>
+<span class="nc" id="L12">    case _ =&gt; false</span>
+  }
+
+<span class="nc bnc" id="L15" title="All 2 branches missed.">  override def getValuation(expr: Expression): Valuation = expr match {</span>
+<span class="nc" id="L16">    case ForAllScalaList(ff, ll) =&gt; l.getValuation(ll)</span>
+<span class="nc" id="L17">    case _ =&gt; throw new PatternNotMatchingException()</span>
+  }
+
+  override def applyValuation(valuation: Valuation): Expression = {
+<span class="nc" id="L21">    val expr = l.applyValuation(valuation).asInstanceOf[ScalaList[A]]</span>
+
+<span class="nc" id="L23">    expr.forall(f)</span>
+  }
+
+  override def reduce(): Expression = {
+    // Scala list required Boolean and not Scala Boolean so :
+    //   * f: A =&gt; ScalaBoolean
+    //   * g: ScalaBoolean =&gt; Boolean
+    //   * g o f
+<span class="fc" id="L31">    def g (b: ScalaBoolean): Boolean = b.getValue()</span>
+
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">    WrapScalaBoolean(l.getValue().forall(g _ compose f))</span>
+  }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

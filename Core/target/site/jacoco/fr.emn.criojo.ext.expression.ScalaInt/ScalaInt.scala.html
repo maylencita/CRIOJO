@@ -18,17 +18,17 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
 <span class="fc" id="L19">  final def /(that: ScalaInt): ScalaInt = new DivideScalaInt(this, that)</span>
 
-<span class="fc" id="L21">  final def Equal(that: ScalaInt): ScalaBoolean = new EqualScalaInt(this, that)</span>
+<span class="fc" id="L21">  final def &lt;=&gt;(that: ScalaInt): ScalaBoolean = new EqualScalaInt(this, that)</span>
 
-<span class="nc" id="L23">  final def NotEqual(that: ScalaInt): ScalaBoolean = !Equal(that)</span>
+<span class="fc" id="L23">  final def !&lt;=&gt;(that: ScalaInt): ScalaBoolean = !(this &lt;=&gt; that)</span>
 
-<span class="fc" id="L25">  final def GreaterThan(that: ScalaInt): ScalaBoolean = new GreaterThanScalaInt(this, that)</span>
+<span class="fc" id="L25">  final def &gt;(that: ScalaInt): ScalaBoolean = new GreaterThanScalaInt(this, that)</span>
 
-<span class="fc" id="L27">  final def GreaterOrEqualThan(that: ScalaInt): ScalaBoolean = GreaterThan(that) || Equal(that)</span>
+<span class="fc" id="L27">  final def &gt;=(that: ScalaInt): ScalaBoolean = &gt;(that) || (this &lt;=&gt; that)</span>
 
-<span class="fc" id="L29">  final def LessThan(that: ScalaInt): ScalaBoolean = !GreaterOrEqualThan(that)</span>
+<span class="fc" id="L29">  final def &lt;(that: ScalaInt): ScalaBoolean = ! (this &gt;= that)</span>
   
-<span class="nc" id="L31">  final def LessOrEqualThan(that: ScalaInt): ScalaBoolean = !GreaterThan(that)</span>
+<span class="fc" id="L31">  final def &lt;=(that: ScalaInt): ScalaBoolean = ! (this &gt; that)</span>
 
 <span class="pc bpc" id="L33" title="1 of 2 branches missed.">  final def getValue(): Int = reduce() match {</span>
 <span class="fc" id="L34">    case i: ScalaInt =&gt; i.value</span>

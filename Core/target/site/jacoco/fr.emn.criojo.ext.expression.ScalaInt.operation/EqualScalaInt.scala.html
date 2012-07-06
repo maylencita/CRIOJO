@@ -9,24 +9,23 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 <span class="nc bnc" id="L9" title="All 2 branches missed.">  override def getValuation(expr: Expression): Valuation = expr match {</span>
 <span class="nc" id="L10">    case expr: EqualScalaInt =&gt;</span>
 <span class="nc" id="L11">      x.getValuation(expr.x).union(y.getValuation(expr.y))</span>
-    case _ =&gt;
-<span class="nc" id="L13">      throw new PatternNotMatchingException()</span>
+<span class="nc" id="L12">    case _ =&gt; throw new PatternNotMatchingException()</span>
   }
 
   override def applyValuation(valuation: Valuation): Expression = {
-<span class="fc" id="L17">    val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
-<span class="fc" id="L18">    val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
+<span class="fc" id="L16">    val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
+<span class="fc" id="L17">    val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
 
-<span class="fc" id="L20">    expr1 Equal expr2</span>
+<span class="fc" id="L19">    expr1 &lt;=&gt; expr2</span>
   }
 
   override def reduce(): Expression = {
-<span class="fc bfc" id="L24" title="All 2 branches covered.">    WrapScalaBoolean(x.getValue() == y.getValue())</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">    WrapScalaBoolean(x.getValue() == y.getValue())</span>
   }
 
-<span class="nc bnc" id="L27" title="All 2 branches missed.">  override def matches(expr: Expression): Boolean = expr match {</span>
-<span class="nc bnc" id="L28" title="All 4 branches missed.">    case expr: EqualScalaInt =&gt; x.matches(expr.x) &amp;&amp; y.matches(expr.y)</span>
-<span class="nc" id="L29">    case _ =&gt; false</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">  override def matches(expr: Expression): Boolean = expr match {</span>
+<span class="nc bnc" id="L27" title="All 4 branches missed.">    case expr: EqualScalaInt =&gt; x.matches(expr.x) &amp;&amp; y.matches(expr.y)</span>
+<span class="nc" id="L28">    case _ =&gt; false</span>
   }
 }
 

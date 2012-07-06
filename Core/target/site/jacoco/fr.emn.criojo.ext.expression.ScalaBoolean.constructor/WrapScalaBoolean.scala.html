@@ -3,14 +3,14 @@
 import fr.emn.criojo.core.datatype.{Valuation, Expression}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 
-<span class="pc bnc" id="L6" title="All 14 branches missed.">case class WrapScalaBoolean(b: Boolean) extends ScalaBoolean {</span>
+<span class="pc bpc" id="L6" title="9 of 14 branches missed.">case class WrapScalaBoolean(b: Boolean) extends ScalaBoolean {</span>
 <span class="fc" id="L7">  override def value = b;</span>
 
 <span class="nc" id="L9">  override def getValuation(expr: Expression): Valuation = Valuation()</span>
 
 <span class="nc" id="L11">  override def applyValuation(valuation: Valuation): Expression = this</span>
 
-<span class="nc" id="L13">  override def reduce(): Expression = this</span>
+<span class="fc" id="L13">  override def reduce(): Expression = this</span>
 
 <span class="nc bnc" id="L15" title="All 4 branches missed.">  override def matches(expr: Expression): Boolean = expr match {</span>
 <span class="nc bnc" id="L16" title="All 2 branches missed.">    case WrapScalaBoolean(j) if (b == j) =&gt; true</span>
