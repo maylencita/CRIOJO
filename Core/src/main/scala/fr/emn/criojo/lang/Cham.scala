@@ -11,7 +11,7 @@ import impur.NativeRelation
 * Date: 30/09/11
 * Time: 14:59
 */
-class Cham extends StatefulEngine //with DefaultFactory
+class Cham extends NormalEngine //with DefaultFactory
 {
   //TODO change Cham where used
   this:RelationFactory =>
@@ -31,11 +31,11 @@ class Cham extends StatefulEngine //with DefaultFactory
     new RuleBody(body, guard)
   }
 
-  def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
+  def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList, this) with ChamGuard
 
   def Ex(x:Variable,g:ChamGuard):ChamGuard =  new ExistsGuard(g,x) with ChamGuard
 
-  def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList) with ChamGuard
+  def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList, this) with ChamGuard
 
   def Not(g:ChamGuard):ChamGuard = new NotGuard(g) with ChamGuard
 

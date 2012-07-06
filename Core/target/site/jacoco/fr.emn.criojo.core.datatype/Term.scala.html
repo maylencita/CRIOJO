@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Term.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.datatype</a> &gt; <span class="el_source">Term.scala</span></div><h1>Term.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.datatype
+
+/** Term is part of an [[fr.emn.criojo.core.Atom]].
+  *
+  * Term defined the atom variable interface. Two concrete implementation are
+  * done in Criojo :
+  * $ - [[fr.emn.criojo.core.datatype.Pattern]] for terms in Atom in Rule.
+  * $ - [[fr.emn.criojo.core.datatype.Expression]] for terms in Atom in Solution.
+  */
+<span class="fc" id="L10">trait Term {</span>
+
+  /** Test if current matches with an expression.
+    *
+    * The matches test is call during rules execution. At each new atoms add in
+    * the solution. The Chemical Machine will test if
+    * [[fr.emn.criojo.core.datatype.Pattern]] match with
+    * [[fr.emn.criojo.core.datatype.Expression]]. The test is only implemented
+    * in [[fr.emn.criojo.core.datatype.Pattern]] terms.
+    *
+    * This method could only be called from a pattern. Never from a expression.
+    *
+    * @param exp The expression to test matches with pattern.
+    * @return &lt;code&gt;true&lt;/code&gt; if pattern matches with expression.
+    *         &lt;code&gt;false&lt;/code&gt; otherwise.
+    */
+  def matches(exp: Expression): Boolean =
+<span class="nc" id="L27">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+
+  /** Get valuation from an expression.
+    *
+    * If pattern is a [[fr.emn.criojo.core.datatype.Variable]], the variable may
+    * have valuation from [[fr.emn.criojo.core.datatype.Expression]] in
+    * Solution.
+    *
+    * This method could only be called from a pattern. Never from a expression.
+    *
+    * @param  exp The expression to get valuation.
+    * @return Valuation for current pattern if the expression matches with. An
+    *         empty valuation otherwise.
+    */
+  def getValuation(exp: Expression): Valuation =
+<span class="nc" id="L42">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+
+  /** Transform the current pattern in expression.
+    *
+    * Transform the pattern in expression. If pattern is a
+    * [[fr.emn.criojo.core.datatype.Variable]], valuation is used to set a
+    * value to the variable.
+    *
+    * This method could only be called from a pattern. Never from a expression.
+    *
+    * @param valuation  Valuation to set variable value (if any).
+    * @return An expression from current pattern.
+    */
+  def applyValuation(valuation: Valuation): Expression =
+<span class="nc" id="L56">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+
+  /** Reduce an expression.
+    *
+    * Reduce the expression to only have constructor in. If expression are
+    * operation, the reduce do the operation.
+    *
+    * This method could only be called from a expression. Never from a pattern.
+    *
+    * @return The expression with only constructor (no operation).
+    */
+  def reduce(): Expression =
+<span class="nc" id="L68">    throw new Exception(&quot;Not implemented in TERM&quot;)</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

@@ -20,16 +20,16 @@ import fr.emn.criojo.lang.Molecule
  */
 trait Relation {
 
-  var observers:HashSet[RelationObserver] = HashSet() //List[RelationObserver] = List()
+//  var observers:HashSet[RelationObserver] = HashSet() //List[RelationObserver] = List()
 
-  def addObserver(observer:RelationObserver){
-    if (!observers.contains(observer) )
-      observers += observer
-  }
-
-  def notifyObservers(a: Atom){
-    observers.foreach{ o => o.receiveUpdate(a) }
-  }
+//  def addObserver(observer:RelationObserver){
+//    if (!observers.contains(observer) )
+//      observers += observer
+//  }
+//
+//  def notifyObservers(a: Atom){
+//    observers.foreach{ o => o.receiveUpdate(a) }
+//  }
 
   def name: String
 

@@ -1,5 +1,6 @@
 package fr.emn.criojo.ext
 
+import expression.Relation.constructor.LocalRelation
 import expression.ScalaString.VarScalaString
 import org.junit.Test
 import fr.emn.criojo.core.datatype.Term
@@ -16,6 +17,8 @@ import fr.emn.criojo.core.Atom
 
 class ExtAtomTest {
 
+  var carbonRelation = LocalRelation("Carbon")
+
   @Test
   def cloneTest() {
 
@@ -23,7 +26,7 @@ class ExtAtomTest {
     val y = VarScalaString()
 
     val listOfTerms:List[Term] = List(x, y)
-    var atom:Atom = new Atom("Carbon",listOfTerms)
+    var atom:Atom = new Atom(carbonRelation, listOfTerms)
 
     var atom2:Atom = atom.clone
     assert(atom.correspondsTo(atom2))

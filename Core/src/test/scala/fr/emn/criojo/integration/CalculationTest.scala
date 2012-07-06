@@ -65,7 +65,7 @@ class CalculationTest {
     fCham.enableStreamingTrace()
     fCham.enableSolutionTrace()
     fCham.introduceMolecule(fCham.gcd(8,2))
-    fCham.executeRules()
+    //fCham.executeRules()
     fCham.printSolution()
   }
 
@@ -100,9 +100,6 @@ class CalculationTest {
   @Test
   def FibonnaciNewSyntaxTest() {
 
-    var fw = new FileWriter("etoile.svg");
-    fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
-
     val cm = new Cham with IntegerCham with DebugCham {
 
       val fibo = LocalRelation("fibo")
@@ -135,10 +132,6 @@ class CalculationTest {
     cm.executeRules()
 
     cm.printSolution()
-
-    
-    fw.write("</svg>\n")
-    fw.close()
   }
 
 //  @Test /*(timeout=3000)*/
@@ -181,7 +174,7 @@ class CalculationTest {
 
   @Test /*(timeout=3000)*/
   def gcdTestExp(){
-    val chemicalMachine = new Cham with IntegerCham{
+    val chemicalMachine = new Cham with IntegerCham with DebugCham {
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
@@ -202,7 +195,7 @@ class CalculationTest {
 //    import chemicalMachine.{num2fun,gcd}
     chemicalMachine.introduceMolecule(chemicalMachine.gcd(8,4))
     chemicalMachine.executeRules()
-
+    chemicalMachine.printSolution()
   }
 
   @Test /*(timeout=3000)*/
@@ -314,8 +307,8 @@ class CalculationTest {
       }
 
       rules(
-        InsertWord(w) --> Count(w, 1), // MAP
-        (Count(w, i) & Count(w, j)) --> Count(w, i + j) // REDUCE
+        (Count(w, i) & Count(w, j)) --> Count(w, i + j), // REDUCE
+        InsertWord(w) --> Count(w, 1) // MAP
       )
     }
 
@@ -323,19 +316,25 @@ class CalculationTest {
     //    implicit def stringToValue(s: String) = StrExpression(s)
 
     machine.enableSolutionTrace()
+    machine.enableStreamingTrace()
 
+//    machine.introduceMolecule(machine.InsertWord("aa"))
+//    machine.introduceMolecule(machine.InsertWord("aa1"))
+//    machine.introduceMolecule(machine.InsertWord("aa"))
+//    machine.executeRules()
     machine.introduceMolecule(machine.InsertWord("aa"))
     machine.introduceMolecule(machine.InsertWord("aa"))
     machine.introduceMolecule(machine.InsertWord("bb"))
+    machine.introduceMolecule(machine.InsertWord("aa"))
     machine.introduceMolecule(machine.InsertWord("bb"))
     machine.introduceMolecule(machine.InsertWord("cc"))
-    machine.introduceMolecule(machine.InsertWord("aa"))
     machine.introduceMolecule(machine.InsertWord("bb"))
     machine.introduceMolecule(machine.InsertWord("dd"))
     machine.executeRules()
+    machine.printSolution()
 
-    assert(machine.getSolution.containsMolecule(machine.Count("aa", 3)))
-    assert(machine.getSolution.containsMolecule(machine.Count("cc", 1)))
+    assert(machine.containsMolecule(machine.Count("aa", 3)))
+    assert(machine.containsMolecule(machine.Count("cc", 1)))
   }
 
   @Test
@@ -353,10 +352,7 @@ class CalculationTest {
       val PUSH = LocalRelation("PUSH")
       val POP = LocalRelation("POP")
 
-      val PrintInt = NativeRel {
-        case WrapScalaInt(a)::Nil => /* println(x) */
-        case _ =>
-      }
+      val PrintInt = LocalRelation("Print")
 
       rules(
         (IsItEquivalent(x, y) & Session(s)) --> (AreInRelation(x, y, s) & Session(s+1)),
@@ -366,6 +362,7 @@ class CalculationTest {
       )
     }
 
+    machine.enableStreamingTrace()
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.Session(0))
@@ -393,7 +390,7 @@ class CalculationTest {
 
 
 
-    val cm = new Cham with IntegerCham {
+    val cm = new Cham with IntegerCham with DebugCham {
 
       val Sierpinski = LocalRelation("Sierpinski")
       val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = VarScalaInt()
@@ -407,8 +404,8 @@ class CalculationTest {
       }
 
       rules(
-        (Sierpinski(x, y, l, n)) --> {n Equal 0} ?: Print(x,y,l),
 
+        (Sierpinski(x, y, l, n)) --> {n Equal 0} ?: Print(x,y,l),
         Sierpinski(x, y, l, n)
           --> {n GreaterThan 0} ?: (Sierpinski(x, y, l/2, n-1) & Sierpinski(x-l/2, y-l/2, l/2, n-1) & Sierpinski(x+l/2, y-l/2, l/2, n-1))
       )
@@ -416,8 +413,8 @@ class CalculationTest {
     }
 
 //    import cm.num2fun
-
-    cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 7))
+//    cm.enableStreamingTrace()
+    cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 10))
     cm.executeRules()
 
     fw.write("</svg>\n")

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DebugCham.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.debug</a> &gt; <span class="el_source">DebugCham.scala</span></div><h1>DebugCham.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.debug
+
+import collection.mutable.ListBuffer
+import fr.emn.criojo.core.datatype.{Valuation, Variable}
+import fr.emn.criojo.core._
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.lang.Molecule
+
+//package fr.emn.criojo.ext.debug
+//
+///*
+// * Created by IntelliJ IDEA.
+// * User: mayleen
+// * Date: 25/03/12
+// * Time: 10:26
+// */
+//
+//import collection.mutable.ListBuffer
+//import fr.emn.criojo.core.statemachine.PartialExecution
+//import fr.emn.criojo.core._
+//import datatype.Variable
+//import fr.emn.criojo.lang.Molecule
+//import fr.emn.criojo.core.StatefulEngine
+//import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+//
+///**
+// * Created by IntelliJ IDEA.
+// * User: jonathan
+// * Date: 3/22/12
+// * Time: 11:18 AM
+// * To change this template use File | Settings | File Templates.
+// */
+//
+//
+//trait DebugCham extends StatefulEngine {
+//
+//  val solution: Solution = new HashSolution()
+//  var DEBUG_TRACE:ListBuffer[String] = ListBuffer()
+//  var DEBUG_DIRECT_MODE = false
+//  var DEBUG_SOLUTION_MODE = false
+//
+//  override def introduceAtom(atom: Atom) {
+//    if(DEBUG_SOLUTION_MODE)
+//      solution.addAtom(atom)
+//    super.introduceAtom(atom)
+//  }
+//
+//  override def removeAtom(atom: Atom) {
+//    if(DEBUG_SOLUTION_MODE)
+//      solution.remove(atom)
+//    super.removeAtom(atom)
+//  }
+//
+//  def enableSolutionTrace() {
+//    DEBUG_SOLUTION_MODE = true
+//  }
+//
+//  def disableSolutionTrace() {
+//    DEBUG_SOLUTION_MODE = false
+//  }
+//
+//  def enableStreamingTrace() {
+//    DEBUG_DIRECT_MODE = true
+//  }
+//
+//  def disableStreamingTrace() {
+//    DEBUG_DIRECT_MODE = false
+//  }
+//
+//  def printTrace() {
+//    DEBUG_TRACE.foreach(t =&gt; println(t))
+//  }
+//
+//  def containsAtom(a:Atom, n:Int):Boolean = {
+//    (solution.elems.count(atom =&gt; atom.correspondsTo(a)) == n)
+//  }
+//
+//  def containsRelation(a:LocalRelation, n:Int):Boolean = {
+//    (solution.elems.count(atom =&gt; a.name==atom.relation.name) == n)
+//  }
+//
+//  def containsMolecule(m:Molecule):Boolean = {
+//    containsMolecule(m, 1)
+//  }
+//
+//  def containsMolecule(m:Molecule, n:Int):Boolean = {
+//    containsAtom(m.head, n)
+//  }
+//
+//  def printSolution() {
+//    var firstPrint:Boolean = true
+//    print(&quot;&lt;&quot;)
+//
+//    var cpt:Int = 0
+//
+//    solution.foreach( a =&gt; {
+//      if(a.relation.name.charAt(0)!='%') {
+//        if(!firstPrint)
+//          print(&quot;,&quot;)
+//        cpt = (cpt+1)%10
+//        if(cpt!=9)
+//          print(a)
+//        else
+//          println(a)
+//        firstPrint = false
+//      }
+//    })
+//    println(&quot;&gt;&quot;)
+//  }
+//
+//  def getSolution:Solution = this.solution
+//
+//  override def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
+//    new StatefulRule(h,b,g,scope) with DebugStatefulRule
+//  }
+//
+//  trait DebugStatefulRule
+//    extends StatefulRule {
+//
+//    override def applyReaction(pe:PartialExecution) {
+//
+//      var valuatedHead = this.head.map({a =&gt; a.applyValuation(pe.valuation)})
+//      var valuatedBody = this.body.map({a =&gt; a.applyValuation(pe.valuation)})
+//
+//      var valuatedHeadString = valuatedHead.toString()
+//      var valuatedBodyString = valuatedBody.toString()
+//      valuatedHeadString = valuatedHeadString.substring(5,valuatedHeadString.length()-1)
+//      valuatedBodyString = valuatedBodyString.substring(5,valuatedBodyString.length()-1)
+//
+//      var result:String = valuatedHeadString+&quot; --&gt; &quot;+valuatedBodyString
+//
+//      DEBUG_TRACE += result
+//
+//      if(DEBUG_DIRECT_MODE){
+//        println(result)
+//        //printSolution()
+//      }
+//
+//
+//      super.applyReaction(pe)
+//    }
+//
+//  }
+//}
+
+trait DebugCham extends NormalEngine {
+
+<span class="fc" id="L149">  var DEBUG_TRACE:ListBuffer[String] = ListBuffer()</span>
+<span class="fc" id="L150">  var DEBUG_DIRECT_MODE = false</span>
+<span class="fc" id="L151">  var DEBUG_SOLUTION_MODE = false</span>
+
+  def enableSolutionTrace() {
+<span class="fc" id="L154">    DEBUG_SOLUTION_MODE = true</span>
+  }
+
+  def disableSolutionTrace() {
+<span class="nc" id="L158">    DEBUG_SOLUTION_MODE = false</span>
+  }
+
+  def enableStreamingTrace() {
+<span class="fc" id="L162">    DEBUG_DIRECT_MODE = true</span>
+  }
+
+  def disableStreamingTrace() {
+<span class="nc" id="L166">    DEBUG_DIRECT_MODE = false</span>
+  }
+
+  def printTrace() {
+<span class="nc" id="L170">    DEBUG_TRACE.foreach(t =&gt; println(t))</span>
+  }
+
+  def containsAtom(a:Atom, n:Int):Boolean = {
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">    (solution.listOfAtoms.count(atom =&gt; atom.correspondsTo(a)) == n)</span>
+  }
+
+  def containsRelation(a:LocalRelation, n:Int):Boolean = {
+<span class="pc bpc" id="L178" title="4 of 8 branches missed.">    (solution.listOfAtoms.count(atom =&gt; a.name==atom.relation.name) == n)</span>
+  }
+
+  def containsMolecule(m:Molecule):Boolean = {
+<span class="fc" id="L182">    containsMolecule(m, 1)</span>
+  }
+
+  def containsMolecule(m:Molecule, n:Int):Boolean = {
+<span class="fc" id="L186">    containsAtom(m.head, n)</span>
+  }
+
+  def printSolution() {
+<span class="fc" id="L190">    var firstPrint:Boolean = true</span>
+<span class="fc" id="L191">    print(&quot;&lt;&quot;)</span>
+
+<span class="fc" id="L193">    var cpt:Int = 0</span>
+
+<span class="fc" id="L195">    solution.listOfAtoms.foreach( a =&gt; {</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">      if(a.relation.name.charAt(0)!='%') {</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if(!firstPrint)</span>
+<span class="fc" id="L198">          print(&quot;,&quot;)</span>
+<span class="fc" id="L199">        cpt = (cpt+1)%10</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if(cpt!=9)</span>
+<span class="fc" id="L201">          print(a)</span>
+        else
+<span class="nc" id="L203">          println(a)</span>
+<span class="fc" id="L204">        firstPrint = false</span>
+      }
+    })
+<span class="fc" id="L207">    println(&quot;&gt;&quot;)</span>
+  }
+
+  override def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">    new NormalRule(h,b,g,scope, this) with DebugStatefulRule</span>
+  }
+
+  trait DebugStatefulRule
+<span class="fc" id="L215">    extends NormalRule {</span>
+
+    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation) {
+
+<span class="fc" id="L219">      var valuatedHead = this.head.map({a =&gt; a.applyValuation(valuation)})</span>
+<span class="fc" id="L220">      var valuatedBody = this.body.map({a =&gt; a.applyValuation(valuation)})</span>
+
+<span class="fc" id="L222">      var valuatedHeadString = valuatedHead.toString()</span>
+<span class="fc" id="L223">      var valuatedBodyString = valuatedBody.toString()</span>
+<span class="fc" id="L224">      valuatedHeadString = valuatedHeadString.substring(5,valuatedHeadString.length()-1)</span>
+<span class="fc" id="L225">      valuatedBodyString = valuatedBodyString.substring(5,valuatedBodyString.length()-1)</span>
+
+<span class="fc" id="L227">      var result:String = valuatedHeadString+&quot; --&gt; &quot;+valuatedBodyString</span>
+
+<span class="fc" id="L229">      DEBUG_TRACE += result</span>
+
+
+<span class="fc bfc" id="L232" title="All 2 branches covered.">      if(DEBUG_DIRECT_MODE){</span>
+<span class="fc" id="L233">        println(result)</span>
+        //printSolution()
+      }
+
+<span class="fc" id="L237">      super.applyReaction(pes, valuation)</span>
+    }
+
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

@@ -111,7 +111,10 @@ Methods to avoid compilation errors while Valuation is adopted in all the code
   def toSet = Set()
 }
 
+
+
 class Assignment(val variable: Variable, val value: Term, s: Boolean) extends Pair(variable, value) {
+
   def this(x: Variable, v: Term) = {
     this(x, v, true)
   }

@@ -78,18 +78,13 @@ class ChamTest {
     machine.enableSolutionTrace()
 
     machine.introduceMolecule(machine.OneBonbon())
-    assert(machine.containsRelation(machine.OneBonbon,1))
-    assert(machine.containsRelation(machine.TwoBonbons,0))
-
-    machine.executeRules()
     machine.introduceMolecule(machine.OneBonbon())
-    assert(machine.containsRelation(machine.OneBonbon,2))
-    assert(machine.containsRelation(machine.TwoBonbons,0))
-
     machine.executeRules()
+
     assert(machine.containsRelation(machine.OneBonbon,0))
     assert(machine.containsRelation(machine.TwoBonbons,1))
-    assert(machine.getSolution.size==1)
+
+    assert(machine.solution.listOfAtoms.size==1)
   }
 
   @Test
@@ -114,15 +109,12 @@ class ChamTest {
     machine.introduceMolecule(machine.H())
     machine.introduceMolecule(machine.H())
     machine.introduceMolecule(machine.O())
-
-    machine.printSolution()
     machine.executeRules()
-    machine.printSolution()
 
     assert(machine.containsRelation(machine.H4O,1))
     assert(machine.containsRelation(machine.H,0))
     assert(machine.containsRelation(machine.O,0))
-    assert(machine.getSolution.size==1)
+    assert(machine.solution.listOfAtoms.size==1)
   }
 
   @Test(timeout=1000)
@@ -148,17 +140,10 @@ class ChamTest {
     machine.enableStreamingTrace()
 
     machine.introduceAtom(a1)
-    assert(machine.containsRelation(machine.R,  1))
-    assert(machine.containsRelation(machine.S,  0))
 
     machine.introduceAtom(a2)
     machine.introduceAtom(a3)
-    assert(machine.containsRelation(machine.R,  2))
-    assert(machine.containsRelation(machine.S,  1))
-    assertEquals(3, machine.getSolution.size)
-
     machine.executeRules()
-    machine.printSolution()
 
     assert(machine.containsRelation(machine.R,  1))
     assert(machine.containsRelation(machine.S,  0))

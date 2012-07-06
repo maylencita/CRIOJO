@@ -1,5 +1,8 @@
 package fr.emn.criojo.core
 
+import fr.emn.criojo.ext.expression.Relation.constructor.{OutChannel, Channel, LocalRelation}
+import impur.NativeRelation
+
 /**
  * Created by IntelliJ IDEA.
  * User: jonathan
@@ -14,6 +17,15 @@ trait ReactionStrategy {
 
 class LocalReactionStrategy extends ReactionStrategy {
   def applyReaction(engine:Engine, atom:Atom) {
-    engine.introduceAtom(atom)
+
+    atom.relation match {
+      case l:LocalRelation => l match {
+        case r:NativeRelation => r.execute(atom)
+        case _ => engine.introduceAtom(atom)
+      }
+      case c:OutChannel => engine.introduceAtom(atom)
+      case c:Channel => engine.introduceAtom(atom)
+    }
+
   }
 }

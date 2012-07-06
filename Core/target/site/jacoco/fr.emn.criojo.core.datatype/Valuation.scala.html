@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Valuation.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.datatype</a> &gt; <span class="el_source">Valuation.scala</span></div><h1>Valuation.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.datatype
+
+/*
+class Valuation {
+  def apply() = {}
+  def apply(elems: (Variable,Term)*):Valuation = {}
+  def get(variable: Variable): Expression = {}
+  def union(valuation: Valuation): Valuation = {}
+  def forall(p:((Variable,Term)) =&gt; Boolean) = {}
+}
+*/
+
+<span class="fc" id="L13">object Valuation {</span>
+<span class="fc" id="L14">  def apply(): Valuation = TopValuation</span>
+
+  def apply(elems: (Variable, Expression)*): Valuation =
+<span class="fc" id="L17">    new MapValuation(elems.map(p =&gt; new Assignment(p._1, p._2)).toSet)</span>
+}
+
+/**
+ * valuation := Top
+ *            | Bottom
+ *            | (x -&gt; v) valuation
+ */
+<span class="fc" id="L25">trait Valuation {</span>
+
+  /**Returns the sign of the valuation.
+   *
+   * @return Valuation sign.
+   */
+  def sign: Boolean
+
+  /**Returns the negation of the valuation.
+   *
+   * @return a negation of the valuation.
+   */
+  def unary_! : Valuation
+
+  /**Tests if the valuation is empty.
+   *
+   * @return true if the valuation is empty, false otherwise.
+   */
+  def isEmpty: Boolean
+
+  /**Returns the size of the valuation.
+   *
+   * @return the size of the valuation.
+   */
+  def size: Int
+
+  /**Returns the domain of the valuation., eg: the variables that appears in the valuation.
+   *
+   * @return the domain of the valuation.
+   */
+  def domain: Set[Variable]
+
+  /**Converts the valuation to a set of Assignments.
+   *
+   * @return a set of the Assignments.
+   */
+  def keyValues: Set[Assignment]
+
+  /**Return the term associated with the given key
+   *
+   * @return a term.
+   */
+  def apply(key: Variable): Term
+
+  /**Return the assignment associated with the given key
+   *
+   * @return an assignment.
+   */
+  def get(key: Variable): Assignment
+
+  /**Return the union of this valuation with that valuation.
+   *
+   * The result contains all assignment contained in this valuation and that valuation.
+   *
+   * @return the union of this and that valuation.
+   */
+  def union(that: Valuation): Valuation
+
+  /**Return the intersection of this valuation with that valuation.
+   *
+   * The result contains all assignment contained in this valuation and that valuation.
+   *
+   * @return the interesction of this and that valuation.
+   */
+  def intersect(that: Valuation): Valuation
+
+  def sameElements(that: Valuation): Boolean
+
+  def restrict(newDom: Set[Variable]): Valuation
+
+  def removeFromDomain(vars: Set[Variable]): Valuation
+
+  /**
+   * Evaluates if that is an extension of this Valuation
+   * @param that
+   * @return
+   */
+  def hasExtension(that: Valuation): Boolean
+
+  /*
+Methods to avoid compilation errors while Valuation is adopted in all the code
+  */
+<span class="nc" id="L107">  def find(p: ((Variable, Term)) =&gt; Boolean) = keyValues.find(p)</span>
+
+<span class="fc" id="L109">  def forall(p: ((Variable, Term)) =&gt; Boolean) = keyValues.forall(p)</span>
+
+<span class="nc" id="L111">  def toSet = Set()</span>
+}
+
+
+
+<span class="fc" id="L116">class Assignment(val variable: Variable, val value: Term, s: Boolean) extends Pair(variable, value) {</span>
+
+  def this(x: Variable, v: Term) = {
+<span class="fc" id="L119">    this(x, v, true)</span>
+  }
+
+<span class="pc bpc" id="L122" title="3 of 6 branches missed.">  def apply(v: Variable): Boolean = v == variable</span>
+
+<span class="fc" id="L124">  def sign: Boolean = s</span>
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">  def unary_! : Assignment = new Assignment(variable, value, !sign)</span>
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">  override def equals(that: Any): Boolean = that match {</span>
+<span class="pc bpc" id="L129" title="3 of 6 branches missed.">    case v2: Assignment =&gt; this.variable == v2.variable &amp;&amp;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">      this.sign == v2.sign &amp;&amp;</span>
+<span class="pc bpc" id="L131" title="3 of 6 branches missed.">      this.value == v2.value</span>
+  }
+
+  override def toString =
+<span class="fc bfc" id="L135" title="All 2 branches covered.">    variable + (if (!s) &quot;!=&quot; else &quot;=&quot;) + value.toString</span>
+}
+
+<span class="nc" id="L138">object NullAssignment extends Assignment(Undef, Undef) {}</span>
+
+
+abstract
+<span class="pc" id="L142">class EmptyVal extends Valuation {</span>
+<span class="nc" id="L143">  def head = throw new NoSuchElementException(&quot;head of empty valuation&quot;)</span>
+
+<span class="nc" id="L145">  def tail = throw new NoSuchElementException(&quot;head of empty valuation&quot;)</span>
+
+<span class="nc" id="L147">  def size = 0</span>
+
+<span class="nc" id="L149">  override def apply(key: Variable) = Undef</span>
+
+<span class="nc" id="L151">  def get(key: Variable): Assignment = NullAssignment</span>
+
+<span class="nc" id="L153">  def restrict(newDom: Set[Variable]): Valuation = this</span>
+
+<span class="nc" id="L155">  def removeFromDomain(vars: Set[Variable]): Valuation = this</span>
+
+<span class="nc" id="L157">  def domain = Set()</span>
+
+<span class="nc" id="L159">  def keyValues = Set()</span>
+}
+
+<span class="fc" id="L162">object TopValuation extends EmptyVal {</span>
+<span class="pc" id="L163">  override val sign = true</span>
+
+<span class="fc" id="L165">  override def union(that: Valuation) = that</span>
+
+<span class="fc" id="L167">  def intersect(that: Valuation) = that</span>
+
+<span class="fc" id="L169">  def isEmpty = false</span>
+
+<span class="fc" id="L171">  def unary_! = BottomValuation</span>
+
+<span class="nc" id="L173">  def sameElements(that: Valuation): Boolean = false</span>
+
+<span class="fc" id="L175">  def hasExtension(that: Valuation): Boolean = true</span>
+
+<span class="fc" id="L177">  override def toString = &quot;T&quot;</span>
+}
+
+<span class="pc" id="L180">object BottomValuation extends EmptyVal {</span>
+<span class="pc" id="L181">  override val sign = false</span>
+
+<span class="fc" id="L183">  override def union(that: Valuation) = this</span>
+
+<span class="nc" id="L185">  def intersect(that: Valuation) = this</span>
+
+<span class="fc" id="L187">  def isEmpty = true</span>
+
+<span class="nc" id="L189">  def unary_! = TopValuation</span>
+
+<span class="nc" id="L191">  def sameElements(that: Valuation): Boolean = false</span>
+
+<span class="nc" id="L193">  def hasExtension(that: Valuation): Boolean = false</span>
+}
+
+<span class="pc" id="L196">class MapValuation(kv: Set[Assignment], val sign: Boolean = true) extends Valuation {</span>
+
+<span class="fc" id="L198">  def keyValues = kv</span>
+
+<span class="fc" id="L200">  def size = keyValues.size</span>
+
+<span class="fc bfc" id="L202" title="All 2 branches covered.">  def unary_! : Valuation = new MapValuation(kv.map(!_), !sign)</span>
+
+<span class="fc" id="L204">  def get(x: Variable): Assignment =</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">    kv.find(asg =&gt; asg(x)) match {</span>
+      case Some(a) =&gt; a
+<span class="nc" id="L207">      case _ =&gt; NullAssignment</span>
+    }
+
+  /**
+   * Retrieves the value of the associated variable.
+   * If no value exists for the given variable, it returns the Undef variable
+   * @param key
+   * @return
+   */
+<span class="fc bfc" id="L216" title="All 2 branches covered.">  def apply(key: Variable): Term = keyValues.find(a =&gt; a(key)) match {</span>
+<span class="fc" id="L217">    case Some(assg) =&gt; assg.value</span>
+<span class="fc" id="L218">    case _ =&gt; Undef</span>
+  }
+
+  /*
+  Partial defined union:
+  if this(x)=v1 and that(x)=v2,
+  if v1 != v2 then the resulting valuation is empty
+   */
+<span class="fc" id="L226">  def union(that: Valuation): Valuation = {</span>
+<span class="fc" id="L227">    val domIntersec = this.domain &amp; that.domain</span>
+<span class="pc bpc" id="L228" title="4 of 12 branches missed.">    if (domIntersec.isEmpty || domIntersec.forall(x =&gt; this.get(x) == that.get(x))) {</span>
+<span class="fc" id="L229">      new MapValuation(this.keyValues ++ that.keyValues)</span>
+    } else
+<span class="fc" id="L231">      BottomValuation</span>
+  }
+
+  /**
+   * Returns the domain of this valuation
+   */
+<span class="fc" id="L237">  def domain = keyValues.map(asg =&gt; asg.variable)</span>
+
+<span class="pc bpc" id="L239" title="3 of 6 branches missed.">  def intersect(that: Valuation): Valuation = that match {</span>
+<span class="fc" id="L240">    case TopValuation =&gt; this</span>
+    case _ =&gt;
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">      if (this.sign == that.sign)</span>
+<span class="fc" id="L243">        new MapValuation(</span>
+<span class="pc bpc" id="L244" title="5 of 10 branches missed.">          for (x &lt;- this.domain if this(x) == that(x)) yield {</span>
+<span class="fc" id="L245">            get(x)</span>
+          }
+        )
+      else
+<span class="nc" id="L249">        new MapValuation(Set())</span>
+  }
+
+<span class="fc" id="L252">  def sameElements(that: Valuation): Boolean = keyValues.sameElements(that.keyValues)</span>
+
+  def hasExtension(that: Valuation): Boolean =
+<span class="fc" id="L255">    this.domain.forall {</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">      x =&gt;</span>
+<span class="pc bpc" id="L257" title="3 of 8 branches missed.">        this.sign == (that(x) == this(x))</span>
+    }
+
+<span class="fc" id="L260">  def isEmpty = keyValues.isEmpty</span>
+
+  def restrict(newDom: Set[Variable]): Valuation = {
+<span class="fc" id="L263">    new MapValuation(</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">      newDom.map(x =&gt; this.get(x))</span>
+    )
+  }
+
+  def removeFromDomain(vars: Set[Variable]): Valuation = {
+<span class="nc" id="L269">    val newDom = this.domain &amp;~ vars</span>
+<span class="nc" id="L270">    restrict(newDom)</span>
+  }
+
+<span class="fc" id="L273">  override def toString = keyValues.mkString(&quot;(&quot;, &quot;,&quot;, &quot;)&quot;)</span>
+}
+
+/**
+ * The an element of the set of valuations in the normal form:
+ * the conjunction of one positive valuation and several negative valuations
+ */
+<span class="fc" id="L280">object NormalForm {</span>
+  /**
+   * @param alpha the positive valuation
+   * @param beta the list of negative valuations
+   */
+<span class="fc" id="L285">  def apply(alpha: Valuation, beta: List[Valuation]) = new NormalForm(alpha, beta)</span>
+
+<span class="fc" id="L287">  def apply(alpha: Valuation) = new NormalForm(alpha, List())</span>
+
+<span class="fc" id="L289">  def apply(beta: List[Valuation]) = new NormalForm(TopValuation, beta)</span>
+}
+
+<span class="fc" id="L292">class NormalForm(val alpha: Valuation, val beta: List[Valuation]) {</span>
+  /**
+   * Evaluates if the valuation valu, is consistent with this set of valuations:
+   * valu is an extension of alpha and is not an extension of any of the betas
+   * @param valu
+   * @return
+   */
+  def consistentWith(valu: Valuation): Boolean = {
+<span class="fc bfc" id="L300" title="All 4 branches covered.">    alpha.hasExtension(valu) &amp;&amp; beta.forall(b =&gt; b.hasExtension(valu))</span>
+  }
+
+<span class="fc" id="L303">  def intersect(that: NormalForm): NormalForm = {</span>
+<span class="fc" id="L304">    val newAlpha = alpha.intersect(that.alpha)</span>
+<span class="fc" id="L305">    val newBeta = this.beta ++ that.beta</span>
+
+<span class="pc bpc" id="L307" title="1 of 4 branches missed.">    if (newBeta.forall(b =&gt; !(newAlpha union b).isEmpty))</span>
+<span class="fc" id="L308">      new NormalForm(alpha.intersect(that.alpha), this.beta ++ that.beta)</span>
+    else
+<span class="fc" id="L310">      new NormalForm(BottomValuation, List())</span>
+  }
+
+<span class="pc bpc" id="L313" title="2 of 6 branches missed.">  def isNormalForm: Boolean = alpha.sign &amp;&amp; beta.forall(!_.sign)</span>
+
+<span class="fc" id="L315">  override def toString = &quot;{&quot; + alpha + &quot; ^ &quot; + beta.mkString(&quot;^&quot;) + &quot;}&quot;</span>
+}
+
+/**
+ * A list of valuations that corresponds to the union of
+ * multiple valuations
+ * @param vlist
+ */
+<span class="fc" id="L323">class ValuationList(protected val vlist: List[NormalForm]) {</span>
+  def this() = {
+<span class="fc" id="L325">    this(List())</span>
+  }
+
+<span class="fc" id="L328">  def isEmpty = vlist.isEmpty</span>
+
+  /**
+   * Tests wheter the condition p holds for at least one of its elements
+   * @param p
+   * @return
+   */
+  def exists(p: (NormalForm) =&gt; Boolean): Boolean = {
+<span class="fc" id="L336">    vlist.exists(p)</span>
+  }
+
+  def not: ValuationList = {
+<span class="fc bfc" id="L340" title="All 2 branches covered.">    if (this.isEmpty)</span>
+<span class="fc" id="L341">      new ValuationList(NormalForm(TopValuation) :: Nil)</span>
+    else {
+<span class="fc" id="L343">      new ValuationList(recursiveNot(this.vlist))</span>
+    }
+  }
+
+  def or(that: ValuationList): ValuationList =
+<span class="nc" id="L348">    new ValuationList(this.vlist ++ that.vlist)</span>
+
+  def intersect(that: ValuationList): ValuationList =
+<span class="fc" id="L351">    new ValuationList(</span>
+<span class="fc" id="L352">      this.vlist.foldLeft(List[NormalForm]()) {</span>
+<span class="fc" id="L353">        (l, nf) =&gt;</span>
+<span class="fc" id="L354">          that.vlist.foldLeft(l) {</span>
+<span class="fc" id="L355">            (l2, nf2) =&gt;</span>
+<span class="fc" id="L356">              val inters = nf.intersect(nf2)</span>
+<span class="pc bpc" id="L357" title="3 of 6 branches missed.">              if (inters.alpha != BottomValuation)</span>
+<span class="fc" id="L358">                inters :: l2</span>
+              else
+<span class="fc" id="L360">                l2</span>
+          }
+      }
+    )
+
+  def map(f: (NormalForm) =&gt; NormalForm): ValuationList =
+<span class="fc" id="L366">    new ValuationList(this.vlist.map(f))</span>
+
+<span class="fc" id="L368">  def mkString(i: String, m: String, f: String) = vlist.mkString(i, m, f)</span>
+
+<span class="fc bfc" id="L370" title="All 2 branches covered.">  private def recursiveNot(lst: List[NormalForm]): List[NormalForm] = lst match {</span>
+<span class="fc" id="L371">    case head :: tail =&gt;</span>
+<span class="fc" id="L372">      val hd = NormalForm(List(!head.alpha))</span>
+<span class="fc" id="L373">      val newBetas = for (b &lt;- head.beta) yield {</span>
+<span class="fc" id="L374">        NormalForm(!b, List())</span>
+      }
+<span class="fc" id="L376">      val rec = recursiveNot(tail)</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">      intersect(hd, rec) ++ newBetas.flatMap(b =&gt; intersect(b, rec))</span>
+<span class="fc" id="L378">    case _ =&gt; List()</span>
+  }
+
+<span class="fc bfc" id="L381" title="All 2 branches covered.">  private def intersect(vg: NormalForm, lst: List[NormalForm]): List[NormalForm] = lst match {</span>
+<span class="fc" id="L382">    case List() =&gt; List(vg)</span>
+    case _ =&gt;
+<span class="fc" id="L384">      lst.foldLeft(List[NormalForm]()) {</span>
+<span class="fc" id="L385">        (l, g) =&gt;</span>
+<span class="fc" id="L386">          val alpha = vg.alpha.intersect(g.alpha)</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">          if (alpha.isEmpty)</span>
+<span class="fc" id="L388">            l</span>
+          else
+<span class="fc" id="L390">            NormalForm(alpha, vg.beta ++ g.beta) :: l</span>
+      }
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

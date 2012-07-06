@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Logger.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.util</a> &gt; <span class="el_source">Logger.scala</span></div><h1>Logger.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.util
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Jun 10, 2010
+ * Time: 7:10:10 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
+//object LogLevel extends Enumeration{
+//  val DEBUG, ERROR, INFO, WARNING = Value
+//}
+
+<span class="fc" id="L15">object Logger {</span>
+
+//  import LogLevel._
+<span class="pc" id="L18">  val ERROR = 3</span>
+<span class="pc" id="L19">  val WARNING = 2</span>
+<span class="fc" id="L20">  val INFO = 1</span>
+<span class="pc" id="L21">  val DEBUG = 0</span>
+
+<span class="pc" id="L23">  var on = true</span>
+<span class="pc" id="L24">  var indent = 0</span>
+<span class="pc" id="L25">  var logLevel = INFO</span>
+
+  private def log(level:Int, message:String){
+<span class="nc bnc" id="L28" title="All 2 branches missed.">    if (level &gt;= logLevel){</span>
+<span class="nc" id="L29">      var prefix = &quot;&quot;</span>
+<span class="nc" id="L30">      for(i&lt;- 0 until indent){</span>
+<span class="nc" id="L31">        prefix += &quot;   &quot;</span>
+      }
+<span class="nc" id="L33">      println(prefix + message)</span>
+    }
+  }
+
+  def log(level:Int, klass:Class[_],method:String,message:String){
+<span class="nc" id="L38">    log(level, &quot;[&quot;+klass+&quot;.&quot;+method+&quot;] &quot;+message)</span>
+  }
+
+  def log(text:String){
+<span class="nc" id="L42">    log(DEBUG, text)</span>
+  }
+
+  def log(klass:Class[_],method:String,message:String){
+<span class="nc" id="L46">    log(DEBUG, klass, method, message)</span>
+  }
+
+  def info(klass:Class[_],method:String,message:String){
+<span class="nc" id="L50">    log(INFO, klass, method, message)</span>
+  }
+
+  def error(klass:Class[_],method:String,message:String){
+<span class="nc" id="L54">    log(ERROR, klass, method, message)</span>
+  }
+
+  def debug(klass:Class[_],method:String,message:String){
+<span class="nc" id="L58">    log(DEBUG, klass, method, message)</span>
+  }
+
+
+  def levelDown(){
+<span class="nc" id="L63">    indent+=1</span>
+  }
+
+  def levelUp(){
+<span class="nc" id="L67">    indent-=1</span>
+  }
+
+  def disableLog(){
+<span class="nc" id="L71">    on = false</span>
+  }
+
+  def enableLog(){
+<span class="nc" id="L75">    on = true</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

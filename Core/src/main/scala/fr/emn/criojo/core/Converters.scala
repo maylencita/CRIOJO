@@ -27,9 +27,9 @@ object Converters {
         val valuation = x.applyValuation(vals).reduce()
         valuation.isInstanceOf[WrapScalaBoolean] && valuation.asInstanceOf[WrapScalaBoolean].value
       }
-      val valuations = new ValuationList()
-      val observed = Set[Relation]()
-      def receiveUpdate(atom: Atom){}
+//      val valuations = new ValuationList()
+//      val observed = Set[Relation]()
+//      def receiveUpdate(atom: Atom){}
     }
     g
   }

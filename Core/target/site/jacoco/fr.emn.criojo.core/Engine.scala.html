@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Engine.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core</a> &gt; <span class="el_source">Engine.scala</span></div><h1>Engine.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core
+
+/*
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: 17/11/11
+ * Time: 17:18
+ */
+
+import fr.emn.criojo.util.Logger._
+import fr.emn.criojo.ext.expression.Relation.constructor.{LocalRelation}
+import fr.emn.criojo.ext.expression.Relation.{Relation}
+
+trait Engine extends RuleFactory{
+<span class="fc" id="L15">  protected var rules:List[Rule] = List()</span>
+<span class="fc" id="L16">  protected var relations:List[Relation] = List()</span>
+
+  def reactionStrategy:ReactionStrategy
+
+  def executeRules()
+  def introduceAtom(atom:Atom)
+
+<span class="fc" id="L23">  def addRelation(relation:Relation) { relations :+= relation }</span>
+  def addRule(rule:Rule) {
+
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">    rule.body.foreach(a =&gt; addRelation(a.relation))</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">    rule.head.foreach(a =&gt; addRelation(a.relation))</span>
+
+<span class="fc" id="L29">    rules :+= rule</span>
+  }
+
+  /**
+   * Searches for a relation. If found, Some[Relation] is returned.
+   * Otherwise, it will return Nothing
+   */
+<span class="nc bnc" id="L36" title="All 6 branches missed.">  def findRelation(relName:String):Option[Relation] = relations.find(_.name == relName)</span>
+
+<span class="nc bnc" id="L38" title="All 2 branches missed.">  def getRelation(relName:String):Relation = findRelation(relName) match{</span>
+      case Some(r) =&gt; r
+      case _ =&gt;
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if(relName startsWith (&quot;$&quot;))</span>
+<span class="nc" id="L42">          new LocalRelation(relName)</span>
+        else{
+<span class="nc" id="L44">          log(WARNING, this.getClass, &quot;findRelation&quot;,&quot;Undefined relation &quot; + relName)</span>
+<span class="nc" id="L45">          new LocalRelation(&quot;Undefined&quot;)</span>
+        }
+  }
+
+  def initRules(ruleDefs:List[RuleFactory =&gt; Rule]){
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">    ruleDefs.foreach{ f =&gt; initRule(f)  }</span>
+  }
+
+  def initRule(rf: RuleFactory =&gt; Rule){
+<span class="fc" id="L54">    val rule = rf(this)</span>
+<span class="fc" id="L55">    processRuleHead(rule)</span>
+<span class="fc" id="L56">    processRuleBody(rule)</span>
+<span class="fc" id="L57">    addRule(rule)</span>
+  }
+
+<span class="fc" id="L60">  def processRuleHead(rule:Rule) {</span>
+  }
+
+<span class="fc" id="L63">  def processRuleBody(rule:Rule)  {</span>
+  }
+
+<span class="nc" id="L66">  def printRules: String = rules.mkString(&quot;&quot;,&quot;\n&quot;,&quot;&quot;)</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

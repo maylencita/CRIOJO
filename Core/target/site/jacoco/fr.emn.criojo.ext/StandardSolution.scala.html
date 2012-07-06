@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StandardSolution.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext</a> &gt; <span class="el_source">StandardSolution.scala</span></div><h1>StandardSolution.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext
+
+import fr.emn.criojo.core._
+import fr.emn.criojo.util.Logger
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Jul 8, 2010
+ * Time: 11:30:18 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+@Deprecated
+class StandardSolution /*extends Solution{
+  private val SUC = &quot;Suc&quot;
+  private val NULL = &quot;null&quot;
+
+  override def findMatches(conjunction:List[Atom], substitutions:List[Substitution]):List[Atom] = {
+    super.findMatches(conjunction,substitutions)
+  }
+
+//  override def findMatches(relation:Atom, subs:List[Substitution]): List[Atom] = relation match{
+//    case Atom(SUC, patterns) =&gt;
+//    case _ =&gt;
+//      if (subs.isEmpty){
+//        filter(_.relName == relation.relName).toList
+//      }else{
+//        val test = relation.applySubstitutions(subs)
+//        filter(a =&gt; a.active &amp;&amp; a.correspondsTo(test)).toList
+//      }
+//  }
+
+  override def addAtom(atom:Atom) =
+    atom match{
+    case Atom(SUC, x::y::Nil) =&gt;
+      val newAtom:Atom = find{
+        case IntAtom(n, v) =&gt; x == v
+        case _ =&gt; false
+      } match {
+        case Some(c:IntAtom) =&gt; remove(c); new IntAtom(c.number+1 ,y)
+        case _ =&gt; atom
+      }
+      super.addAtom(newAtom)
+    case _ =&gt; super.addAtom(atom)
+  }
+
+  def getValue(x:Variable):ValueVariable[_]={
+      find{
+        case ta:TypedAtom[_] =&gt; ta.variable == x
+        case _ =&gt; false
+      } match{
+        case Some(c:IntAtom) =&gt; new Value[Int](c.number)
+        case Some(c:StringAtom) =&gt; new Value[String](c.str.replace(&quot;\&quot;&quot;,&quot;&quot;))
+        case Some(c:NullAtom) =&gt; Null
+        case _ =&gt; NoValue
+      }
+  }
+
+  def getPrintVariable(v:Variable):Variable = getValue(v) match{
+    case value:Value[_] =&gt; value
+    case NoValue =&gt; v
+  }
+
+  def prettyPrint = {
+      elems.filterNot(_.relName.startsWith(&quot;$&quot;)).map(a =&gt; new Atom(a.relName, a.patterns.map(getPrintVariable(_)))).mkString(&quot;&lt;&quot;,&quot;,&quot;,&quot;&gt;&quot;)
+  }
+  
+  override def clone:Solution = {
+    val sol = new StandardSolution()
+    foreach(a =&gt; sol.addAtom(a.clone))
+    sol
+  }
+
+  //Pretty Print
+  override def toString = {
+    if (Logger.on){
+       super.toString
+    }else{
+//      def getValue(v:Variable):Variable={
+//
+////        if(v.name.startsWith(&quot;$&quot;)){
+//          find(a =&gt; a.relName.startsWith(&quot;$&quot;) &amp;&amp; a.hasVariable(v)) match{
+//            case Some(c) =&gt; new Variable(c.relName.substring(5))
+//            case _ =&gt; v
+//          }
+////        }else
+////          v
+//      }
+
+      elems.filterNot(_.relName.startsWith(&quot;$&quot;)).map(a =&gt; new Atom(a.relName, a.patterns.map(getPrintVariable(_)))).mkString(&quot;&lt;&quot;,&quot;,&quot;,&quot;&gt;&quot;)
+    }
+
+  }
+
+
+}
+<span class="nc" id="L98">*/</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

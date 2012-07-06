@@ -30,12 +30,12 @@ trait StatefulEngine extends Engine {
 
   def introduceAtom(atom: Atom){
 
-    notifyRelationObservers(atom)
+//    notifyRelationObservers(atom)
   }
 
   def removeAtom(atom: Atom) {
     atom.setActive(false)
-    notifyRelationObservers(atom)
+//    notifyRelationObservers(atom)
   }
 
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
@@ -132,7 +132,7 @@ class HashSolution extends Solution{
 
   def elems = elements.toList
 
-  def addAtom(atom: Atom){
+  override def addAtom(atom: Atom){
     elements += atom
   }
 
@@ -144,7 +144,7 @@ class HashSolution extends Solution{
     elements = elements.filterNot(a=> atom eq a)
   }
 
-  override def contains(atom:Atom) = elements.exists{a =>
+  def contains(atom:Atom) = elements.exists{a =>
     (a.relation.name == atom.relation.name) &&
       a.arity == atom.arity &&
       a.patterns.zip(atom.patterns).forall{t =>

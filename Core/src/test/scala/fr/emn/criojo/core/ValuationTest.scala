@@ -114,15 +114,9 @@ class ValuationTest {
       new NormalForm(Valuation(x->6,y->6),(!Valuation(z->4))::(!Valuation(z->3))::Nil)
     ))
 
-    val expected = "{(VarScalaInt(z)=6) ^ (VarScalaInt(x)!=2,VarScalaInt(y)!=2)^(VarScalaInt(x)!=6,VarScalaInt(y)!=6)}," +
-      "{(VarScalaInt(z)=5) ^ (VarScalaInt(x)!=2,VarScalaInt(y)!=2)^(VarScalaInt(x)!=6,VarScalaInt(y)!=6)}," +
-      "{T ^ (VarScalaInt(x)!=2,VarScalaInt(y)!=2)^(VarScalaInt(x)!=3,VarScalaInt(y)!=4)^(VarScalaInt(x)!=6,VarScalaInt(y)!=6)}," +
-      "{(VarScalaInt(z)=4) ^ (VarScalaInt(x)!=2,VarScalaInt(y)!=2)^(VarScalaInt(x)!=3,VarScalaInt(y)!=4)}," +
-      "{(VarScalaInt(z)=3) ^ (VarScalaInt(x)!=2,VarScalaInt(y)!=2)^(VarScalaInt(x)!=3,VarScalaInt(y)!=4)}," +
-      "{(VarScalaInt(z)=3) ^ (VarScalaInt(x)!=3,VarScalaInt(y)!=4)^(VarScalaInt(x)!=6,VarScalaInt(y)!=6)}," +
-      "{(VarScalaInt(z)=3) ^ (VarScalaInt(x)!=3,VarScalaInt(y)!=4)}," +
-      "{(VarScalaInt(z)=4) ^ (VarScalaInt(x)!=3,VarScalaInt(y)!=4)^(VarScalaInt(x)!=6,VarScalaInt(y)!=6)}," +
-      "{(VarScalaInt(z)=4) ^ (VarScalaInt(x)!=3,VarScalaInt(y)!=4)}"
+    val expected = "{(z=6) ^ (x!=2,y!=2)^(x!=6,y!=6)},{(z=5) ^ (x!=2,y!=2)^(x!=6,y!=6)},{T ^ (x!=2,y!=2)^(x!=3,y!=4)^(x!=6,y!=6)}" +
+      ",{(z=4) ^ (x!=2,y!=2)^(x!=3,y!=4)},{(z=3) ^ (x!=2,y!=2)^(x!=3,y!=4)},{(z=3) ^ (x!=3,y!=4)^(x!=6,y!=6)}" +
+      ",{(z=3) ^ (x!=3,y!=4)},{(z=4) ^ (x!=3,y!=4)^(x!=6,y!=6)},{(z=4) ^ (x!=3,y!=4)}"
     assertEquals(expected, lst.not.mkString("",",",""))
   }
 }

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StateMachine.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.statemachine</a> &gt; <span class="el_source">StateMachine.scala</span></div><h1>StateMachine.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.statemachine
+
+import collection.mutable.{Queue, HashMap, MultiMap, Set}
+import fr.emn.criojo.core.datatype.BottomValuation
+import fr.emn.criojo.core.Atom
+
+/*
+* Created by IntelliJ IDEA.
+* User: mayleen
+* Date: 29/11/11
+* Time: 14:17
+*/
+trait StateMachine {
+
+<span class="nc" id="L15">  protected var size = 0</span>
+<span class="nc" id="L16">  protected var states:Array[State] = null</span>
+<span class="nc" id="L17">  protected var transitions:HashMap[Int,Array[Transition]] = null</span>
+
+<span class="nc" id="L19">  var pattern:Array[Atom] = null</span>
+
+  def init(pattern:Array[Atom]){
+<span class="nc" id="L22">    this.pattern = pattern</span>
+<span class="nc" id="L23">    states = initStates</span>
+<span class="nc" id="L24">    transitions = initTransitions</span>
+  }
+
+<span class="nc" id="L27">  def addExecution(atom:Atom){</span>
+    /*
+    A temporal map to hold new executions, to differentiate
+    the previous general-state from the current general-state
+     */
+<span class="nc" id="L32">    val newExecutions:MultiMap[State,PartialExecution] =</span>
+<span class="nc" id="L33">      new HashMap[State,Set[PartialExecution]] with MultiMap[State,PartialExecution]</span>
+
+<span class="nc bnc" id="L35" title="All 2 branches missed.">    if(pattern != null) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">      for(i &lt;- 0 until pattern.length){</span>
+<span class="nc" id="L37">        val a = pattern(i)</span>
+<span class="nc bnc" id="L38" title="All 10 branches missed.">        if (a.relation.name == atom.relation.name &amp;&amp; a.arity == atom.arity &amp;&amp; a.correspondsTo(atom)){</span>
+<span class="nc" id="L39">          val vals = a.getValuation(atom) // fixme: le premier atome contient une liste de patterns et le second une list d'expression</span>
+<span class="nc" id="L40">          transitions(a.hashCode).foreach{</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            transition=&gt; {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">              if(transition.ini.stateZero) {</span>
+
+<span class="nc" id="L44">                val pExec = new PartialExecution(i,atom,vals)</span>
+<span class="nc bnc" id="L45" title="All 6 branches missed.">                pExec.valuation match {</span>
+<span class="nc" id="L46">                  case BottomValuation =&gt;</span>
+<span class="nc" id="L47">                  case _ =&gt; newExecutions.addBinding(transition.fin,pExec)</span>
+                }
+              }
+              else {
+<span class="nc" id="L51">                transition.ini.executions.foreach {</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                  pe =&gt; {</span>
+<span class="nc" id="L53">                    val pExec = pe.newExecution(i,atom,vals)</span>
+
+<span class="nc bnc" id="L55" title="All 6 branches missed.">                    pExec.valuation match {</span>
+<span class="nc" id="L56">                      case BottomValuation =&gt;</span>
+<span class="nc" id="L57">                      case _ =&gt; newExecutions.addBinding(transition.fin,pExec)</span>
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+<span class="nc" id="L66">      updateStates(newExecutions)</span>
+    }
+  }
+
+  private def updateStates(newExecutions:MultiMap[State,PartialExecution]){
+<span class="nc bnc" id="L71" title="All 4 branches missed.">    newExecutions.foreach{</span>
+<span class="nc" id="L72">      case (state,exSet) =&gt; states(state.id).addExecutions(exSet)</span>
+    }
+  }
+
+  def removeExecution(atom:Atom){
+<span class="nc bnc" id="L77" title="All 2 branches missed.">    if(pattern != null){</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">      for(a &lt;- pattern){</span>
+<span class="nc bnc" id="L79" title="All 8 branches missed.">        if (a.relation.name == atom.relation.name &amp;&amp; a.arity == atom.arity){</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">          transitions(a.hashCode).foreach{t=&gt;</span>
+<span class="nc" id="L81">            t.fin.removeExecutions(atom)</span>
+          }
+        }
+      }
+    }
+  }
+
+  private def initStates = {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">    if (size == 0)</span>
+<span class="nc" id="L90">      size = math.pow(2,pattern.length).intValue</span>
+<span class="nc" id="L91">    val slst = new Array[State](size)</span>
+<span class="nc" id="L92">    for(i &lt;- 0 to size-1){</span>
+<span class="nc" id="L93">      slst.update(i, new State(i))</span>
+    }
+<span class="nc" id="L95">    slst</span>
+  }
+
+  private def initTransitions = {
+<span class="nc" id="L99">    val tmap = HashMap[Int,Array[Transition]]()</span>
+
+<span class="nc" id="L101">    var pos = 0</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">    for(hd &lt;- pattern){</span>
+<span class="nc" id="L103">      val step = math.pow(2,pattern.length - (pos+1)).intValue</span>
+<span class="nc" id="L104">      val tarr = new Array[Transition]((size / 2).intValue)</span>
+<span class="nc" id="L105">      var i = 0; var p = 0</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">      while(i &lt; size){</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if ((i &amp; step) == 0 ){</span>
+<span class="nc" id="L108">          val iniState = i</span>
+<span class="nc" id="L109">          val finState = iniState + step</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">          if(finState &lt; size){</span>
+<span class="nc" id="L111">            tarr.update(p, new Transition(states(iniState),states(finState)))</span>
+<span class="nc" id="L112">            p += 1</span>
+          }else
+<span class="nc" id="L114">            i = size</span>
+        }
+<span class="nc" id="L116">        i += 1</span>
+      }
+<span class="nc" id="L118">      tmap.put(hd.hashCode, tarr)</span>
+<span class="nc" id="L119">      pos += 1</span>
+    }
+<span class="nc" id="L121">    tmap</span>
+  }
+
+}
+
+<span class="nc" id="L126">class Transition(val ini:State,val fin:State){</span>
+<span class="nc" id="L127">  override def toString=ini +&quot;--&gt;&quot;+ fin</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

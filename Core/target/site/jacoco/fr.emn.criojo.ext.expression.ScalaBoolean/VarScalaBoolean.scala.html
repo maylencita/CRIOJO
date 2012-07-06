@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VarScalaBoolean.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.expression.ScalaBoolean</a> &gt; <span class="el_source">VarScalaBoolean.scala</span></div><h1>VarScalaBoolean.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.expression.ScalaBoolean
+
+import fr.emn.criojo.core.datatype.Var
+
+/** Boolean Variable */
+<span class="nc bnc" id="L6" title="All 18 branches missed.">case class VarScalaBoolean(n: String) extends Var[ScalaBoolean](n)</span>
+    with ScalaBoolean {
+}
+
+<span class="nc" id="L10">object VarScalaBoolean {</span>
+<span class="nc" id="L11">  private var instanceNum = 0</span>
+
+<span class="nc" id="L13">  def apply() = new VarScalaBoolean(&quot;VarScalaBoolean@&quot; + getInstanceNum)</span>
+
+  private def getInstanceNum() = {
+<span class="nc" id="L16">    instanceNum += 1</span>
+<span class="nc" id="L17">    instanceNum</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

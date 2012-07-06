@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MinScalaInt.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.expression.ScalaInt.operation</a> &gt; <span class="el_source">MinScalaInt.scala</span></div><h1>MinScalaInt.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.expression.ScalaInt.operation
+
+import fr.emn.criojo.core.datatype.{PatternNotMatchingException, Valuation, Expression}
+import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
+import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+
+<span class="pc bnc" id="L7" title="All 18 branches missed.">case class MinScalaInt(listOfInt:List[ScalaInt]) extends ScalaInt {</span>
+  override def getValuation(expr: Expression): Valuation =
+<span class="nc" id="L9">    throw new PatternNotMatchingException</span>
+
+  override def applyValuation(valuation: Valuation): Expression =
+<span class="fc" id="L12">    MinScalaInt(listOfInt.map(s =&gt;</span>
+<span class="fc" id="L13">      s.applyValuation(valuation).asInstanceOf[ScalaInt]).toList)</span>
+
+  override def reduce(): Expression = {
+<span class="pc bpc" id="L16" title="3 of 8 branches missed.">    def min(s1:ScalaInt, s2:ScalaInt):ScalaInt = (s1.reduce(), s2.reduce()) match {</span>
+<span class="fc" id="L17">      case (WrapScalaInt(i), WrapScalaInt(j)) =&gt; if (i&lt;j) s1 else s2</span>
+<span class="nc" id="L18">      case _ =&gt; throw new PatternNotMatchingException</span>
+    }
+
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">    listOfInt.reduceRight(min(_, _))</span>
+  }
+
+  override def matches(expr: Expression): Boolean =
+<span class="nc" id="L25">    throw new PatternNotMatchingException</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

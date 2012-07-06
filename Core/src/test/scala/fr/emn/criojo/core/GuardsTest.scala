@@ -38,18 +38,19 @@ class GuardsTest {
       val Second = NativeRel { case _ => result(1) = i }
 
       rules(
-        R(x,y) --> Prs(X(x,y)) ?: Second(),
-        (R(x,y) & S(y,z)) --> (First() & X(x,y) & R(x,y))
+        (R(x,y) & S(y,z)) --> (First() & X(x,y) & R(x,y)),
+        R(x,y) --> Prs(X(x,y)) ?: Second()
       )
     }
 
     machine.enableStreamingTrace()
 
     import machine.{R,S}
-    machine.introduceMolecule(R(1,2))
     machine.introduceMolecule(S(2,3))
+    machine.introduceMolecule(R(1,2))
     machine.executeRules()
 
+    machine.printSolution()
     assertTrue("\nExpected : Array(1,2)\n" +
                "Actual   : " + result.mkString("Array(",",",")"),
                 Array(1,2).sameElements(result))
@@ -88,7 +89,7 @@ class GuardsTest {
     var finalword = ""
 
     //Clonning example
-    val cham = new Cham with TestCham {
+    val cham = new Cham with TestCham with DebugCham {
       val One = LocalRelation("One")
       val Two = LocalRelation("Two")
       val Three = LocalRelation("Three")
@@ -109,7 +110,8 @@ class GuardsTest {
     }
 
     import cham.{One,R}
-    cham.introduceMolecule(One() & R())
+    cham.enableStreamingTrace()
+    cham.introduceMolecule(R() & One() )
     cham.executeRules()
 
     assertEquals("onetwotwotwothree",finalword)
@@ -120,7 +122,7 @@ class GuardsTest {
     var finalword = ""
 
     //Clonning example
-    val cham = new Cham with TestCham{
+    val cham = new Cham with TestCham with DebugCham {
       val One = LocalRelation("One")
       val Two = LocalRelation("Two")
       val Three = LocalRelation("Three")
@@ -144,9 +146,14 @@ class GuardsTest {
     }
 
     import cham.{One,R,Test2}
+
+    cham.enableStreamingTrace()
+    cham.printSolution()
+
     cham.introduceMolecule(One() & R() & Test2(1,2))
     cham.executeRules()
 
+    cham.printSolution()
     assertEquals("onetwotwotwothree",finalword)
   }
 
@@ -162,7 +169,7 @@ class GuardsTest {
       val x,y,z = VarScalaString()
 
       rules(
-        R(x) --> Ex(y,Prs(S(x,y))) ?: Passed()
+        R(x) --> Ex(y, Prs(S(x,y)) && Prs(S(x,y))) ?: Passed()
       )
     }
 
@@ -212,7 +219,7 @@ class GuardsTest {
   @Test
   def andTest(){
     var finalword = ""
-    val cham = new Cham with TestCham{
+    val cham = new Cham with TestCham {
       val R = LocalRelation("R")
       val X1 = LocalRelation("X1")
       val X2 = LocalRelation("X2")
@@ -230,7 +237,6 @@ class GuardsTest {
 
     import cham.{R,X1}
     cham.introduceMolecule(R())
-    cham.executeRules()
 
     assertEquals("",finalword)
 

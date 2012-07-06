@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Molecule.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.lang</a> &gt; <span class="el_source">Molecule.scala</span></div><h1>Molecule.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.lang
+
+import fr.emn.criojo.core._
+import datatype.{Term, Variable}
+import fr.emn.criojo.ext.expression.Relation.Relation
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Oct 18, 2010
+ * Time: 2:08:14 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * The Molecule singleton
+ * @define THIS Atom
+ */
+
+<span class="fc" id="L20">object Molecule{</span>
+<span class="pc bpc" id="L21" title="1 of 4 branches missed.">  def apply(lst:List[Atom]):Molecule = lst match{</span>
+<span class="fc" id="L22">    case List() =&gt; Empty</span>
+<span class="fc" id="L23">    case head :: tail =&gt; &amp;:(head, Molecule(tail))</span>
+  }
+  def apply(scope:List[Variable], lst:List[Atom]):Molecule = {
+<span class="fc" id="L26">    val molecule = Molecule(lst)</span>
+<span class="fc" id="L27">    molecule.scope = scope</span>
+<span class="fc" id="L28">    molecule</span>
+  }
+}
+
+/**
+ * Molecule objects implement a recursive representation for a conjunction of atoms,
+ * which are used in the construction of rules.
+ * Thus, a molecule is defined as:
+ *  m := atom | m &amp; m
+ * And a rule is:
+<span class="nc" id="L38"> *  r := m --&gt; guard ? m</span>
+ * @define THIS A
+ */
+trait Molecule {
+  def empty:Boolean
+  def head:Atom
+  def tail:Molecule
+
+<span class="fc" id="L46">  var scope = List[Variable]()</span>
+
+  def &amp;: (a:Atom) = {
+<span class="fc" id="L49">    val molecule = new &amp;: (a, this)</span>
+<span class="fc" id="L50">    molecule.scope = this.scope</span>
+<span class="fc" id="L51">    molecule</span>
+  }
+
+  def &amp; (a:Molecule) = {
+<span class="fc" id="L55">    val newList = this.toList ++ a.toList</span>
+<span class="fc" id="L56">    Molecule(this.scope ++ a.scope, newList)</span>
+  }
+
+<span class="fc" id="L59">  def toList:List[Atom] = head :: tail.toList</span>
+
+  def ?: (g:Guard):(Guard,Molecule)={
+<span class="fc" id="L62">    (g,this)</span>
+  }
+
+  @Deprecated
+  def ==&gt; (c2:Molecule): RuleFactory =&gt; Rule ={
+<span class="nc bnc" id="L67" title="All 2 branches missed.">    val f = (rf:RuleFactory) =&gt; rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)</span>
+<span class="nc" id="L68">    f</span>
+  }
+
+  def --&gt; (c2:Molecule): RuleFactory =&gt; Rule ={
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">    val f = (rf:RuleFactory) =&gt; rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)</span>
+<span class="fc" id="L73">    f</span>
+  }
+  @Deprecated
+<span class="nc bnc" id="L76" title="All 6 branches missed.">  def ==&gt; (gc: (_, _)):RuleFactory =&gt; Rule = gc match {</span>
+<span class="nc" id="L77">    case (g:Guard, conj:Molecule) =&gt; getRuleBuilder(g,conj)</span>
+<span class="nc" id="L78">    case _ =&gt; null</span>
+  }
+
+<span class="pc bpc" id="L81" title="3 of 6 branches missed.">  def --&gt; (gc: (_, _)):RuleFactory =&gt; Rule = gc match {</span>
+<span class="fc" id="L82">    case (g:Guard, conj:Molecule) =&gt;</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">      (rf:RuleFactory) =&gt; rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)</span>
+<span class="nc" id="L84">    case _ =&gt; null</span>
+  }
+
+  def getRuleBuilder (g:Guard,conj:Molecule): RuleFactory =&gt; Rule = {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">    val f = (rf:RuleFactory) =&gt; rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)</span>
+<span class="nc" id="L89">    f</span>
+  }
+
+}
+
+/**
+ * The class CrjAtom that is an atom and molecule at the same time
+ * @define THIS CrjAtom
+ */
+
+<span class="nc" id="L99">class CrjAtom(relation:Relation, terms: List[Term]) extends Atom(relation, terms) with Molecule {</span>
+<span class="nc" id="L100">  def empty:Boolean = false</span>
+
+<span class="nc" id="L102">  def head:Atom = this</span>
+
+<span class="nc" id="L104">  def tail:Molecule = Empty</span>
+}
+
+/**
+ * A helper class to define new free variables in a molecule
+ * @param varLst : The list of new variables
+ */
+<span class="nc bnc" id="L111" title="All 18 branches missed.">case class Nu(varLst:Variable*){</span>
+<span class="nc" id="L112">  val scope = varLst.toList</span>
+
+  def apply(conj:Molecule):Molecule = {
+<span class="nc" id="L115">    conj.scope = this.scope</span>
+<span class="nc" id="L116">    conj</span>
+  }
+}
+
+/**
+ * An empty molecule
+ */
+<span class="pc" id="L123">case object Empty extends Molecule{</span>
+<span class="nc" id="L124">  def empty = true</span>
+<span class="nc" id="L125">  def head = throw new NoSuchElementException(&quot;head of empty conjunction&quot;)</span>
+<span class="nc" id="L126">  def tail = throw new NoSuchElementException(&quot;tail of empty conjunction&quot;)</span>
+<span class="fc" id="L127">  scope = List()</span>
+<span class="nc" id="L128">  def unary_! : CrjAtom = throw new NoSuchElementException(&quot;Bang of empty molecule&quot;)</span>
+
+<span class="fc" id="L130">  override def toList = List()</span>
+<span class="nc" id="L131">  override def toString = &quot;&quot;</span>
+}
+
+<span class="pc bnc" id="L134" title="All 25 branches missed.">final case class &amp;: (hd:Atom, tl:Molecule) extends Molecule{</span>
+<span class="fc" id="L135">  def head = hd</span>
+<span class="fc" id="L136">  def tail = tl</span>
+<span class="nc" id="L137">  def empty = false</span>
+<span class="fc" id="L138">  scope = List()</span>
+
+<span class="nc" id="L140">  def unary_! : CrjAtom = throw new NoSuchElementException(&quot;Bang of empty molecule&quot;)</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">  override def toString = head + (if (tail.empty) &quot;&quot; else  &quot; &amp; &quot; + tail)</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Relation.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.expression.Relation</a> &gt; <span class="el_source">Relation.scala</span></div><h1>Relation.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.expression.Relation
+
+import fr.emn.criojo.core._
+import collection.mutable.HashSet
+import datatype.Term
+import fr.emn.criojo.lang.Molecule
+
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Jun 11, 2010
+ * Time: 2:16:47 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * The Relation trait
+ * @define THIS Relation
+ */
+<span class="fc" id="L21">trait Relation {</span>
+
+//  var observers:HashSet[RelationObserver] = HashSet() //List[RelationObserver] = List()
+
+//  def addObserver(observer:RelationObserver){
+//    if (!observers.contains(observer) )
+//      observers += observer
+//  }
+//
+//  def notifyObservers(a: Atom){
+//    observers.foreach{ o =&gt; o.receiveUpdate(a) }
+//  }
+
+  def name: String
+
+  //def copy(sol: Solution): Relation
+<span class="fc" id="L37">  def apply(vars:Term*):Molecule = Molecule(new Atom(this, vars.toList) :: Nil)</span>
+
+<span class="fc" id="L39">  override def toString = name</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

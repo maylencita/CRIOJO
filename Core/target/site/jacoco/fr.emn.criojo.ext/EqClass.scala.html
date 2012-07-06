@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EqClass.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext</a> &gt; <span class="el_source">EqClass.scala</span></div><h1>EqClass.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Sep 28, 2010
+ * Time: 2:18:31 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
+import debug.InvalidStateError
+import fr.emn.criojo.core._
+
+import collection.mutable.{HashSet,HashMap}
+import datatype.Variable
+
+<span class="nc" id="L17">object EqClass{</span>
+  type EqClass = HashSet[Variable]
+  def apply(vlst:Variable*):EqClass = {
+<span class="nc" id="L20">    val varSet = new HashSet[Variable]</span>
+<span class="nc" id="L21">    varSet ++ vlst</span>
+  }
+}
+
+import EqClass._
+
+<span class="nc" id="L27">class TypedEqClasses[T](eqClasses:EqClassList,noEqClasses:EqClassList) extends HashMap[T, EqClass]{</span>
+
+<span class="nc" id="L29">  def add(k:T, v:Variable){</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">    get(k) match{</span>
+<span class="nc" id="L31">      case Some(iec) =&gt;</span>
+<span class="nc bnc" id="L32" title="All 4 branches missed.">        eqClasses.find(v) match{</span>
+<span class="nc bnc" id="L33" title="All 6 branches missed.">          case Some(ec) if(iec != ec) =&gt;</span>
+<span class="nc bnc" id="L34" title="All 4 branches missed.">            if(noEqClasses.contains(ec) &amp;&amp; noEqClasses.contains(iec))</span>
+<span class="nc" id="L35">              throw new InvalidStateError(&quot;Illegal operation: &quot; + iec + &quot; != &quot; + ec)</span>
+            else
+<span class="nc" id="L37">              update (k, eqClasses.merge(iec,ec))</span>
+<span class="nc" id="L38">          case _ =&gt; iec.add(v)</span>
+        }
+      case _ =&gt;
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        eqClasses.find(v) match{</span>
+<span class="nc" id="L42">          case Some(ec) =&gt; put(k, ec)</span>
+          case _ =&gt;
+<span class="nc" id="L44">            val newEC = EqClass(v)</span>
+<span class="nc" id="L45">            eqClasses.add(newEC)</span>
+<span class="nc" id="L46">            put(k, newEC)</span>
+        }
+    }
+    //Update noEqClasses
+<span class="nc bnc" id="L50" title="All 2 branches missed.">    for (ec &lt;- this.values){</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">      if(!noEqClasses.contains(ec))</span>
+<span class="nc" id="L52">        noEqClasses.add(ec)</span>
+    }
+  }
+
+<span class="nc bnc" id="L56" title="All 2 branches missed.">  def getValue(x:Variable):Option[T] = {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">    find(_._2 contains (x)) match{</span>
+<span class="nc" id="L58">      case Some((k, ec)) =&gt; Some (k)</span>
+<span class="nc" id="L59">      case _ =&gt; None</span>
+    }
+  }
+}
+
+<span class="nc" id="L64">class EqClassList{</span>
+<span class="nc" id="L65">  var eqClasses = List[EqClass]()</span>
+
+<span class="nc" id="L67">  def add(ec:EqClass){ eqClasses :+= ec}</span>
+<span class="nc" id="L68">  def find(x:Variable):Option[EqClass] = eqClasses.find(_.contains(x))</span>
+<span class="nc" id="L69">  def exists(f:EqClass =&gt; Boolean) = eqClasses.exists(f)</span>
+<span class="nc bnc" id="L70" title="All 6 branches missed.">  def remove(ec:EqClass) { eqClasses = eqClasses.filterNot(e =&gt; e == ec) }</span>
+<span class="nc" id="L71">  def contains(ec:EqClass) = eqClasses.contains(ec)</span>
+
+  def merge(ec1:EqClass, ec2:EqClass):EqClass = {
+<span class="nc" id="L74">    val merged = ec1.union(ec2)</span>
+<span class="nc" id="L75">    remove(ec1)</span>
+<span class="nc" id="L76">    remove(ec2)</span>
+<span class="nc" id="L77">    add(merged)</span>
+<span class="nc" id="L78">    merged</span>
+  }
+
+<span class="nc" id="L81">  override def toString = eqClasses.map(_.mkString(&quot;{&quot;,&quot;,&quot;,&quot;}&quot;)).mkString(&quot;[&quot;,&quot;,&quot;,&quot;]&quot;) </span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

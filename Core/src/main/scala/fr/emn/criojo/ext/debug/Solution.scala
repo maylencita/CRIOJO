@@ -117,7 +117,7 @@ trait Solution {
     elems.mkString("<", ",", ">")
   }
 
-  def notifyCHAM(newAtom: Atom)
+//  def notifyCHAM(newAtom: Atom)
 }
 
 class SolutionImpl(owner: Engine, var elems: List[Atom]) extends Solution {
@@ -149,7 +149,7 @@ class SolutionImpl(owner: Engine, var elems: List[Atom]) extends Solution {
 
   def addAtom(atom: Atom) {
     elems :+= atom
-    notifyCHAM(atom)
+//    notifyCHAM(atom)
   }
 
   def addMolecule(molecule: List[Atom]) {
@@ -177,11 +177,11 @@ class SolutionImpl(owner: Engine, var elems: List[Atom]) extends Solution {
   }
 
   override def clone: Solution = new SolutionImpl(this.owner, List[Atom]() ++ this.elems)
-
-  def notifyCHAM(newAtom: Atom) {
-    if (owner != null)
-      owner.notifyRelationObservers(newAtom)
-  }
+//
+//  def notifyCHAM(newAtom: Atom) {
+//    if (owner != null)
+//      owner.notifyRelationObservers(newAtom)
+//  }
 
   def createBackUp() {
     oldElements = elems

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Solution.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.debug</a> &gt; <span class="el_source">Solution.scala</span></div><h1>Solution.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.debug
+
+import fr.emn.criojo.lang.Molecule
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
+import fr.emn.criojo.core.{Atom, Engine}
+import fr.emn.criojo.core.datatype.Valuation
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Jun 10, 2010
+ * Time: 4:27:10 PM
+ * To change this template use File | Settings | File Templates.
+ */
+<span class="nc" id="L15">object Solution {</span>
+<span class="nc" id="L16">  def apply(chamEngine: Engine, atoms: Atom*) = new SolutionImpl(chamEngine, atoms.toList)</span>
+
+<span class="nc" id="L18">  def createDefault(atoms: List[Atom]) = new SolutionImpl(null, atoms)</span>
+}
+
+<span class="nc" id="L21">object EmptySolution extends SolutionImpl(null, List[Atom]())</span>
+
+<span class="nc" id="L23">class InvalidStateError(msg: String) extends Exception(msg)</span>
+
+<span class="nc" id="L25">trait Solution {</span>
+
+  def displaySolution()
+
+  def createBackUp()
+
+  def reverse()
+
+  def elems: List[Atom]
+
+  def addAtom(atom: Atom)
+
+  def addMolecule(molecule: List[Atom])
+
+<span class="nc" id="L39">  def size = elems.size</span>
+
+<span class="nc" id="L41">  def isEmpty = elems.isEmpty</span>
+
+<span class="nc" id="L43">  def contains(a: Atom) = elems.contains(a)</span>
+
+  def containsAtom(a: Atom, n: Int): Boolean = {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">    (elems.count(atom =&gt; atom.correspondsTo(a)) == n)</span>
+  }
+
+  def containsAtom(a: LocalRelation, n: Int): Boolean = {
+<span class="nc bnc" id="L50" title="All 8 branches missed.">    (elems.count(atom =&gt; a.name == atom.relation.name) == n)</span>
+  }
+
+  def containsMolecule(m: Molecule): Boolean = {
+<span class="nc" id="L54">    containsMolecule(m, 1)</span>
+  }
+
+  def containsMolecule(m: Molecule, n: Int): Boolean = {
+<span class="nc" id="L58">    containsAtom(m.head, n)</span>
+  }
+
+<span class="nc bnc" id="L61" title="All 4 branches missed.">  def isTrue: Boolean = !elems.exists(_.isFalse) &amp;&amp; elems.exists(_.isTrue)</span>
+
+<span class="nc" id="L63">  def filter(p: (Atom) =&gt; Boolean) = elems.filter(p)</span>
+
+<span class="nc" id="L65">  def find(p: (Atom) =&gt; Boolean) = elems.find(p)</span>
+
+  def foreach(f: (Atom) =&gt; Unit) {
+<span class="nc" id="L68">    elems.foreach(f)</span>
+  }
+
+  def remove(a: Atom)
+
+<span class="nc" id="L73">  def exists(f: (Atom) =&gt; Boolean) = elems.exists(f)</span>
+
+<span class="nc" id="L75">  def map[B](f: (Atom) =&gt; B) = elems.map(f)</span>
+
+  def clear()
+
+  def cleanup()
+
+  def revert() {
+<span class="nc" id="L82">    elems.foreach(_.setActive(true))</span>
+  }
+
+  def update(newsol: Solution)
+
+  /**
+   * Inactivates an atom in the solution
+   */
+  def inactivate(a: Atom)
+
+  def activate(a: Atom)
+
+  /**
+   * Finds atoms matching a conjunction (set of atoms), after applying an initial set of substitutions
+   */
+
+  protected def findMatches(atom: Atom, vals: Valuation): List[Atom] = {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">    if (vals.isEmpty) {</span>
+<span class="nc bnc" id="L100" title="All 6 branches missed.">      filter(_.relation.name == atom.relation.name).toList</span>
+    } else {
+<span class="nc" id="L102">      val test = atom.applyValuation(vals)</span>
+      //val test = atom.applySubstitutions(vals)
+      //      filter(a =&gt; a.isActive &amp;&amp; a.correspondsTo(test)).toList
+<span class="nc bnc" id="L105" title="All 4 branches missed.">      filter(a =&gt; a.isActive &amp;&amp; test.correspondsTo(a)).toList</span>
+    }
+  }
+
+<span class="nc" id="L109">  override def clone: Solution = Solution.createDefault(List[Atom]() ++ this.elems)</span>
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">  override def equals(that: Any) = that match {</span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">    case thatS: Solution =&gt; this.size == thatS.size &amp;&amp; (this.elems intersect thatS.elems).size == this.size</span>
+<span class="nc" id="L113">    case _ =&gt; false</span>
+  }
+
+  override def toString = {
+<span class="nc" id="L117">    elems.mkString(&quot;&lt;&quot;, &quot;,&quot;, &quot;&gt;&quot;)</span>
+  }
+
+//  def notifyCHAM(newAtom: Atom)
+}
+
+<span class="nc" id="L123">class SolutionImpl(owner: Engine, var elems: List[Atom]) extends Solution {</span>
+<span class="nc" id="L124">  def this() = this(null, List[Atom]())</span>
+
+  def displaySolution() {
+<span class="nc" id="L127">    var firstPrint: Boolean = true</span>
+<span class="nc" id="L128">    print(&quot;&lt;&quot;)</span>
+<span class="nc" id="L129">    elems.foreach(a =&gt; {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">      if (a.relation.name.charAt(0) != '$') {</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (!firstPrint)</span>
+<span class="nc" id="L132">          print(&quot;,&quot;)</span>
+<span class="nc" id="L133">        print(a)</span>
+<span class="nc" id="L134">        firstPrint = false</span>
+      }
+    })
+<span class="nc" id="L137">    println(&quot;&gt;&quot;)</span>
+  }
+
+<span class="nc" id="L140">  private var oldElements: List[Atom] = List()</span>
+
+  def remove(a: Atom) {
+<span class="nc bnc" id="L143" title="All 6 branches missed.">    elems = elems.filterNot(_ == a)</span>
+  }
+
+  def clear() {
+<span class="nc" id="L147">    elems = List[Atom]()</span>
+  }
+
+  def addAtom(atom: Atom) {
+<span class="nc" id="L151">    elems :+= atom</span>
+//    notifyCHAM(atom)
+  }
+
+  def addMolecule(molecule: List[Atom]) {
+<span class="nc" id="L156">    elems ++= molecule</span>
+  }
+
+  def cleanup() {
+<span class="nc" id="L160">    elems = elems.filter(_.isActive)</span>
+  }
+
+  def update(newsol: Solution) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">    if (newsol.isEmpty) {</span>
+<span class="nc" id="L165">      clear()</span>
+    } else {
+<span class="nc" id="L167">      this.elems = newsol.elems</span>
+    }
+  }
+
+  def inactivate(a: Atom) {
+<span class="nc" id="L172">    a.setActive(false)</span>
+  }
+
+  def activate(a: Atom) {
+<span class="nc" id="L176">    a.setActive(true)</span>
+  }
+
+<span class="nc" id="L179">  override def clone: Solution = new SolutionImpl(this.owner, List[Atom]() ++ this.elems)</span>
+//
+//  def notifyCHAM(newAtom: Atom) {
+//    if (owner != null)
+//      owner.notifyRelationObservers(newAtom)
+//  }
+
+  def createBackUp() {
+<span class="nc" id="L187">    oldElements = elems</span>
+  }
+
+  def reverse() {
+<span class="nc" id="L191">    elems = oldElements</span>
+  }
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

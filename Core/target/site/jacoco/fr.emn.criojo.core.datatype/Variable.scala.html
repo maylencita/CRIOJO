@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Variable.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.datatype</a> &gt; <span class="el_source">Variable.scala</span></div><h1>Variable.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.datatype
+
+trait Variable extends Pattern {
+  /** Variable name (only for debug) */
+  val name: String
+}
+
+/** Parametric Variable Definition.
+  *
+  * == Overview ==
+  * To use a variable, it's necessary to redefined it and extends en concrete
+  * pattern. As you could have static typing benefits (on operation). For
+  * example to construct variable on ScalaInt do as :
+  * {{{
+  *                                            +-+
+  *  +---------+                        +------|T|-+
+  *  | Pattern |                        | Var  +-+ |
+  *  +---------+                        +----------+
+  *       ^                                   ^
+  *       |                                   |
+  *       |                                   |
+  *       |                              +--------+
+  *  +----------+         +--------------|ScalaInt|-+
+  *  | ScalaInt | &lt;|----- | VarScalaInt  +--------+ |
+  *  +----------+         +-------------------------+
+  * }}}
+  *
+  * @constructor  Create a new variable of specific type with a given name.
+  * @param  n The variable's name.
+  */
+<span class="pc" id="L31">abstract class Var[T &lt;: Pattern](private val n: String) extends Variable {</span>
+<span class="fc" id="L32">  override val name: String = n</span>
+
+  /** Test if variable matches with an expression.
+    *
+    * For a variable, test works on type.
+    *
+    * @param exp The expression to test matches with variable.
+    * @return &lt;code&gt;true&lt;/code&gt; if variable matches with expression.
+    *         &lt;code&gt;false&lt;/code&gt; otherwise.
+    */
+<span class="fc" id="L42">  override def matches(exp: Expression): Boolean = exp match {</span>
+    case t: T =&gt; true
+    case _ =&gt; false
+  }
+
+  /** Get Valuation from given expression to variable.
+    *
+    * It's possible the given expression not match with variable. In this
+    * case, an empty valuation is returned.
+    *
+    * @param expr Expression to try to match.
+    * @return If expression match, a valuation from given expression for current
+    *         variable. An empty valuation otherwise.
+    */
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">  override def getValuation(expr: Expression): Valuation = expr match {</span>
+<span class="fc" id="L57">    case t: T =&gt; Valuation(this -&gt; expr)</span>
+<span class="nc" id="L58">    case _ =&gt; Valuation()</span>
+  }
+
+  /** Transforms variable in expression using valuation.
+    *
+    * Applying [[fr.emn.criojo.core.datatype.Valuation]] to current variable and
+    * transform in [[fr.emn.criojo.core.datatype.Expression]]. This mechanism is
+    * use to pass from Right Rule Pattern to Expression in solution.
+    *
+    * @param valuation  Map of VariableName, value, match between Left Rule
+    *        variable and solution value.
+    * @return Expression from variable.
+    */
+  @throws(classOf[NoValuationForVariable])
+  override def applyValuation(valuation: Valuation): Expression = {
+<span class="fc" id="L73">    var expr: Expression = null</span>
+
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    valuation.forall(v =&gt; {</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">      if (v._1.equals(this)) {</span>
+<span class="fc" id="L77">        expr = v._2.asInstanceOf[Expression]</span>
+<span class="fc" id="L78">        false</span>
+      } else {
+<span class="fc" id="L80">        true</span>
+      }
+    })
+
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">    if (expr == null) {</span>
+<span class="nc" id="L85">      throw new NoValuationForVariable(this)</span>
+    }
+
+<span class="fc" id="L88">    expr</span>
+  }
+}
+
+@deprecated (&quot;Find a way to delete Undef&quot;)
+<span class="pc" id="L93">object Undef extends Variable with Expression {</span>
+<span class="pc" id="L94">  override val name = &quot;Undef&quot;</span>
+<span class="nc" id="L95">  def matches(that: Term): Boolean = true</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

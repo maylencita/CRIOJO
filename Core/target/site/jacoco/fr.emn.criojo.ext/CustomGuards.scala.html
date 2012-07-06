@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CustomGuards.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext</a> &gt; <span class="el_source">CustomGuards.scala</span></div><h1>CustomGuards.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: jonathan
+ * Date: 2/15/12
+ * Time: 1:02 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
+//class EqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
+
+//  def reduce(vals: Valuation) = {
+//
+//    var value1 : Term = null
+//    var value2 : Term = null
+//
+//    term1 match {
+//      case x:ValueTerm[_] =&gt; {
+//        value1 = term1
+//      }
+//      case _ =&gt;
+//    }
+//
+//    term2 match {
+//      case x:ValueTerm[_] =&gt; {
+//        value2 = term2
+//      }
+//      case _ =&gt;
+//    }
+//
+//    vals.forall( s =&gt; {
+//      s match{
+//        case (x:Variable,v:Term) =&gt; {
+//
+//          if(value1 == null &amp;&amp; term1 == x) {
+//            value1 = v
+//          }
+//
+//          if(value2 == null &amp;&amp; term2 == x) {
+//            value2 = v
+//          }
+//        }
+//      }
+//
+//      !(value1!=null &amp;&amp; value2!=null)
+//    })
+//
+//    value1!=null &amp;&amp; value2!=null &amp; value1.equals(value2)
+//  }
+//  override def toString = atoms.mkString(&quot;Equals(&quot;, &quot;,&quot;, &quot;)&quot;)
+//}
+
+//class NotEqualsGuard(term1:Term, term2:Term) extends CriojoGuard(List()){
+//  def reduce(vals: Valuation) = {
+//
+//    var value1 : Term = null
+//    var value2 : Term = null
+//
+//    term1 match {
+//      case x:ValueTerm[_] =&gt; {
+//        value1 = term1
+//      }
+//      case _ =&gt;
+//    }
+//
+//    term2 match {
+//      case x:ValueTerm[_] =&gt; {
+//        value2 = term2
+//      }
+//      case _ =&gt;
+//    }
+//
+//    vals.forall( s =&gt; {
+//      s match{
+//        case (x:Variable,v:Term) =&gt; {
+//
+//          if(value1 == null &amp;&amp; term1 == x) {
+//            value1 = v
+//          }
+//
+//          if(value2 == null &amp;&amp; term2 == x) {
+//            value2 = v
+//          }
+//        }
+//      }
+//
+//      !(value1!=null &amp;&amp; value2!=null)
+//    })
+//
+//    !(value1!=null &amp;&amp; value2!=null &amp; value1.equals(value2))
+//  }
+//  override def toString = atoms.mkString(&quot;Equals(&quot;, &quot;,&quot;, &quot;)&quot;)
+//}
+
+//class AllAreTrueGuard(guards:List[Guard]) extends CriojoGuard(List()){
+//  def reduce(vals: Valuation) = {
+//
+//    val allGuards = guards
+//    allGuards.forall(g =&gt; {
+//
+//      g.reduce(vals)
+//    })
+//  }
+//  override def toString = atoms.mkString(&quot;ForEachTrue(&quot;, &quot;,&quot;, &quot;)&quot;)
+//}
+
+<span class="nc" id="L108">class CustomGuards {</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

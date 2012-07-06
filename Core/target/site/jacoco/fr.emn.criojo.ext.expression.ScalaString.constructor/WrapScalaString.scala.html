@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>WrapScalaString.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.ext.expression.ScalaString.constructor</a> &gt; <span class="el_source">WrapScalaString.scala</span></div><h1>WrapScalaString.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.ext.expression.ScalaString.constructor
+
+import fr.emn.criojo.core.datatype.{Valuation, Expression}
+import fr.emn.criojo.ext.expression.ScalaString.ScalaString
+
+<span class="pc bpc" id="L6" title="8 of 18 branches missed.">case class WrapScalaString(s: String) extends ScalaString {</span>
+<span class="fc" id="L7">  override def value = s;</span>
+
+<span class="nc" id="L9">  override def getValuation(expr: Expression): Valuation = Valuation()</span>
+
+<span class="fc" id="L11">  override def applyValuation(valuation: Valuation): Expression = this</span>
+
+<span class="fc" id="L13">  override def reduce(): Expression = this</span>
+
+<span class="pc bpc" id="L15" title="1 of 4 branches missed.">  override def matches(expr:Expression):Boolean = expr match {</span>
+<span class="pc bpc" id="L16" title="3 of 6 branches missed.">    case WrapScalaString(s2) if(s==s2) =&gt; true</span>
+    case _ =&gt; false
+  }
+  
+<span class="fc" id="L20">  override def toString():String = s.toString</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

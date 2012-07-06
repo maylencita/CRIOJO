@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Converters.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core</a> &gt; <span class="el_source">Converters.scala</span></div><h1>Converters.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core
+
+import datatype.{Term, Valuation, ValuationList, Expression}
+import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
+import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
+import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
+import fr.emn.criojo.ext.expression.ScalaString.ScalaString
+import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
+import fr.emn.criojo.ext.expression.Relation.constructor.Channel
+import fr.emn.criojo.ext.expression.Relation.constructor.OutChannel
+import fr.emn.criojo.ext.expression.Relation.{VarChannel, Relation, ChannelLocation}
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: jonathan
+ * Date: 4/20/12
+ * Time: 12:38 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+<span class="fc" id="L22">object Converters {</span>
+
+  implicit def LazyGuard(x: =&gt; Expression):CriojoGuard = {
+<span class="fc" id="L25">    val g = new CriojoGuard{</span>
+<span class="fc" id="L26">      override def eval(vals: Valuation) = {</span>
+<span class="fc" id="L27">        val valuation = x.applyValuation(vals).reduce()</span>
+<span class="pc bpc" id="L28" title="1 of 4 branches missed.">        valuation.isInstanceOf[WrapScalaBoolean] &amp;&amp; valuation.asInstanceOf[WrapScalaBoolean].value</span>
+      }
+//      val valuations = new ValuationList()
+//      val observed = Set[Relation]()
+//      def receiveUpdate(atom: Atom){}
+    }
+<span class="fc" id="L34">    g</span>
+  }
+
+  implicit def LazyExpression(x: =&gt; Expression):Expression = {
+<span class="pc" id="L38">    val g = new Expression {</span>
+
+<span class="nc" id="L40">      def matches(that: Term): Boolean = false</span>
+
+<span class="nc" id="L42">      override def reduce(): Expression = x.reduce()</span>
+
+<span class="fc" id="L44">      override def applyValuation(vals:Valuation): Expression = x.applyValuation(vals)</span>
+
+<span class="nc" id="L46">      override def getValuation(exp:Expression):Valuation = x.getValuation(exp)</span>
+    }
+<span class="fc" id="L48">    g</span>
+  }
+
+<span class="fc" id="L51">  implicit def intToExpression(i:Int):ScalaInt = WrapScalaInt(i)</span>
+<span class="fc" id="L52">  implicit def stringToExpression(s:String):ScalaString = WrapScalaString(s)</span>
+<span class="nc" id="L53">  implicit def booleanToTerm(b:Boolean):ScalaBoolean = WrapScalaBoolean(b)</span>
+
+<span class="nc bnc" id="L55" title="All 2 branches missed.">  implicit def TermToRelation(t:Term):Relation = t match {</span>
+<span class="nc" id="L56">    case cl:ChannelLocation =&gt; ChannelLocationToRelation(cl)</span>
+<span class="nc" id="L57">    case _ =&gt; null</span>
+  }
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">  def TermToChannel(t:Term):Channel = t match {</span>
+<span class="nc" id="L61">    case cl:ChannelLocation =&gt; ChannelLocationToChannel(cl)</span>
+<span class="nc" id="L62">    case _ =&gt; null</span>
+  }
+<span class="fc" id="L64">  implicit def ChannelLocationToChannel(cl:ChannelLocation):Channel = new Channel(cl.url, cl)</span>
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">  def TermToOutChannel(t:Term):OutChannel = t match {</span>
+<span class="nc" id="L67">    case cl:ChannelLocation =&gt; ChannelLocationToOutChannel(cl)</span>
+<span class="nc" id="L68">    case _ =&gt; null</span>
+  }
+
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">  def ChannelLocationToRelation(cl:ChannelLocation):Relation = if (cl.url contains &quot;.&quot;)</span>
+<span class="nc" id="L72">    ChannelLocationToOutChannel(cl)</span>
+  else
+<span class="fc" id="L74">    ChannelLocationToChannel(cl)</span>
+
+<span class="nc" id="L76">  implicit def ChannelLocationToOutChannel(cl:ChannelLocation):OutChannel = new OutChannel(cl.url, cl)</span>
+
+<span class="fc" id="L78">  implicit def ChannelToChannelLocation(c:Channel):ChannelLocation = c.location</span>
+<span class="fc" id="L79">  implicit def OutChannelToChannelLocation(oc:OutChannel):ChannelLocation = oc.location</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

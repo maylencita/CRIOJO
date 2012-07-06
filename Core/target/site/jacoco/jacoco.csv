@@ -1,0 +1,274 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Core,fr.emn.criojo.util,Logger.,139,37,2,0,14,8,20,4,19,4
+Core,fr.emn.criojo.util,Logger,80,0,0,0,0,0,20,0,20,0
+Core,fr.emn.criojo.util,Logger..anonfun.log.new Serializable() {...},35,0,0,0,2,0,5,0,5,0
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,AddScalaString,253,0,31,0,12,0,44,0,28,0
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,EqualScalaString,197,62,34,3,7,5,39,8,21,7
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,EqualScalaString.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaString.operation,AddScalaString.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.constructor,WrapScalaBoolean,138,18,18,0,6,2,32,3,23,3
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.constructor,WrapScalaBoolean.,33,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean,ScalaBoolean.class,14,22,1,1,3,5,3,4,2,4
+Core,fr.emn.criojo.ext.expression.ScalaBoolean,VarScalaBoolean,128,0,16,0,2,0,28,0,20,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean,VarScalaBoolean.,58,0,2,0,6,0,10,0,9,0
+Core,fr.emn.criojo.lang,Nu.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.lang,ChamGuard..anon.new ChamGuard() {...},16,0,0,0,1,0,3,0,3,0
+Core,fr.emn.criojo.lang,ChamGuard..anon.new ChamGuard() {...},8,8,0,0,0,1,2,1,2,1
+Core,fr.emn.criojo.lang,Cham..anon.new ChamGuard() {...},8,8,0,0,0,1,2,1,2,1
+Core,fr.emn.criojo.lang,Cham..anon.new ChamGuard() {...},4,12,0,0,0,1,1,2,1,2
+Core,fr.emn.criojo.lang,Cham..anon.new ChamGuard() {...},8,7,0,0,0,1,2,1,2,1
+Core,fr.emn.criojo.lang,Cham..anon.new ChamGuard() {...},4,12,0,0,0,1,1,2,1,2
+Core,fr.emn.criojo.lang,Molecule..anonfun.new Serializable() {...},4,34,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.lang,Molecule..anonfun.new Serializable() {...},38,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.lang,Molecule.,5,41,1,3,0,7,1,5,0,4
+Core,fr.emn.criojo.lang,Molecule..anonfun.new Serializable() {...},42,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.lang,Cham.RuleBody.,5,0,0,0,1,0,2,0,2,0
+Core,fr.emn.criojo.lang,.amp.colon,156,58,25,0,4,4,31,13,18,13
+Core,fr.emn.criojo.lang,.amp.colon.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.lang,Cham,125,170,14,0,8,12,18,34,11,34
+Core,fr.emn.criojo.lang,Molecule.class,65,94,9,3,8,13,9,7,3,7
+Core,fr.emn.criojo.lang,Nu,124,0,16,0,5,0,24,0,16,0
+Core,fr.emn.criojo.lang,Cham.RuleBody,27,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.lang,Empty.,87,21,0,0,5,3,24,4,24,4
+Core,fr.emn.criojo.lang,Cham..anonfun.introduceMolecule.new Serializable() {...},4,23,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.lang,Cham.,0,27,0,0,0,4,0,5,0,5
+Core,fr.emn.criojo.lang,CrjAtom,56,0,0,0,4,0,15,0,15,0
+Core,fr.emn.criojo.lang,Empty,81,0,0,0,0,0,23,0,23,0
+Core,fr.emn.criojo.lang,Molecule..anonfun..minus.minus.greater.new Serializable() {...},4,38,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.lang,ChamGuard.class,6,7,0,0,1,2,1,2,1,2
+Core,fr.emn.criojo.lang,Applicable.class,8,0,0,0,2,0,2,0,2,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,NotScalaBoolean,149,37,20,2,7,4,31,5,21,4
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,NotScalaBoolean.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,AndScalaBoolean,251,0,35,0,12,0,46,0,28,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,OrScalaBoolean,193,58,31,4,7,5,37,9,21,7
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,OrScalaBoolean.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaBoolean.operation,AndScalaBoolean.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,NormalRule..anonfun.applyReaction.1..anonfun.apply.new Serializable() {...},4,30,1,1,0,3,1,4,0,4
+Core,fr.emn.criojo.core,PresenceGuard,131,42,23,0,1,5,28,4,16,4
+Core,fr.emn.criojo.core,RuleFactory.class,11,1,0,0,1,1,1,1,1,1
+Core,fr.emn.criojo.core,Converters,52,0,0,0,0,0,13,0,13,0
+Core,fr.emn.criojo.core,NormalRule..anonfun.applyReaction.new Serializable() {...},4,28,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.applyReaction.new Serializable() {...},4,33,1,1,0,3,1,5,0,5
+Core,fr.emn.criojo.core,Combinatory,37,118,11,13,4,19,12,15,5,10
+Core,fr.emn.criojo.core,Converters.,58,54,7,1,12,12,9,10,5,10
+Core,fr.emn.criojo.core,NormalCham,61,100,4,0,0,2,10,25,8,25
+Core,fr.emn.criojo.core,NormalEngine..anonfun.introduceAtom.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,AbsGuard,128,16,25,0,2,2,24,4,11,4
+Core,fr.emn.criojo.core,OrGuard.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,Solution,15,74,0,2,1,9,3,6,3,5
+Core,fr.emn.criojo.core,NormalRule..anonfun.flattenCombination.1.new Serializable() {...},5,31,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,ExistsGuard..anonfun.gamma.new Serializable() {...},19,12,1,1,1,1,3,2,2,2
+Core,fr.emn.criojo.core,ExistsGuard,153,58,24,1,4,5,29,5,16,5
+Core,fr.emn.criojo.core,Atom,112,203,12,17,8,21,35,20,26,14
+Core,fr.emn.criojo.core,Combinatory..anonfun.from.new Serializable() {...},0,48,0,4,0,7,0,6,0,4
+Core,fr.emn.criojo.core,Combinatory.,7,41,0,0,1,6,2,4,2,4
+Core,fr.emn.criojo.core,PresenceGuard..anonfun.valuations.1..anonfun.new Serializable() {...},0,25,0,0,0,3,0,4,0,4
+Core,fr.emn.criojo.core,PartialState..anonfun.4..anonfun.apply.new Serializable() {...},5,46,2,4,1,3,2,5,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.findOneCombination.new Serializable() {...},0,23,0,0,0,2,0,4,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.findOneCombination.new Serializable() {...},1,22,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,EmptyGuard.,2,10,0,0,1,2,1,3,1,3
+Core,fr.emn.criojo.core,ExistsGuard..anonfun.new Serializable() {...},29,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,AbsGuard.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,NotGuard.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,NormalEngine.NormalRule.,9,0,0,0,2,0,2,0,2,0
+Core,fr.emn.criojo.core,Engine..anonfun.addRule.new Serializable() {...},4,24,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,Engine..anonfun.addRule.new Serializable() {...},4,24,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,NormalEngine..anonfun.removeFromExecutionIndex.new Serializable() {...},0,26,0,2,0,4,0,5,0,4
+Core,fr.emn.criojo.core,Converters..anon.new CriojoGuard() {...},0,25,1,3,0,4,1,3,0,2
+Core,fr.emn.criojo.core,Converters..anon.new Expression() {...},19,15,0,0,3,2,4,2,4,2
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.toString.new Serializable() {...},51,0,2,0,3,0,5,0,4,0
+Core,fr.emn.criojo.core,PartialState..anonfun.addAtomToExecutions.new Serializable() {...},4,58,1,3,0,5,1,6,0,5
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule,216,0,12,0,25,0,26,0,20,0
+Core,fr.emn.criojo.core,PartialStateExecution,27,130,5,9,2,17,8,13,4,10
+Core,fr.emn.criojo.core,PartialState,30,101,0,0,0,12,8,9,8,9
+Core,fr.emn.criojo.core,NormalRule..anonfun.1..anonfun.apply.new Serializable() {...},4,50,2,4,0,3,2,5,0,4
+Core,fr.emn.criojo.core,NotGuard,102,17,16,0,1,2,22,3,14,3
+Core,fr.emn.criojo.core,HashSolution..anonfun.remove.new Serializable() {...},24,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,CriojoGuard..anonfun.eval.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,PresenceGuard..anonfun.valuations.1..anonfun.apply.new Serializable() {...},4,32,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,AndGuard.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,Rule,148,6,22,0,12,2,19,1,8,1
+Core,fr.emn.criojo.core,Atom..anonfun.getValuation.new Serializable() {...},4,31,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,ExistsGuard..anonfun.valuations.new Serializable() {...},4,22,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,StatefulEngine.class,28,0,2,0,6,0,7,0,6,0
+Core,fr.emn.criojo.core,PartialState..anonfun.addAtomToExecutions.1..anonfun.apply.new Serializable() {...},4,33,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,Solution..anonfun.containsAll.new Serializable() {...},50,0,6,0,1,0,7,0,4,0
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.applyReaction.new Serializable() {...},32,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.applyReaction.new Serializable() {...},28,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,Engine.class,57,65,4,0,7,13,5,7,3,7
+Core,fr.emn.criojo.core,HashSolution..anonfun.displaySolution.new Serializable() {...},60,0,6,0,9,0,7,0,4,0
+Core,fr.emn.criojo.core,OrGuard,168,0,23,0,4,0,32,0,20,0
+Core,fr.emn.criojo.core,HashSolution..anonfun.contains.1..anonfun.apply.new Serializable() {...},23,0,2,0,2,0,5,0,4,0
+Core,fr.emn.criojo.core,CriojoGuard,21,17,0,0,2,3,2,3,2,3
+Core,fr.emn.criojo.core,AndGuard,141,27,23,0,2,2,28,4,16,4
+Core,fr.emn.criojo.core,Atom.,23,44,2,0,1,6,4,7,3,7
+Core,fr.emn.criojo.core,ExistsGuard.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,Atom..anonfun.equals.new Serializable() {...},2,20,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,ForAllGuard,13,0,0,0,2,0,2,0,2,0
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.execute.new Serializable() {...},29,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,Engine..anonfun.initRules.new Serializable() {...},4,23,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,Atom..anonfun.applyValuation.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,StatefulEngine..anonfun.executeRules.new Serializable() {...},16,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.core,PartialState.,13,0,0,0,1,0,3,0,3,0
+Core,fr.emn.criojo.core,HashSolution..anonfun.contains.new Serializable() {...},58,0,10,0,4,0,9,0,4,0
+Core,fr.emn.criojo.core,PresenceGuard..anonfun.valuations.new Serializable() {...},4,59,1,3,0,4,1,5,0,4
+Core,fr.emn.criojo.core,NormalEngine.class,9,129,4,10,0,18,3,12,0,8
+Core,fr.emn.criojo.core,PartialState..anonfun.new Serializable() {...},4,29,1,1,0,2,1,5,0,5
+Core,fr.emn.criojo.core,NormalRule..anonfun.canBeOk.new Serializable() {...},4,47,3,5,0,2,2,6,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.isOneMatchingCombination.1.new Serializable() {...},5,31,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.2..anonfun.apply.new Serializable() {...},4,45,1,1,0,2,1,4,0,4
+Core,fr.emn.criojo.core,Rule..anonfun.innerEq.1.1..anonfun.apply.new Serializable() {...},33,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,NormalRule..anonfun.new Serializable() {...},4,86,1,3,0,8,1,6,0,5
+Core,fr.emn.criojo.core,NormalEngine..anonfun.executeRules.new Serializable() {...},0,16,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.new Serializable() {...},4,60,1,3,0,5,1,6,0,5
+Core,fr.emn.criojo.core,Solution..anonfun.containsAll.1..anonfun.apply.new Serializable() {...},25,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core,NormalRule..anonfun.new Serializable() {...},0,20,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,NormalRule,38,362,16,28,2,49,18,30,6,20
+Core,fr.emn.criojo.core,HashSolution,93,0,0,0,20,0,17,0,17,0
+Core,fr.emn.criojo.core,PresenceGuard.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core,PartialStateExecution..anonfun.computeValuation.new Serializable() {...},0,32,0,0,0,2,0,4,0,4
+Core,fr.emn.criojo.core,Engine..anonfun.findRelation.new Serializable() {...},34,0,6,0,1,0,7,0,4,0
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.new Serializable() {...},20,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.new Serializable() {...},20,0,0,0,2,0,4,0,4,0
+Core,fr.emn.criojo.core,StatefulEngine.StatefulRule..anonfun.new Serializable() {...},38,0,4,0,1,0,7,0,5,0
+Core,fr.emn.criojo.core,Atom..anonfun.correspondsTo.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,NormalRule..anonfun.addToExecution.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core,Rule..anonfun.innerEq.1.new Serializable() {...},37,0,2,0,1,0,6,0,5,0
+Core,fr.emn.criojo.core,LocalReactionStrategy,5,42,1,7,0,8,1,5,0,2
+Core,fr.emn.criojo.core,EmptyGuard,7,0,0,0,0,0,2,0,2,0
+Core,fr.emn.criojo.ext.debug,DebugCham..anonfun.printSolution.new Serializable() {...},3,57,2,4,1,8,2,5,0,4
+Core,fr.emn.criojo.ext.debug,Solution.class,183,0,16,0,24,0,27,0,19,0
+Core,fr.emn.criojo.ext.debug,Solution.,23,0,0,0,3,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,DebugCham.DebugStatefulRule..anonfun.new Serializable() {...},0,20,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.ext.debug,DebugCham.DebugStatefulRule..anonfun.new Serializable() {...},0,20,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.ext.debug,SolutionImpl,214,0,2,0,20,0,37,0,36,0
+Core,fr.emn.criojo.ext.debug,DebugCham..anonfun.printTrace.new Serializable() {...},17,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,DebugCham.class,18,96,2,2,3,15,5,9,3,9
+Core,fr.emn.criojo.ext.debug,EmptySolution,116,0,0,0,0,0,31,0,31,0
+Core,fr.emn.criojo.ext.debug,InvalidStateError,4,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.containsAtom.new Serializable() {...},21,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.containsAtom.new Serializable() {...},36,0,6,0,1,0,7,0,4,0
+Core,fr.emn.criojo.ext.debug,EmptySolution.,12,0,0,0,1,0,2,0,2,0
+Core,fr.emn.criojo.ext.debug,SolutionImpl..anonfun.remove.new Serializable() {...},33,0,6,0,1,0,7,0,4,0
+Core,fr.emn.criojo.ext.debug,DebugCham..anonfun.containsRelation.new Serializable() {...},4,32,3,3,0,1,2,5,0,4
+Core,fr.emn.criojo.ext.debug,DebugCham..anonfun.containsAtom.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.ext.debug,DebugCham..anon.new DebugCham.DebugStatefulRule() {...},4,28,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.isTrue.new Serializable() {...},16,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.isTrue.new Serializable() {...},16,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.findMatches.new Serializable() {...},28,0,4,0,1,0,6,0,4,0
+Core,fr.emn.criojo.ext.debug,DebugCham.DebugStatefulRule.class,0,78,0,2,0,12,0,3,0,2
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.findMatches.new Serializable() {...},37,0,6,0,1,0,7,0,4,0
+Core,fr.emn.criojo.ext.debug,SolutionImpl..anonfun.cleanup.new Serializable() {...},16,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,Solution..anonfun.revert.new Serializable() {...},17,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext.debug,SolutionImpl..anonfun.displaySolution.new Serializable() {...},38,0,4,0,6,0,6,0,4,0
+Core,fr.emn.criojo.ext,EqClassList..anonfun.find.new Serializable() {...},21,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext,ExtendedCHAM,19,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext,TypedEqClasses,176,0,22,0,20,0,15,0,4,0
+Core,fr.emn.criojo.ext,TypedEqClasses..anonfun.getValue.new Serializable() {...},23,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext,EqClass,4,0,0,0,0,0,1,0,1,0
+Core,fr.emn.criojo.ext,TypedEqClasses..anonfun.add.new Serializable() {...},34,0,4,0,3,0,6,0,4,0
+Core,fr.emn.criojo.ext,EqClassList,85,0,0,0,13,0,10,0,10,0
+Core,fr.emn.criojo.ext,EqClass.,17,0,0,0,3,0,3,0,3,0
+Core,fr.emn.criojo.ext,EqClassList..anonfun.remove.new Serializable() {...},33,0,6,0,1,0,7,0,4,0
+Core,fr.emn.criojo.ext,CustomGuards,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.ext,EqClassList..anonfun.toString.new Serializable() {...},18,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.ext,LocalCHAM,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.ext,StandardSolution,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.ext,StandardCHAM,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.ext.expression.ScalaString.constructor,WrapScalaString,51,123,10,16,1,8,18,21,10,16
+Core,fr.emn.criojo.ext.expression.ScalaString.constructor,WrapScalaString.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.Relation,ChannelLocation,17,18,2,0,4,4,3,5,2,5
+Core,fr.emn.criojo.ext.expression.Relation,Relation.class,0,17,0,0,0,3,0,3,0,3
+Core,fr.emn.criojo.ext.expression.Relation,VarChannel,90,21,15,1,1,1,20,3,12,3
+Core,fr.emn.criojo.ext.expression.Relation,VarChannel.,58,0,2,0,6,0,10,0,9,0
+Core,fr.emn.criojo.core.statemachine,State,126,0,12,0,16,0,20,0,14,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.removeExecution.new Serializable() {...},64,0,10,0,3,0,9,0,4,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.removeExecution.1..anonfun.apply.new Serializable() {...},29,0,2,0,2,0,5,0,4,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anon.new MultiMap() {...},28,0,0,0,1,0,6,0,6,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.addExecution.1..anonfun.apply.mcVI.sp.new Serializable() {...},81,0,10,0,8,0,10,0,5,0
+Core,fr.emn.criojo.core.statemachine,State..anonfun.addExecutions.new Serializable() {...},36,0,2,0,2,0,5,0,4,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.initStates.new Serializable() {...},29,0,0,0,2,0,5,0,5,0
+Core,fr.emn.criojo.core.statemachine,PartialExecution,77,0,0,0,7,0,8,0,8,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.addExecution.new Serializable() {...},89,0,12,0,6,0,11,0,5,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.addExecution.1..anonfun.apply.mcVI.sp.1..anonfun.apply.new Serializable() {...},64,0,8,0,5,0,8,0,4,0
+Core,fr.emn.criojo.core.statemachine,Transition,30,0,0,0,2,0,4,0,4,0
+Core,fr.emn.criojo.core.statemachine,PartialExecution..anonfun.containsAtom.new Serializable() {...},25,0,2,0,1,0,5,0,4,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.initTransitions.new Serializable() {...},128,0,8,0,15,0,8,0,4,0
+Core,fr.emn.criojo.core.statemachine,State..anonfun.removeExecutions.new Serializable() {...},21,0,0,0,1,0,4,0,4,0
+Core,fr.emn.criojo.core.statemachine,StateMachine..anonfun.updateStates.new Serializable() {...},44,0,4,0,2,0,6,0,4,0
+Core,fr.emn.criojo.core.statemachine,StateMachine.class,145,0,6,0,25,0,10,0,7,0
+Core,fr.emn.criojo.ext.expression.Relation.constructor,OutChannel.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.Relation.constructor,OutChannel,124,34,23,0,1,2,27,6,15,6
+Core,fr.emn.criojo.ext.expression.Relation.constructor,Channel.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.Relation.constructor,LocalRelation.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.Relation.constructor,LocalRelation,110,20,16,0,2,1,22,4,14,4
+Core,fr.emn.criojo.ext.expression.Relation.constructor,Channel,124,34,23,0,1,2,27,6,15,6
+Core,fr.emn.criojo.ext.expression.ScalaInt.constructor,WrapScalaInt,52,134,4,14,1,8,16,26,12,21
+Core,fr.emn.criojo.ext.expression.ScalaInt.constructor,WrapScalaInt.,33,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaString,VarScalaString.,17,41,2,0,1,5,4,6,3,6
+Core,fr.emn.criojo.ext.expression.ScalaString,NoValueDefined,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.ext.expression.ScalaString,VarScalaString,53,75,7,9,1,2,17,11,11,9
+Core,fr.emn.criojo.ext.expression.ScalaString,ScalaString.class,14,22,1,1,3,5,3,4,2,4
+Core,fr.emn.criojo.core.datatype,TopValuation.,5,26,0,0,1,8,2,9,2,9
+Core,fr.emn.criojo.core.datatype,EmptyVal,47,5,0,0,9,1,13,1,13,1
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.intersect.new Serializable() {...},8,39,4,4,0,1,3,5,0,4
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.intersect.new Serializable() {...},4,22,1,1,0,2,1,4,0,4
+Core,fr.emn.criojo.core.datatype,Undef,22,0,0,0,0,0,6,0,6,0
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.restrict.new Serializable() {...},4,22,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.recursiveNot.new Serializable() {...},4,27,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core.datatype,NullAssignment.,12,0,0,0,1,0,3,0,3,0
+Core,fr.emn.criojo.core.datatype,ValuationList,12,174,0,6,1,23,1,14,1,11
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.apply.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core.datatype,Valuation.,0,25,0,0,0,3,0,4,0,4
+Core,fr.emn.criojo.core.datatype,BottomValuation.,18,19,0,0,4,4,7,5,7,5
+Core,fr.emn.criojo.core.datatype,TopValuation,70,0,0,0,0,0,20,0,20,0
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.domain.new Serializable() {...},0,15,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core.datatype,NoValuationForVariable,12,0,0,0,2,0,1,0,1,0
+Core,fr.emn.criojo.core.datatype,PatternNotMatchingException,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.core.datatype,MapValuation,35,207,5,13,4,27,8,21,4,16
+Core,fr.emn.criojo.core.datatype,MapValuation.,0,10,0,0,0,1,0,3,0,3
+Core,fr.emn.criojo.core.datatype,Undef.,20,13,0,0,1,2,6,2,6,2
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.get.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core.datatype,NormalForm..anonfun.consistentWith.new Serializable() {...},0,21,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core.datatype,Valuation.class,11,6,0,0,2,2,2,2,2,2
+Core,fr.emn.criojo.core.datatype,NormalForm..anonfun.intersect.new Serializable() {...},1,25,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.intersect.4..anonfun.apply.new Serializable() {...},4,39,3,3,0,5,2,5,0,4
+Core,fr.emn.criojo.core.datatype,Var..anonfun.applyValuation.new Serializable() {...},4,37,1,3,0,5,1,5,0,4
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.union.new Serializable() {...},8,39,4,4,0,1,3,5,0,4
+Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.new Serializable() {...},0,18,0,0,0,2,0,4,0,4
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.unary_.bang.new Serializable() {...},0,15,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.fr.emn.criojo.core.datatype.ValuationList..intersect.new Serializable() {...},0,46,0,2,0,5,0,5,0,4
+Core,fr.emn.criojo.core.datatype,NormalForm..anonfun.isNormalForm.new Serializable() {...},2,18,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.core.datatype,Term.class,20,1,0,0,4,1,4,1,4,1
+Core,fr.emn.criojo.core.datatype,NormalForm,13,114,1,9,0,10,4,11,3,7
+Core,fr.emn.criojo.core.datatype,NormalForm.,0,26,0,0,0,4,0,5,0,5
+Core,fr.emn.criojo.core.datatype,BottomValuation,67,0,0,0,0,0,19,0,19,0
+Core,fr.emn.criojo.core.datatype,Var,13,64,2,2,2,9,4,5,2,5
+Core,fr.emn.criojo.core.datatype,MapValuation..anonfun.hasExtension.new Serializable() {...},8,46,4,6,0,2,3,6,0,4
+Core,fr.emn.criojo.core.datatype,Valuation..anonfun.apply.new Serializable() {...},0,22,0,0,0,1,0,4,0,4
+Core,fr.emn.criojo.core.datatype,NullAssignment,77,0,0,0,0,0,22,0,22,0
+Core,fr.emn.criojo.core.datatype,Assignment,17,112,11,15,0,10,8,14,0,9
+Core,fr.emn.criojo.core.datatype,ValuationList..anonfun.intersect.new Serializable() {...},0,29,0,0,0,3,0,4,0,4
+Core,fr.emn.criojo.ext.expression.ScalaInt,ScalaInt.class,18,60,1,1,4,11,4,10,3,10
+Core,fr.emn.criojo.ext.expression.ScalaInt,VarScalaInt,54,102,7,9,0,3,17,18,11,16
+Core,fr.emn.criojo.ext.expression.ScalaInt,ScalaInt.,0,14,0,0,0,2,0,3,0,3
+Core,fr.emn.criojo.ext.expression.ScalaInt,VarScalaInt.,17,41,2,0,1,5,4,6,3,6
+Core,fr.emn.criojo.ext.expression.ScalaInt,NoValueDefined,3,0,0,0,1,0,1,0,1,0
+Core,fr.emn.criojo.core.factory,DefaultFactory.class,17,1,0,0,3,1,3,1,3,1
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,AddScalaInt,228,48,31,0,7,5,46,5,30,5
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,EqualScalaInt,196,54,31,2,8,5,38,7,22,6
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt.,32,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,GreaterThanScalaInt.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,CrossScalaInt,225,51,31,0,7,5,45,6,29,6
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,DivideScalaInt.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,CrossScalaInt.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinusScalaInt,228,48,31,0,7,5,46,5,30,5
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,GreaterThanScalaInt,192,58,31,2,8,5,37,8,21,7
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt..anonfun.applyValuation.new Serializable() {...},0,21,0,0,0,2,0,4,0,4
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt,153,86,19,5,4,6,37,8,26,7
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,DivideScalaInt,225,51,31,0,7,5,45,6,29,6
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinScalaInt..anonfun.reduce.new Serializable() {...},4,25,1,1,0,1,1,4,0,4
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,MinusScalaInt.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,EqualScalaInt.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.ext.expression.ScalaInt.operation,AddScalaInt.,40,0,2,0,1,0,8,0,7,0
+Core,fr.emn.criojo.core.impur,NativeRelation,0,14,0,0,0,2,0,2,0,2

@@ -5,6 +5,7 @@ import fr.emn.criojo.core.datatype.Var
 /** String Variable */
 case class VarScalaString(n: String) extends Var[ScalaString](n)
     with ScalaString {
+  override def toString():String = n
 }
 
 object VarScalaString {

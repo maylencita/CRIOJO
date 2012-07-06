@@ -20,6 +20,13 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
 @serializable
 object Atom{
 
+  var atomCount = 0
+
+  def nextAtomId():Int = {
+    atomCount += 1
+    atomCount
+  }
+
   def apply(rn:String, lst:Term*):Atom = new Atom(LocalRelation(rn), lst.toList)
   def apply(rel:Relation, lst:Term*):Atom = new Atom(rel, lst.toList)
 }
@@ -31,7 +38,15 @@ object Atom{
 //TODO pass relation as parameter in construction
 case class Atom(relation:Relation, patterns: List[Term]) {
 
-  def this(relationName:String, patterns:List[Term]) = this(LocalRelation(relationName), patterns)
+//  println("li:"+Atom.cpt1)
+//  Atom.cpt1 += 1
+//
+//  override def finalize() {
+//    Atom.cpt2 -= 1
+//    println("la:"+Atom.cpt2)
+//  }
+
+  //def this(relationName:String, patterns:List[Term]) = this(LocalRelation(relationName), patterns)
 
   var persistent:Boolean = false
   protected var active:Boolean = true
@@ -95,7 +110,8 @@ case class Atom(relation:Relation, patterns: List[Term]) {
   }
 
   // constant hashcode
-  override def hashCode = super.hashCode()
+  var id = Atom.nextAtomId()
+  override def hashCode = id
 
   override def equals(that: Any):Boolean = that match{
     case a:Atom => this.relation.name == a.relation.name && this.patterns.zip(a.patterns).forall(p => p._1 eq  p._2)

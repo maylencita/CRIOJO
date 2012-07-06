@@ -9,7 +9,7 @@ import factory.DefaultFactory
 * Date: 02/11/11
 * Time: 14:38
 */
-trait IntegerCham extends EqCHAM with DefaultFactory{
+trait IntegerCham extends EqCHAM with DefaultFactory {
 //  val IntVal = LocalRelation("Int") //Like Val(x,n)
 //  val Int_ask = LocalRelation("Int_ask")
 //  val Int_print = LocalRelation("$Int_print")

@@ -13,7 +13,7 @@ import fr.emn.criojo.core.Atom
 */
 
 class NativeRelation(name:String, nativeFun: (List[Term]) => Unit) extends LocalRelation(name){
-  override def notifyObservers(a:Atom){
+  def execute(a:Atom){
     nativeFun(a.patterns)
   }
 }

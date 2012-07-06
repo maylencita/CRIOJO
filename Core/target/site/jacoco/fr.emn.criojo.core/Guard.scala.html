@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Guard.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core</a> &gt; <span class="el_source">Guard.scala</span></div><h1>Guard.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core
+
+import datatype.Valuation
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: Jun 16, 2010
+ * Time: 11:32:59 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+trait Guard {
+  def empty:Boolean
+  def eval(valuation:Valuation):Boolean
+}
+
+<span class="fc" id="L18">object EmptyGuard extends Guard{</span>
+<span class="nc" id="L19">  override def empty = true</span>
+<span class="fc" id="L20">  override def eval(vals:Valuation):Boolean = true</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

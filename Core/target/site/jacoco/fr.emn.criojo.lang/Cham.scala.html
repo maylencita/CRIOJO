@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Cham.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.lang</a> &gt; <span class="el_source">Cham.scala</span></div><h1>Cham.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.lang
+
+import fr.emn.criojo.core._
+import datatype.{Term, Variable}
+import factory.RelationFactory
+import impur.NativeRelation
+
+/*
+* Created by IntelliJ IDEA.
+* User: mayleen
+* Date: 30/09/11
+* Time: 14:59
+*/
+<span class="pc bnc" id="L14" title="All 4 branches missed.">class Cham extends NormalEngine //with DefaultFactory</span>
+{
+  //TODO change Cham where used
+  this:RelationFactory =&gt;
+
+  type RuleDef = RuleFactory =&gt; Rule
+
+<span class="fc" id="L21">  def rules(ruleDefs:(RuleFactory =&gt; Rule)*) { initRules(ruleDefs.toList) }</span>
+
+  def NativeRel(f:(List[Term]) =&gt; Unit) = {
+<span class="fc" id="L24">    val natRel = new NativeRelation(&quot;NativeRel@&quot; +</span>
+<span class="fc" id="L25">      Cham.getNativeRelInstanceNum, f)</span>
+<span class="fc" id="L26">    addRelation(natRel)</span>
+<span class="fc" id="L27">    natRel</span>
+  }
+
+  def If(guard: Guard)(body: =&gt; Molecule):RuleBody = {
+<span class="nc" id="L31">    new RuleBody(body, guard)</span>
+  }
+
+<span class="pc" id="L34">  def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList, this) with ChamGuard</span>
+
+<span class="pc" id="L36">  def Ex(x:Variable,g:ChamGuard):ChamGuard =  new ExistsGuard(g,x) with ChamGuard</span>
+
+<span class="pc" id="L38">  def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList, this) with ChamGuard</span>
+
+<span class="pc" id="L40">  def Not(g:ChamGuard):ChamGuard = new NotGuard(g) with ChamGuard</span>
+
+  def when(head:Molecule)(body: RuleBody):RuleDef = {
+<span class="nc" id="L43">    val ruleDef =</span>
+<span class="nc bnc" id="L44" title="All 6 branches missed.">      if(body.guard == EmptyGuard)</span>
+<span class="nc" id="L45">        head --&gt; body.conj</span>
+      else
+<span class="nc" id="L47">        head --&gt; (body.guard, body.conj)</span>
+
+<span class="nc" id="L49">    ruleDef</span>
+  }
+
+  //  def axiom(fact:Molecule){
+  //    val AxiomTok = Tok()
+  //  }
+  //
+  //  def facts(flst:Molecule*){
+  //    flst.toList.foreach{fact =&gt; axiom(fact)}
+  //  }
+
+  def introduceMolecule(molecule:Molecule){
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">    molecule.toList.foreach(introduceAtom(_))</span>
+  }
+
+<span class="nc" id="L64">  implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)</span>
+<span class="fc" id="L65">  implicit def mol2atom(mol:Molecule):Atom = mol.head</span>
+  //  implicit def relToVar(r:Relation):VarChannel = {
+  //    val vr = new VarChannel(r.name)
+  //    vr.relation = r
+  //    vr
+  //  }
+
+  // A variable of type Relation
+  //  case class VarR(override val name:String) extends VarChannel(name){
+  //
+  //    def apply(tlst:Term*):CrjAtom = {
+  //      val at = new CrjAtom(this.name, tlst.toList)
+  //      at.relation = this.relation
+  //      at
+  //    }
+  //  }
+
+  //  case class Tok() extends LocalRelation(&quot;$X&quot;+index,true){
+  //    index += 1
+  //    def apply(vars:Term*) = new CrjAtom(name, vars.toList)
+  //  }
+
+  //  case class Fun(name:String){
+  //    def apply(patterns:Term*) = new Function(name, patterns.toList)
+  //  }
+
+<span class="nc bnc" id="L91" title="All 6 branches missed.">  class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}</span>
+}
+
+<span class="fc" id="L94">object Cham {</span>
+<span class="fc" id="L95">  private var nativeRelInstanceNum = 0</span>
+
+  def getNativeRelInstanceNum() = {
+<span class="fc" id="L98">    nativeRelInstanceNum += 1</span>
+<span class="fc" id="L99">    nativeRelInstanceNum</span>
+  }
+}
+
+/**
+ * A wrapper for a relation that is also a variable
+ */
+//class ChamChannel(val delegate:Relation,val function:(List[Term]) =&gt; Molecule)
+//  extends VarChannel(delegate.name) with Applicable{
+//
+//  this.relation = delegate
+//
+//  def this(del:Relation) = {
+//    this(del,(terms:List[Term])=&gt; {
+//      val atom = new CrjAtom(del.name, terms.toList)
+//      atom.relation = del
+//      atom
+//    })
+//  }
+//}
+
+/**
+ * An object of type Applicable applies a function to one or more Terms to obtain a Molecule
+ */
+<span class="nc" id="L123">trait Applicable/*(name:String,f:List[Term] =&gt; Molecule)* extends LocalRelation(name, true)*/{</span>
+  def function:(List[Term]) =&gt; Molecule
+<span class="nc" id="L125">  def apply(vars:Term*):Molecule = function(vars.toList)</span>
+}
+
+<span class="fc" id="L128">trait ChamGuard extends CriojoGuard {</span>
+<span class="pc" id="L129">  def &amp;&amp; (guard:CriojoGuard):ChamGuard = new AndGuard(this, guard) with ChamGuard</span>
+
+<span class="nc" id="L131">  def || (guard:CriojoGuard):ChamGuard = new OrGuard(this, guard) with ChamGuard</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

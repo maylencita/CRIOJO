@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StatefulEngine.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core</a> &gt; <span class="el_source">StatefulEngine.scala</span></div><h1>StatefulEngine.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core
+
+/*
+ * Created by IntelliJ IDEA.
+ * User: mayleen
+ * Date: 24/11/11
+ * Time: 10:05
+ */
+
+import collection.immutable.HashSet
+import datatype.Variable
+import statemachine.{StateMachine, PartialExecution}
+import fr.emn.criojo.ext.debug.Solution
+
+/**
+ * The StatefulEngine trait
+ * @define THIS A
+ * @define PARENT no other class
+ * @define RESULT 3
+ */
+<span class="nc" id="L21">trait StatefulEngine extends Engine {</span>
+
+<span class="nc" id="L23">  def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new StatefulRule(h,b,g,scope)</span>
+
+<span class="nc" id="L25">  override def reactionStrategy:ReactionStrategy = new LocalReactionStrategy()</span>
+
+  def executeRules(){
+<span class="nc bnc" id="L28" title="All 2 branches missed.">    while (rules.exists(r =&gt; r.execute)){}</span>
+  }
+
+<span class="nc" id="L31">  def introduceAtom(atom: Atom){</span>
+
+//    notifyRelationObservers(atom)
+  }
+
+  def removeAtom(atom: Atom) {
+<span class="nc" id="L37">    atom.setActive(false)</span>
+//    notifyRelationObservers(atom)
+  }
+
+<span class="nc bnc" id="L41" title="All 2 branches missed.">  class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])</span>
+    extends Rule with StateMachine {
+
+<span class="nc" id="L44">    init(head.toArray)</span>
+
+    def receiveUpdate(atom: Atom){
+<span class="nc bnc" id="L47" title="All 2 branches missed.">      if (atom.isActive)</span>
+<span class="nc" id="L48">        addExecution(atom)</span>
+      else
+<span class="nc" id="L50">        removeExecution(atom)</span>
+    }
+
+<span class="nc bnc" id="L53" title="All 2 branches missed.">    override def execute() = {</span>
+<span class="nc" id="L54">      var executed = false</span>
+<span class="nc" id="L55">      val finalState = states(size - 1)</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">      if(finalState.hasExecutions){</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">        finalState.removeExecution(pe =&gt; guard.eval(pe.valuation)) match{</span>
+<span class="nc" id="L58">          case Some(pe:PartialExecution) =&gt; {</span>
+<span class="nc" id="L59">            applyReaction(pe)</span>
+
+<span class="nc" id="L61">            executed = true</span>
+          }
+          case _ =&gt; //Skip
+        }
+      }
+<span class="nc" id="L66">      executed</span>
+    }
+
+<span class="nc" id="L69">    def applyReaction(finalExecution:PartialExecution) {</span>
+//      val finalValuation = scope.foldLeft(finalExecution.valuation){(vals,sv) =&gt;
+//        val i = Indexator.getIndex
+//        vals union Valuation(sv -&gt; VarScalaString(sv.name+&quot;@&quot;+i))
+//      }
+<span class="nc" id="L74">      val finalValuation = finalExecution.valuation</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">      if(!finalValuation.isEmpty) {</span>
+
+<span class="nc" id="L78">        val newAtoms = this.body.map(_.applyValuation(finalValuation))</span>
+
+<span class="nc bnc" id="L80" title="All 4 branches missed.">        val removeAtoms = for (i &lt;- 0 until head.size; if !head(i).persistent) yield{</span>
+<span class="nc" id="L81">          finalExecution.atom(i)</span>
+        }
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        removeAtoms.foreach(a =&gt; removeAtom(a))</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        newAtoms.foreach(a =&gt; reactionStrategy.applyReaction(StatefulEngine.this, a))</span>
+      }
+    }
+
+    override def toString = {
+<span class="nc" id="L90">      var str = super.toString + &quot;: \n&quot; +</span>
+<span class="nc" id="L91">        &quot;\tPartial Executions: \n&quot;</span>
+<span class="nc" id="L92">      for(s &lt;- states){</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (!s.executions.isEmpty)</span>
+<span class="nc" id="L94">          str += &quot;\t&quot;+ s +&quot;:&quot;+ s.executions.mkString(&quot;;&quot;) + &quot;\n&quot;</span>
+      }
+<span class="nc" id="L96">      str</span>
+    }
+  }
+}
+
+<span class="nc" id="L101">class HashSolution extends Solution{</span>
+<span class="nc" id="L102">  var elements = new HashSet[Atom]()</span>
+
+  def displaySolution() {
+<span class="nc" id="L105">    var firstPrint:Boolean = true</span>
+<span class="nc" id="L106">    print(&quot;&lt;&quot;)</span>
+    
+<span class="nc" id="L108">    var cpt:Int = 0</span>
+    
+<span class="nc" id="L110">    elements.foreach( a =&gt; {</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">      if(a.relation.name.charAt(0)!='$') {</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if(!firstPrint)</span>
+<span class="nc" id="L113">          print(&quot;,&quot;)</span>
+<span class="nc" id="L114">        cpt = (cpt+1)%10</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if(cpt!=9)</span>
+<span class="nc" id="L116">          print(a)</span>
+        else
+<span class="nc" id="L118">          println(a)</span>
+<span class="nc" id="L119">        firstPrint = false</span>
+      }
+    })
+<span class="nc" id="L122">    println(&quot;&gt;&quot;)</span>
+  }
+
+  def createBackUp() {
+<span class="nc" id="L126">    null</span>
+  }
+
+  def reverse() {
+<span class="nc" id="L130">    null</span>
+  }
+
+<span class="nc" id="L133">  def elems = elements.toList</span>
+
+  override def addAtom(atom: Atom){
+<span class="nc" id="L136">    elements += atom</span>
+  }
+
+  def addMolecule(molecule: List[Atom]){
+<span class="nc" id="L140">    elements ++= molecule</span>
+  }
+
+  def remove(atom: Atom){
+<span class="nc bnc" id="L144" title="All 2 branches missed.">    elements = elements.filterNot(a=&gt; atom eq a)</span>
+  }
+
+<span class="nc" id="L147">  def contains(atom:Atom) = elements.exists{a =&gt;</span>
+<span class="nc bnc" id="L148" title="All 6 branches missed.">    (a.relation.name == atom.relation.name) &amp;&amp;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">      a.arity == atom.arity &amp;&amp;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">      a.patterns.zip(atom.patterns).forall{t =&gt;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        t._1 == t._2</span>
+      }
+  }
+
+<span class="nc" id="L155">  def clear(){}</span>
+
+<span class="nc" id="L157">  def cleanup(){}</span>
+
+<span class="nc" id="L159">  def update(newsol: Solution){}</span>
+
+<span class="nc" id="L161">  def inactivate(a: Atom){}</span>
+
+<span class="nc" id="L163">  def activate(a: Atom){}</span>
+
+<span class="nc" id="L165">  def notifyCHAM(newAtom: Atom){}</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>
