@@ -1,0 +1,107 @@
+.vdivide {
+
+  width: 6px;
+  border: 1px solid #c5c5c5;
+  border-width: 0 1px 0 1px;
+  border-right-color: rgba(0, 0, 0, 0.3);
+  background: #f9f9f9;
+  background: -webkit-gradient(linear, left top, right top, from(#f9f9f9), to(#dfe0e1));
+  background: -moz-linear-gradient(left, #f9f9f9, #dfe0e1);
+  background: linear-gradient(left, #f9f9f9, #dfe0e1);
+}
+
+.content-secondary{
+} 
+
+.header-docs {
+	z-index: 900;
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;		
+}
+
+.content {
+	position: absolute;
+	top: 41px;
+	bottom: 55px;
+	left: 0px;
+	right: 0px;
+}
+
+.content-primary {
+	position: absolute;
+	top: 0px;
+	bottom: 50px;
+	right:0px;
+	float: right;
+	left:251px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#messages {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 5px;
+	bottom: 0px;
+	padding: 10px;
+}
+
+#textinput-box {
+	position: absolute;
+	height:50px;
+	bottom: 0px;
+	right:0px;
+	float: right;
+	left:251px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border-top: solid #6f6b6b 1px;
+}
+
+#input-span {
+	position: absolute;
+	top: 5px;
+	bottom: 5px;
+	left: 5px;
+	right: 100px;
+}
+
+#send-button-span {
+	position: absolute;
+	top: -2px;
+	bottom: 5px;
+	width: 100px;
+	right: 5px;
+}
+
+#send-button-span a {
+	float: right;
+	width: 80px;
+}
+
+.content-secondary {
+	top: 0px;
+	bottom: 0px;
+	width:250px;
+	left:0px;
+	float: left;
+}
+
+.separator {
+	width: 1px;
+	height: 100%;
+	left:250px;
+	float: left;
+	background-color: #6f6b6b;
+}
+
+.footer-docs {
+	z-index: 900;
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;	
+}

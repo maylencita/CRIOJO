@@ -1,0 +1,148 @@
+<html>
+	<head>
+		<title>Demo: a game engine</title>
+        <link rel="stylesheet" href="assets/css/style.css">
+		<script type="text/javascript" src="lib/jquery.js"></script>
+        <script type="text/javascript" src="lib/jquery.tmpl.js"></script>
+
+
+        <!-- Connector for CRIJO -->
+        <script type="application/javascript" src="lib/connector.js"></script>
+        <script type="application/javascript" src="lib/stomp.js"></script>
+        <script type="application/javascript" src="lib/BusConnectorHQSW.js"></script>
+
+		<script type="text/javascript">
+
+            var url = 'ws://127.0.0.1:61614/stomp';
+            var remoteActorName = 'server.map2';
+            var connector;
+
+            var login = "Jonathan";
+
+            function canYouConfirmThisMove(id,x,y,dx,dy) {
+                connector.send(remoteActorName, "@"+login+".moveConfirmed", "@"+remoteActorName+".canIMove", [x,y,dx,dy,"@"+login+".moveConfirmed", "@"+login+".moveCanceled","@"+login+".notif",id])
+            }
+
+            function onCommunicationEstablished() {
+
+                connector.setChannelListener("connectionOK", function(message) {
+                    initGame(message.args[0],message.args[1],message.args[2]);
+                    $("#background").css("background","url('assets/img/Autotiles/"+message.args[3]+"')")
+                    console.log("conection OK");
+                })
+
+                connector.setChannelListener("connectionKO", function(message) {
+                    console.log("conection KO");
+                })
+
+                connector.setChannelListener("moveConfirmed", function(message) {
+                    mapOfPlayers[message.args[2]].makeSingle(message.args[0],message.args[1]);
+                    console.log("moveconfirmed");
+                })
+
+                connector.setChannelListener("moveCanceled", function(message) {
+                    console.log("movecanceled");
+                })
+
+                connector.setChannelListener("notif", function(message) {
+                    if(message.args[0] == "changeWorld"){
+                        $("#scene")[0].innerHTML = ""
+                        console.log("createGrotte");
+                    }
+                    if(message.args[0] == "connectToMe"){
+                        //mapname = message.args[1]
+                        remoteActorName = message.args[1].split(".")[0]+"."+message.args[1].split(".")[1]
+                        remoteActorName = remoteActorName.substring(1,remoteActorName.length)
+                        connector.send(remoteActorName, "@"+login+".connectionOK", "@"+remoteActorName+".inscription", ["@"+login+".connectionOK", "@"+login+".in"])
+                    }
+                    console.log("notification received");
+                })
+
+                connector.setChannelListener("movePlayer", function(message) {
+                    console.log("moveplayer");
+                })
+
+                connector.setChannelListener("movePNJ", function(message) {
+
+                    var newx = message.args[1]
+                    var newy = message.args[2]
+
+                    var dx = newx - mapOfPlayers[message.args[0]].x
+                    var dy = newy - mapOfPlayers[message.args[0]].y
+
+                    if(dx==1) {
+                        mapOfPlayers[message.args[0]].setOrientation(3)
+                    }
+                    if(dx==-1) {
+                        mapOfPlayers[message.args[0]].setOrientation(1)
+                    }
+                    if(dy==1) {
+                        mapOfPlayers[message.args[0]].setOrientation(0)
+                    }
+                    if(dy==-1) {
+                        mapOfPlayers[message.args[0]].setOrientation(2)
+                    }
+
+                    if(!(dx==0 && dy==0)) {
+                        mapOfPlayers[message.args[0]].makeSingle(newx,newy)
+                    }
+
+                    console.log("movepnj");
+                })
+
+                connector.setChannelListener("createPNJ", function(message) {
+
+                    var pnjId = message.args[0];
+                    var x = message.args[1];
+                    var y = message.args[2];
+
+                    var pnj = new NonPlayablePlayer(pnjId);
+                    pnj.register();
+                    pnj.setPosition(x,y);
+                    pnj.display();
+
+                    console.log("createPNJ");
+                })
+
+                connector.setChannelListener("createGrotte", function(message) {
+                    var grotte = new Grotte();
+                    grotte.setPosition(message.args[0],message.args[1]);
+                    grotte.display();
+
+                    console.log("createGrotte");
+                })
+
+                connector.send(remoteActorName, "@"+login+".connectionOK", "@"+remoteActorName+".inscription", ["@"+login+".connectionOK", "@"+login+".in"])
+            }
+
+            $(document).ready(function(){
+
+                connector = new Connector();
+                connector.addConnectorEvent("connect", onCommunicationEstablished);
+                connector.connect(url, login);
+            })
+
+		</script>
+
+        <script type="text/x-jquery-tmpl" id="playerTemplate">
+            <div id="player-${id}" class="player"></div>
+        </script>
+
+        <script type="text/x-jquery-tmpl" id="grotteTemplate">
+            <div id="grotte" class="grotte"></div>
+        </script>
+
+        <script type="text/javascript" src="lib/engine.js"></script>
+	</head>
+	<body>
+        <div id="wrapper">
+            <div id="background">
+                <div id="scene">
+
+                </div>
+            </div>
+            <div id="debug">
+            </div>
+        </div>
+	</body>
+</html>
