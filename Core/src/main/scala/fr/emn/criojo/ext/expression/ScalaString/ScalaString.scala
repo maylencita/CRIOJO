@@ -14,6 +14,8 @@ trait ScalaString extends Pattern with Expression {
 
   final def length: ScalaInt = new LengthScalaString(this)
 
+  final def size: ScalaInt = this.length
+
   final def +(that: ScalaString): ScalaString = new AddScalaString(this, that)
 
   final def <=>(that: ScalaString): ScalaBoolean = new EqualScalaString(this, that)

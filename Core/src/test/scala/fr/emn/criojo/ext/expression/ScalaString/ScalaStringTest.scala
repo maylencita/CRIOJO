@@ -1,13 +1,14 @@
 package fr.emn.criojo.ext.expression.ScalaString
 
-import constructor.WrapScalaString
 import org.junit.Test
+
+import constructor.WrapScalaString
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 import fr.emn.criojo.lang.Cham
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-import fr.emn.criojo.core.factory.DefaultFactory
+import fr.emn.criojo.TestCham
 
 class ScalaStringTest {
   @Test
@@ -65,7 +66,8 @@ class ScalaStringTest {
 
   @Test
   def chamEqualTest() {
-    val cham = new Cham with StringTestCham {
+    val cham = new Cham with TestCham {
+      override def name = "chamEqualTest"
       val Foo = LocalRelation("Foo")
       val Bar = LocalRelation("Bar")
       val x, y = VarScalaString()
@@ -79,13 +81,14 @@ class ScalaStringTest {
     cham.introduceMolecule(cham.Foo(WrapScalaString("foo")))
     cham.introduceMolecule(cham.Foo(WrapScalaString("foo")))
     cham.introduceMolecule(cham.Foo(WrapScalaString("foo")))
-    cham.introduceMolecule(cham.Bar(WrapScalaString("foo")))
+    cham.introduceMolecule(cham.Bar(WrapScalaString("bar")))
     cham.executeRules()
   }
 
   @Test
   def chamLenghtTest() {
-    val cham = new Cham with StringTestCham {
+    val cham = new Cham with TestCham {
+      override def name = "chamLenghtTest"
       val Empty = LocalRelation("Empty")
       val NotEmpty = LocalRelation("NotEmpty")
 
@@ -104,7 +107,8 @@ class ScalaStringTest {
 
   @Test
   def chamEmptyTest() {
-    val cham = new Cham with StringTestCham {
+    val cham = new Cham with TestCham {
+      override def name = "chamEmptyTest"
       val Empty = LocalRelation("Empty")
       val NotEmpty = LocalRelation("NotEmpty")
 
@@ -123,7 +127,8 @@ class ScalaStringTest {
 
   @Test
   def chamConcatTest() {
-    val cham = new Cham with StringTestCham {
+    val cham = new Cham with TestCham {
+      override def name = "chamConcatTest"
       val Foo = LocalRelation("A")
       val Bar = LocalRelation("B")
 
@@ -144,13 +149,6 @@ class ScalaStringTest {
   }
 
   // ****************************************************************** Utils **
-  trait StringTestCham extends Cham with DefaultFactory {
-    val AssertTrue = NativeRel {
-      case (wb: WrapScalaBoolean)::Nil => assertTrue(wb)
-      case _ => assertTrue(WrapScalaBoolean(false))
-    }
-  }
-
   def assertTrue(b: ScalaBoolean) {
     assert(b.reduce() == WrapScalaBoolean(true))
   }
