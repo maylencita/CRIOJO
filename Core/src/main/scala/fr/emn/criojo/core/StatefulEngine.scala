@@ -29,7 +29,7 @@ trait StatefulEngine extends Engine {
   }
 
   def introduceAtom(atom: Atom){
-
+    atom.reduce()
     notifyRelationObservers(atom)
   }
 

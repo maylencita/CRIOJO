@@ -29,7 +29,10 @@ object Atom{
  * @define THIS Atom
  */
 //TODO pass relation as parameter in construction
-case class Atom(relation:Relation, patterns: List[Term]) {
+case class Atom(relation:Relation, var patterns: List[Term]) {
+  def reduce() {
+    patterns = patterns.map(t => t.reduce())
+  }
 
   def this(relationName:String, patterns:List[Term]) = this(LocalRelation(relationName), patterns)
 
