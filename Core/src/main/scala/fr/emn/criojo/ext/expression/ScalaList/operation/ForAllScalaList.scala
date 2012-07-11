@@ -30,7 +30,7 @@ case class ForAllScalaList[A <: Pattern with Expression](f: (A) => ScalaBoolean,
     //   * g o f
     def g (b: ScalaBoolean): Boolean = b.getValue()
 
-    WrapScalaBoolean(l.getValue().forall(g _ compose f))
+    WrapScalaBoolean(l.getValue.forall(g _ compose f))
   }
 }
 

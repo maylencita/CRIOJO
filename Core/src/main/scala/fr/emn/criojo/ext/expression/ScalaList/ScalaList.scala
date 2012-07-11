@@ -1,18 +1,28 @@
 package fr.emn.criojo.ext.expression.ScalaList
 
-import fr.emn.criojo.core.datatype.{Term, Expression, Pattern}
+import constructor.WrapScalaColonColon
+import fr.emn.criojo.core.datatype.{Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
-import operation.ForAllScalaList
+import fr.emn.criojo.ext.expression.ScalaInt.ScalaInt
+import operation._
 
 trait ScalaList[+A <: Pattern with Expression] extends Pattern with Expression {
-  def value: List[A] = {
-    throw new NoValueDefined()
-  }
+  def value: List[A] = throw new NoValueDefined()
+
+  final def length: ScalaInt = new LengthScalaList[A](this)
+
+  final def size: ScalaInt = this.length
 
   final def forall(f: A => ScalaBoolean): ScalaBoolean =
       new ForAllScalaList[A](f, this)
 
-  final def getValue(): List[A] = reduce() match {
+  final def ::[B >: A <: Pattern with Expression] (elem: B): ScalaList[B] =
+      new WrapScalaColonColon[B](elem, this)
+
+  final def contains(elem: Pattern with Expression): ScalaBoolean =
+      new ContainsScalaList[A](elem, this)
+
+  final def getValue: List[A] = reduce() match {
     case l: ScalaList[A] => l.value
     case _ => throw new NoValueDefined()
   }
