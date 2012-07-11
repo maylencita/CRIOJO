@@ -10,7 +10,7 @@ case class VarScalaBoolean(n: String) extends Var[ScalaBoolean](n)
 object VarScalaBoolean {
   private var instanceNum = 0
 
-  def apply() = new VarScalaBoolean("VarScalaBoolean@" + getInstanceNum)
+  def apply(): VarScalaBoolean = VarScalaBoolean("VarScalaBoolean@" + getInstanceNum)
 
   private def getInstanceNum() = {
     instanceNum += 1
