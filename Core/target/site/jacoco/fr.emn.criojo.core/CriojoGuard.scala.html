@@ -35,7 +35,7 @@ import fr.emn.criojo.ext.expression.Relation.Relation
   }
 }
 
-<span class="pc bnc" id="L38" title="All 25 branches missed.">case class PresenceGuard(atoms:List[Atom], engine:NormalEngine) extends CriojoGuard {</span>
+<span class="pc bnc" id="L38" title="All 25 branches missed.">case class PresenceGuard(atoms:List[Atom], engine:CriojoEngine) extends CriojoGuard {</span>
   //init(atoms.toArray)
 
   //val finalState = states(size - 1)
@@ -90,7 +90,7 @@ import fr.emn.criojo.ext.expression.Relation.Relation
 <span class="nc" id="L90">  override def toString= atoms.mkString(&quot;&lt;&quot;,&quot;,&quot;,&quot;&gt;&quot;)</span>
 }
 
-<span class="pc bnc" id="L93" title="All 27 branches missed.">case class AbsGuard(override val atoms:List[Atom], override val engine:NormalEngine) extends PresenceGuard(atoms, engine){</span>
+<span class="pc bnc" id="L93" title="All 27 branches missed.">case class AbsGuard(override val atoms:List[Atom], override val engine:CriojoEngine) extends PresenceGuard(atoms, engine){</span>
 <span class="fc" id="L94">  override def valuations(valuation:Valuation) = super.valuations(valuation:Valuation).not</span>
 
 <span class="nc" id="L96">  override def toString = atoms.mkString(&quot;Abs(&quot;, &quot;,&quot;, &quot;)&quot;)</span>

@@ -11,7 +11,7 @@ import impur.NativeRelation
 * Date: 30/09/11
 * Time: 14:59
 */
-class Cham extends NormalEngine //with DefaultFactory
+class Cham extends CriojoEngine //with DefaultFactory
 {
   //TODO change Cham where used
   this:RelationFactory =>

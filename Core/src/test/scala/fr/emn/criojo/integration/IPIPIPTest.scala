@@ -27,14 +27,15 @@ class IPIPIPTest {
 
 
       rules(
-        (L(x, u) & L(y, v))  --> {(y <=> (x + 1)) && (v >= u)} ?: (L(x, v) & L(y, u))
+        (L(x, u) & L(x+1, v))  --> {(v < u)} ?: (L(x, v) & L(x+1, u))
       )
     }
-    fCham.enableStreamingTrace()
-    fCham.enableSolutionTrace()
-    val j = 43
+//    fCham.enableStreamingTrace()
+//    fCham.enableSolutionTrace()
+    val j = 50
     for (i <- 0 to j)
       fCham.introduceMolecule(fCham.L(i, j - i))
+
     fCham.executeRules()
     fCham.printSolution()
   }

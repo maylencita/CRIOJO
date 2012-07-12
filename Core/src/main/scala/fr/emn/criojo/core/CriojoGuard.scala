@@ -35,7 +35,7 @@ abstract class CriojoGuard extends Guard {
   }
 }
 
-case class PresenceGuard(atoms:List[Atom], engine:NormalEngine) extends CriojoGuard {
+case class PresenceGuard(atoms:List[Atom], engine:CriojoEngine) extends CriojoGuard {
   //init(atoms.toArray)
 
   //val finalState = states(size - 1)
@@ -90,7 +90,7 @@ case class PresenceGuard(atoms:List[Atom], engine:NormalEngine) extends CriojoGu
   override def toString= atoms.mkString("<",",",">")
 }
 
-case class AbsGuard(override val atoms:List[Atom], override val engine:NormalEngine) extends PresenceGuard(atoms, engine){
+case class AbsGuard(override val atoms:List[Atom], override val engine:CriojoEngine) extends PresenceGuard(atoms, engine){
   override def valuations(valuation:Valuation) = super.valuations(valuation:Valuation).not
 
   override def toString = atoms.mkString("Abs(", ",", ")")

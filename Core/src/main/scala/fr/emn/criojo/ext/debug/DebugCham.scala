@@ -144,7 +144,7 @@ import fr.emn.criojo.lang.Molecule
 //  }
 //}
 
-trait DebugCham extends NormalEngine {
+trait DebugCham extends CriojoEngine {
 
   var DEBUG_TRACE:ListBuffer[String] = ListBuffer()
   var DEBUG_DIRECT_MODE = false
@@ -208,13 +208,13 @@ trait DebugCham extends NormalEngine {
   }
 
   override def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
-    new NormalRule(h,b,g,scope, this) with DebugStatefulRule
+    new PartialStateRule(h,b,g,scope, this) with DebugStatefulRule
   }
 
   trait DebugStatefulRule
-    extends NormalRule {
+    extends PartialStateRule {
 
-    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation) {
+    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean =  {
 
       var valuatedHead = this.head.map({a => a.applyValuation(valuation)})
       var valuatedBody = this.body.map({a => a.applyValuation(valuation)})
@@ -234,7 +234,7 @@ trait DebugCham extends NormalEngine {
         //printSolution()
       }
 
-      super.applyReaction(pes, valuation)
+      super.applyReaction(pes, valuation, listAtoms, oneTime)
     }
 
   }

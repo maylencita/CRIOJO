@@ -12,7 +12,7 @@ import fr.emn.criojo.ext.expression.Relation.constructor.{LocalRelation}
 import fr.emn.criojo.ext.expression.Relation.{Relation}
 
 trait Engine extends RuleFactory{
-  protected var rules:List[Rule] = List()
+  var rules:List[Rule] = List()
   protected var relations:List[Relation] = List()
 
   def reactionStrategy:ReactionStrategy

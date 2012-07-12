@@ -38,6 +38,7 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
 //TODO pass relation as parameter in construction
 <span class="pc bnc" id="L39" title="All 5 branches missed.">case class Atom(relation:Relation, patterns: List[Term]) {</span>
 
+<span class="fc" id="L41">  var consumed:Boolean = false</span>
 //  println(&quot;li:&quot;+Atom.cpt1)
 //  Atom.cpt1 += 1
 //
@@ -48,27 +49,27 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
 
   //def this(relationName:String, patterns:List[Term]) = this(LocalRelation(relationName), patterns)
 
-<span class="pc" id="L51">  var persistent:Boolean = false</span>
-<span class="pc" id="L52">  protected var active:Boolean = true</span>
+<span class="pc" id="L52">  var persistent:Boolean = false</span>
+<span class="pc" id="L53">  protected var active:Boolean = true</span>
 
   //TODO Remove this
-<span class="nc" id="L55">  def isTrue:Boolean = false</span>
-<span class="nc" id="L56">  def isFalse:Boolean = false</span>
+<span class="nc" id="L56">  def isTrue:Boolean = false</span>
+<span class="nc" id="L57">  def isFalse:Boolean = false</span>
 
-<span class="fc" id="L58">  def arity = patterns.size</span>
+<span class="fc" id="L59">  def arity = patterns.size</span>
 
   @deprecated (&quot;Use: setActive(false)&quot;)
   def inactivate(){
-<span class="nc" id="L62">    active = false</span>
+<span class="nc" id="L63">    active = false</span>
   }
 
-<span class="nc" id="L65">  def setActive(active:Boolean) { this.active = active }</span>
-<span class="nc" id="L66">  def isActive:Boolean = this.active</span>
+<span class="nc" id="L66">  def setActive(active:Boolean) { this.active = active }</span>
+<span class="nc" id="L67">  def isActive:Boolean = this.active</span>
 
-<span class="fc bfc" id="L68" title="All 2 branches covered.">  def applyValuation(valuation:Valuation):Atom = new Atom(relation match {</span>
-<span class="fc" id="L69">    case varChannel:VarChannel =&gt; ChannelLocationToRelation(varChannel.applyValuation(valuation).asInstanceOf[ChannelLocation])</span>
-<span class="fc" id="L70">    case _ =&gt; relation</span>
-<span class="fc" id="L71">  }, patterns.map({ pattern:Term =&gt; pattern.applyValuation(valuation).reduce() }))</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">  def applyValuation(valuation:Valuation):Atom = new Atom(relation match {</span>
+<span class="fc" id="L70">    case varChannel:VarChannel =&gt; ChannelLocationToRelation(varChannel.applyValuation(valuation).asInstanceOf[ChannelLocation])</span>
+<span class="fc" id="L71">    case _ =&gt; relation</span>
+<span class="fc" id="L72">  }, patterns.map({ pattern:Term =&gt; pattern.applyValuation(valuation).reduce() }))</span>
 
   /** Applies the given substitutions to the atom.
    *
@@ -76,7 +77,7 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
    * @return an [[fr.emn.criojo.core.Atom]]
    */
   @deprecated(&quot;use: applyValuation&quot;)
-<span class="nc" id="L79">  def applySubstitutions(vals:Valuation):Atom = this</span>
+<span class="nc" id="L80">  def applySubstitutions(vals:Valuation):Atom = this</span>
 
   /** Returns true if the given atom correspondsTo this atom.
    *
@@ -84,9 +85,9 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
    * @return true if the matching is positive
    */
   def correspondsTo(that: Atom) : Boolean = {
-<span class="pc bpc" id="L87" title="3 of 6 branches missed.">      this.relation.name == that.relation.name &amp;&amp;</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">      this.arity == that.arity &amp;&amp;</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">      this.patterns.zip(that.patterns).forall(p =&gt; p._1.matches(p._2.asInstanceOf[Expression]))</span>
+<span class="pc bpc" id="L88" title="3 of 6 branches missed.">      this.relation.name == that.relation.name &amp;&amp;</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">      this.arity == that.arity &amp;&amp;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">      this.patterns.zip(that.patterns).forall(p =&gt; p._1.matches(p._2.asInstanceOf[Expression]))</span>
   }
 
   // fixme: le premier atome contient une liste de patterns et le second une list d'expression
@@ -95,8 +96,8 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
 //      case exp:Expression =&gt; t1.getValuation(exp)
 //      case _ =&gt; throw new PatternNotMatchingException
 //    }
-<span class="fc" id="L98">    def getVal(t1:Pattern, t2:Expression):Valuation = t1.getValuation(t2)</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">    this.patterns.zip(that.patterns).foldLeft(Valuation())((v,p)=&gt;v union getVal(p._1.asInstanceOf[Pattern],p._2.asInstanceOf[Expression]))</span>
+<span class="fc" id="L99">    def getVal(t1:Pattern, t2:Expression):Valuation = t1.getValuation(t2)</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">    this.patterns.zip(that.patterns).foldLeft(Valuation())((v,p)=&gt;v union getVal(p._1.asInstanceOf[Pattern],p._2.asInstanceOf[Expression]))</span>
   }
 
 
@@ -106,25 +107,25 @@ import fr.emn.criojo.ext.expression.Relation.{ChannelLocation, VarChannel, Relat
    * @return true if the variable is in the list of patterns
    */
   def hasVariable(v: Variable) = {
-<span class="nc" id="L109">    this.patterns.contains(v)</span>
+<span class="nc" id="L110">    this.patterns.contains(v)</span>
   }
 
   // constant hashcode
-<span class="pc" id="L113">  var id = Atom.nextAtomId()</span>
-<span class="fc" id="L114">  override def hashCode = id</span>
+<span class="pc" id="L114">  var id = Atom.nextAtomId()</span>
+<span class="fc" id="L115">  override def hashCode = id</span>
 
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">  override def equals(that: Any):Boolean = that match{</span>
-<span class="pc bpc" id="L117" title="4 of 10 branches missed.">    case a:Atom =&gt; this.relation.name == a.relation.name &amp;&amp; this.patterns.zip(a.patterns).forall(p =&gt; p._1 eq  p._2)</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">  override def equals(that: Any):Boolean = that match{</span>
+<span class="pc bpc" id="L118" title="3 of 10 branches missed.">    case a:Atom =&gt; this.relation.name == a.relation.name &amp;&amp; this.patterns.zip(a.patterns).forall(p =&gt; p._1 eq  p._2)</span>
 
-<span class="nc" id="L119">    case _ =&gt; false</span>
+<span class="nc" id="L120">    case _ =&gt; false</span>
   }
 
   override def toString =
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">    (if (active) &quot;&quot; else &quot;-&quot;) +</span>
-<span class="fc" id="L124">            relation +</span>
-<span class="fc bfc" id="L125" title="All 2 branches covered.">            (if (patterns.isEmpty) &quot;&quot; else patterns.mkString(&quot;(&quot;,&quot;,&quot;,&quot;)&quot;))</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">    (if (active) &quot;&quot; else &quot;-&quot;) +</span>
+<span class="fc" id="L125">            relation +</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            (if (patterns.isEmpty) &quot;&quot; else patterns.mkString(&quot;(&quot;,&quot;,&quot;,&quot;)&quot;))</span>
 
-<span class="fc" id="L127">  override def clone:Atom = new Atom(relation,patterns)</span>
+<span class="fc" id="L128">  override def clone:Atom = new Atom(relation,patterns)</span>
 }
 
 

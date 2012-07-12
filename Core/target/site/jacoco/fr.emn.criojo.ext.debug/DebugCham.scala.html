@@ -144,7 +144,7 @@ import fr.emn.criojo.lang.Molecule
 //  }
 //}
 
-trait DebugCham extends NormalEngine {
+trait DebugCham extends CriojoEngine {
 
 <span class="fc" id="L149">  var DEBUG_TRACE:ListBuffer[String] = ListBuffer()</span>
 <span class="fc" id="L150">  var DEBUG_DIRECT_MODE = false</span>
@@ -208,13 +208,13 @@ trait DebugCham extends NormalEngine {
   }
 
   override def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">    new NormalRule(h,b,g,scope, this) with DebugStatefulRule</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">    new PartialStateRule(h,b,g,scope, this) with DebugStatefulRule</span>
   }
 
   trait DebugStatefulRule
-<span class="fc" id="L215">    extends NormalRule {</span>
+<span class="fc" id="L215">    extends PartialStateRule {</span>
 
-    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation) {
+<span class="pc" id="L217">    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean =  {</span>
 
 <span class="fc" id="L219">      var valuatedHead = this.head.map({a =&gt; a.applyValuation(valuation)})</span>
 <span class="fc" id="L220">      var valuatedBody = this.body.map({a =&gt; a.applyValuation(valuation)})</span>
@@ -234,7 +234,7 @@ trait DebugCham extends NormalEngine {
         //printSolution()
       }
 
-<span class="fc" id="L237">      super.applyReaction(pes, valuation)</span>
+<span class="fc" id="L237">      super.applyReaction(pes, valuation, listAtoms, oneTime)</span>
     }
 
   }

@@ -3,28 +3,35 @@
 import fr.emn.criojo._
 import core.datatype.{PatternNotMatchingException, Expression, Valuation}
 import ext.expression.ScalaInt.constructor.WrapScalaInt
-import ext.expression.ScalaInt.ScalaInt
+import ext.expression.ScalaInt.{VarScalaInt, ScalaInt}
 
 <span class="pc bnc" id="L8" title="All 25 branches missed.">case class AddScalaInt(x: ScalaInt, y: ScalaInt) extends ScalaInt {</span>
-<span class="nc bnc" id="L9" title="All 2 branches missed.">  override def getValuation(expr: Expression): Valuation = expr match {</span>
+<span class="pc bpc" id="L9" title="8 of 12 branches missed.">  override def getValuation(expr: Expression): Valuation = expr match {</span>
 <span class="nc" id="L10">    case expr: AddScalaInt =&gt; x.getValuation(expr.x).union(y.getValuation(expr.y))</span>
-<span class="nc" id="L11">    case _ =&gt; throw new PatternNotMatchingException()</span>
+<span class="pc bpc" id="L11" title="1 of 2 branches missed.">    case _ =&gt; (x,y) match {</span>
+<span class="nc" id="L12">      case (x:VarScalaInt, y:VarScalaInt) =&gt; throw new PatternNotMatchingException()</span>
+<span class="fc" id="L13">      case (x:VarScalaInt, e:ScalaInt) =&gt; {</span>
+<span class="fc" id="L14">        var result = x.getValuation((expr.asInstanceOf[ScalaInt]-e).reduce())</span>
+<span class="fc" id="L15">        result</span>
+      }
+<span class="nc" id="L17">      case (e:ScalaInt, y:VarScalaInt) =&gt; y.getValuation((expr.asInstanceOf[ScalaInt]-e).reduce())</span>
+    }
   }
 
   override def applyValuation(valuation: Valuation): Expression = {
-<span class="fc" id="L15">    val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
-<span class="fc" id="L16">    val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
+<span class="fc" id="L22">    val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
+<span class="fc" id="L23">    val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaInt]</span>
 
-<span class="fc" id="L18">    expr1 + expr2</span>
+<span class="fc" id="L25">    expr1 + expr2</span>
   }
 
   override def reduce(): Expression = {
-<span class="fc" id="L22">    WrapScalaInt(x.getValue() + y.getValue())</span>
+<span class="fc" id="L29">    WrapScalaInt(x.getValue() + y.getValue())</span>
   }
 
-<span class="nc bnc" id="L25" title="All 2 branches missed.">  override def matches(expr:Expression):Boolean =  expr match {</span>
-<span class="nc bnc" id="L26" title="All 4 branches missed.">    case expr: AddScalaInt =&gt; x.matches(expr.x) &amp;&amp; y.matches(expr.y)</span>
-<span class="nc" id="L27">    case _ =&gt; false</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">  override def matches(expr:Expression):Boolean =  expr match {</span>
+<span class="nc bnc" id="L33" title="All 4 branches missed.">    case expr: AddScalaInt =&gt; x.matches(expr.x) &amp;&amp; y.matches(expr.y)</span>
+<span class="nc" id="L34">    case _ =&gt; false</span>
   }
 }
 

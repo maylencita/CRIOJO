@@ -38,6 +38,7 @@ object Atom{
 //TODO pass relation as parameter in construction
 case class Atom(relation:Relation, patterns: List[Term]) {
 
+  var consumed:Boolean = false
 //  println("li:"+Atom.cpt1)
 //  Atom.cpt1 += 1
 //
