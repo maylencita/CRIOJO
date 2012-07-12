@@ -9,7 +9,7 @@ case class VarScalaInt(n: String) extends Var[ScalaInt](n) with ScalaInt {
 object VarScalaInt {
   private var instanceNum = 0
   
-  def apply() = new VarScalaInt("VarScalaInt@" + getInstanceNum)
+  def apply(): VarScalaInt = VarScalaInt("VarScalaInt@" + getInstanceNum)
   
   private def getInstanceNum() = {
     instanceNum += 1

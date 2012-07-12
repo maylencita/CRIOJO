@@ -2,6 +2,7 @@ package fr.emn.criojo
 
 import collection.mutable.ArrayBuffer
 
+import ext.expression.Relation.constructor.LocalRelation
 import org.junit.Assert._
 
 import fr.emn.criojo.lang.Cham
@@ -26,6 +27,9 @@ trait TestCham extends Cham with DefaultFactory {
   def name: String = ""
   var asserts: ArrayBuffer[Boolean] = ArrayBuffer()
   var assertsId = 0
+
+  /** A well -- Do nothing */
+  val Well = LocalRelation("Well")
 
   /** Print value of variable */
   val Println = NativeRel {
