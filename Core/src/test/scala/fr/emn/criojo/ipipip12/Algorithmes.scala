@@ -2,16 +2,11 @@ package fr.emn.criojo.ipipip12
 
 import org.junit.Test
 import fr.emn.criojo.lang.Cham
-import java.io.FileWriter
-import fr.emn.criojo.ext.IntegerCham
-
 import fr.emn.criojo.core.Converters._
 import fr.emn.criojo.ext.debug.DebugCham
-import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
-import fr.emn.criojo.ext.expression.ScalaInt.{VarScalaInt, ScalaInt}
-import com.sun.tools.corba.se.idl.constExpr.LessThan
+import fr.emn.criojo.ext.expression.ScalaInt.VarScalaInt
+import fr.emn.criojo.TestCham
 
 /*
 * Created by IntelliJ IDEA.
@@ -24,7 +19,7 @@ class Algorithmes {
 
   @Test
   def hectorTest() {
-    val fCham = new Cham with IntegerCham with DebugCham {
+    val fCham = new Cham with TestCham with DebugCham {
       val H = LocalRelation("H")
       val R = LocalRelation("R")
 
@@ -46,7 +41,7 @@ class Algorithmes {
 
   @Test
   def maxTest() {
-    val fCham = new Cham with IntegerCham with DebugCham {
+    val fCham = new Cham with TestCham with DebugCham {
       val V = LocalRelation("V")
 
       val x, y = VarScalaInt()
@@ -70,7 +65,7 @@ class Algorithmes {
 
   @Test
   def bubbleTest() {
-    val fCham = new Cham with IntegerCham with DebugCham {
+    val fCham = new Cham with TestCham with DebugCham {
       val L = LocalRelation("L")
 
       val x, y, u, v = VarScalaInt()

@@ -3,7 +3,6 @@ package fr.emn.criojo.integration
 import org.junit.Test
 import fr.emn.criojo.lang.Cham
 import java.io.FileWriter
-import fr.emn.criojo.ext.IntegerCham
 
 import fr.emn.criojo.core.Converters._
 import fr.emn.criojo.ext.debug.DebugCham
@@ -11,6 +10,7 @@ import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 import fr.emn.criojo.ext.expression.ScalaString.VarScalaString
 import fr.emn.criojo.ext.expression.ScalaInt.{VarScalaInt, ScalaInt}
+import fr.emn.criojo.TestCham
 
 /*
 * Created by IntelliJ IDEA.
@@ -25,7 +25,7 @@ class CalculationTest {
 
 //  @Test /*(timeout=3000)*/
 //  def fibonacciTest(){
-//    val fCham = new Cham with IntegerCham{
+//    val fCham = new Cham with TestCham{
 //      val fib = LocalRelation("fib")
 //      val Fib = LocalRelation("Fib")
 //
@@ -49,7 +49,7 @@ class CalculationTest {
 
   @Test /*(timeout=3000)*/
   def gcdTest(){
-    val fCham = new Cham with IntegerCham with DebugCham {
+    val fCham = new Cham with TestCham with DebugCham {
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
@@ -71,7 +71,7 @@ class CalculationTest {
 
 //  @Test /*(timeout=3000)*/
 //  def fibonacciWithMemTest(){
-//    val fCham = new Cham with IntegerCham with DebugCham {
+//    val fCham = new Cham with TestCham with DebugCham {
 //      val fib = LocalRelation("fib")
 //      val Fib = LocalRelation("Fib")
 //      val FEq = LocalRelation("FEq")
@@ -103,7 +103,7 @@ class CalculationTest {
     var fw = new FileWriter("etoile.svg");
     fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
 
-    val cm = new Cham with IntegerCham with DebugCham {
+    val cm = new Cham with TestCham with DebugCham {
 
       val fibo = LocalRelation("fibo")
       val Fibo = LocalRelation("Fibo")
@@ -143,7 +143,7 @@ class CalculationTest {
 
 //  @Test /*(timeout=3000)*/
 //  def fibonacciIterative(){
-//    val fCham = new Cham with IntegerCham{
+//    val fCham = new Cham with TestCham{
 //      val AskFib = LocalRelation("AskFib")
 //      val Rep = LocalRelation("Rep")
 //      val Fib = LocalRelation("Fib")
@@ -181,7 +181,7 @@ class CalculationTest {
 
   @Test /*(timeout=3000)*/
   def gcdTestExp(){
-    val chemicalMachine = new Cham with IntegerCham{
+    val chemicalMachine = new Cham with TestCham{
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
@@ -210,7 +210,7 @@ class CalculationTest {
 
 
 
-    val chemicalMachine = new Cham with IntegerCham{
+    val chemicalMachine = new Cham with TestCham{
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
@@ -240,7 +240,7 @@ class CalculationTest {
   def HydrolyseTestRelations() {
 
 
-    val machine = new Cham with IntegerCham with DebugCham {
+    val machine = new Cham with TestCham with DebugCham {
       //TestCham with DefaultCham{
       val n1, n2, n3, n4, n5 = VarScalaInt()
       val R1_COO_R2 = LocalRelation("R1_COO_R2")
@@ -301,7 +301,7 @@ class CalculationTest {
   @Test
   def MapReduceTest() {
 
-    val machine = new Cham with IntegerCham with DebugCham {
+    val machine = new Cham with TestCham with DebugCham {
       //TestCham with DefaultCham{
       val w = VarScalaString()
       val z, n, i, j, kp, km = VarScalaInt()
@@ -341,7 +341,7 @@ class CalculationTest {
   @Test
   def DjikstraTest() {
 
-    val machine = new Cham with IntegerCham with DebugCham {
+    val machine = new Cham with TestCham with DebugCham {
       val x, y, z, w = VarScalaString()
       val n, s, i, j = VarScalaInt()
 
@@ -393,7 +393,7 @@ class CalculationTest {
 
 
 
-    val cm = new Cham with IntegerCham {
+    val cm = new Cham with TestCham {
 
       val Sierpinski = LocalRelation("Sierpinski")
       val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl = VarScalaInt()

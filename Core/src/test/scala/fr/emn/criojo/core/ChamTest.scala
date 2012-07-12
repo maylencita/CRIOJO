@@ -14,7 +14,7 @@ import fr.emn.criojo.util.Logger._
 import org.junit._
 import Assert._
 import fr.emn.criojo.lang._
-import fr.emn.criojo.ext.IntegerCham
+import fr.emn.criojo.TestCham
 import fr.emn.criojo.ext.debug.DebugCham
 
 import fr.emn.criojo.core.Converters._
@@ -32,7 +32,7 @@ class ChamTest {
   @Test
   def testRelations() {
 
-    val machine = new IntegerCham with DebugCham {
+    val machine = new Cham with TestCham with DebugCham {
       val x,y,z = VarScalaInt()
       val R = LocalRelation("R")
       val S = LocalRelation("S")
@@ -64,7 +64,7 @@ class ChamTest {
   @Test
   def BonbonsTestRelations() {
 
-    val machine = new Cham with IntegerCham with DebugCham {
+    val machine = new Cham with TestCham with DebugCham {
       val x,y,z = VarScalaInt()
       val OneBonbon = LocalRelation("OneBonbon")
       val TwoBonbons = LocalRelation("TwoBonbons")
@@ -95,7 +95,7 @@ class ChamTest {
   @Test
   def H4ORelations() {
 
-    val machine = new Cham with IntegerCham with DebugCham { //TestCham with DefaultCham{
+    val machine = new Cham with TestCham with DebugCham { //TestCham with DefaultCham{
       val a,b,x,y,z = VarScalaInt()
       val H = LocalRelation("H")
       val O = LocalRelation("O")
@@ -265,7 +265,7 @@ class ChamTest {
 
   @Test //(timeout=1000)
   def simpleTest2(){
-    val sm = new IntegerCham with DebugCham {
+    val sm = new Cham with TestCham with DebugCham {
       val A = LocalRelation("A")
       val B = LocalRelation("B")
       val C = LocalRelation("C")

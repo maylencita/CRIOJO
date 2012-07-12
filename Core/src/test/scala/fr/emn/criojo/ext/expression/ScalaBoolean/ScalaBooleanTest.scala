@@ -8,9 +8,12 @@ import fr.emn.criojo.TestCham
 import fr.emn.criojo.lang.Cham
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 import fr.emn.criojo.core.datatype.Term
+import fr.emn.criojo.ext.expression.ScalaList.VarScalaList
+import fr.emn.criojo.ext.expression.ScalaList.constructor.WrapScalaNil
 
 class ScalaBooleanTest {
-  var boolTrue, boolFalse, boolVar : ScalaBoolean = _
+  var boolTrue, boolFalse: ScalaBoolean = _
+  var boolVar: VarScalaBoolean = _
 
   @Before def setUp() {
     boolTrue = WrapScalaBoolean(true)
