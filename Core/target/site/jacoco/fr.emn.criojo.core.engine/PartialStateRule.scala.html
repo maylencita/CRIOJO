@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PartialStateRule.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.engine</a> &gt; <span class="el_source">PartialStateRule.scala</span></div><h1>PartialStateRule.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.engine
+
+import fr.emn.criojo.core.{Rule, Guard, Atom}
+import fr.emn.criojo.core.datatype.{BottomValuation, Valuation, Variable}
+import collection.mutable.{ListBuffer, HashMap}
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: jonathan
+ * Date: 7/13/12
+ * Time: 11:17 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * PartialStateRule is an implementation of Rule, that use partial-states machines: each Relation contained in a Rule has
+ * it's own partial-states machine. With this principle, memory consumption should be improved.
+ *
+ *  @param head
+ *  list of atoms contained in the left-part of the rule
+ *
+ *   @param body
+ *  list of atoms contained in the right-part of the rule
+ *
+ *   @param guard
+ *  a guard, that will be evaluated
+ *
+ *   @param scope
+ *  a set of variable
+ *
+ *   @param engine
+ *  a link to the engine that is using this rule
+ */
+<span class="pc" id="L34">class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Guard, scope: Set[Variable], var engine:CriojoEngine)</span>
+  extends Rule {
+
+
+
+<span class="fc" id="L39">  var variableNameList:List[String] = List()</span>
+
+  // indexes that will increase the speed of the algorithms.
+<span class="pc" id="L42">  var mapOfAtoms:HashMap[String, ListBuffer[Atom]] = HashMap()</span>
+<span class="pc" id="L43">  var stateMachinesPerAtom:HashMap[String, ListBuffer[PartialState]] = HashMap()</span>
+<span class="pc" id="L44">  var finalExecutionPerAtom:HashMap[String, ListBuffer[PartialStateExecution]] = HashMap()</span>
+
+  // create the indexes
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">  head.foreach( a =&gt; {</span>
+
+    // add all the variables to the needVariableList
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">    a.patterns.foreach( p =&gt; p match {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">      case v:Variable =&gt; if(!variableNameList.contains(v.name))</span>
+<span class="fc" id="L52">        variableNameList = v.name :: variableNameList</span>
+      case _ =&gt;
+    })
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">    if (!mapOfAtoms.contains(a.relation.name))</span>
+<span class="fc" id="L57">      mapOfAtoms.put(a.relation.name, ListBuffer())</span>
+
+<span class="fc" id="L59">    mapOfAtoms.get(a.relation.name).get += a</span>
+  })
+
+  // construction of the partial state machines
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">  mapOfAtoms.foreach(c =&gt; {</span>
+
+<span class="fc" id="L65">    val permutations = c._2.permutations.toList</span>
+<span class="fc" id="L66">    var states:ListBuffer[PartialState] = ListBuffer()</span>
+
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">    permutations.foreach(p =&gt; {</span>
+<span class="fc" id="L69">      states += new PartialState(p.toList, ListBuffer(), this, c._1)</span>
+    })
+
+<span class="fc" id="L72">    stateMachinesPerAtom.put(c._1, states)</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">    if (!engine.mapAtomRules.contains(c._1))</span>
+<span class="fc" id="L75">      engine.mapAtomRules.put(c._1, ListBuffer[PartialStateRule]())</span>
+
+<span class="fc" id="L77">    engine.mapAtomRules.get(c._1).get += this</span>
+  })
+
+  def addFinalExecution(pe:PartialStateExecution) {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    if (!finalExecutionPerAtom.contains(pe.state.atomName))</span>
+<span class="fc" id="L82">      finalExecutionPerAtom.put(pe.state.atomName, ListBuffer())</span>
+
+<span class="fc" id="L84">    finalExecutionPerAtom.get(pe.state.atomName).get += pe</span>
+  }
+
+<span class="fc" id="L87">  def removeFinalExecution(pe:PartialStateExecution) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">    if (finalExecutionPerAtom.contains(pe.state.atomName))</span>
+<span class="fc" id="L89">      finalExecutionPerAtom.get(pe.state.atomName).get -= pe</span>
+
+    // to prevent large number of call to garbage collector, a rule should be executed many times if there is a lot of
+    // finalExecution for this rule.
+<span class="fc bfc" id="L93" title="All 4 branches covered.">    if(finalExecutionPerAtom.contains(pe.state.atomName) &amp;&amp; finalExecutionPerAtom.get(pe.state.atomName).get.size &gt; 22) {</span>
+
+      //todo: optimization, may cause crash in case of stackoverflow
+<span class="fc bfc" id="L96" title="All 2 branches covered.">      if(engine.rules.length&gt;1)</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        while(execute) {}</span>
+    }
+  }
+
+  def addToExecution(atom:Atom) {
+<span class="fc" id="L102">    stateMachinesPerAtom.get(atom.relation.name).get.foreach {s =&gt; s.addAtomToExecutions(atom)}</span>
+  }
+
+  def clean(atom:Atom) {
+<span class="fc" id="L106">    engine.removeFromExecutionIndex(atom)</span>
+  }
+
+  // check basically if the pattern and the solution are compatible
+<span class="fc" id="L110">  def canBeOk(solution:Solution):Boolean = mapOfAtoms.forall( c =&gt;</span>
+<span class="pc bpc" id="L111" title="3 of 8 branches missed.">    solution.indexOfAtoms.get(c._1) != None &amp;&amp; solution.indexOfAtoms.get(c._1).get.size &gt;= c._2.size)</span>
+
+
+  /**
+   * PartialStateRule is an implementation of Rule, that use partial-states machines: each Relation contained in a Rule has
+   * it's own partial-states machine. With this principle, memory consumption should be improved.
+   *
+   *   @return a boolean (true if the search is positive), a list of (Valuation, List[PartialStateExecution]) that
+   *           contains only the first combination that can be executed by the engine.
+   */
+
+  def findOneCombination():(Boolean,ListBuffer[(Valuation, List[PartialStateExecution])]) = {
+
+<span class="fc" id="L124">    var executed = false</span>
+
+    def flattenCombination(listOfPartialStates:List[PartialStateExecution]):Valuation =
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">      listOfPartialStates.foldLeft(Valuation()) { case(v,c) =&gt; v.union(c.vals) }</span>
+
+    def isOneMatchingCombination(listOfPartialStates:List[PartialStateExecution]):Boolean =
+<span class="pc bpc" id="L130" title="4 of 8 branches missed.">      listOfPartialStates.foldLeft(Valuation()) { case(v,c) =&gt; v.union(c.vals) } match {</span>
+<span class="fc" id="L131">        case BottomValuation =&gt; false</span>
+<span class="fc" id="L132">        case _ =&gt; true</span>
+      }
+
+<span class="fc" id="L135">    var listsOfListOfPartialExecution:ListBuffer[ListBuffer[PartialStateExecution]] = ListBuffer()</span>
+
+    // A, B, C ....
+<span class="fc bfc" id="L138" title="All 4 branches covered.">    if(finalExecutionPerAtom.forall {c =&gt; c._2.size&gt;0} ) {</span>
+<span class="fc" id="L139">      finalExecutionPerAtom.foreach {c =&gt; {</span>
+<span class="fc" id="L140">        listsOfListOfPartialExecution += c._2</span>
+      }}
+    }
+
+<span class="fc" id="L144">    val combination:Combinatory[PartialStateExecution] = Combinatory.from(listsOfListOfPartialExecution)</span>
+<span class="fc" id="L145">    var valuation:Valuation = null</span>
+<span class="fc" id="L146">    var listOfPartialExecution:List[PartialStateExecution] = null</span>
+
+<span class="fc" id="L148">    var listBis:ListBuffer[(Valuation, List[PartialStateExecution])] = ListBuffer()</span>
+
+<span class="fc bfc" id="L150" title="All 2 branches covered.">    if(combination != null) {</span>
+<span class="pc bpc" id="L151" title="4 of 6 branches missed.">      var continue = combination.get() != Nil</span>
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">      while(continue) {</span>
+
+<span class="fc" id="L155">        listOfPartialExecution = combination.get()</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if(isOneMatchingCombination(listOfPartialExecution)) {</span>
+<span class="fc" id="L157">          valuation = flattenCombination(listOfPartialExecution)</span>
+
+<span class="fc bfc" id="L159" title="All 2 branches covered.">          var atomsNotConsumed = listOfPartialExecution.forall(pe =&gt; !pe.consumed)</span>
+
+<span class="fc bfc" id="L161" title="All 4 branches covered.">          if(atomsNotConsumed &amp;&amp; guard.eval(valuation)) {</span>
+<span class="fc" id="L162">            executed = true</span>
+
+<span class="fc" id="L164">            var item = (valuation, listOfPartialExecution)</span>
+<span class="fc" id="L165">            listBis += item</span>
+
+            // alternative (1) : if the function return the first combination (quicker)
+<span class="fc" id="L168">            continue = false</span>
+
+            // alternative (2) : if the function return the list of all good combination (slower)
+            //            combination.next()
+            //            continue = combination.get() != Nil
+          }
+          else {
+<span class="fc" id="L175">            combination.next()</span>
+<span class="pc bpc" id="L176" title="3 of 6 branches missed.">            continue = combination.get() != Nil</span>
+          }
+        }
+        else {
+<span class="fc" id="L180">          combination.next()</span>
+<span class="pc bpc" id="L181" title="4 of 6 branches missed.">          continue = combination.get() != Nil</span>
+        }
+      }
+    }
+
+<span class="fc" id="L186">    (executed, listBis)</span>
+  }
+
+<span class="nc" id="L189">  def getValuation(listOfAtoms:ListBuffer[Atom]):Valuation = Valuation()</span>
+
+<span class="nc" id="L191">  def receiveUpdate(atom: Atom) {</span>
+  }
+
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">  override def execute = {</span>
+<span class="fc" id="L195">    var result = false</span>
+
+
+
+<span class="fc" id="L199">    var listAtoms:ListBuffer[Atom] = ListBuffer()</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">    if(canBeOk(engine.solution)) {</span>
+<span class="pc bpc" id="L202" title="1 of 4 branches missed.">      findOneCombination() match {</span>
+<span class="fc" id="L203">        case (true, l:ListBuffer[(Valuation, List[PartialStateExecution])]) =&gt; {</span>
+<span class="pc bpc" id="L204" title="1 of 4 branches missed.">          l.foreach( c =&gt; if (applyReaction(c._2, c._1, listAtoms)) result = true )</span>
+        }
+        case _ =&gt;
+      }
+    }
+<span class="fc" id="L209">    result</span>
+  }
+
+<span class="pc" id="L212">  def applyReaction(pes:List[PartialStateExecution], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean = {</span>
+
+<span class="fc" id="L214">    var executeOk:Boolean = true</span>
+
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">    if(listAtoms != null) {</span>
+
+<span class="fc" id="L218">      pes.foreach( pe =&gt; {</span>
+
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if(pe.consumed)</span>
+<span class="nc" id="L221">          executeOk = false</span>
+        else
+<span class="fc" id="L223">          pe.consumed = true</span>
+
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        pe.atoms.foreach(a =&gt; {</span>
+
+<span class="fc bfc" id="L227" title="All 2 branches covered.">          if(a.consumed)</span>
+<span class="fc" id="L228">            executeOk = false</span>
+
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">          if(listAtoms.contains(a))</span>
+<span class="nc" id="L231">            executeOk = false</span>
+        })
+      })
+    }
+
+<span class="fc bfc" id="L236" title="All 2 branches covered.">    if(executeOk) {</span>
+
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">      pes.foreach( pe =&gt; {</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">        pe.atoms.foreach(a =&gt; {</span>
+<span class="fc" id="L240">          a.consumed = true</span>
+<span class="fc" id="L241">          engine.removeAtom(a)</span>
+<span class="fc" id="L242">          clean(a)</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">          if(listAtoms != null) {</span>
+<span class="fc" id="L244">            listAtoms += a</span>
+          }
+        })
+<span class="fc" id="L247">        pe.state.removeExecution(pe)</span>
+      })
+
+<span class="fc" id="L250">      val newAtoms = this.body.map(_.applyValuation(valuation))</span>
+
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">      newAtoms.foreach(a =&gt; engine.reactionStrategy.applyReaction(engine, a))</span>
+    }
+
+<span class="fc" id="L255">    executeOk</span>
+  }
+}
+
+
+/**
+ * PartialState represents one part of the state of a rule's state-machine. Each state is related to one specific Relation
+ * and each state contains a list of finalExecutions.
+ *
+ *  @param pattern
+ *  List of atoms (with variables) that are contained in the state.
+ *
+ *   @param executions
+ *  the partialState that is using this PartialStateExecution. Default value is ListBuffer().
+ *
+ *   @param rule
+ *  the rule related to this PartialState.
+ *
+ *   @param atomName
+ *  the name of the Relation represented by this state.
+ *
+ */
+<span class="pc" id="L277">class PartialState (var pattern:List[Atom], var executions:ListBuffer[PartialStateExecution] = ListBuffer(), var rule:PartialStateRule, var atomName:String) {</span>
+
+<span class="pc" id="L279">  var finalExecutions:ListBuffer[PartialStateExecution] = ListBuffer()</span>
+
+
+
+  def addFinalExecution(pse:PartialStateExecution) {
+<span class="fc" id="L284">    rule.addFinalExecution(pse)</span>
+  }
+
+  def removeExecution(pse:PartialStateExecution) {
+<span class="fc" id="L288">    rule.removeFinalExecution(pse)</span>
+  }
+
+  def addAtomToExecutions(atom:Atom){
+
+<span class="fc" id="L293">    var listOfCopies:ListBuffer[PartialStateExecution] = ListBuffer()</span>
+<span class="pc bpc" id="L294" title="1 of 4 branches missed.">    executions.foreach {e =&gt; if (!e.isFinal) {</span>
+<span class="fc" id="L295">      var copy = e.copy()</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">      e.atoms.foreach(a =&gt; rule.engine.addToExecutionIndex(a, copy))</span>
+<span class="fc" id="L297">      listOfCopies += copy</span>
+<span class="fc" id="L298">      e.addAtom(atom)</span>
+    }}
+
+<span class="fc" id="L301">    executions.insertAll(0,listOfCopies)</span>
+
+<span class="fc" id="L303">    val pse = new PartialStateExecution(ListBuffer(), this)</span>
+<span class="fc" id="L304">    pse.addAtom(atom)</span>
+<span class="fc" id="L305">    executions += pse</span>
+  }
+
+<span class="pc" id="L308">  var variablesName:ListBuffer[String] = ListBuffer()</span>
+
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">  pattern.foreach( a =&gt; {</span>
+
+    // add all the variables to the needVariableList
+<span class="pc bpc" id="L313" title="1 of 4 branches missed.">    a.patterns.foreach( p =&gt; p match {</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">      case v:Variable =&gt; if(!variablesName.contains(v.name))</span>
+<span class="fc" id="L315">        variablesName += v.name</span>
+<span class="fc" id="L316">      case _ =&gt;</span>
+    })
+  } )
+}
+
+
+/**
+ * PartialStateExecution is one execution of a PartialState. When PartialStateExecution becomes final, the PartialState
+ * is notified and check if the rule can be executed. If so, the rule is executed and the PartialStateExecution is removed
+ * from the PartialState.
+ *
+ *  @param atoms
+ *  list of atoms that are used by this PartialStateExecution
+ *
+ *   @param state
+ *  the partialState that is using this PartialStateExecution
+ *
+ */
+
+<span class="pc" id="L335">class PartialStateExecution (var atoms:ListBuffer[Atom], var state:PartialState){</span>
+
+<span class="fc" id="L337">  var consumed = false</span>
+
+<span class="fc" id="L339">  def copy():PartialStateExecution = new PartialStateExecution(atoms.clone(), state)</span>
+
+  def computeValuation() {
+<span class="fc" id="L342">    var result = Valuation()</span>
+<span class="fc" id="L343">    atoms.zip(state.pattern).foreach( c =&gt; {</span>
+<span class="fc" id="L344">      result = result.union(c._2.getValuation(c._1))</span>
+    })
+<span class="fc" id="L346">    isCorrect = true</span>
+<span class="fc" id="L347">    vals = result</span>
+  }
+
+<span class="fc" id="L350">  def addAtom(atom:Atom){</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">    if(atoms.size &lt; state.pattern.size) {</span>
+<span class="fc" id="L352">      atoms += atom</span>
+<span class="fc" id="L353">      this.state.rule.engine.addToExecutionIndex(atom, this)</span>
+    }
+
+<span class="fc bfc" id="L356" title="All 2 branches covered.">    if(isFinal) {</span>
+<span class="fc" id="L357">      computeValuation()</span>
+
+      // check if valuation is empty and variables were exepected
+<span class="pc bpc" id="L360" title="4 of 10 branches missed.">      if(vals.isEmpty || (vals == Valuation() &amp;&amp; state.variablesName.size&gt;0))</span>
+<span class="fc" id="L361">        state.removeExecution(this)</span>
+      else
+<span class="fc" id="L363">        state.addFinalExecution(this)</span>
+    }
+  }
+
+<span class="nc" id="L367">  override def toString():String = atoms.mkString(&quot;[&quot;,&quot;,&quot;,&quot;]&quot;)</span>
+
+<span class="fc bfc" id="L369" title="All 2 branches covered.">  def isFinal:Boolean = atoms.size == state.pattern.size</span>
+
+<span class="pc" id="L371">  var isCorrect = true</span>
+<span class="fc" id="L372">  var vals = Valuation()</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

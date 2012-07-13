@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.06" errors="0" skipped="0" tests="5" name="fr.emn.criojo.core.ChamTest">
+<testsuite failures="0" time="0.059" errors="0" skipped="0" tests="5" name="fr.emn.criojo.core.ChamTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries"/>
@@ -22,7 +22,7 @@
     <property name="basedir" value="/Users/jonathan/Documents/criojo/CRIOJO/Core"/>
     <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed"/>
     <property name="os.arch" value="x86_64"/>
-    <property name="surefire.real.class.path" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter8115813564196670937.jar:/Users/jonathan/.m2/repository/org/jacoco/org.jacoco.agent/0.5.3.201107060350/org.jacoco.agent-0.5.3.201107060350-runtime.jar"/>
+    <property name="surefire.real.class.path" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter1891511632705734769.jar:/Users/jonathan/.m2/repository/org/jacoco/org.jacoco.agent/0.5.3.201107060350/org.jacoco.agent-0.5.3.201107060350-runtime.jar"/>
     <property name="java.io.tmpdir" value="/var/folders/vX/vXgrlfqGEgWds7kMshXiE++++TI/-Tmp-/"/>
     <property name="line.separator" value="
 "/>
@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>
-    <property name="sun.java.command" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter8115813564196670937.jar /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire2452358009243341270tmp /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire9199547708998886470tmp"/>
+    <property name="sun.java.command" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter1891511632705734769.jar /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire8783164876745584330tmp /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire4319404565254601316tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="apple.awt.CToolkit"/>
@@ -67,7 +67,7 @@
   </properties>
   <testcase time="0.021" classname="fr.emn.criojo.core.ChamTest" name="testRelations"/>
   <testcase time="0.003" classname="fr.emn.criojo.core.ChamTest" name="BonbonsTestRelations"/>
-  <testcase time="0.016" classname="fr.emn.criojo.core.ChamTest" name="H4ORelations"/>
+  <testcase time="0.015" classname="fr.emn.criojo.core.ChamTest" name="H4ORelations"/>
   <testcase time="0.012" classname="fr.emn.criojo.core.ChamTest" name="testAtomInsertion"/>
   <testcase time="0.005" classname="fr.emn.criojo.core.ChamTest" name="simpleTest2"/>
 </testsuite>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CriojoGuard.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core</a> &gt; <span class="el_source">CriojoGuard.scala</span></div><h1>CriojoGuard.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core
 
 import datatype._
-import statemachine.StateMachine
-import fr.emn.criojo.ext.expression.Relation.Relation
+import engine.CriojoEngine
 
 /*
  * Created by IntelliJ IDEA.
@@ -10,14 +9,14 @@ import fr.emn.criojo.ext.expression.Relation.Relation
  * Date: 05/10/11
  * Time: 13:31
  */
-<span class="fc" id="L13">abstract class CriojoGuard extends Guard {</span>
-<span class="nc" id="L14">  def empty = false</span>
+<span class="fc" id="L12">abstract class CriojoGuard extends Guard {</span>
+<span class="nc" id="L13">  def empty = false</span>
 
   /**
    * The set of valuations that satisfy this guard
    * @return
    */
-<span class="fc" id="L20">  def valuations(valuation:Valuation):ValuationList = new ValuationList()</span>
+<span class="fc" id="L19">  def valuations(valuation:Valuation):ValuationList = new ValuationList()</span>
 
   /**
    * Returns the list of ids of observed relations
@@ -26,16 +25,16 @@ import fr.emn.criojo.ext.expression.Relation.Relation
   //  def observed:Set[Relation]
 
   def eval(valuation: Valuation) = {
-<span class="fc" id="L29">    valuations(valuation:Valuation).exists(v =&gt; v.consistentWith(valuation))</span>
+<span class="fc" id="L28">    valuations(valuation:Valuation).exists(v =&gt; v.consistentWith(valuation))</span>
   }
 
   implicit def valuationToValuationList(valuation:Valuation):ValuationList = {
 
-<span class="nc" id="L34">    new ValuationList(List(new NormalForm(valuation, List())))</span>
+<span class="nc" id="L33">    new ValuationList(List(new NormalForm(valuation, List())))</span>
   }
 }
 
-<span class="pc bnc" id="L38" title="All 25 branches missed.">case class PresenceGuard(atoms:List[Atom], engine:CriojoEngine) extends CriojoGuard {</span>
+<span class="pc bnc" id="L37" title="All 25 branches missed.">case class PresenceGuard(atoms:List[Atom], engine:CriojoEngine) extends CriojoGuard {</span>
   //init(atoms.toArray)
 
   //val finalState = states(size - 1)
@@ -60,24 +59,24 @@ import fr.emn.criojo.ext.expression.Relation.Relation
 //  }
 
   override def valuations(valuation:Valuation):ValuationList = {
-<span class="fc" id="L63">    var forms:List[NormalForm] = List()</span>
+<span class="fc" id="L62">    var forms:List[NormalForm] = List()</span>
 
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">    (atoms.map( a =&gt; {</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">      if(engine.solution.indexOfAtoms.contains(a.relation.name)) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">    (atoms.map( a =&gt; {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">      if(engine.solution.indexOfAtoms.contains(a.relation.name)) {</span>
         //NormalForm(TopValuation)
-<span class="fc" id="L68">        var normalForms = engine.solution.indexOfAtoms.get(a.relation.name).get.map(a2 =&gt; {</span>
-<span class="fc" id="L69">          var currentValuation = a.getValuation(a2)</span>
-<span class="fc" id="L70">          NormalForm( currentValuation, List())</span>
+<span class="fc" id="L67">        var normalForms = engine.solution.indexOfAtoms.get(a.relation.name).get.map(a2 =&gt; {</span>
+<span class="fc" id="L68">          var currentValuation = a.getValuation(a2)</span>
+<span class="fc" id="L69">          NormalForm( currentValuation, List())</span>
         })
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        normalForms.foreach( f =&gt; forms = f :: forms)</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        normalForms.foreach( f =&gt; forms = f :: forms)</span>
       }
       else {
         //forms = NormalForm(TopValuation) :: forms
       }
 
     }))
-<span class="fc" id="L79">    var result = new ValuationList(forms)</span>
-<span class="fc" id="L80">    result</span>
+<span class="fc" id="L78">    var result = new ValuationList(forms)</span>
+<span class="fc" id="L79">    result</span>
     //new ValuationList(List(NormalForm(TopValuation)))
   }
   //    new ValuationList(finalState.executions.map{ex =&gt;
@@ -87,71 +86,71 @@ import fr.emn.criojo.ext.expression.Relation.Relation
   //        NormalForm(ex.valuation)
   //    }.toList)
 
-<span class="nc" id="L90">  override def toString= atoms.mkString(&quot;&lt;&quot;,&quot;,&quot;,&quot;&gt;&quot;)</span>
+<span class="nc" id="L89">  override def toString= atoms.mkString(&quot;&lt;&quot;,&quot;,&quot;,&quot;&gt;&quot;)</span>
 }
 
-<span class="pc bnc" id="L93" title="All 27 branches missed.">case class AbsGuard(override val atoms:List[Atom], override val engine:CriojoEngine) extends PresenceGuard(atoms, engine){</span>
-<span class="fc" id="L94">  override def valuations(valuation:Valuation) = super.valuations(valuation:Valuation).not</span>
+<span class="pc bnc" id="L92" title="All 27 branches missed.">case class AbsGuard(override val atoms:List[Atom], override val engine:CriojoEngine) extends PresenceGuard(atoms, engine){</span>
+<span class="fc" id="L93">  override def valuations(valuation:Valuation) = super.valuations(valuation:Valuation).not</span>
 
-<span class="nc" id="L96">  override def toString = atoms.mkString(&quot;Abs(&quot;, &quot;,&quot;, &quot;)&quot;)</span>
+<span class="nc" id="L95">  override def toString = atoms.mkString(&quot;Abs(&quot;, &quot;,&quot;, &quot;)&quot;)</span>
 }
 
-<span class="pc bnc" id="L99" title="All 18 branches missed.">case class NotGuard(guard:CriojoGuard) extends CriojoGuard{</span>
+<span class="pc bnc" id="L98" title="All 18 branches missed.">case class NotGuard(guard:CriojoGuard) extends CriojoGuard{</span>
 
   //  def observed = guard.observed
 
-<span class="fc" id="L103">  override def valuations(valuation:Valuation) = guard.valuations(valuation).not</span>
+<span class="fc" id="L102">  override def valuations(valuation:Valuation) = guard.valuations(valuation).not</span>
 
   //  def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
 }
 
-<span class="pc bnc" id="L108" title="All 25 branches missed.">case class ExistsGuard(guard:CriojoGuard, x:Variable) extends CriojoGuard {</span>
+<span class="pc bnc" id="L107" title="All 25 branches missed.">case class ExistsGuard(guard:CriojoGuard, x:Variable) extends CriojoGuard {</span>
   //  def observed = guard.observed
 
   def gamma(nf: NormalForm):NormalForm = {
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">    if (nf.alpha.domain.contains(x)){</span>
-<span class="fc" id="L113">      NormalForm(nf.alpha.restrict(nf.alpha.domain-x),</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        nf.beta.map(b =&gt;</span>
-<span class="nc" id="L115">          b.restrict(b.domain-x)</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">    if (nf.alpha.domain.contains(x)){</span>
+<span class="fc" id="L112">      NormalForm(nf.alpha.restrict(nf.alpha.domain-x),</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        nf.beta.map(b =&gt;</span>
+<span class="nc" id="L114">          b.restrict(b.domain-x)</span>
         )
       )
     }else{
-<span class="nc bnc" id="L119" title="All 2 branches missed.">      val newBetas = nf.beta.filterNot(b =&gt; b.domain.contains(x))</span>
-<span class="nc" id="L120">      NormalForm(nf.alpha,newBetas)</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">      val newBetas = nf.beta.filterNot(b =&gt; b.domain.contains(x))</span>
+<span class="nc" id="L119">      NormalForm(nf.alpha,newBetas)</span>
     }
   }
 
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">  override def valuations(valuation:Valuation) = guard.valuations(valuation).map(v =&gt; gamma(v))</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">  override def valuations(valuation:Valuation) = guard.valuations(valuation).map(v =&gt; gamma(v))</span>
 
   //  def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
 
-<span class="nc" id="L128">  override def toString = &quot;Exst(&quot;+x+&quot;):&quot; + guard</span>
+<span class="nc" id="L127">  override def toString = &quot;Exst(&quot;+x+&quot;):&quot; + guard</span>
 }
 
-<span class="nc" id="L131">class ForAllGuard(guard:CriojoGuard, x:Variable) extends ExistsGuard(NotGuard(guard),x){</span>
-<span class="nc" id="L132">  override def valuations(valuation:Valuation) = super.valuations(valuation).not</span>
+<span class="nc" id="L130">class ForAllGuard(guard:CriojoGuard, x:Variable) extends ExistsGuard(NotGuard(guard),x){</span>
+<span class="nc" id="L131">  override def valuations(valuation:Valuation) = super.valuations(valuation).not</span>
 }
 
-<span class="nc bnc" id="L135" title="All 25 branches missed.">case class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{</span>
+<span class="nc bnc" id="L134" title="All 25 branches missed.">case class OrGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{</span>
 
   //  def observed = lguard.observed ++ rguard.observed
 
-<span class="nc" id="L139">  override def valuations(valuation:Valuation) = lguard.valuations(valuation) or rguard.valuations(valuation)</span>
+<span class="nc" id="L138">  override def valuations(valuation:Valuation) = lguard.valuations(valuation) or rguard.valuations(valuation)</span>
 
   //  def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
 
-<span class="nc" id="L143">  override def toString = &quot;[&quot;+lguard +&quot; v &quot;+ rguard +&quot;]&quot;</span>
+<span class="nc" id="L142">  override def toString = &quot;[&quot;+lguard +&quot; v &quot;+ rguard +&quot;]&quot;</span>
 }
 
-<span class="pc bnc" id="L146" title="All 25 branches missed.">case class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{</span>
+<span class="pc bnc" id="L145" title="All 25 branches missed.">case class AndGuard(lguard:CriojoGuard, rguard:CriojoGuard) extends CriojoGuard{</span>
 
   //  def observed = lguard.observed ++ rguard.observed
 
-<span class="fc" id="L150">  override def valuations(valuation:Valuation) = lguard.valuations(valuation) intersect rguard.valuations(valuation)</span>
+<span class="fc" id="L149">  override def valuations(valuation:Valuation) = lguard.valuations(valuation) intersect rguard.valuations(valuation)</span>
 
   //  def receiveUpdate(atom: Atom){lguard.receiveUpdate(atom);rguard.receiveUpdate(atom)}
 
-<span class="nc" id="L154">  override def toString = &quot;[&quot;+lguard +&quot; ^ &quot;+ rguard +&quot;]&quot;</span>
+<span class="nc" id="L153">  override def toString = &quot;[&quot;+lguard +&quot; ^ &quot;+ rguard +&quot;]&quot;</span>
 }
 
 

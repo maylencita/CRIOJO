@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Rule.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core</a> &gt; <span class="el_source">Rule.scala</span></div><h1>Rule.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core
 
 import datatype.Variable
-import statemachine.PartialExecution
 
 /** Rule defined transformation on Atoms.
   *
@@ -9,8 +8,8 @@ import statemachine.PartialExecution
   * Date: Jun 9, 2010
   * Time: 5:47:58 PM
   */
-<span class="fc" id="L12">abstract class Rule extends RelationObserver {</span>
-<span class="pc" id="L13">  var scope: List[Variable] = List()</span>
+<span class="fc" id="L11">abstract class Rule extends RelationObserver {</span>
+<span class="pc" id="L12">  var scope: List[Variable] = List()</span>
 
   /** Returns rule header.
     *
@@ -38,14 +37,14 @@ import statemachine.PartialExecution
     * @param newScope  The new scope
     */
   def setScope(newScope: List[Variable]) {
-<span class="nc" id="L41">    this.scope = newScope</span>
+<span class="nc" id="L40">    this.scope = newScope</span>
   }
 
   /** Tests if rule is axiom.
     *
     * @return true if rule is axiom, false otherwise.
     */
-<span class="nc" id="L48">  def isAxiom: Boolean = head.isEmpty</span>
+<span class="nc" id="L47">  def isAxiom: Boolean = head.isEmpty</span>
 
   /** Executes rule.
     *
@@ -56,19 +55,19 @@ import statemachine.PartialExecution
     */
   def execute: Boolean
 
-<span class="nc" id="L59">  override def equals(that: Any) = {</span>
-<span class="nc bnc" id="L60" title="All 12 branches missed.">    def innerEq2(a1:Atom, a2:Atom):Boolean = a1.relation.name == a2.relation.name &amp;&amp; a1.patterns == a2.patterns</span>
-<span class="nc bnc" id="L61" title="All 4 branches missed.">    def innerEq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=&gt;lst2.exists(a2 =&gt; innerEq2(a1,a2)))</span>
+<span class="nc" id="L58">  override def equals(that: Any) = {</span>
+<span class="nc bnc" id="L59" title="All 12 branches missed.">    def innerEq2(a1:Atom, a2:Atom):Boolean = a1.relation.name == a2.relation.name &amp;&amp; a1.patterns == a2.patterns</span>
+<span class="nc bnc" id="L60" title="All 4 branches missed.">    def innerEq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=&gt;lst2.exists(a2 =&gt; innerEq2(a1,a2)))</span>
 
-<span class="nc bnc" id="L63" title="All 2 branches missed.">    that match{</span>
-<span class="nc bnc" id="L64" title="All 4 branches missed.">      case r:Rule =&gt; innerEq(this.head,r.head) &amp;&amp; innerEq(this.body,r.body)</span>
-<span class="nc" id="L65">      case _ =&gt; false</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">    that match{</span>
+<span class="nc bnc" id="L63" title="All 4 branches missed.">      case r:Rule =&gt; innerEq(this.head,r.head) &amp;&amp; innerEq(this.body,r.body)</span>
+<span class="nc" id="L64">      case _ =&gt; false</span>
     }
   }
 
-<span class="nc" id="L69">  override def toString = head.mkString(&quot;&quot;, &quot;,&quot; ,&quot;&quot;) + &quot;=&gt;&quot; +</span>
-<span class="nc bnc" id="L70" title="All 2 branches missed.">          (if(!scope.isEmpty) &quot;v&quot;+scope.mkString(&quot;(&quot;,&quot;,&quot;,&quot;)&quot;)+&quot;.&quot; else &quot;&quot;) +</span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">          (if(!guard.empty) &quot;[&quot; + guard + &quot;]?&quot; else &quot;&quot;) +</span>
-<span class="nc" id="L72">          body.mkString(&quot;&quot;, &quot;,&quot; ,&quot;&quot;)</span>
+<span class="nc" id="L68">  override def toString = head.mkString(&quot;&quot;, &quot;,&quot; ,&quot;&quot;) + &quot;=&gt;&quot; +</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">          (if(!scope.isEmpty) &quot;v&quot;+scope.mkString(&quot;(&quot;,&quot;,&quot;,&quot;)&quot;)+&quot;.&quot; else &quot;&quot;) +</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">          (if(!guard.empty) &quot;[&quot; + guard + &quot;]?&quot; else &quot;&quot;) +</span>
+<span class="nc" id="L71">          body.mkString(&quot;&quot;, &quot;,&quot; ,&quot;&quot;)</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

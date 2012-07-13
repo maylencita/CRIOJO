@@ -1,8 +1,7 @@
 package fr.emn.criojo.core
 
 import datatype._
-import statemachine.StateMachine
-import fr.emn.criojo.ext.expression.Relation.Relation
+import engine.CriojoEngine
 
 /*
  * Created by IntelliJ IDEA.

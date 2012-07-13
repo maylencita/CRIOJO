@@ -1,13 +1,6 @@
 package fr.emn.criojo.network
 
-import fr.emn.criojo.core.datatype.Variable
-import fr.emn.criojo.core.statemachine.PartialExecution
-import fr.emn.criojo.core.{Guard, Atom, HashSolution}
-import fr.emn.criojo.ext.debug.{DebugCham, Solution}
-import collection.mutable.ListBuffer
-import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-import fr.emn.criojo.lang.Molecule
-import fr.emn.criojo.core.StatefulEngine
+import fr.emn.criojo.ext.debug.{DebugCham}
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CriojoEngine.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.engine</a> &gt; <span class="el_source">CriojoEngine.scala</span></div><h1>CriojoEngine.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.engine
+
+import fr.emn.criojo.core._
+import collection.mutable
+import collection.mutable.ListBuffer
+import collection.mutable.HashMap
+import fr.emn.criojo.core.datatype.Variable
+import scala.Some
+
+
+
+/**
+ * An implementation of Cham that is using the CriojoEngine.
+ *
+ */
+<span class="pc bnc" id="L16" title="All 4 branches missed.">class CriojoCham extends CriojoEngine {</span>
+
+<span class="fc" id="L18">  def rules(ruleDefs:(RuleFactory =&gt; Rule)*) { initRules(ruleDefs.toList) }</span>
+}
+
+/**
+ * The CriojoEngine trait.
+ *
+ * This engine is generic: specific implementation is contained in the rules
+ *
+ */
+trait CriojoEngine extends Engine {
+
+<span class="fc" id="L29">  var isRunning: Boolean = false</span>
+
+<span class="fc" id="L31">  val solution: Solution = new Solution()</span>
+
+<span class="fc" id="L33">  var indexAtomPartialStateExecution: mutable.HashMap[Atom, ListBuffer[PartialStateExecution]] = HashMap()</span>
+
+<span class="fc" id="L35">  def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new PartialStateRule(h, b, g, scope, this)</span>
+
+<span class="fc" id="L37">  override def reactionStrategy: ReactionStrategy = new LocalReactionStrategy()</span>
+
+  def addToExecutionIndex(a: Atom, pe: PartialStateExecution) {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">    if (!indexAtomPartialStateExecution.contains(a))</span>
+<span class="fc" id="L41">      indexAtomPartialStateExecution.put(a, ListBuffer())</span>
+
+<span class="fc" id="L43">    indexAtomPartialStateExecution.get(a).get += pe</span>
+  }
+
+  def removeFromExecutionIndex(atom: Atom) {
+<span class="fc bfc" id="L47" title="All 2 branches covered.">    if (indexAtomPartialStateExecution.contains(atom)) {</span>
+
+<span class="fc" id="L49">      indexAtomPartialStateExecution.get(atom).get.foreach(pse =&gt; {</span>
+
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (pse.isFinal)</span>
+<span class="fc" id="L52">          pse.state.rule.removeFinalExecution(pse)</span>
+
+<span class="fc" id="L54">        pse.state.executions -= pse</span>
+      })
+<span class="fc" id="L56">      indexAtomPartialStateExecution.remove(atom)</span>
+    }
+  }
+
+<span class="fc" id="L60">  def executeRules() {</span>
+<span class="fc" id="L61">    isRunning = true</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">    while (rules.exists(r =&gt; r.execute)) {}</span>
+  }
+
+<span class="fc" id="L65">  def introduceAtom(atom: Atom) {</span>
+<span class="fc" id="L66">    solution.addAtom(atom)</span>
+
+<span class="pc bpc" id="L68" title="4 of 8 branches missed.">    mapAtomRules.get(atom.relation.name) match {</span>
+<span class="fc" id="L69">      case s: Some[ListBuffer[PartialStateRule]] =&gt; s.get.foreach(r =&gt; r.addToExecution(atom))</span>
+      case None =&gt;
+    }
+  }
+
+  def removeAtom(atom: Atom) {
+<span class="fc" id="L75">    solution.removeAtom(atom)</span>
+  }
+
+<span class="fc" id="L78">  val mapAtomRules: HashMap[String, ListBuffer[PartialStateRule]] = HashMap()</span>
+
+<span class="nc" id="L80">  object NormalRule {</span>
+
+    def createPartialStateExecution(atoms: ListBuffer[Atom], state: PartialState) =
+<span class="nc" id="L83">      new PartialStateExecution(atoms, state)</span>
+  }
+
+}
+
+/**
+ * Solution is an object that will represent the solution of atoms. This class has an index of Relation.name -&gt; Atoms
+ * to increase some search algorithms.
+ *
+ */
+<span class="fc" id="L93">class Solution {</span>
+<span class="pc" id="L94">  var listOfAtoms:ListBuffer[Atom] = ListBuffer()</span>
+<span class="pc" id="L95">  var indexOfAtoms:HashMap[String, ListBuffer[Atom]] = HashMap()</span>
+
+  def addAtom(atom: Atom) {
+<span class="fc" id="L98">    listOfAtoms += atom</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">    if(!indexOfAtoms.contains(atom.relation.name))</span>
+<span class="fc" id="L101">      indexOfAtoms.put(atom.relation.name, ListBuffer())</span>
+
+<span class="fc" id="L103">    indexOfAtoms.get(atom.relation.name).get += atom</span>
+  }
+
+  def removeAtom(atom: Atom) {
+<span class="fc" id="L107">    listOfAtoms -= (atom)</span>
+
+<span class="fc" id="L109">    indexOfAtoms.get(atom.relation.name).get -= atom</span>
+  }
+
+<span class="nc bnc" id="L112" title="All 8 branches missed.">  def containsAll(listOfAtoms:List[Atom]):Boolean = listOfAtoms.forall( a =&gt; indexOfAtoms.contains(a.relation.name) &amp;&amp; !indexOfAtoms.get(a.relation.name).get.forall(abis =&gt; !abis.correspondsTo(a)))</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

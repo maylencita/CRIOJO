@@ -1,7 +1,6 @@
 package fr.emn.criojo.core
 
 import datatype.Variable
-import statemachine.PartialExecution
 
 /** Rule defined transformation on Atoms.
   *

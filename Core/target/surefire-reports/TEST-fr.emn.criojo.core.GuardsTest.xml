@@ -22,7 +22,7 @@
     <property name="basedir" value="/Users/jonathan/Documents/criojo/CRIOJO/Core"/>
     <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed"/>
     <property name="os.arch" value="x86_64"/>
-    <property name="surefire.real.class.path" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter8115813564196670937.jar:/Users/jonathan/.m2/repository/org/jacoco/org.jacoco.agent/0.5.3.201107060350/org.jacoco.agent-0.5.3.201107060350-runtime.jar"/>
+    <property name="surefire.real.class.path" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter1891511632705734769.jar:/Users/jonathan/.m2/repository/org/jacoco/org.jacoco.agent/0.5.3.201107060350/org.jacoco.agent-0.5.3.201107060350-runtime.jar"/>
     <property name="java.io.tmpdir" value="/var/folders/vX/vXgrlfqGEgWds7kMshXiE++++TI/-Tmp-/"/>
     <property name="line.separator" value="
 "/>
@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>
-    <property name="sun.java.command" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter8115813564196670937.jar /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire2452358009243341270tmp /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire9199547708998886470tmp"/>
+    <property name="sun.java.command" value="/Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefirebooter1891511632705734769.jar /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire8783164876745584330tmp /Users/jonathan/Documents/criojo/CRIOJO/Core/target/surefire/surefire4319404565254601316tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="apple.awt.CToolkit"/>
@@ -65,11 +65,11 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.025" classname="fr.emn.criojo.core.GuardsTest" name="presenceTest"/>
-  <testcase time="0.004" classname="fr.emn.criojo.core.GuardsTest" name="presenceSansParamsTest"/>
+  <testcase time="0.026" classname="fr.emn.criojo.core.GuardsTest" name="presenceTest"/>
+  <testcase time="0.005" classname="fr.emn.criojo.core.GuardsTest" name="presenceSansParamsTest"/>
   <testcase time="0.01" classname="fr.emn.criojo.core.GuardsTest" name="absenceTest"/>
   <testcase time="0.01" classname="fr.emn.criojo.core.GuardsTest" name="absenceTest2"/>
-  <testcase time="0.017" classname="fr.emn.criojo.core.GuardsTest" name="existsTest"/>
+  <testcase time="0.018" classname="fr.emn.criojo.core.GuardsTest" name="existsTest"/>
   <testcase time="0.013" classname="fr.emn.criojo.core.GuardsTest" name="notExistsTest"/>
-  <testcase time="0.005" classname="fr.emn.criojo.core.GuardsTest" name="andTest"/>
+  <testcase time="0.004" classname="fr.emn.criojo.core.GuardsTest" name="andTest"/>
 </testsuite>

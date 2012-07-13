@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Combinatory.scala</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Core</a> &gt; <a href="index.html" class="el_package">fr.emn.criojo.core.engine</a> &gt; <span class="el_source">Combinatory.scala</span></div><h1>Combinatory.scala</h1><pre class="source lang-java linenums">package fr.emn.criojo.core.engine
+
+import collection.mutable.ListBuffer
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: jonathan
+ * Date: 7/13/12
+ * Time: 11:18 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * Singleton of Combinatory.
+ *
+ */
+<span class="fc" id="L17">object Combinatory {</span>
+
+
+  /**
+   * Create a chain of Combinatory from a list of list of A.
+   *
+   * @param list a list of list of A.
+   *
+   * @return a chain of Combinatory.
+   */
+  def from[A](list:ListBuffer[ListBuffer[A]]):Combinatory[A] = {
+
+    def from_list(list:ListBuffer[A]):Combinatory[A] = {
+<span class="fc" id="L30">      new Combinatory[A](list, null)</span>
+    }
+
+<span class="fc" id="L33">    var firstPointer:Combinatory[A] = null</span>
+<span class="fc" id="L34">    var currentPointer:Combinatory[A] = null</span>
+
+<span class="fc" id="L36">    list.foreach(l =&gt; {</span>
+<span class="fc" id="L37">      val newCombinatory:Combinatory[A] = from_list(l)</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">      if(firstPointer == null)</span>
+<span class="fc" id="L40">        firstPointer = newCombinatory</span>
+
+<span class="fc bfc" id="L42" title="All 2 branches covered.">      if(currentPointer != null)</span>
+<span class="fc" id="L43">        currentPointer.comb = newCombinatory</span>
+
+<span class="fc" id="L45">      currentPointer = newCombinatory</span>
+    })
+
+<span class="fc" id="L48">    firstPointer</span>
+  }
+}
+
+/**
+ * Combinatory is an inductive way to make lazy combination of elements. The comb parameter is another Combinatory: it
+ * enables chain of combinatory. Using the next() function gives the next combination of elements.
+ *
+ * For example: Combinatory( l1, Combinatory( l2, Combinatory( l3, null) ) )
+ *
+ * @param list
+	 * The list of elements
+ * @param comb
+	 * The next combinatory (this enables chain of combinatory)
+ */
+<span class="pc" id="L63">class Combinatory[A](var list:ListBuffer[A] = ListBuffer(), var comb:Combinatory[A] = null) {</span>
+<span class="fc" id="L64">  var index:Int = 0</span>
+
+  def reset() {
+<span class="fc" id="L67">    index = 0</span>
+  }
+
+  /**
+   * True when the index of this Combinatory is out of bounds (reset function should be called).
+   *
+   * @return True when the index of this Combinatory is not out of bounds.
+   */
+<span class="fc bfc" id="L75" title="All 2 branches covered.">  def isOverflowed:Boolean = index &gt;= list.size</span>
+
+
+  /**
+   * Put the index at the next combination.
+   */
+  def next() {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">    if(comb != null) {</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">      if(!(isOverflowed)) {</span>
+<span class="fc" id="L84">        comb.next()</span>
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (comb.isOverflowed) {</span>
+<span class="fc" id="L87">          comb.reset()</span>
+<span class="fc" id="L88">          index += 1</span>
+        }
+      }
+    }
+    else {
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">      if (!isOverflowed) {</span>
+<span class="fc" id="L94">        index += 1</span>
+      }
+    }
+  }
+
+  /**
+   * Return the actual combination.
+   *
+   * @return The actual combination.
+   */
+  def get():List[A] = {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    if(!(isOverflowed)) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">      if(comb != null) {</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if(!comb.isOverflowed) {</span>
+<span class="fc" id="L108">          list(index) :: comb.get()</span>
+        }
+        else {
+<span class="nc" id="L111">          Nil</span>
+        }
+      }
+      else {
+<span class="fc" id="L115">        List(list(index))</span>
+      }
+    }
+    else {
+<span class="fc" id="L119">      Nil</span>
+    }
+  }
+
+  /**
+   * True when the index of this Combinatory and the index next Combinatories are not out of bounds (reset function should be called).
+   *
+   * @return True when the iindex of this Combinatory and the index next Combinatories are not out of bounds.
+   */
+  def hasNext:Boolean = {
+<span class="nc bnc" id="L129" title="All 2 branches missed.">    if(comb != null) {</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">      !isOverflowed || comb.hasNext</span>
+    }
+    else {
+<span class="nc bnc" id="L133" title="All 2 branches missed.">      !isOverflowed</span>
+    }
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>

@@ -5,7 +5,6 @@ import fr.emn.criojo.lang.Cham
 import fr.emn.criojo.core.{ReactionStrategy, Atom}
 import scala.fr.emn.criojo.network.NetworkReactionStrategy
 import fr.emn.criojo.ext.expression.Relation.constructor.Channel
-import fr.emn.criojo.ext.expression.Relation.ChannelLocation
 
 /**
  * Created by IntelliJ IDEA.

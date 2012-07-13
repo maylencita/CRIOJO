@@ -2,6 +2,7 @@
 
 import fr.emn.criojo.core._
 import datatype.{Term, Variable}
+import engine.CriojoEngine
 import factory.RelationFactory
 import impur.NativeRelation
 
@@ -11,42 +12,42 @@ import impur.NativeRelation
 * Date: 30/09/11
 * Time: 14:59
 */
-<span class="pc bnc" id="L14" title="All 4 branches missed.">class Cham extends CriojoEngine //with DefaultFactory</span>
+<span class="pc bnc" id="L15" title="All 4 branches missed.">class Cham extends CriojoEngine //with DefaultFactory</span>
 {
   //TODO change Cham where used
   this:RelationFactory =&gt;
 
   type RuleDef = RuleFactory =&gt; Rule
 
-<span class="fc" id="L21">  def rules(ruleDefs:(RuleFactory =&gt; Rule)*) { initRules(ruleDefs.toList) }</span>
+<span class="fc" id="L22">  def rules(ruleDefs:(RuleFactory =&gt; Rule)*) { initRules(ruleDefs.toList) }</span>
 
   def NativeRel(f:(List[Term]) =&gt; Unit) = {
-<span class="fc" id="L24">    val natRel = new NativeRelation(&quot;NativeRel@&quot; +</span>
-<span class="fc" id="L25">      Cham.getNativeRelInstanceNum, f)</span>
-<span class="fc" id="L26">    addRelation(natRel)</span>
-<span class="fc" id="L27">    natRel</span>
+<span class="fc" id="L25">    val natRel = new NativeRelation(&quot;NativeRel@&quot; +</span>
+<span class="fc" id="L26">      Cham.getNativeRelInstanceNum, f)</span>
+<span class="fc" id="L27">    addRelation(natRel)</span>
+<span class="fc" id="L28">    natRel</span>
   }
 
   def If(guard: Guard)(body: =&gt; Molecule):RuleBody = {
-<span class="nc" id="L31">    new RuleBody(body, guard)</span>
+<span class="nc" id="L32">    new RuleBody(body, guard)</span>
   }
 
-<span class="pc" id="L34">  def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList, this) with ChamGuard</span>
+<span class="pc" id="L35">  def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList, this) with ChamGuard</span>
 
-<span class="pc" id="L36">  def Ex(x:Variable,g:ChamGuard):ChamGuard =  new ExistsGuard(g,x) with ChamGuard</span>
+<span class="pc" id="L37">  def Ex(x:Variable,g:ChamGuard):ChamGuard =  new ExistsGuard(g,x) with ChamGuard</span>
 
-<span class="pc" id="L38">  def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList, this) with ChamGuard</span>
+<span class="pc" id="L39">  def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList, this) with ChamGuard</span>
 
-<span class="pc" id="L40">  def Not(g:ChamGuard):ChamGuard = new NotGuard(g) with ChamGuard</span>
+<span class="pc" id="L41">  def Not(g:ChamGuard):ChamGuard = new NotGuard(g) with ChamGuard</span>
 
   def when(head:Molecule)(body: RuleBody):RuleDef = {
-<span class="nc" id="L43">    val ruleDef =</span>
-<span class="nc bnc" id="L44" title="All 6 branches missed.">      if(body.guard == EmptyGuard)</span>
-<span class="nc" id="L45">        head --&gt; body.conj</span>
+<span class="nc" id="L44">    val ruleDef =</span>
+<span class="nc bnc" id="L45" title="All 6 branches missed.">      if(body.guard == EmptyGuard)</span>
+<span class="nc" id="L46">        head --&gt; body.conj</span>
       else
-<span class="nc" id="L47">        head --&gt; (body.guard, body.conj)</span>
+<span class="nc" id="L48">        head --&gt; (body.guard, body.conj)</span>
 
-<span class="nc" id="L49">    ruleDef</span>
+<span class="nc" id="L50">    ruleDef</span>
   }
 
   //  def axiom(fact:Molecule){
@@ -58,11 +59,11 @@ import impur.NativeRelation
   //  }
 
   def introduceMolecule(molecule:Molecule){
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">    molecule.toList.foreach(introduceAtom(_))</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">    molecule.toList.foreach(introduceAtom(_))</span>
   }
 
-<span class="nc" id="L64">  implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)</span>
-<span class="fc" id="L65">  implicit def mol2atom(mol:Molecule):Atom = mol.head</span>
+<span class="nc" id="L65">  implicit def moleculeToRuleBody(mol:Molecule):RuleBody = new RuleBody(mol)</span>
+<span class="fc" id="L66">  implicit def mol2atom(mol:Molecule):Atom = mol.head</span>
   //  implicit def relToVar(r:Relation):VarChannel = {
   //    val vr = new VarChannel(r.name)
   //    vr.relation = r
@@ -88,15 +89,15 @@ import impur.NativeRelation
   //    def apply(patterns:Term*) = new Function(name, patterns.toList)
   //  }
 
-<span class="nc bnc" id="L91" title="All 6 branches missed.">  class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}</span>
+<span class="nc bnc" id="L92" title="All 6 branches missed.">  class RuleBody(val conj:Molecule, val guard:Guard = EmptyGuard){}</span>
 }
 
-<span class="fc" id="L94">object Cham {</span>
-<span class="fc" id="L95">  private var nativeRelInstanceNum = 0</span>
+<span class="fc" id="L95">object Cham {</span>
+<span class="fc" id="L96">  private var nativeRelInstanceNum = 0</span>
 
   def getNativeRelInstanceNum() = {
-<span class="fc" id="L98">    nativeRelInstanceNum += 1</span>
-<span class="fc" id="L99">    nativeRelInstanceNum</span>
+<span class="fc" id="L99">    nativeRelInstanceNum += 1</span>
+<span class="fc" id="L100">    nativeRelInstanceNum</span>
   }
 }
 
@@ -120,14 +121,14 @@ import impur.NativeRelation
 /**
  * An object of type Applicable applies a function to one or more Terms to obtain a Molecule
  */
-<span class="nc" id="L123">trait Applicable/*(name:String,f:List[Term] =&gt; Molecule)* extends LocalRelation(name, true)*/{</span>
+<span class="nc" id="L124">trait Applicable/*(name:String,f:List[Term] =&gt; Molecule)* extends LocalRelation(name, true)*/{</span>
   def function:(List[Term]) =&gt; Molecule
-<span class="nc" id="L125">  def apply(vars:Term*):Molecule = function(vars.toList)</span>
+<span class="nc" id="L126">  def apply(vars:Term*):Molecule = function(vars.toList)</span>
 }
 
-<span class="fc" id="L128">trait ChamGuard extends CriojoGuard {</span>
-<span class="pc" id="L129">  def &amp;&amp; (guard:CriojoGuard):ChamGuard = new AndGuard(this, guard) with ChamGuard</span>
+<span class="fc" id="L129">trait ChamGuard extends CriojoGuard {</span>
+<span class="pc" id="L130">  def &amp;&amp; (guard:CriojoGuard):ChamGuard = new AndGuard(this, guard) with ChamGuard</span>
 
-<span class="nc" id="L131">  def || (guard:CriojoGuard):ChamGuard = new OrGuard(this, guard) with ChamGuard</span>
+<span class="nc" id="L132">  def || (guard:CriojoGuard):ChamGuard = new OrGuard(this, guard) with ChamGuard</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://jacoco.org">JaCoCo</a> 0.5.3.201107060350</span></div></body></html>
