@@ -1,6 +1,8 @@
 package fr.emn.criojo.core
 
-import datatype.Variable
+import datatype.{Valuation, Variable}
+import collection.mutable.ListBuffer
+import engine.{CriojoEngine}
 
 /** Rule defined transformation on Atoms.
   *
@@ -8,8 +10,7 @@ import datatype.Variable
   * Date: Jun 9, 2010
   * Time: 5:47:58 PM
   */
-abstract class Rule extends RelationObserver {
-  var scope: List[Variable] = List()
+abstract class Rule {
 
   /** Returns rule header.
     *
@@ -31,14 +32,6 @@ abstract class Rule extends RelationObserver {
     * @return Rule guard.
     */
   def guard: Guard
-
-  /** Sets the rule scope.
-    *
-    * @param newScope  The new scope
-    */
-  def setScope(newScope: List[Variable]) {
-    this.scope = newScope
-  }
 
   /** Tests if rule is axiom.
     *
@@ -66,7 +59,28 @@ abstract class Rule extends RelationObserver {
   }
 
   override def toString = head.mkString("", "," ,"") + "=>" +
-          (if(!scope.isEmpty) "v"+scope.mkString("(",",",")")+"." else "") +
           (if(!guard.empty) "[" + guard + "]?" else "") +
           body.mkString("", "," ,"")
+}
+
+trait CriojoRule extends Rule {
+
+  var engine:CriojoEngine
+
+  def addToExecutionIndex(a: Atom, pe: CriojoStateExecution)
+  def addToExecution(atom:Atom)
+  def removeFromExecutionIndex(atom: Atom)
+
+}
+
+abstract class CriojoRuleImplementation[A,B] extends CriojoRule {
+  def applyReaction(pes:List[B], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean
+}
+
+trait CriojoState {}
+
+trait CriojoStateExecution {
+//  def isFinal:Boolean
+//  var consumed = false
+//  var atoms:ListBuffer[Atom]
 }

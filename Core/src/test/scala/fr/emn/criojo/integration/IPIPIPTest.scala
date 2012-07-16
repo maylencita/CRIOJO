@@ -32,7 +32,7 @@ class IPIPIPTest {
     }
 //    fCham.enableStreamingTrace()
 //    fCham.enableSolutionTrace()
-    val j = 50
+    val j = 20
     for (i <- 0 to j)
       fCham.introduceMolecule(fCham.L(i, j - i))
 

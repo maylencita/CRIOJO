@@ -12,7 +12,7 @@ import fr.emn.criojo.ext.expression.Relation.constructor.{LocalRelation}
 import fr.emn.criojo.ext.expression.Relation.{Relation}
 
 trait Engine extends RuleFactory{
-  var rules:List[Rule] = List()
+  var rules:List[CriojoRule] = List()
   protected var relations:List[Relation] = List()
 
   def reactionStrategy:ReactionStrategy
@@ -21,7 +21,7 @@ trait Engine extends RuleFactory{
   def introduceAtom(atom:Atom)
 
   def addRelation(relation:Relation) { relations :+= relation }
-  def addRule(rule:Rule) {
+  def addRule(rule:CriojoRule) {
 
     rule.body.foreach(a => addRelation(a.relation))
     rule.head.foreach(a => addRelation(a.relation))
@@ -46,11 +46,11 @@ trait Engine extends RuleFactory{
       }
   }
 
-  def initRules(ruleDefs:List[RuleFactory => Rule]){
+  def initRules(ruleDefs:List[RuleFactory => CriojoRule]){
     ruleDefs.foreach{ f => initRule(f)  }
   }
 
-  def initRule(rf: RuleFactory => Rule){
+  def initRule(rf: RuleFactory => CriojoRule){
     val rule = rf(this)
     processRuleHead(rule)
     processRuleBody(rule)

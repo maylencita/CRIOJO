@@ -414,7 +414,7 @@ class CalculationTest {
 
     //    import cm.num2fun
 //        cm.enableStreamingTrace()
-    cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 10))
+    cm.introduceMolecule(cm.Sierpinski(700, 700, 700, 8))
     cm.executeRules()
 
     fw.write("</svg>\n")

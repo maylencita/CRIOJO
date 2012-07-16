@@ -3,9 +3,11 @@ package fr.emn.criojo.ext.debug
 import collection.mutable.ListBuffer
 import fr.emn.criojo.core.datatype.{Valuation, Variable}
 import fr.emn.criojo.core._
-import engine.{PartialStateExecution, PartialStateRule, CriojoEngine}
+import engine._
+import engine.PartialStateRule
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 import fr.emn.criojo.lang.Molecule
+import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 
 
 trait DebugCham extends CriojoEngine {
@@ -72,14 +74,11 @@ trait DebugCham extends CriojoEngine {
   }
 
   override def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
-    new PartialStateRule(h,b,g,scope, this) with DebugStatefulRule
+    new StateRule(h,b,g,scope, this) with DebugStateRule
   }
 
-  trait DebugStatefulRule
-    extends PartialStateRule {
-
-    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean =  {
-
+  trait DebugRule extends CriojoRule {
+    def printReaction(head:List[Atom], body:List[Atom], valuation:Valuation) {
       var valuatedHead = this.head.map({a => a.applyValuation(valuation)})
       var valuatedBody = this.body.map({a => a.applyValuation(valuation)})
 
@@ -95,9 +94,28 @@ trait DebugCham extends CriojoEngine {
 
       if(DEBUG_DIRECT_MODE){
         println(result)
-        //printSolution()
       }
 
+    }
+  }
+
+  trait DebugPartialStateRule
+    extends PartialStateRule with DebugRule {
+
+    override def applyReaction(pes:List[PartialStateExecution], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean =  {
+
+      printReaction(head, body, valuation)
+      super.applyReaction(pes, valuation, listAtoms, oneTime)
+    }
+
+  }
+
+  trait DebugStateRule
+    extends StateRule with DebugRule {
+
+    override def applyReaction(pes:List[StateExecution], valuation:Valuation, listAtoms:ListBuffer[Atom] = null, oneTime:Boolean = false):Boolean =  {
+
+      printReaction(head, body, valuation)
       super.applyReaction(pes, valuation, listAtoms, oneTime)
     }
 

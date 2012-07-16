@@ -1,8 +1,9 @@
 package fr.emn.criojo.core.engine
 
-import fr.emn.criojo.core.{Rule, Guard, Atom}
+import fr.emn.criojo.core._
 import fr.emn.criojo.core.datatype.{BottomValuation, Valuation, Variable}
 import collection.mutable.{ListBuffer, HashMap}
+import collection.mutable
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,8 +32,8 @@ import collection.mutable.{ListBuffer, HashMap}
  *   @param engine
  *  a link to the engine that is using this rule
  */
-class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Guard, scope: Set[Variable], var engine:CriojoEngine)
-  extends Rule {
+case class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Guard, scope: Set[Variable], var engine:CriojoEngine)
+  extends CriojoRuleImplementation[PartialState, PartialStateExecution] {
 
 
 
@@ -42,6 +43,8 @@ class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Gu
   var mapOfAtoms:HashMap[String, ListBuffer[Atom]] = HashMap()
   var stateMachinesPerAtom:HashMap[String, ListBuffer[PartialState]] = HashMap()
   var finalExecutionPerAtom:HashMap[String, ListBuffer[PartialStateExecution]] = HashMap()
+
+  var indexAtomPartialStateExecution: mutable.HashMap[Atom, ListBuffer[CriojoStateExecution]] = HashMap()
 
   // create the indexes
   head.foreach( a => {
@@ -72,16 +75,61 @@ class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Gu
     stateMachinesPerAtom.put(c._1, states)
 
     if (!engine.mapAtomRules.contains(c._1))
-      engine.mapAtomRules.put(c._1, ListBuffer[PartialStateRule]())
+      engine.mapAtomRules.put(c._1, ListBuffer[CriojoRule]())
 
     engine.mapAtomRules.get(c._1).get += this
   })
+
+
+  def addToExecutionIndex(a: Atom, cse: CriojoStateExecution) {
+    cse match {
+      case pe:PartialStateExecution => addToExecutionIndex(a, pe)
+      case _ =>
+    }
+  }
+
+  def addToExecutionIndex(a: Atom, pe: PartialStateExecution) {
+    if (!indexAtomPartialStateExecution.contains(a))
+      indexAtomPartialStateExecution.put(a, ListBuffer())
+
+    indexAtomPartialStateExecution.get(a).get += pe
+  }
+
+  def removeFromExecutionIndex(atom: Atom) {
+    if (indexAtomPartialStateExecution.contains(atom)) {
+
+      indexAtomPartialStateExecution.get(atom).get.foreach(se => se match {
+        case pse:PartialStateExecution => {
+          if (pse.isFinal)
+            pse.state.rule.removeFinalExecution(pse)
+
+          pse.state.executions -= pse
+        }
+        case _ =>
+      })
+      indexAtomPartialStateExecution.remove(atom)
+    }
+  }
+
+  def addFinalExecution(pe:CriojoStateExecution) {
+    pe match {
+      case pse:PartialStateExecution => addFinalExecution(pse)
+      case _ =>
+    }
+  }
 
   def addFinalExecution(pe:PartialStateExecution) {
     if (!finalExecutionPerAtom.contains(pe.state.atomName))
       finalExecutionPerAtom.put(pe.state.atomName, ListBuffer())
 
     finalExecutionPerAtom.get(pe.state.atomName).get += pe
+  }
+
+  def removeFinalExecution(pe:CriojoStateExecution) {
+    pe match {
+      case pse:PartialStateExecution => removeFinalExecution(pse)
+      case _ =>
+    }
   }
 
   def removeFinalExecution(pe:PartialStateExecution) {
@@ -93,8 +141,8 @@ class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Gu
     if(finalExecutionPerAtom.contains(pe.state.atomName) && finalExecutionPerAtom.get(pe.state.atomName).get.size > 22) {
 
       //todo: optimization, may cause crash in case of stackoverflow
-      if(engine.rules.length>1)
-        while(execute) {}
+//      if(engine.rules.length>1)
+//        while(execute) {}
     }
   }
 
@@ -274,17 +322,18 @@ class PartialStateRule(val head: List[Atom], val body: List[Atom], val guard: Gu
  *  the name of the Relation represented by this state.
  *
  */
-class PartialState (var pattern:List[Atom], var executions:ListBuffer[PartialStateExecution] = ListBuffer(), var rule:PartialStateRule, var atomName:String) {
+class PartialState (var pattern:List[Atom], var executions:ListBuffer[PartialStateExecution] = ListBuffer(),
+                    var rule:PartialStateRule, var atomName:String) extends CriojoState {
 
   var finalExecutions:ListBuffer[PartialStateExecution] = ListBuffer()
 
 
 
-  def addFinalExecution(pse:PartialStateExecution) {
+  def addFinalExecution(pse:CriojoStateExecution) {
     rule.addFinalExecution(pse)
   }
 
-  def removeExecution(pse:PartialStateExecution) {
+  def removeExecution(pse:CriojoStateExecution) {
     rule.removeFinalExecution(pse)
   }
 
@@ -293,12 +342,14 @@ class PartialState (var pattern:List[Atom], var executions:ListBuffer[PartialSta
     var listOfCopies:ListBuffer[PartialStateExecution] = ListBuffer()
     executions.foreach {e => if (!e.isFinal) {
       var copy = e.copy()
-      e.atoms.foreach(a => rule.engine.addToExecutionIndex(a, copy))
+      //e.atoms.foreach(a => rule.engine.addToExecutionIndex(a, copy))
+      e.atoms.foreach(a => rule.addToExecutionIndex(a, copy))
       listOfCopies += copy
       e.addAtom(atom)
     }}
 
-    executions.insertAll(0,listOfCopies)
+    listOfCopies.foreach( se => executions += se)
+//    executions.insertAll(0,listOfCopies)
 
     val pse = new PartialStateExecution(ListBuffer(), this)
     pse.addAtom(atom)
@@ -332,7 +383,7 @@ class PartialState (var pattern:List[Atom], var executions:ListBuffer[PartialSta
  *
  */
 
-class PartialStateExecution (var atoms:ListBuffer[Atom], var state:PartialState){
+class PartialStateExecution (var atoms:ListBuffer[Atom], var state:PartialState) extends CriojoStateExecution {
 
   var consumed = false
 
@@ -350,7 +401,8 @@ class PartialStateExecution (var atoms:ListBuffer[Atom], var state:PartialState)
   def addAtom(atom:Atom){
     if(atoms.size < state.pattern.size) {
       atoms += atom
-      this.state.rule.engine.addToExecutionIndex(atom, this)
+//      this.state.rule.engine.addToExecutionIndex(atom, this)
+      this.state.rule.addToExecutionIndex(atom, this)
     }
 
     if(isFinal) {

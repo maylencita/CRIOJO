@@ -19,7 +19,7 @@ class Cham extends CriojoEngine //with DefaultFactory
 
   type RuleDef = RuleFactory => Rule
 
-  def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
+  def rules(ruleDefs:(RuleFactory => CriojoRule)*) { initRules(ruleDefs.toList) }
 
   def NativeRel(f:(List[Term]) => Unit) = {
     val natRel = new NativeRelation("NativeRel@" +

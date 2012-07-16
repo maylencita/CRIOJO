@@ -1,12 +1,10 @@
 package fr.emn.criojo.core.engine
 
 import fr.emn.criojo.core._
-import collection.mutable
 import collection.mutable.ListBuffer
 import collection.mutable.HashMap
 import fr.emn.criojo.core.datatype.Variable
 import scala.Some
-
 
 
 /**
@@ -15,7 +13,7 @@ import scala.Some
  */
 class CriojoCham extends CriojoEngine {
 
-  def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
+  def rules(ruleDefs:(RuleFactory => CriojoRule)*) { initRules(ruleDefs.toList) }
 }
 
 /**
@@ -30,31 +28,12 @@ trait CriojoEngine extends Engine {
 
   val solution: Solution = new Solution()
 
-  var indexAtomPartialStateExecution: mutable.HashMap[Atom, ListBuffer[PartialStateExecution]] = HashMap()
-
-  def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = new PartialStateRule(h, b, g, scope, this)
+  def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]):CriojoRule = new PartialStateRule(h, b, g, scope, this)
 
   override def reactionStrategy: ReactionStrategy = new LocalReactionStrategy()
 
-  def addToExecutionIndex(a: Atom, pe: PartialStateExecution) {
-    if (!indexAtomPartialStateExecution.contains(a))
-      indexAtomPartialStateExecution.put(a, ListBuffer())
-
-    indexAtomPartialStateExecution.get(a).get += pe
-  }
-
   def removeFromExecutionIndex(atom: Atom) {
-    if (indexAtomPartialStateExecution.contains(atom)) {
-
-      indexAtomPartialStateExecution.get(atom).get.foreach(pse => {
-
-        if (pse.isFinal)
-          pse.state.rule.removeFinalExecution(pse)
-
-        pse.state.executions -= pse
-      })
-      indexAtomPartialStateExecution.remove(atom)
-    }
+    rules.foreach( r => r.removeFromExecutionIndex(atom))
   }
 
   def executeRules() {
@@ -66,7 +45,7 @@ trait CriojoEngine extends Engine {
     solution.addAtom(atom)
 
     mapAtomRules.get(atom.relation.name) match {
-      case s: Some[ListBuffer[PartialStateRule]] => s.get.foreach(r => r.addToExecution(atom))
+      case s: Some[ListBuffer[CriojoRule]] => s.get.foreach(r => r.addToExecution(atom))
       case None =>
     }
   }
@@ -75,14 +54,7 @@ trait CriojoEngine extends Engine {
     solution.removeAtom(atom)
   }
 
-  val mapAtomRules: HashMap[String, ListBuffer[PartialStateRule]] = HashMap()
-
-  object NormalRule {
-
-    def createPartialStateExecution(atoms: ListBuffer[Atom], state: PartialState) =
-      new PartialStateExecution(atoms, state)
-  }
-
+  val mapAtomRules: HashMap[String, ListBuffer[CriojoRule]] = HashMap()
 }
 
 /**

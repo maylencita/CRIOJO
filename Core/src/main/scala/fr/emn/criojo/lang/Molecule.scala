@@ -63,28 +63,28 @@ trait Molecule {
   }
 
   @Deprecated
-  def ==> (c2:Molecule): RuleFactory => Rule ={
+  def ==> (c2:Molecule): RuleFactory => CriojoRule ={
     val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)
     f
   }
 
-  def --> (c2:Molecule): RuleFactory => Rule ={
+  def --> (c2:Molecule): RuleFactory => CriojoRule ={
     val f = (rf:RuleFactory) => rf.createRule(this.toList,c2.toList,EmptyGuard,c2.scope.toSet)
     f
   }
   @Deprecated
-  def ==> (gc: (_, _)):RuleFactory => Rule = gc match {
+  def ==> (gc: (_, _)):RuleFactory => CriojoRule = gc match {
     case (g:Guard, conj:Molecule) => getRuleBuilder(g,conj)
     case _ => null
   }
 
-  def --> (gc: (_, _)):RuleFactory => Rule = gc match {
+  def --> (gc: (_, _)):RuleFactory => CriojoRule = gc match {
     case (g:Guard, conj:Molecule) =>
       (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     case _ => null
   }
 
-  def getRuleBuilder (g:Guard,conj:Molecule): RuleFactory => Rule = {
+  def getRuleBuilder (g:Guard,conj:Molecule): RuleFactory => CriojoRule = {
     val f = (rf:RuleFactory) => rf.createRule(this.toList,conj.toList,g,conj.scope.toSet)
     f
   }
