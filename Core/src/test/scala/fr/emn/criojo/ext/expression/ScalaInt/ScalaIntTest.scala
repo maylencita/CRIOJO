@@ -18,8 +18,8 @@ class ScalaIntTest {
   }
 
   @Test def testEqual() {
-    criojoAssertEqual(int2, int2)
-    criojoAssertEqual(int2, WrapScalaInt(2))
+    criojoAssertEquals(int2, int2)
+    criojoAssertEquals(int2, WrapScalaInt(2))
     criojoAssertTrue(int2 <=> int2)
     criojoAssertTrue(!(int2 <=> int5))
   }
@@ -98,10 +98,6 @@ class ScalaIntTest {
 
   // ****************************************************************** Utils **
   def criojoAssertEquals(int1: ScalaInt, int2: ScalaInt) {
-    assertEquals(int1, int2)
-  }
-
-  def criojoAssertEqual(int1: ScalaInt, int2: ScalaInt) {
     assertEquals(int1, int2)
   }
 
