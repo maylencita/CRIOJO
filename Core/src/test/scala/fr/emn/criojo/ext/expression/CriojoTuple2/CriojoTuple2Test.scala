@@ -29,7 +29,7 @@ class CriojoTuple2Test {
     tupleB2 = WrapScalaTuple2(Tuple2(_B, _2))
   }
 
-  @Test def testWrap {
+  @Test def testWrap() {
     assertEquals(tupleA1.value, Tuple2(_A, _1))
     assertEquals(tupleB2.value, Tuple2(_B, _2))
     assertEquals(tupleA1.getValue, Tuple2(_A, _1))
