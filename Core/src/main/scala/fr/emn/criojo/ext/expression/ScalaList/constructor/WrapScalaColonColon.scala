@@ -2,6 +2,7 @@ package fr.emn.criojo.ext.expression.ScalaList.constructor
 
 import fr.emn.criojo.core.datatype._
 import fr.emn.criojo.ext.expression.ScalaList.{VarScalaList, ScalaList}
+import fr.emn.criojo.core.datatype.Variable
 
 final case class WrapScalaColonColon[A <: Pattern with Expression](val hd: A,
     val tl: ScalaList[A]) extends ScalaList[A] {
@@ -19,7 +20,7 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](val hd: A,
    * By the way, a WrapScalaNil is an empty list, so it's could never match with
    * a WrapScalaColonColon which contains, at least, one element.
    */
-  override def matches(expr: Expression):Boolean = expr match {
+  override def matches(expr: Expression): Boolean = expr match {
     case wsl: WrapScalaList[A] => matchesOfWrapScalaList(wsl)
     case _ => false
   }
@@ -48,24 +49,28 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](val hd: A,
     new WrapScalaColonColon[A](hdExpr, tlExpr)
   }
 
-  /** Reduce the current constructor to a WrapScalaList constructor */
+  /** Reduces the current constructor to a WrapScalaList constructor */
   override def reduce(): Expression = WrapScalaList(value)
 
-  /** Return wrapped list */
+  /** Returns wrapped list */
   override def value: List[A] = {
-    val head: A = hd
+    val head: A = hd match {
+      case v: Variable => throw new NoValuationForVariable(v)
+      case _ => hd
+    }
 
     val tail: List[A] = tl match {
       case WrapScalaNil => Nil
-      case wsl: WrapScalaList[A] => wsl.value
-      case wscc: WrapScalaColonColon[A] => wscc.value
+      case wsl: WrapScalaList[A] => wsl.getValue
+      case wscc: WrapScalaColonColon[A] => wscc.getValue
+      case v: Variable => throw new NoValuationForVariable(v)
       case _ => Nil
     }
 
     head :: tail
   }
 
-  override def toString :String = value.toString
+  override def toString :String = value.toString()
 
   // ************************************************** Recursive Algorithmes **
 
@@ -78,7 +83,7 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](val hd: A,
    */
   def matchesOfWrapScalaList(wsl: WrapScalaList[A]): Boolean = {
     val headCheck: Boolean = hd match {
-      case hdVar: Variable => hdVar.matches(wsl.head)
+      case hdVar: Var[A] => hdVar.matches(wsl.head)
       case _ => hd == wsl.head
     }
 
@@ -96,7 +101,7 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](val hd: A,
 
   def getValuationOfWrapScalaList(wsl: WrapScalaList[A]): Valuation = {
     val headVals: Valuation = hd match {
-      case hdVar: Variable => Valuation(hdVar -> wsl.head)
+      case hdVar: Var[A] => Valuation(hdVar -> wsl.head)
       case _ => Valuation()
     }
 

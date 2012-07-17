@@ -24,7 +24,7 @@ import fr.emn.criojo.ext.expression.ScalaBoolean.ScalaBoolean
   */
 trait TestCham extends Cham with DefaultFactory {
   /** Chame name using in AssertRel when one failed */
-  def name: String = ""
+  def name: String = "test"
   var asserts: ArrayBuffer[Boolean] = ArrayBuffer()
   var assertsId = 0
 
@@ -68,10 +68,14 @@ trait TestCham extends Cham with DefaultFactory {
   override def executeRules() {
     super.executeRules()
 
+    var notExecutedAssertsId: String = ""
+
     for ((executed, assertId) <- asserts.view.zipWithIndex)
-      if (!executed)
-        fail("Assertion number " + (assertId + 1) + " not executed" +
-          " in TestChame " + name)
+      if (!executed) notExecutedAssertsId += (assertId + 1) + ", "
+
+    if (!notExecutedAssertsId.isEmpty)
+        fail("Assertion(s) number(s) " +
+          notExecutedAssertsId + "not executed in " + name)
   }
 }
 

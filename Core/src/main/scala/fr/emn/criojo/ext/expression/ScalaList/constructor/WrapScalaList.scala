@@ -3,7 +3,8 @@ package fr.emn.criojo.ext.expression.ScalaList.constructor
 import fr.emn.criojo.core.datatype.{Valuation, Expression, Pattern}
 import fr.emn.criojo.ext.expression.ScalaList.ScalaList
 
-case class WrapScalaList[A <: Pattern with Expression](l: List[A]) extends ScalaList[A] {
+case class WrapScalaList[A <: Pattern with Expression](l: List[A])
+  extends ScalaList[A] {
 
   /**
    * Caution, this method is applicable only when WrapScalaList is an expression
@@ -31,12 +32,12 @@ case class WrapScalaList[A <: Pattern with Expression](l: List[A]) extends Scala
     case _ => false
   }
 
-  override def getValuation(exp: Expression): Valuation = Valuation();
+  override def getValuation(exp: Expression): Valuation = Valuation()
 
   override def applyValuation(valuation: Valuation): Expression = this
 
   override def reduce(): Expression = this
 
-  override def toString :String = l.toString
+  override def toString :String = l.toString()
 }
 

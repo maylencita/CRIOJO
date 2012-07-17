@@ -8,8 +8,6 @@ import fr.emn.criojo.TestCham
 import fr.emn.criojo.lang.Cham
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
 import fr.emn.criojo.core.datatype.{ProhibitedOperation, Term}
-import fr.emn.criojo.ext.expression.ScalaList.VarScalaList
-import fr.emn.criojo.ext.expression.ScalaList.constructor.WrapScalaNil
 
 class ScalaBooleanTest {
   var boolTrue, boolFalse, boolVar: ScalaBoolean = _
@@ -28,8 +26,8 @@ class ScalaBooleanTest {
   }
 
   @Test def testEquals() {
-    criojoAssertEquals(boolTrue, boolTrue)
-    criojoAssertEquals(boolTrue, WrapScalaBoolean(true))
+    assertEquals(boolTrue, boolTrue)
+    assertEquals(boolTrue, WrapScalaBoolean(true))
   }
 
   @Test def testNot {
@@ -63,8 +61,9 @@ class ScalaBooleanTest {
     boolVar.getValue()
   }
 
-  @Test def testEqualsVar() {
-    criojoAssertEquals(boolVar, boolVar)
+  @Test (expected = classOf[ProhibitedOperation]) def testEqualsVar() {
+    assertEquals(boolVar, boolVar)
+    criojoAssertEquals(boolTrue, boolVar)
   }
 
   @Test (expected = classOf[ProhibitedOperation]) def testNotVar() {
@@ -103,7 +102,7 @@ class ScalaBooleanTest {
             & AssertTrue(bTrue || bFalse)
             & AssertTrue(!(bFalse || bFalse))
             & BoolTrue(bTrue) & Sequence()),
-        (BoolTrue(bTrue|| bFalse) & Sequence()) --> Well()
+        (BoolTrue(bTrue || bFalse) & Sequence()) --> Well()
       )
     }
 
@@ -137,7 +136,7 @@ class ScalaBooleanTest {
 
   // ****************************************************************** Utils **
   def criojoAssertEquals(bool1: ScalaBoolean, bool2: ScalaBoolean) {
-    assertEquals(bool1, bool2)
+    assertEquals(bool1.reduce(), bool2.reduce())
   }
 
   def criojoAssertTrue(b: ScalaBoolean) {

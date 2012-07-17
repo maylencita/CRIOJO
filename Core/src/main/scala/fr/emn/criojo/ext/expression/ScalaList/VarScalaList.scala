@@ -10,9 +10,8 @@ case class VarScalaList[A <: Pattern with Expression](n: String)
 object VarScalaList {
   private var instanceNum = 0
 
-  def apply[A <: Pattern with Expression]() = {
-    new VarScalaList[A]("VarScalaList@" + getInstanceNum)
-  }
+  def apply[A <: Pattern with Expression](): VarScalaList[A] =
+    VarScalaList[A]("VarScalaList@" + getInstanceNum)
 
   private def getInstanceNum() = {
     instanceNum += 1
