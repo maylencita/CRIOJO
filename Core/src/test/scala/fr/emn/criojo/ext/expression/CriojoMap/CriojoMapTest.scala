@@ -5,10 +5,12 @@ import org.junit.{Before, Test}
 import fr.emn.criojo.lang.Cham
 import fr.emn.criojo.TestCham
 import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-import fr.emn.criojo.ext.expression.ScalaString.ScalaString
+import fr.emn.criojo.ext.expression.ScalaString.{VarScalaString, ScalaString}
 import fr.emn.criojo.ext.expression.ScalaInt.{VarScalaInt, ScalaInt}
 import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
 import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+import junit.framework.TestResult
+import fr.emn.criojo.ext.expression.ScalaBoolean.VarScalaBoolean
 
 class CriojoMapTest {
   var map: CriojoMap[ScalaString, ScalaInt] = _
@@ -121,21 +123,21 @@ class CriojoMapTest {
     val cham = new Cham with TestCham {
       override def name = "testFoldLeft"
       val Map = LocalRelation("Map")
+      val StartValue = LocalRelation("StartValue")
       val Sum = LocalRelation("Sum")
 
       val m = VarCriojoMap[ScalaString, ScalaInt]()
       val i = VarScalaInt()
-
-      val _0 = WrapScalaInt(0)
-      val _6 = WrapScalaInt(6)
+      val expectedResult = WrapScalaInt(9)
 
       rules(
-        Map(m) --> Sum(m.foldLeft[ScalaInt](_0)((sum, kv) => sum + kv._2))
-        , Sum(i) --> AssertTrue(i <=> _6)
+        (Map(m) & StartValue(i)) --> Sum(m.foldLeft[ScalaInt](i)((sum, kv) => sum + kv._2))
+        , Sum(i) --> AssertTrue(i <=> expectedResult)
       )
     }
 
     cham.introduceMolecule(cham.Map(map))
+    cham.introduceMolecule(cham.StartValue(_3))
     cham.executeRules()
   }
 }
