@@ -23,4 +23,10 @@
 		<username>root</username>
 		<password>password</password>
 	</server>
+	<server>
+		<name>online</name>
+		<ip>5.115.206.27</ip>
+		<username>root</username>
+		<password>badock</password>
+	</server>
 </servers>

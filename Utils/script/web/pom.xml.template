@@ -15,6 +15,19 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+        <groupId>org.hornetq</groupId>
+        <artifactId>hornetq-core</artifactId>
+        <version>2.2.15.Final</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.jboss.netty</groupId>
+        <artifactId>netty</artifactId>
+        <version>3.2.7.Final</version>
+    </dependency>
+
     <!-- Bus API -->
     <dependency>
         <groupId>fr.emn.criojo.network</groupId>

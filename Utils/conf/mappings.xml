@@ -1,10 +1,10 @@
 <mappings>
 	<mapping>
-		<node>local</node>
+		<node>online</node>
 		<server>web</server>
 	</mapping>
 	<mapping>
-		<node>local</node>
+		<node>online</node>
 		<server>server</server>
 	</mapping>
 </mappings>

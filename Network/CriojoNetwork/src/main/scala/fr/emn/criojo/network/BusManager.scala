@@ -14,7 +14,7 @@ import fr.emn.criojo.core.Atom
 class BusManager {
 
   var mapBus:HashMap[String, BusConnector] = new HashMap[String, BusConnector]()
-  var busFactory:BusConnectorFactory = new BusConnectorLocalHornetQFactory()
+  var busFactory:BusConnectorFactory = new BusConnectorLocalHlsornetQFactory()
 
   @throws(classOf[BusConnectorException])
   def send(from:String, to:String, atom:Atom) {
@@ -26,7 +26,7 @@ class BusManager {
   
   @throws(classOf[BusConnectorException])
   def addActor(actorCham:ActorCham) {
-    val bus:BusConnector = busFactory.createConnector("5445:"+actorCham.name)
+    val bus:BusConnector = busFactory.createConnector("5445:"+actorCham.name+"")
 
     bus.setReceiveHandler(new ReceiveHandler {
       def onReceive(p1: String) { actorCham.receiveHandler.onReceive(Message.parse(p1).atom.get) }

@@ -190,7 +190,7 @@
                         <configuration>
                             <file>${basedir}/lib/CriojoNetwork-1.0-SNAPSHOT.jar</file>
 
-                            <groupId>fr.emn.criojo</groupId>
+                            <groupId>fr.emn.criojo.network</groupId>
                             <artifactId>CriojoNetwork</artifactId>
                             <version>1.0-SNAPSHOT</version>
                             <packaging>jar</packaging>
