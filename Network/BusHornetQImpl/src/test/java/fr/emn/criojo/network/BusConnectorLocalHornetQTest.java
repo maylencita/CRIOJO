@@ -30,7 +30,7 @@ public class BusConnectorLocalHornetQTest {
    * </ol>
    */
   @Test
-  public void localSendTest() {
+  public void testLocalSend() {
     boolean conn1IsAck = false;
 
     try {
@@ -90,11 +90,13 @@ public class BusConnectorLocalHornetQTest {
           } finally {
             if (conn != null) {
               conn.disconnect();
+              /*
               BusConnectorLocalHornetQ connloc;
               connloc = (BusConnectorLocalHornetQ) conn;
               if (connloc.hasServer()) {
                 connloc.stopServer();
               }
+              */
             }
           }
         }
@@ -131,11 +133,13 @@ public class BusConnectorLocalHornetQTest {
           } finally {
             if (conn != null) {
               conn.disconnect();
+              /*
               BusConnectorLocalHornetQ connloc;
               connloc = (BusConnectorLocalHornetQ) conn;
               if (connloc.hasServer()) {
                 connloc.stopServer();
               }
+              */
             }
           }
         }
@@ -186,7 +190,7 @@ public class BusConnectorLocalHornetQTest {
    * </ol>
    */
   @Test
-  public void localBroadcastTest() {
+  public void testLocalBroadcast() {
     try {
 
       // Load properties
@@ -261,11 +265,13 @@ public class BusConnectorLocalHornetQTest {
           } finally {
             if (conn != null) {
               conn.disconnect();
+              /*
               BusConnectorLocalHornetQ connloc;
               connloc = (BusConnectorLocalHornetQ) conn;
               if (connloc.hasServer()) {
                 connloc.stopServer();
               }
+              */
             }
           }
         }
@@ -297,11 +303,13 @@ public class BusConnectorLocalHornetQTest {
           } finally {
             if (conn != null) {
               conn.disconnect();
+              /*
               BusConnectorLocalHornetQ connloc;
               connloc = (BusConnectorLocalHornetQ) conn;
               if (connloc.hasServer()) {
                 connloc.stopServer();
               }
+              */
             }
           }
         }
@@ -333,11 +341,13 @@ public class BusConnectorLocalHornetQTest {
           } finally {
             if (conn != null) {
               conn.disconnect();
+              /*
               BusConnectorLocalHornetQ connloc;
               connloc = (BusConnectorLocalHornetQ) conn;
               if (connloc.hasServer()) {
                 connloc.stopServer();
               }
+              */
             }
           }
         }
