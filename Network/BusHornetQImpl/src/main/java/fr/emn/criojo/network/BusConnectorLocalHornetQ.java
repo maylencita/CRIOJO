@@ -143,7 +143,7 @@ public class BusConnectorLocalHornetQ implements BusConnectorHornetQ {
 	 * @throws BusConnectorException
 	 *           Troubles append during connection to Bus or Bus start.
 	 */
-	public BusConnectorLocalHornetQ(int port, String name, String login,
+  public BusConnectorLocalHornetQ(int port, String name, String login,
 	    String password) throws BusConnectorException {
 		this(port, name, login, password, DEFAULT_STOMPWEBSOCKET_PORT,
 		    DEFAULT_BROADCAST_ADDRESS, DEFAULT_BROADCAST_PORT);
@@ -499,13 +499,13 @@ public class BusConnectorLocalHornetQ implements BusConnectorHornetQ {
 	      + "\n"
 	      + "\n   <clustered>true</clustered>"
 	      + "\n   "
-	      + "\n   <paging-directory>${build.directory}/data/paging</paging-directory>"
+	      + "\n   <paging-directory>data/paging</paging-directory>"
 	      + "\n   "
-	      + "\n   <bindings-directory>${build.directory}/data/bindings</bindings-directory>"
+	      + "\n   <bindings-directory>data/bindings</bindings-directory>"
 	      + "\n   "
-	      + "\n   <journal-directory>${build.directory}/data/journal</journal-directory>"
+	      + "\n   <journal-directory>data/journal</journal-directory>"
 	      + "\n   "
-	      + "\n   <large-messages-directory>${build.directory}/data/large-messages</large-messages-directory>"
+	      + "\n   <large-messages-directory>data/large-messages</large-messages-directory>"
 	      + "\n"
 	      + "\n   <connectors>"
 	      + "\n      <connector name=\"netty\">"
