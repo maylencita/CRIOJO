@@ -14,7 +14,7 @@ import fr.emn.criojo.ext.debug.Solution
 
 trait Engine extends RuleFactory{
   protected var rules:List[Rule] = List()
-  protected var relations:List[Relation] = List()
+  protected var relations:List[Relation] = List()      //TODO Do we need a list of relations?
 
   def reactionStrategy:ReactionStrategy
 

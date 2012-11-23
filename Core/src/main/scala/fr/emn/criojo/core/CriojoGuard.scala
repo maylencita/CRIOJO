@@ -35,10 +35,11 @@ abstract class CriojoGuard extends Guard with RelationObserver{
   }
 }
 
-case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard with StateMachine{
-  init(atoms.toArray)
+case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard {//with StateMachine{
+  //init(atoms.toArray)
+  val stateMachine = new StateMachine(atoms.toArray)
 
-  val finalState = states(size - 1)
+  val finalState = stateMachine.states(stateMachine.size - 1)
 
   def onFinalState(){}
 
@@ -46,9 +47,9 @@ case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard with StateMachine
 
   def receiveUpdate(atom: Atom){
     if (atom.isActive)
-      addExecution(atom)
+      stateMachine.addExecution(atom)
     else
-      removeExecution(atom)
+      stateMachine.removeExecution(atom)
   }
 
   override def valuations(valuation:Valuation):ValuationList =

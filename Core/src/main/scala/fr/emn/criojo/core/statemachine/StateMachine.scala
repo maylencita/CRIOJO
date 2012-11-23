@@ -10,19 +10,20 @@ import fr.emn.criojo.core.Atom
 * Date: 29/11/11
 * Time: 14:17
 */
-trait StateMachine {
+class StateMachine(pattern: Array[Atom]) {
 
-  protected var size = 0
-  protected var states:Array[State] = null
-  protected var transitions:HashMap[Int,Array[Transition]] = null
+  val size = math.pow(2,pattern.length).intValue
+  val states:Array[State] = initStates
+  protected var transitions:HashMap[Int,Array[Transition]] = initTransitions
 
-  var pattern:Array[Atom] = null
+//  var pattern:Array[Atom] = null
 
-  def init(pattern:Array[Atom]){
-    this.pattern = pattern
-    states = initStates
-    transitions = initTransitions
-  }
+  //TODO Class should not be a trait because it needs initialization
+//  def init(pattern:Array[Atom]){
+//    this.pattern = pattern
+//    states = initStates
+//    transitions = initTransitions
+//  }
 
   def addExecution(atom:Atom){
     /*
@@ -86,8 +87,8 @@ trait StateMachine {
   }
 
   private def initStates = {
-    if (size == 0)
-      size = math.pow(2,pattern.length).intValue
+//    if (size == 0)
+//      size = math.pow(2,pattern.length).intValue
     val slst = new Array[State](size)
     for(i <- 0 to size-1){
       slst.update(i, new State(i))

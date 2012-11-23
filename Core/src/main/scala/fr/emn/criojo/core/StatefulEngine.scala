@@ -39,20 +39,21 @@ trait StatefulEngine extends Engine {
   }
 
   class StatefulRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:Set[Variable])
-    extends Rule with StateMachine {
+    extends Rule { //with StateMachine {
 
-    init(head.toArray)
+    //init(head.toArray)
+    val stateMachine = new StateMachine(head.toArray)
 
     def receiveUpdate(atom: Atom){
       if (atom.isActive)
-        addExecution(atom)
+        stateMachine.addExecution(atom)
       else
-        removeExecution(atom)
+        stateMachine.removeExecution(atom)
     }
 
     override def execute() = {
       var executed = false
-      val finalState = states(size - 1)
+      val finalState = stateMachine.states(stateMachine.size - 1)
       if(finalState.hasExecutions){
         finalState.removeExecution(pe => guard.eval(pe.valuation)) match{
           case Some(pe:PartialExecution) => {
@@ -89,7 +90,7 @@ trait StatefulEngine extends Engine {
     override def toString = {
       var str = super.toString + ": \n" +
         "\tPartial Executions: \n"
-      for(s <- states){
+      for(s <- stateMachine.states){
         if (!s.executions.isEmpty)
           str += "\t"+ s +":"+ s.executions.mkString(";") + "\n"
       }
