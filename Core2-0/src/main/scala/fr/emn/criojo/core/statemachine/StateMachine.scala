@@ -1,8 +1,9 @@
 package fr.emn.criojo.core.statemachine
 
-import collection.mutable.{Queue, HashMap, MultiMap, Set}
-import fr.emn.criojo.core.datatype.BottomValuation
-import fr.emn.criojo.core.Atom
+import fr.emn.criojo.core.engine.ExecutionEngine
+import fr.emn.criojo.core.model.{Atom,BottomValuation}
+
+import collection.mutable.{HashMap, MultiMap, Set}
 
 /*
 * Created by IntelliJ IDEA.
@@ -10,15 +11,13 @@ import fr.emn.criojo.core.Atom
 * Date: 29/11/11
 * Time: 14:17
 */
-class StateMachine(pattern: Array[Atom]) {
+class StateMachine(pattern: Array[Atom]) extends ExecutionEngine{
 
   val size = math.pow(2,pattern.length).intValue
   val states:Array[State] = initStates
   protected var transitions:HashMap[Int,Array[Transition]] = initTransitions
 
-//  var pattern:Array[Atom] = null
-
-  def addExecution(atom:Atom){
+  def addAtom(atom:Atom){
     /*
     A temporal map to hold new executions, to differentiate
     the previous general-state from the current general-state
@@ -34,7 +33,6 @@ class StateMachine(pattern: Array[Atom]) {
           transitions(a.hashCode).foreach{
             transition=> {
               if(transition.ini.stateZero) {
-
                 val pExec = new PartialExecution(i,atom,vals)
                 pExec.valuation match {
                   case BottomValuation =>
@@ -67,7 +65,7 @@ class StateMachine(pattern: Array[Atom]) {
     }
   }
 
-  def removeExecution(atom:Atom){
+  def removeAtom(atom:Atom){
     if(pattern != null){
       for(a <- pattern){
         if (a.relation.name == atom.relation.name && a.arity == atom.arity){
@@ -119,4 +117,5 @@ class StateMachine(pattern: Array[Atom]) {
     override def toString=ini +"-->"+ fin
   }
 }
+
 

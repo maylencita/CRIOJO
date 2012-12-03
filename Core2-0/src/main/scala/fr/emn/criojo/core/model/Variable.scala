@@ -1,4 +1,4 @@
-package fr.emn.criojo.core.datatype
+package fr.emn.criojo.core.model
 
 trait Variable extends Pattern {
   /** Variable name (only for debug) */
@@ -14,7 +14,7 @@ trait Variable extends Pattern {
   * {{{
   *                                            +-+
   *  +---------+                        +------|T|-+
-  *  | Pattern |                        | Var  +-+ |
+  *  | Pattern |                        | TypedVar  +-+ |
   *  +---------+                        +----------+
   *       ^                                   ^
   *       |                                   |
@@ -28,7 +28,7 @@ trait Variable extends Pattern {
   * @constructor  Create a new variable of specific type with a given name.
   * @param  n The variable's name.
   */
-abstract class Var[T <: Pattern](private val n: String) extends Variable {
+abstract class TypedVar[+T <: Pattern](private val n: String) extends Variable {
   override val name: String = n
 
   /** Test if variable matches with an expression.
@@ -58,10 +58,10 @@ abstract class Var[T <: Pattern](private val n: String) extends Variable {
     case _ => Valuation()
   }
 
-  /** Transforms variable in expression using valuation.
+  /** Transforms variable in expression using a valuation.
     *
-    * Applying [[fr.emn.criojo.core.datatype.Valuation]] to current variable and
-    * transform in [[fr.emn.criojo.core.datatype.Expression]]. This mechanism is
+    * Applying [[fr.emn.criojo.core.model.Valuation]] to current variable and
+    * transform in [[fr.emn.criojo.core.model.Expression]]. This mechanism is
     * use to pass from Right Rule Pattern to Expression in solution.
     *
     * @param valuation  Map of VariableName, value, match between Left Rule
@@ -70,22 +70,10 @@ abstract class Var[T <: Pattern](private val n: String) extends Variable {
     */
   @throws(classOf[NoValuationForVariable])
   override def applyValuation(valuation: Valuation): Expression = {
-    var expr: Expression = null
-
-    valuation.forall(v => {
-      if (v._1.equals(this)) {
-        expr = v._2.asInstanceOf[Expression]
-        false
-      } else {
-        true
-      }
-    })
-
-    if (expr == null) {
-      throw new NoValuationForVariable(this)
+    valuation.apply(this) match {
+      case Some(expr) => expr
+      case _ => throw new NoValuationForVariable(this)
     }
-
-    expr
   }
 }
 

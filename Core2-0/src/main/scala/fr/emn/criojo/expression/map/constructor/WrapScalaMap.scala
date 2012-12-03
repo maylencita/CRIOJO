@@ -1,10 +1,10 @@
-package fr.emn.criojo.ext.expression.CriojoMap.constructor
+package fr.emn.criojo.expression.map.constructor
 
-import fr.emn.criojo.core.datatype.{Valuation, Expression, Pattern}
-import fr.emn.criojo.ext.expression.CriojoMap.CriojoMap
+import fr.emn.criojo.core.model.{Valuation, Expression, Pattern}
+import fr.emn.criojo.expression.map.CriojoMap
 
 case class WrapScalaMap[A <: Pattern with Expression,
-  B <: Pattern with Expression](m: Map[A, B])
+B <: Pattern with Expression](m: Map[A, B])
   extends CriojoMap[A, B] {
 
   override def value = m
@@ -19,11 +19,11 @@ case class WrapScalaMap[A <: Pattern with Expression,
     case _ => false
   }
 
-  override def getValuation(exp: Expression): Valuation = Valuation();
+  override def getValuation(exp: Expression): Valuation = Valuation()
 
   override def applyValuation(valuation: Valuation): Expression = this
 
   override def reduce(): Expression = this
 
-  override def toString: String = m.toString
+  override def toString: String = m.toString()
 }

@@ -1,4 +1,4 @@
-package fr.emn.criojo.ext.expression.CriojoMap
+package fr.emn.criojo.expression.map
 
 /** Exception thrown on un-existing key in map */
 class NoSuchKeyException(keyName: String)

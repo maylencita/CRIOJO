@@ -29,13 +29,13 @@ class Algorithmes {
         (H(1, x) & H(2, y) & H(3, z) )  --> R(x - y / z )
       )
     }
-    fCham.enableStreamingTrace()
-    fCham.enableSolutionTrace()
+//    fCham.enableStreamingTrace()
+//    fCham.enableSolutionTrace()
     fCham.introduceMolecule(fCham.H(1, 7))
     fCham.introduceMolecule(fCham.H(2, 2))
     fCham.introduceMolecule(fCham.H(3, 10))
     fCham.executeRules()
-    fCham.printSolution()
+//    fCham.printSolution()
   }
 
 
@@ -51,8 +51,8 @@ class Algorithmes {
         (V(x) & V(y))  --> {x <= y} ?: V(y)
          )
     }
-    fCham.enableStreamingTrace()
-    fCham.enableSolutionTrace()
+//    fCham.enableStreamingTrace()
+//    fCham.enableSolutionTrace()
     fCham.introduceMolecule(fCham.V(2))
     fCham.introduceMolecule(fCham.V(2))
     fCham.introduceMolecule(fCham.V(3))
@@ -60,7 +60,7 @@ class Algorithmes {
     fCham.introduceMolecule(fCham.V(4))
 
     fCham.executeRules()
-    fCham.printSolution()
+//    fCham.printSolution()
   }
 
   @Test
@@ -75,13 +75,13 @@ class Algorithmes {
         (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u))
       )
     }
-    fCham.enableStreamingTrace()
-    fCham.enableSolutionTrace()
+//    fCham.enableStreamingTrace()
+//    fCham.enableSolutionTrace()
     val j = 5
     for (i <- 0 to j)
       fCham.introduceMolecule(fCham.L(i, j - i))
     fCham.executeRules()
-    fCham.printSolution()
+//    fCham.printSolution()
   }
 
 }

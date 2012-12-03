@@ -22,7 +22,7 @@ case class WrapScalaTuple2[T1 <: Pattern with Expression,
     override def value = t
 
     /**
-     * With type CriojoTuple2, only WrapScalaTuple2 could be in
+     * With type tuple2, only WrapScalaTuple2 could be in
      * solution, because ArrowAssocCriojoTuple2 is reduce as WrapScalaTuple2.
      * So matches no needs to test match with ArrowAssocCriojoTuple2.
      */
