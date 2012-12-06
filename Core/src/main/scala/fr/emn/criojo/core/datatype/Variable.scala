@@ -89,3 +89,8 @@ abstract class Var[T <: Pattern](private val n: String) extends Variable {
   }
 }
 
+@deprecated ("Find a way to delete Undef")
+object Undef extends Variable with Expression {
+  override val name = "Undef"
+  def matches(that: Term): Boolean = true
+}
