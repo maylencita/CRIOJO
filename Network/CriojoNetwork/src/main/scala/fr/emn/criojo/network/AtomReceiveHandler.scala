@@ -1,6 +1,8 @@
 package fr.emn.criojo.network
 
-import fr.emn.criojo.core.Atom
+import fr.emn.criojo.core.model.Atom
+import fr.emn.criojo.core.engine.Cham
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +12,10 @@ import fr.emn.criojo.core.Atom
  * To change this template use File | Settings | File Templates.
  */
 
-abstract class AtomReceiveHandler {
+class AtomReceiveHandler(owner:Cham) extends ReceiveHandler{
 
-  def onReceive(a:Atom);
+  def onReceive(message:String){
+    val inAtom = Message.parse(message).atom.get
+    owner.introduceAtom(inAtom)
+  }
 }

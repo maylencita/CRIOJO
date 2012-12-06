@@ -52,7 +52,7 @@ abstract class ChamBody{
   def Var[T](implicit m:Manifest[T]):Variable = m.toString match{
     case "Int" => VarScalaInt()
     case "java.lang.String" => VarScalaString()
-    case "fr.emn.criojo.core.model.relation.package$Channel" => VarChannel("varchannel"+UUID.randomUUID().toString)
+    case "fr.emn.criojo.core.model.relation.Channel" => VarChannel("varchannel"+UUID.randomUUID().toString)
     case _ => throw new Error("Undefiend type [" + m + "]")
   }
 

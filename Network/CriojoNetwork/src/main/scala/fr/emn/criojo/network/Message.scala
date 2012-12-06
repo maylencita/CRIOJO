@@ -1,14 +1,10 @@
 package fr.emn.criojo.network
 
-import fr.emn.criojo.core.Atom
 import collection.mutable.HashMap
-import fr.emn.criojo.core.datatype.{Term, Expression}
-import fr.emn.criojo.ext.expression.Relation.constructor.LocalRelation
-import fr.emn.criojo.ext.expression.ScalaBoolean.constructor.WrapScalaBoolean
-import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
-import fr.emn.criojo.ext.expression.ScalaString.constructor.WrapScalaString
 import scala.util.parsing.combinator.JavaTokenParsers
-import fr.emn.criojo.ext.expression.Relation.ChannelLocation
+import fr.emn.criojo.core.model.{Atom, Term}
+import fr.emn.criojo.expression.scala.{WrapScalaInt, WrapScalaString, WrapScalaBoolean}
+import fr.emn.criojo.core.model.relation.{AdhocChannel, Channel, ChannelLocation}
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,14 +36,24 @@ case class MessageArgsParser(var e:List[Term]) extends JavaTokenParsers {
   val str = stringLiteral
   val bool: Parser[String] = "[true|false]".r
 
-  def url: Parser[String] = "@"~id ^^ {case _~(idChannel:String) => idChannel } | (urlPrefix.+)~id ^^ {case (u:List[String])~(s:String) => u.foldLeft("") {case (v,c) => v+c }+s }
-  def urlPrefix : Parser[String] = id~"." ^^ {case (s:String)~_ => s+"." }
+  def url: Parser[List[String]] = ("@"~id ^^ {case _~(idChannel:String) => List[String](idChannel) }
+  | (urlPrefix.+)~id ^^ {case (u:List[String])~(s:String) => u:+s } //.foldLeft("") {case (v,c) => v+c }+s }
+  )
+
+  def urlPrefix : Parser[String] = id~"." ^^ {case (s:String)~_ => s} //+"." }
 
   def args: Parser[List[Term]] = repsep(exp,",") ^^ { case exps => exps.foldLeft(List[Term]()){ (v,e) => v:::List(e) } }
-  def exp: Parser[Term] = "true" ^^ { case s => WrapScalaBoolean(s.toBoolean) } |
-    "false" ^^ { case s => WrapScalaBoolean(s.toBoolean) } | fpt ^^ { case s => WrapScalaInt(s.toFloat.toInt) } |
-    str ^^ { case s => WrapScalaString(s) } | dec ^^ { case s => WrapScalaInt(s.toFloat.toInt) } | url ^^ { case s:String => new ChannelLocation(s) } |
-    id ^^ { case s => WrapScalaString(s) } | num ^^ { case s => WrapScalaInt(s.toDouble.toInt) }
+
+  def exp: Parser[Term] = (
+    "true" ^^ { case s => WrapScalaBoolean(s.toBoolean) }
+  | "false" ^^ { case s => WrapScalaBoolean(s.toBoolean) }
+  | fpt ^^ { case s => WrapScalaInt(s.toFloat.toInt) }
+  | str ^^ { case s => WrapScalaString(s) }
+  | dec ^^ { case s => WrapScalaInt(s.toFloat.toInt) }
+  | url ^^ { case s:List[String] => new ChannelLocation(s.mkString("."), s.last) }
+  | id ^^ { case s => WrapScalaString(s) }
+  | num ^^ { case s => WrapScalaInt(s.toDouble.toInt) }
+  )
 
 }
 
@@ -69,13 +75,13 @@ object Message {
 
   def atomToMessage(from:String, to:String, a:Atom):String = {
 
-    def patternsToString(pattern:List[Term]):String = pattern match {
-      case (head:Term)::l if l!=Nil => head.toString+","+patternsToString(l)
-      case (head:Term)::l if l==Nil => head.toString
-      case Nil => ""
-    }
+//    def patternsToString(pattern:List[Term]):String = pattern match {
+//      case Nil => ""
+//      case (head:Term)::l if l!=Nil => head.toString+","+patternsToString(l)
+//      case (head:Term)::l if l==Nil => head.toString
+//    }
 
-    "{'to':'"+to+"'; 'from':'"+from+"'; 'channel':'"+a.relation.name+"';'args':'"+patternsToString(a.patterns)+"'}"
+    "{'to':'"+to+"'; 'from':'"+from+"'; 'channel':'"+a.relation.name+"';'args':'"+a.terms.mkString(",")+"'}"
   }
 }
 
@@ -89,6 +95,11 @@ class Message {
   def args:Option[String] = properties.get("args")
   
   def atom:Option[Atom] = (channel.get, args.get) match {
-    case (sChanel:String, sArgs:String) => Some(Atom.apply(LocalRelation(sChanel), Message.parseArgs(sArgs)))
+    case (sChannel:String, sArgs:String) =>
+      Some(
+        new AdhocChannel(sChannel, new ChannelLocation(to.getOrElse(""),sChannel)).newAtom(
+          Message.parseArgs(sArgs))
+      )
+//      Some(Atom.apply(LocalRelation(sChanel), Message.parseArgs(sArgs)))
   }
 }

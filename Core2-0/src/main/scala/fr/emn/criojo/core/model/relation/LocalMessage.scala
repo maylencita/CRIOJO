@@ -12,5 +12,6 @@ import fr.emn.criojo.core.model.Atom
 abstract class LocalMessage(val relation:Relation) extends Atom{}
 
 abstract class RemoteMessage(val relation:Relation) extends Atom{
+  assert(!relation.name.isEmpty, "Channel name cannot be empty!")
   def destination:ChannelLocation
 }

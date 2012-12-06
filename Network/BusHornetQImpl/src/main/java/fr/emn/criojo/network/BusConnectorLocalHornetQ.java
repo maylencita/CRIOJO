@@ -312,20 +312,19 @@ public class BusConnectorLocalHornetQ implements BusConnectorHornetQ {
 		configuration.setPersistenceEnabled(false);
 		configuration.setSecurityEnabled(false);
 
-		configuration.getAcceptorConfigurations().add(
-		    new TransportConfiguration(NettyAcceptorFactory.class.getName()));
+//		configuration.getAcceptorConfigurations().add(
+//		    new TransportConfiguration(NettyAcceptorFactory.class.getName()));
 
-		System.err.println("[BUS] Start local server using " + configurationXML());
+		System.err.println("[BUS] Start local server default configuration. "); // + configurationXML());
 		server = HornetQServers.newHornetQServer(configuration);
 		server.start();
 
-		TransportConfiguration tConfiguration = null;
 		Map<String, Object> connectionParams = new HashMap<String, Object>();
 
 		connectionParams.put(TransportConstants.HOST_PROP_NAME, getHost());
 		connectionParams.put(TransportConstants.PORT_PROP_NAME, port);
 
-		tConfiguration = new TransportConfiguration(
+        TransportConfiguration tConfiguration = new TransportConfiguration(
 		    NettyConnectorFactory.class.getName(), connectionParams);
 
 		// Get the connection factory to connect on server.

@@ -7,9 +7,7 @@ package fr.emn.criojo.core.model
  * Time: 12:28 PM
  * To change this template use File | Settings | File Templates.
  */
-package object relation {
-
-  import java.util.UUID
+package relation {
 
   trait Relation {
     def name: String
@@ -34,13 +32,15 @@ package object relation {
     }
   }
 
+  class AdhocChannel(val name:String, val location:ChannelLocation) extends Channel{}
+
   abstract class LocalRelation(val name: String) extends Relation {
     def newAtom(tlst: List[Term]) = new LocalMessage(this) {
       val terms = tlst
     }
   }
 
-  abstract class OutChannel(val name: String, val location: ChannelLocation) extends Channel {}
+  abstract class OutChannel(val name: String, val location: ChannelLocation, val currentLocation:String) extends Channel {}
 
   abstract class InChannel(val name:String, val location:ChannelLocation) extends Channel{}
 
@@ -59,10 +59,7 @@ package object relation {
       override def applyValuation(valuation:Valuation):Atom = {
         valuation.apply(relation.asInstanceOf[Variable]) match{
           case Some(loc:ChannelLocation) =>
-            new Channel {
-              val name = loc.relName
-              val location = loc
-            }.newAtom(
+            new AdhocChannel(loc.relName, loc).newAtom(
               terms.map((pattern => pattern.applyValuation(valuation).reduce()))
             )
           case _ => throw new NoValuationForVariable(relation.asInstanceOf[Variable])

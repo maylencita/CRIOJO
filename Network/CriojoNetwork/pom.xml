@@ -49,7 +49,7 @@
     <!-- Criojo -->
     <dependency>
       <groupId>fr.emn.criojo</groupId>
-      <artifactId>CRIOJO-core</artifactId>
+      <artifactId>Core2-0</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 

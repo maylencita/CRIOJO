@@ -4,6 +4,8 @@ import org.junit.Test
 import org.junit.Assert._
 import fr.emn.criojo.expression.Converters
 import fr.emn.criojo.expression.scala.WrapScalaInt
+import fr.emn.criojo.examples.LocalGateway
+import fr.emn.criojo.core.model.relation.Channel
 
 
 /*
@@ -41,6 +43,45 @@ class Algorithmes extends Converters{
     assertTrue(result)
   }
 
+  @Test
+  def distributedCalcul(){
+    var result = false
+
+    val divAgent = new Agent("divAgent", LocalGateway){
+      val Div = InputChannel("Div")
+      val k = Var[Channel]
+      val x,y = Var[Int]
+
+      rules(
+        Div(k,x,y) --> k(x / y)
+      )
+    }
+    LocalGateway.addAgent(divAgent.location,divAgent)
+    divAgent.start()
+
+    val calcAgent = new Agent("calcAgent", LocalGateway){
+      val Div = OutputChannel("Div","divAgent")
+      val Answer = InputChannel("Answer")
+      val H = LocalRel
+      val R = NativeRel {
+        case WrapScalaInt(n)::_ => if (n == 7-2/10){result = true}
+        case _ => print("Wrong answer!")
+      }
+      val x,y,z = Var[Int]
+
+      rules(
+        (H(2, y) & H(3, z) ) --> Div(Answer,y,z),
+        (H(1, x) & Answer(z)) --> R(x - z)
+      )
+    }
+    LocalGateway.addAgent(calcAgent.location,calcAgent)
+    calcAgent.start()
+
+    calcAgent ! List(calcAgent.H(1,7),calcAgent.H(2,2),calcAgent.H(3,10))
+
+    Thread.sleep(1000)
+    assertTrue(result)
+  }
 
   @Test
   def maxTest() {

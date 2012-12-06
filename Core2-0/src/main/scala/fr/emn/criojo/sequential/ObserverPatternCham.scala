@@ -18,7 +18,7 @@ trait ObserverPatternCham extends Cham{
   def LocalRelation(name:String) = new LocalRelation(name) with ObservedRelation
 
   def InputChannel(name: String):Channel = new InChannel(name,new ChannelLocation(this.location,name)) with ObservedRelation
-  def OutputChannel(name: String, location: String):OutChannel = new OutChannel(name, new ChannelLocation(location,name)) {}
+  def OutputChannel(name: String, remoteLocation: String):OutChannel = new OutChannel(name, new ChannelLocation(remoteLocation,name), this.location) {}
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
     val rule = new StatefulRule(h,b,g,scope)

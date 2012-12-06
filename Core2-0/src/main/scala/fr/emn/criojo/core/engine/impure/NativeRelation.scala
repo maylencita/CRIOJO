@@ -18,8 +18,8 @@ trait NativeAtom extends Atom{
 class NativeRelation(val name:String, nativeFun: (List[Term]) => List[Atom]) extends Relation{
   def newAtom(terms:List[Term]):Atom = new NativeAtomImpl(this, terms)
 
-  private class NativeAtomImpl(val relation:Relation, val terms:List[Term]) extends NativeAtom{
-    def apply():List[Atom] = {
+  protected class NativeAtomImpl(val relation:Relation, val terms:List[Term]) extends NativeAtom{
+    def apply:List[Atom] = {
       nativeFun(terms)
     }
   }

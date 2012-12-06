@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>CRIOJO-core2-0</artifactId>
+    <artifactId>Core2-0</artifactId>
 
     <dependencies>
     </dependencies>

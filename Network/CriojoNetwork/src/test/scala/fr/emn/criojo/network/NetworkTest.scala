@@ -1,11 +1,13 @@
 package fr.emn.criojo.network
 
-import fr.emn.criojo.core.Atom
-import fr.emn.criojo.ext.expression.Relation.ChannelLocation
-import fr.emn.criojo.ext.expression.Relation.constructor.OutChannel
-import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+//import fr.emn.criojo.core.Atom
+//import fr.emn.criojo.ext.expression.Relation.ChannelLocation
+//import fr.emn.criojo.ext.expression.Relation.constructor.OutChannel
+//import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
 
 import org.junit.Test
+import fr.emn.criojo.core.model.Atom
+import fr.emn.criojo.core.model.relation.Channel
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,54 +44,68 @@ class NetworkTest {
 
     val atom:Atom = message.atom.get
     assert(atom.relation.name == "Request")
-    assert(atom.patterns.size == 6)
+    assert(atom.terms.size == 6)
   }
 
   @Test
   def CommunicationTest() {
-    val busManager:BusManager = new BusManager()
-    val cham1:ActorCham = new ActorCham("cham1", busManager)
-    val cham2:ActorCham = new ActorCham("cham2", busManager)
-
-    var result = false;
-
-    cham2.receiveHandler = new AtomReceiveHandler {
-      def onReceive(a:Atom) {
-        result = true
-        cham2.introduceAtom(a)
+    var result = false
+    val busFactory:BusConnectorFactory = new BusConnectorLocalHornetQFactory()
+    val cham1 = new BusClientAgent("cham1", "5446", busFactory){
+      val Ping = OutputChannel("Ping","cham2")
+      val Pong = InputChannel("Pong")
+      val Start = LocalRel
+      val Log = NativeRel(l => println(l.mkString(" ")))
+      val AssertEq = NativeRel{
+        case x::y::_ => result = x.equals(y)
+        case _ =>
       }
+      val x = Var[Int]
+
+      rules(
+        Start() --> (Ping(Pong,1) & Log("[cham1] Sending 1")),
+        Pong(x) --> (Log("[cham1] Received", x) & AssertEq(x,2))
+      )
     }
 
-    var outChannel:OutChannel = new OutChannel("cham1Tocham2", new ChannelLocation("cham1"))
+    val cham2 = new BusClientAgent("cham2", "5446", busFactory){
+      val Ping = InputChannel("Ping")
+      val Log = NativeRel(l => println(l.mkString(" ")))
+      val x = Var[Int]
+      val k = Var[Channel]
 
-    cham1.send("cham2", outChannel(WrapScalaInt(1), WrapScalaInt(2)).head)
+      rules(
+        Ping(k,x) --> k(x+1)
+      )
+    }
 
-    Thread.sleep(500)
+    cham1 ! cham1.Start()
 
+    Thread.sleep(1000)
     assert(result)
   }
 
-  def CommunicationNetworkTest() {
-    val busManager:BusManager = new BusManager()
-    val cham1:ActorCham = new ActorCham("cham1", busManager)
-
-    var result = false;
-
-    cham1.receiveHandler = new AtomReceiveHandler {
-      def onReceive(a:Atom) {
-        result = true
-        cham1.introduceAtom(a)
-      }
-    }
-
-    var outChannel:OutChannel = new OutChannel("cham1Tocham2", new ChannelLocation("cham1"))
-
-    while (true) {
-      println(result)
-      cham1.send("cham2", outChannel(WrapScalaInt(1), WrapScalaInt(2)).head)
-      Thread.sleep(1000)
-    }
-
-    assert(true)
-  }
+//  def CommunicationNetworkTest() {
+//    val busManager:BusManager = new BusManager()
+//    val cham1:ActorCham = new ActorCham("cham1", busManager)
+//
+//    var result = false;
+//
+//    cham1.receiveHandler = new AtomReceiveHandler {
+//      def onReceive(a:Atom) {
+//        result = true
+//        cham1.introduceAtom(a)
+//      }
+//    }
+//
+//    var outChannel:OutChannel = new OutChannel("cham1Tocham2", new ChannelLocation("cham1"))
+//
+//    while (true) {
+//      println(result)
+//      cham1.send("cham2", outChannel(WrapScalaInt(1), WrapScalaInt(2)).head)
+//      Thread.sleep(1000)
+//    }
+//
+//    assert(true)
+//  }
 }

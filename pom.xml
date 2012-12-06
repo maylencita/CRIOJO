@@ -14,6 +14,8 @@
     <properties>
         <scala.version>2.9.1</scala.version>
         <junit.version>4.8.1</junit.version>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.language>scala</sonar.language>
     </properties>
 
     <modules>
@@ -51,6 +53,7 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

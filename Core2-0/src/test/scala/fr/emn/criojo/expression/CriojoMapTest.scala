@@ -1,13 +1,13 @@
 package fr.emn.criojo.expression
 
 import map.constructor.WrapScalaMap
-import map.constructor.WrapScalaMap
 import map.{VarCriojoMap, NoSuchKeyException, CriojoMap}
 import org.junit.{Before, Test}
 import scala._
 import fr.emn.criojo.parallel.Agent
 import scala.WrapScalaInt
 import scala.WrapScalaString
+import fr.emn.criojo.testing.TestCham
 
 class CriojoMapTest {
   var map: CriojoMap[ScalaString, ScalaInt] = _
@@ -28,8 +28,8 @@ class CriojoMapTest {
   }
 
   @Test (expected = classOf[NoSuchKeyException]) def testRequest() {
-    val cham = new Agent{
-      override def name = "testRequest"
+    val cham = new Agent with TestCham{
+      val name = "testRequest"
       val Map = LocalRelation("Map")
       val m = VarCriojoMap[ScalaString, ScalaInt]()
       val d = WrapScalaString("d")
@@ -43,13 +43,15 @@ class CriojoMapTest {
       )
     }
 
-    cham.introduceMolecule(cham.Map(map))
+    cham.introduceAtom(cham.Map(map))
     cham.executeRules()
+
+    cham.testAssert()
   }
 
   @Test def testRequestInsert() {
-    val cham = new Agent {
-      override def name = "testRequest"
+    val cham = new Agent with TestCham{
+      val name = "testRequest"
       val Map = LocalRelation("Map")
       val Int = LocalRelation("Int")
       val m = VarCriojoMap[ScalaString, ScalaInt]()
@@ -61,13 +63,15 @@ class CriojoMapTest {
       )
     }
 
-    cham.introduceMolecule(cham.Map(map))
+    cham.introduceAtom(cham.Map(map))
     cham.executeRules()
+
+    cham.testAssert()
   }
 
   @Test def testUpdate() {
-    val cham = new Agent(){
-      override def name = "testUpdate"
+    val cham = new Agent with TestCham{
+      val name = "testUpdate"
       val Map = LocalRelation("Map")
       val UpdatedMap = LocalRelation("UpdatedMap")
       val m = VarCriojoMap[ScalaString, ScalaInt]()
@@ -78,13 +82,15 @@ class CriojoMapTest {
       )
     }
 
-    cham.introduceMolecule(cham.Map(map))
+    cham.introduceAtom(cham.Map(map))
     cham.executeRules()
+
+    cham.testAssert()
   }
 
   @Test (expected = classOf[NoSuchKeyException]) def testNoSuchKeyUpdate() {
-    val cham = new Agent {
-      override def name = "testNoSuchKeyUpdate"
+    val cham = new Agent with TestCham{
+      val name = "testNoSuchKeyUpdate"
       val Map = LocalRelation("Map")
       val UpdatedMap = LocalRelation("UpdatedMap")
       val m = VarCriojoMap[ScalaString, ScalaInt]()
@@ -95,13 +101,15 @@ class CriojoMapTest {
       )
     }
 
-    cham.introduceMolecule(cham.Map(map))
+    cham.introduceAtom(cham.Map(map))
     cham.executeRules()
+
+    cham.testAssert()
   }
 
   @Test def testForAll() {
-    val cham = new Agent {
-      override def name = "testForAll"
+    val cham = new Agent with TestCham{
+      val name = "testForAll"
       val Map = LocalRelation("Map")
       val m = VarCriojoMap[ScalaString, ScalaInt]()
       val d = WrapScalaString("d")
@@ -112,13 +120,15 @@ class CriojoMapTest {
       )
     }
 
-    cham.introduceMolecule(cham.Map(map))
+    cham.introduceAtom(cham.Map(map))
     cham.executeRules()
+
+    cham.testAssert()
   }
 
   @Test def testFoldLeft() {
-    val cham = new Agent {
-      override def name = "testFoldLeft"
+    val cham = new Agent with TestCham{
+      val name = "testFoldLeft"
       val Map = LocalRelation("Map")
       val StartValue = LocalRelation("StartValue")
       val Sum = LocalRelation("Sum")
@@ -133,9 +143,11 @@ class CriojoMapTest {
       )
     }
 
-    cham.introduceMolecule(cham.Map(map))
-    cham.introduceMolecule(cham.StartValue(_3))
+    cham.introduceAtom(cham.Map(map))
+    cham.introduceAtom(cham.StartValue(_3))
     cham.executeRules()
+
+    cham.testAssert()
   }
 }
 

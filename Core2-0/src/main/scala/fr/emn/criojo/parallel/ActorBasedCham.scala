@@ -36,7 +36,7 @@ trait ActorBasedCham extends Cham with Actor{
 
   def InputChannel(name: String):Channel = new InChannel(name, formatLocation(this.location, name)){}
 
-  def OutputChannel(name: String, chamLoc: String):OutChannel = new OutChannel(name, formatLocation(chamLoc, name)) {}
+  def OutputChannel(name: String, remoteLoc: String):OutChannel = new OutChannel(name, formatLocation(remoteLoc, name), location) {}
 
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
