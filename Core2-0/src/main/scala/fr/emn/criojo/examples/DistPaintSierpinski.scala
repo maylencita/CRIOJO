@@ -3,8 +3,8 @@ package fr.emn.criojo.examples
 import java.io.FileWriter
 import fr.emn.criojo.parallel.Agent
 
-import fr.emn.criojo.core.model.relation.{Channel, VarChannel}
-import fr.emn.criojo.expression.scala.WrapScalaInt
+import fr.emn.criojo.core.model.relation.{ChannelLocation, Channel, VarChannel}
+import fr.emn.criojo.expression.scala.{ScalaInt, WrapScalaInt}
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,8 +19,8 @@ object DistPaintSierpinski extends App{
     val Sierpinski = InputChannel("Sierpinski")
     val session = LocalRel("Session")
     val sierpinski = LocalRel
-    val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl, m = Var[Int]
-    val k, k1,k2 = Var[Channel]
+    val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl, m = Var[ScalaInt]
+    val k, k1,k2 = Var[ChannelLocation]
 
     val count = LocalRel
 
@@ -66,7 +66,7 @@ object DistPaintSierpinski extends App{
       case _ =>
     }
 
-    val x, y, z = Var[Int]
+    val x, y, z = Var[ScalaInt]
 
     rules(
       Start() --> (OpenFile() & Cm(Paint,End, 700, 700, 700, 7)),

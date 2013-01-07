@@ -38,3 +38,7 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+# Maven target directory and .class files
+target/**
+*.class
