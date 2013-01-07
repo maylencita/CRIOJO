@@ -1,8 +1,7 @@
 package fr.emn.criojo.examples
 
 import fr.emn.criojo.parallel.Agent
-import fr.emn.criojo.expression.scala.WrapScalaInt
-import fr.emn.criojo.expression.Converters
+import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef, WrapScalaInt}
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +10,7 @@ import fr.emn.criojo.expression.Converters
  * Time: 3:55 PM
  * To change this template use File | Settings | File Templates.
  */
-object Max extends App with Converters{
+object Max extends App with ScalaTypesPredef{
   var result:Int = 0
 
   val fCham = new Agent{
@@ -23,7 +22,7 @@ object Max extends App with Converters{
       case _ =>
     }
 
-    val x, y = Var[Int]
+    val x, y = Var[ScalaInt]
 
 
     rules(

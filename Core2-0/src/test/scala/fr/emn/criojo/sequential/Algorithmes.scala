@@ -2,8 +2,7 @@ package fr.emn.criojo.sequential
 
 import org.junit.Test
 import org.junit.Assert._
-import fr.emn.criojo.expression.Converters
-import fr.emn.criojo.expression.scala.WrapScalaInt
+import fr.emn.criojo.expression.scala.{ScalaTypesPredef, WrapScalaInt}
 
 
 /*
@@ -13,7 +12,7 @@ import fr.emn.criojo.expression.scala.WrapScalaInt
 */
 
 
-class Algorithmes extends Converters{
+class Algorithmes extends ScalaTypesPredef{
 
   @Test
   def hectorTest() {

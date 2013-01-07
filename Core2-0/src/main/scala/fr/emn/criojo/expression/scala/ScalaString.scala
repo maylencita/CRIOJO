@@ -4,7 +4,7 @@ import fr.emn.criojo.core.model.{Valuation, Expression, Pattern}
 import fr.emn.criojo.expression.NoValueDefined
 
 /** Wrap Scala String type in Criojo */
-trait ScalaString extends Pattern with Expression {
+trait ScalaString extends Expression {
   def value: String = {
     throw new NoValueDefined()
   }

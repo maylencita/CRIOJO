@@ -1,25 +1,25 @@
 package fr.emn.criojo.expression.tuple2.constructor
 
-import fr.emn.criojo.core.model.{Valuation, Expression, Pattern}
-import fr.emn.criojo.expression.tuple2.CriojoTuple2
+import fr.emn.criojo.core.model._
+import scala.Tuple2
 
-case class WrapScalaTuple2[T1 <: Pattern with Expression,
-T2 <: Pattern with Expression](t: (T1, T2))
-  extends CriojoTuple2[T1, T2] {
-
-  /**
-   * Caution, this method is applicable only when WrapScalaTuple2 is an expression
-   * and not a Pattern.
-   */
-  def _1: T1 = t._1
+class WrapScalaTuple2[T1 <: Expression, T2 <: Expression](t: (T1, T2))
+  extends Tuple2[T1, T2](t._1,t._2) with Expression with WrappedValue[(T1,T2)]{
 
   /**
    * Caution, this method is applicable only when WrapScalaTuple2 is an expression
    * and not a Pattern.
    */
-  def _2: T2 = t._2
+//  def _1: T1 = t._1
 
-  override def value = t
+  /**
+   * Caution, this method is applicable only when WrapScalaTuple2 is an expression
+   * and not a Pattern.
+   */
+//  def _2: T2 = t._2
+
+  def value = t
+  def self = t
 
   /**
    * With type tuple2, only WrapScalaTuple2 could be in
@@ -33,9 +33,13 @@ T2 <: Pattern with Expression](t: (T1, T2))
 
   override def getValuation(exp: Expression): Valuation = Valuation()
 
-  override def applyValuation(valuation: Valuation): Expression = this
+  override def applyValuation(valuation: Valuation): Expression = WrapScalaTuple2(_1.applyValuation(valuation), _2.applyValuation(valuation))
 
-  override def reduce(): Expression = this
+  override def reduce(): Expression = WrapScalaTuple2(_1.reduce(), _2.reduce())
 
   override def toString: String = t.toString()
+}
+
+object WrapScalaTuple2{
+  def apply[A <: Expression,B <: Expression](x:A,y:B):WrapScalaTuple2[A,B] = new WrapScalaTuple2((x,y))
 }

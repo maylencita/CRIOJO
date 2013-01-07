@@ -1,8 +1,10 @@
 package fr.emn.criojo.expression.scala
 
-import fr.emn.criojo.core.model.{Valuation, Expression}
+import fr.emn.criojo.core.model.{Pattern, WrappedValue, Valuation, Expression}
 
-case class WrapScalaInt(i: Int) extends ScalaInt {
+case class WrapScalaInt(i: Int) extends ScalaInt with Pattern with WrappedValue[Int]{
+  val self = i
+
   override def value = i
 
   override def getValuation(expr: Expression): Valuation = Valuation()

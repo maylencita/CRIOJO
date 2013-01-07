@@ -67,5 +67,5 @@ trait Term {
     * @return The expression with only constructor (no operation).
     */
   def reduce(): Expression =
-    throw new ProhibitedOperation
+    throw new ProhibitedOperation("Illegal operation reduce() in " + manifest.toString)
 }

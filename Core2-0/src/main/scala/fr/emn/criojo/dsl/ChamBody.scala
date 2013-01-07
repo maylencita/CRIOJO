@@ -2,10 +2,30 @@ package fr.emn.criojo.dsl
 
 import fr.emn.criojo.core.engine._
 import impure.NativeRelation
-import fr.emn.criojo.core.model.{Term, Variable, Atom}
-import fr.emn.criojo.expression.scala.{VarScalaString, VarScalaInt}
+import fr.emn.criojo.core.model._
+import fr.emn.criojo.expression.scala.{ScalaInt, VarScalaInt}
 import fr.emn.criojo.core.model.relation.VarChannel
 import java.util.UUID
+import fr.emn.criojo.core.engine.NotGuard
+import fr.emn.criojo.core.engine.PresenceGuard
+import fr.emn.criojo.core.model.relation.VarChannel
+import fr.emn.criojo.core.engine.AbsGuard
+import fr.emn.criojo.core.engine.ExistsGuard
+import fr.emn.criojo.core.engine.NotGuard
+import fr.emn.criojo.core.engine.PresenceGuard
+import fr.emn.criojo.core.model.relation.VarChannel
+import fr.emn.criojo.core.engine.AbsGuard
+import fr.emn.criojo.core.engine.ExistsGuard
+import fr.emn.criojo.core.engine.NotGuard
+import fr.emn.criojo.core.engine.PresenceGuard
+import fr.emn.criojo.core.model.relation.VarChannel
+import fr.emn.criojo.core.engine.AbsGuard
+import fr.emn.criojo.core.engine.ExistsGuard
+import fr.emn.criojo.core.engine.NotGuard
+import fr.emn.criojo.core.engine.PresenceGuard
+import relation.VarChannel
+import fr.emn.criojo.core.engine.AbsGuard
+import fr.emn.criojo.core.engine.ExistsGuard
 
 /**
 * Created with IntelliJ IDEA.
@@ -27,7 +47,7 @@ abstract class ChamBody{
    * @param f
    * @return
    */
-  def NativeRelFun(f:(List[Term]) => List[Atom]):NativeRelation = {
+  def NativeFun(f:(List[Term]) => List[Atom]):NativeRelation = {
     val natRel = new NativeRelation("NativeRel@" +
       ChamBody.getNativeRelInstanceNum, f)
     natRel
@@ -49,12 +69,16 @@ abstract class ChamBody{
    * Returns a variable suitable for type T
    * @tparam T
    */
-  def Var[T](implicit m:Manifest[T]):Variable = m.toString match{
-    case "Int" => VarScalaInt()
-    case "java.lang.String" => VarScalaString()
-    case "fr.emn.criojo.core.model.relation.Channel" => VarChannel("varchannel"+UUID.randomUUID().toString)
-    case _ => throw new Error("Undefiend type [" + m + "]")
+  def Var[T <: Expression](implicit m:Manifest[T]):TypedVar[T] = new TypedVar[T]("Var@" + ChamBody.getInstanceNum) {
+    override def toString = name
   }
+//    m.toString match{
+//        case "Int" => VarScalaInt()
+//        case "fr.emn.criojo.expression.scala.VarScalaInt" => new TypedVar[ScalaInt]("VarScalaInt@" + ChamBody.getInstanceNum){} //VarScalaInt
+//        case "java.lang.String" => VarScalaString()
+//        case "fr.emn.criojo.core.model.relation.Channel" => VarChannel("varchannel"+UUID.randomUUID().toString)
+//        case _ => throw new Error("Undefiend type [" + m + "]")
+//  }
 
   def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
 
@@ -63,6 +87,13 @@ abstract class ChamBody{
   def Ex(vlst:List[Variable], g:ChamGuard):ChamGuard = vlst match{
     case Nil => g
     case h::tl => Ex(h, Ex(tl, g))
+  }
+
+  def ForAll(x:Variable, g:ChamGuard):ChamGuard = new ForAllGuard(g,x) with ChamGuard
+
+  def ForAll(vlst:List[Variable], g:ChamGuard):ChamGuard = vlst match{
+    case Nil => g
+    case h::tl => ForAll(h, ForAll(tl, g))
   }
 
   def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList) with ChamGuard

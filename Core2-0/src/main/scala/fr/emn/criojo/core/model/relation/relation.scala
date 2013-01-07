@@ -9,6 +9,8 @@ package fr.emn.criojo.core.model
  */
 package relation {
 
+import fr.emn.criojo.expression.NoValueDefined
+
   trait Relation {
     def name: String
 
@@ -45,8 +47,11 @@ package relation {
   abstract class InChannel(val name:String, val location:ChannelLocation) extends Channel{}
 
   /** Channel Variable */
-  case class VarChannel(n: String) extends TypedVar[ChannelLocation](n)
+  case class VarChannel(n: String) extends TypedVar[ChannelLocation](n) with ChannelLocation
   with Relation {
+    def url:String = throw new NoValueDefined()
+
+    def relName:String = throw new NoValueDefined()
 
     def newAtom(tlst:List[Term]):Atom = new RemoteMessgVar(this, tlst)
 
@@ -68,7 +73,11 @@ package relation {
     }
   }
 
-  class ChannelLocation(val url: String,val relName:String) extends Pattern with Expression {
+  trait ChannelLocation extends Pattern with Expression {
+
+    def url:String
+
+    def relName:String
 
     override def matches(exp: Expression): Boolean = exp match {
       case cl: ChannelLocation => cl.url.equals(url)

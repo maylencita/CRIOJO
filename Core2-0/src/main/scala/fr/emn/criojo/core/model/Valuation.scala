@@ -99,7 +99,7 @@ class Assignment(val variable: Variable, val value: Expression, s: Boolean) exte
     this(x, v, true)
   }
 
-  def apply(v: Variable): Boolean = v == variable
+  def apply(v: Variable): Boolean = {v.name == variable.name}
 
   def sign: Boolean = s
 

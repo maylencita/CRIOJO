@@ -10,9 +10,9 @@ package fr.emn.criojo.sequential
 
 import org.junit._
 import Assert._
-import fr.emn.criojo.expression.Converters
+import fr.emn.criojo.expression.scala.ScalaTypesPredef
 
-class GuardsTest extends Converters{
+class GuardsTest extends ScalaTypesPredef{
 
   @Test
   def presenceTest(){

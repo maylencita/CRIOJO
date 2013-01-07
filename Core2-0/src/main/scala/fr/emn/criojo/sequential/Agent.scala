@@ -3,7 +3,7 @@ package fr.emn.criojo.sequential
 import fr.emn.criojo.dsl.ChamBody
 import fr.emn.criojo.core.model.Atom
 import fr.emn.criojo.core.engine.AtomGateway
-import fr.emn.criojo.expression.Converters
+import fr.emn.criojo.expression.{CriojoTypesPredef}
 import fr.emn.criojo.core.model.relation.RemoteMessage
 import java.util.UUID
 import fr.emn.criojo.expression.scala.ScalaTypesPredef
@@ -16,7 +16,7 @@ import fr.emn.criojo.expression.scala.ScalaTypesPredef
  * To change this template use File | Settings | File Templates.
  */
 
-class Agent(val location:String, val gateway:AtomGateway) extends ChamBody with ObserverPatternCham with Converters with ScalaTypesPredef{
+class Agent(val location:String, val gateway:AtomGateway) extends ChamBody with ObserverPatternCham with CriojoTypesPredef with ScalaTypesPredef{
   def this() = {
     this("Agent@"+UUID.randomUUID(), DummyGateway)
   }

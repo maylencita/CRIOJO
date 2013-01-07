@@ -17,8 +17,8 @@ trait ObserverPatternCham extends Cham{
 
   def LocalRelation(name:String) = new LocalRelation(name) with ObservedRelation
 
-  def InputChannel(name: String):Channel = new InChannel(name,new ChannelLocation(this.location,name)) with ObservedRelation
-  def OutputChannel(name: String, remoteLocation: String):OutChannel = new OutChannel(name, new ChannelLocation(remoteLocation,name), this.location) {}
+  def InputChannel(name: String):Channel = new InChannel(name,formatLocation(this.location,name)) with ObservedRelation
+  def OutputChannel(name: String, remoteLocation: String):OutChannel = new OutChannel(name, formatLocation(remoteLocation,name), this.location) {}
 
   def createRule(h: Head, b: Body, g: Guard, scope: Set[Variable]) = {
     val rule = new StatefulRule(h,b,g,scope)
@@ -46,6 +46,13 @@ trait ObserverPatternCham extends Cham{
   def removeAtom(atom: Atom) {
     atom.setActive(false)
     notifyRelationObservers(atom)
+  }
+
+  private def formatLocation(chamLoc:String, channelName:String):ChannelLocation = {
+    new ChannelLocation{
+      val url = chamLoc + "." + channelName
+      val relName = channelName
+    }
   }
 
   private def notifyRelationObservers(atom: Atom){

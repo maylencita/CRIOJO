@@ -5,7 +5,7 @@ import fr.emn.criojo.core.PatternNotMatchingException
 import fr.emn.criojo.expression.NoValueDefined
 
 /** Wrap Scala Int type */
-trait ScalaInt extends Pattern with Expression {
+trait ScalaInt extends Expression {
   def value: Int = {
     throw new NoValueDefined()
   }

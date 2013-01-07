@@ -26,6 +26,12 @@ trait Atom{
   def setActive(active:Boolean) { this.active = active }
   def isActive:Boolean = this.active
 
+  def unary_! = {
+    val newAtom = this.relation.newAtom(terms)
+    newAtom.persistent = true
+    newAtom
+  }
+
   /**
    * Returns a new instance of this Atom, where its terms have been reduced
    * @return
@@ -63,8 +69,15 @@ trait Atom{
    * @return
   */
   def getValuation(that: Atom):Valuation = {
-    def getVal(t1:Term, t2:Expression):Valuation = t1.getValuation(t2)
-    this.terms.zip(that.terms).foldLeft(Valuation())((v,p)=>v union getVal(p._1.asInstanceOf[Pattern],p._2.asInstanceOf[Expression]))
+    def getVal(t1:Term, t2:Term):Valuation =  t1 match {
+      case pattern:Pattern => t2 match {
+        case expr:Expression => pattern.getValuation(expr)
+        case _ => throw new Error("Term " + t2 + " in atom " + this + " is not an expression.")
+      }
+      case _ => throw new Error("Term " + t1 + " in atom " + this + " is not a pattern.")
+    }
+
+    this.terms.zip(that.terms).foldLeft(Valuation())((v,p)=>v union getVal(p._1,p._2))
   }
 
   override def toString =

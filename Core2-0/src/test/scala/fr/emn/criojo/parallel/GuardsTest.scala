@@ -7,12 +7,13 @@ package fr.emn.criojo.parallel
  * Time: 15:06
  */
 
-import fr.emn.criojo.expression.Converters
+import fr.emn.criojo.expression.{CriojoTypesPredef}
 
 import org.junit._
 import Assert._
+import fr.emn.criojo.expression.scala.ScalaTypesPredef
 
-class GuardsTest extends Converters{
+class GuardsTest extends ScalaTypesPredef{
 
   @Test
   def presenceTest(){

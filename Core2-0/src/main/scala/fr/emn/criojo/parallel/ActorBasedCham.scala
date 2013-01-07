@@ -52,7 +52,10 @@ trait ActorBasedCham extends Cham with Actor{
   }
 
   private def formatLocation(chamLoc:String, channelName:String):ChannelLocation = {
-    new ChannelLocation(chamLoc + "." + channelName, channelName)
+    new ChannelLocation{
+      val url = chamLoc + "." + channelName
+      val relName = channelName
+    }
   }
 
   private def executeRule(rule:Rule):Boolean = rule match{

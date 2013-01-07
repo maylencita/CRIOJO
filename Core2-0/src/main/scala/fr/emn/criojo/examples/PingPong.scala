@@ -2,9 +2,7 @@ package fr.emn.criojo.examples
 
 import fr.emn.criojo.core.model.relation.{Channel, ChannelLocation, RemoteMessage, VarChannel}
 import fr.emn.criojo.parallel.Agent
-import fr.emn.criojo.expression.Converters
-import fr.emn.criojo.core.engine.AtomGateway
-import collection.mutable.HashMap
+import fr.emn.criojo.expression.scala.ScalaTypesPredef
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +11,7 @@ import collection.mutable.HashMap
  * Time: 2:45 PM
  * To change this template use File | Settings | File Templates.
  */
-object PingPong extends App with Converters{
+object PingPong extends App with ScalaTypesPredef{
 
   val agent1 = new Agent("agent1", LocalGateway){
     val Pong = InputChannel("Pong")

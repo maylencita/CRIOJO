@@ -2,10 +2,12 @@ package fr.emn.criojo.parallel
 
 import org.junit.Test
 import org.junit.Assert._
-import fr.emn.criojo.expression.Converters
-import fr.emn.criojo.expression.scala.WrapScalaInt
+import fr.emn.criojo.expression.scala.{ScalaTypesPredef, WrapScalaInt}
 import fr.emn.criojo.examples.LocalGateway
 import fr.emn.criojo.core.model.relation.Channel
+import fr.emn.criojo.core.model.{WrappedValue, Atom}
+import fr.emn.criojo.dsl.ChamBody
+import fr.emn.criojo.core.engine.Cham
 
 
 /*
@@ -15,7 +17,7 @@ import fr.emn.criojo.core.model.relation.Channel
 */
 
 
-class Algorithmes extends Converters{
+class Algorithmes extends ScalaTypesPredef{
 
   @Test
   def hectorTest() {
@@ -84,6 +86,44 @@ class Algorithmes extends Converters{
   }
 
   @Test
+  def modularCalcul(){
+    var result = false
+
+    trait DivAgent extends ChamBody with ScalaTypesPredef{
+      this: Cham =>
+
+      val Div, DivAnswer = LocalRel
+      val k = Var[Channel]
+      private val x,y = Var[Int]
+
+      rules(
+        Div(x,y) --> DivAnswer(x / y)
+      )
+    }
+
+    val calcAgent = new Agent with DivAgent{
+      val H = LocalRel
+      val R = NativeRel {
+        case WrapScalaInt(n)::_ => if (n == 7-2/10){result = true}
+        case _ => print("Wrong answer!")
+      }
+      val x,y,z = Var[Int]
+
+      rules(
+        (H(2, y) & H(3, z) ) --> Div(y,z),
+        (H(1, x) & DivAnswer(z)) --> R(x - z)
+      )
+    }
+
+    calcAgent.start()
+
+    calcAgent ! List(calcAgent.H(1,7),calcAgent.H(2,2),calcAgent.H(3,10))
+
+    Thread.sleep(1000)
+    assertTrue(result)
+  }
+
+  @Test
   def maxTest() {
     var result:Int = 0
 
@@ -140,5 +180,41 @@ class Algorithmes extends Converters{
     assertTrue(atomList.forall {p => p._1 == p._2})
   }
 
+  @Test
+  def listFill(){
+    var atomList = List[Pair[Any,Any]]()
+
+    val agent = new Agent(){
+      val Init = LocalRel
+      val L = LocalRel
+      val Export = LocalRel
+
+      private val _genList = NativeFun{
+        case (max:WrappedValue[Int])::_ =>
+          (0 to max).map(i => L(i,max-i)).toList
+        case _ => List[Atom]()
+      }
+
+      val _exportList = NativeRel {
+        case v1::v2::_ => atomList :+= (v1,v2)
+        case _ =>
+      }
+
+      val x, y, u, v = Var[Int]
+
+      rules(
+        Init(x) --> _genList(x),
+        (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u)),
+        (Export() & L(x,y)) --> _exportList(x,y)
+      )
+    }
+
+    agent.start()
+    agent ! agent.Init(5)
+
+    Thread.sleep(500)
+    assertTrue(atomList.forall {p => p._1 == p._2})
+
+  }
 }
 

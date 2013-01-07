@@ -28,7 +28,7 @@ trait Variable extends Pattern {
   * @constructor  Create a new variable of specific type with a given name.
   * @param  n The variable's name.
   */
-abstract class TypedVar[+T <: Pattern](private val n: String) extends Variable {
+abstract class TypedVar[+T <: Expression](private val n: String) extends Variable {
   override val name: String = n
 
   /** Test if variable matches with an expression.

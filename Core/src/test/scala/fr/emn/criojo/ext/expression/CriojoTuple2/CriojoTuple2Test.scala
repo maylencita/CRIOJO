@@ -50,12 +50,12 @@ class CriojoTuple2Test {
   @Test def testSimplePatternMatching() {
     val cham = new Cham with TestCham {
       override def name = "testSimplePatternMatching"
-      val Tuple2 = LocalRelation("Tuple2")
+      val cTuple2 = LocalRelation("Tuple2")
       val strVar1, strVar2 = VarScalaString()
       val intVar1, intVar2 = VarScalaInt()
 
       rules (
-        (Tuple2(strVar1 -> intVar1) & Tuple2(strVar2 -> intVar2)) -->
+        (cTuple2(strVar1 -> intVar1) & cTuple2(strVar2 -> intVar2)) -->
             ( AssertTrue((strVar1 <=> _A && intVar1 <=> _1)
               || (strVar1 <=> _B && intVar1 <=> _2))
             & AssertTrue((strVar2 <=> _A && intVar2 <=> _1)
@@ -63,8 +63,8 @@ class CriojoTuple2Test {
       )
     }
 
-    cham.introduceMolecule(cham.Tuple2(tupleA1))
-    cham.introduceMolecule(cham.Tuple2(tupleB2))
+    cham.introduceMolecule(cham.cTuple2(tupleA1))
+    cham.introduceMolecule(cham.cTuple2(tupleB2))
     cham.executeRules()
   }
 
