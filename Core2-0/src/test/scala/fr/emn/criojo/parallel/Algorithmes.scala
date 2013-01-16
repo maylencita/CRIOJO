@@ -2,12 +2,12 @@ package fr.emn.criojo.parallel
 
 import org.junit.Test
 import org.junit.Assert._
-import fr.emn.criojo.expression.scala.{ScalaTypesPredef, WrapScalaInt}
+import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef, WrapScalaInt}
 import fr.emn.criojo.examples.LocalGateway
-import fr.emn.criojo.core.model.relation.Channel
 import fr.emn.criojo.core.model.{WrappedValue, Atom}
 import fr.emn.criojo.dsl.ChamBody
 import fr.emn.criojo.core.engine.Cham
+import fr.emn.criojo.util.Printer
 
 
 /*
@@ -30,7 +30,7 @@ class Algorithmes extends ScalaTypesPredef{
         case _ => println("Wrong result!")
       }
 
-      val x, y, z = Var[Int]//VarScalaInt()
+      val x, y, z = Var[ScalaInt]
 
       rules(
         (H(1, x) & H(2, y) & H(3, z) )  --> R(x - y / z )
@@ -52,7 +52,7 @@ class Algorithmes extends ScalaTypesPredef{
     val divAgent = new Agent("divAgent", LocalGateway){
       val Div = InputChannel("Div")
       val k = Var[Channel]
-      val x,y = Var[Int]
+      val x,y = Var[ScalaInt]
 
       rules(
         Div(k,x,y) --> k(x / y)
@@ -69,7 +69,7 @@ class Algorithmes extends ScalaTypesPredef{
         case WrapScalaInt(n)::_ => if (n == 7-2/10){result = true}
         case _ => print("Wrong answer!")
       }
-      val x,y,z = Var[Int]
+      val x,y,z = Var[ScalaInt]
 
       rules(
         (H(2, y) & H(3, z) ) --> Div(Answer,y,z),
@@ -89,25 +89,24 @@ class Algorithmes extends ScalaTypesPredef{
   def modularCalcul(){
     var result = false
 
-    trait DivAgent extends ChamBody with ScalaTypesPredef{
-      this: Cham =>
+    trait DivModule{ //extends ChamBody with ScalaTypesPredef{
+      self: Agent =>
 
       val Div, DivAnswer = LocalRel
-      val k = Var[Channel]
-      private val x,y = Var[Int]
+      private val x,y = Var[ScalaInt]
 
       rules(
         Div(x,y) --> DivAnswer(x / y)
       )
     }
 
-    val calcAgent = new Agent with DivAgent{
+    val calcAgent = new Agent with DivModule{
       val H = LocalRel
       val R = NativeRel {
         case WrapScalaInt(n)::_ => if (n == 7-2/10){result = true}
         case _ => print("Wrong answer!")
       }
-      val x,y,z = Var[Int]
+      val x,y,z = Var[ScalaInt]
 
       rules(
         (H(2, y) & H(3, z) ) --> Div(y,z),
@@ -134,7 +133,7 @@ class Algorithmes extends ScalaTypesPredef{
         case _ =>
       }
 
-      val x, y = Var[Int]
+      val x, y = Var[ScalaInt]
 
 
       rules(
@@ -153,7 +152,7 @@ class Algorithmes extends ScalaTypesPredef{
   def bubbleTest() {
     var atomList = List[Pair[Any,Any]]()
 
-    val fCham = new Agent{
+    val fCham = new Agent with Printer{
       val L = LocalRel
       val Export = LocalRel
 
@@ -162,12 +161,12 @@ class Algorithmes extends ScalaTypesPredef{
         case _ =>
       }
 
-      val x, y, u, v = Var[Int]
+      val x, y, u, v = Var[ScalaInt]
 
 
       rules(
-        (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u)),
-        (Export() & L(x,y)) --> ExportList(x,y)
+        (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u) & Print("($1,$2 - $3,$4)",x,v,y,u)),
+        (!Export() & L(x,y)) --> ExportList(x,y)
       )
     }
     fCham.start()
@@ -175,6 +174,8 @@ class Algorithmes extends ScalaTypesPredef{
     val j = 5
     for (i <- 0 to j)
       fCham ! fCham.L(i, j - i)
+
+    fCham ! fCham.Export()
 
     Thread.sleep(500)
     assertTrue(atomList.forall {p => p._1 == p._2})
@@ -200,7 +201,7 @@ class Algorithmes extends ScalaTypesPredef{
         case _ =>
       }
 
-      val x, y, u, v = Var[Int]
+      val x, y, u, v = Var[ScalaInt]
 
       rules(
         Init(x) --> _genList(x),

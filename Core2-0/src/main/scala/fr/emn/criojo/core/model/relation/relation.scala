@@ -73,7 +73,7 @@ import fr.emn.criojo.expression.NoValueDefined
     }
   }
 
-  trait ChannelLocation extends Pattern with Expression {
+  trait ChannelLocation extends Expression {
 
     def url:String
 

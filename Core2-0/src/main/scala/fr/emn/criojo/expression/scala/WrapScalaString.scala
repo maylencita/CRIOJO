@@ -1,6 +1,7 @@
 package fr.emn.criojo.expression.scala
 
 import fr.emn.criojo.core.model.{Pattern, WrappedValue, Valuation, Expression}
+import fr.emn.criojo.expression.CriojoString
 
 case class WrapScalaString(s: String) extends ScalaString with Pattern with WrappedValue[String]{
   val self = s

@@ -2,9 +2,9 @@ package fr.emn.criojo.examples
 
 import java.io.FileWriter
 import fr.emn.criojo.parallel.Agent
+import fr.emn.criojo.core.model.WrappedValue
+import fr.emn.criojo.expression.scala.ScalaInt
 
-import fr.emn.criojo.core.model.relation.{ChannelLocation, Channel, VarChannel}
-import fr.emn.criojo.expression.scala.{ScalaInt, WrapScalaInt}
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +20,7 @@ object DistPaintSierpinski extends App{
     val session = LocalRel("Session")
     val sierpinski = LocalRel
     val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl, m = Var[ScalaInt]
-    val k, k1,k2 = Var[ChannelLocation]
+    val k, k1,k2 = Var[Channel]
 
     val count = LocalRel
 
@@ -60,7 +60,7 @@ object DistPaintSierpinski extends App{
         System.exit(0)
     }
     val Print = NativeRel {
-      case WrapScalaInt(xvalue) :: WrapScalaInt(yvalue) :: WrapScalaInt(lvalue) :: Nil => {
+      case WrappedValue(xvalue:Int) :: WrappedValue(yvalue:Int) :: WrappedValue(lvalue:Int) :: Nil => {
         fw.write("<polygon points=\"" + xvalue + "," + yvalue + " " + (xvalue - lvalue) + "," + (yvalue - lvalue) + " " + (xvalue + lvalue) + "," + (yvalue - lvalue) + "\" style=\"fill:lime;stroke:purple;stroke-width:2\"/>\n")
       }
       case _ =>

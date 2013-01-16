@@ -3,7 +3,7 @@ package fr.emn.criojo.network
 //import fr.emn.criojo.core.Atom
 //import fr.emn.criojo.ext.expression.Relation.ChannelLocation
 //import fr.emn.criojo.ext.expression.Relation.constructor.OutChannel
-//import fr.emn.criojo.ext.expression.ScalaInt.constructor.WrapScalaInt
+//import fr.emn.criojo.ext.expression.CriojoInt.constructor.WrapScalaInt
 
 import org.junit.Test
 import fr.emn.criojo.core.model.Atom

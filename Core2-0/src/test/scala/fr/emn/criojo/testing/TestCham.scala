@@ -5,8 +5,9 @@ package fr.emn.criojo.testing
 import collection.mutable.ArrayBuffer
 import org.junit.Assert._
 import fr.emn.criojo.dsl.ChamBody
+import fr.emn.criojo.expression.CriojoBoolean
 import fr.emn.criojo.expression.scala.{WrapScalaBoolean, ScalaBoolean}
-import fr.emn.criojo.core.model.Term
+import fr.emn.criojo.core.model.{WrappedValue, Term}
 import fr.emn.criojo.core.engine.impure.NativeRelation
 import fr.emn.criojo.core.engine.Cham
 
@@ -19,8 +20,8 @@ import fr.emn.criojo.core.engine.Cham
   * java.lang.AssertionError.
   *
   * TestCham defines two specific AssertRel which are:
-  *   1. AssertTrue, wrap junit assertTrue and test a ScalaBoolean is true.
-  *   2. AssertFasle, wrap junit assertFalse and test a ScalaBoolean is false.
+  *   1. AssertTrue, wrap junit assertTrue and test a CriojoBoolean is true.
+  *   2. AssertFasle, wrap junit assertFalse and test a CriojoBoolean is false.
   */
 trait TestCham extends ChamBody {
   this: Cham =>
@@ -44,17 +45,17 @@ trait TestCham extends ChamBody {
     case _ => println("_")
   }
 
-  /** Test variable ScalaBoolean is <code>true</code> */
+  /** Test variable CriojoBoolean is <code>true</code> */
   def AssertTrue = AssertRel {
-    case (b: ScalaBoolean) :: Nil =>
-      assertTrue(b.reduce() == WrapScalaBoolean(b = true))
+    case (b: WrappedValue[Boolean]) :: Nil =>
+      assertTrue(b.self)
     case x => fail("Unknow type in AssertTrue of " + name + " " + x)
   }
 
-  /** Test variable ScalaBoolean is <code>false</code> */
+  /** Test variable CriojoBoolean is <code>false</code> */
   def AssertFalse = AssertRel {
-    case (b: ScalaBoolean) :: Nil =>
-      assertTrue(b.reduce() == WrapScalaBoolean(b = false))
+    case (b: WrappedValue[Boolean]) :: Nil =>
+      assertTrue(!b.self)
     case x => fail("Unknow type in AssertFalse of " + name + " " + x)
   }
 

@@ -1,7 +1,8 @@
 package fr.emn.criojo.examples
 
 import fr.emn.criojo.parallel.Agent
-import fr.emn.criojo.expression.scala.{WrapScalaInt, VarScalaInt}
+import fr.emn.criojo.expression.CriojoInt
+import fr.emn.criojo.expression.scala.ScalaTypesPredef
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,7 @@ import fr.emn.criojo.expression.scala.{WrapScalaInt, VarScalaInt}
  * Time: 3:01 PM
  * To change this template use File | Settings | File Templates.
  */
-object BubbleAlgorithm {
+object BubbleAlgorithm extends ScalaTypesPredef{
 
   def main(args:Array[String]) {
     val fCham = new Agent() {
@@ -21,21 +22,22 @@ object BubbleAlgorithm {
         case _ =>
       }
 
-      val x, y, u, v = VarScalaInt()
+      val x, y, u, v = Var[CriojoInt]
 
       rules(
-        (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u)),
+        (L(x, u) & L(y, v))  --> {(y <=> (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u)),
         (Print() & L(x,y)) --> (nPrint(x,y) & Print())
       )
     }
+    fCham.start()
+
     val j = 5
     for (i <- 0 to j)
-      fCham.introduceAtom(fCham.L(WrapScalaInt(i), WrapScalaInt(j - i)))
-    fCham.executeRules()
+      fCham ! fCham.L(i, j - i)
 
-    fCham.introduceAtom(fCham.Print())
-    fCham.executeRules()
+    fCham ! fCham.Print()
 
+    Thread.sleep(200)
     System.exit(0)
   }
 

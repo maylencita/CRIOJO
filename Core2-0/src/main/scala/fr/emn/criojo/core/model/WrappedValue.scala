@@ -10,3 +10,7 @@ package fr.emn.criojo.core.model
 trait WrappedValue[T] {
   def self:T
 }
+
+object WrappedValue{
+  def unapply[T](wv:WrappedValue[T]):Option[T] = Some(wv.self)
+}

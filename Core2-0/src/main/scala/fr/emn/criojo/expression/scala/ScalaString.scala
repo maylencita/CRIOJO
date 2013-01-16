@@ -1,33 +1,38 @@
 package fr.emn.criojo.expression.scala
 
-import fr.emn.criojo.core.model.{Valuation, Expression, Pattern}
-import fr.emn.criojo.expression.NoValueDefined
+import fr.emn.criojo.core.model.{WrappedValue, Valuation, Expression}
+import fr.emn.criojo.expression._
 
-/** Wrap Scala String type in Criojo */
-trait ScalaString extends Expression {
-  def value: String = {
-    throw new NoValueDefined()
-  }
+trait ScalaString extends CriojoString{
 
   final def length: ScalaInt = new LengthScalaString(this)
 
-  final def size: ScalaInt = this.length
+  final def +(that: CriojoString): CriojoString = new AddScalaString(this, that)
 
-  final def +(that: ScalaString): ScalaString = new AddScalaString(this, that)
-
-  final def <=>(that: ScalaString): ScalaBoolean = new EqualScalaString(this, that)
-
-  final def !<=>(that: ScalaString): ScalaBoolean = !(this <=> that)
-
-  final def isEmpty: ScalaBoolean = this.length <=> WrapScalaInt(0)
+  final def <=>(that: CriojoString): ScalaBoolean = new EqualScalaString(this, that)
 
   final def getValue: String = reduce() match {
     case i: ScalaString => i.value
     case _ => throw new NoValueDefined()
   }
+
 }
 
-case class AddScalaString(x: ScalaString, y: ScalaString) extends ScalaString {
+object ScalaString extends CriojoTypesPredef{
+  def applyBinOp(x:CriojoString, y:CriojoString, op:(String,String)=>String): Expression = (x.reduce(), y.reduce()) match{
+    case (_x:WrappedValue[String],_y:WrappedValue[String]) => WrapScalaString(op(_x,_y))
+    case _ => throw new NoValueDefined()
+  }
+
+  def compare(x:CriojoString, y:CriojoString, op:(String,String)=>Boolean): Expression = (x.reduce(), y.reduce()) match{
+    case (_x:WrappedValue[String],_y:WrappedValue[String]) => WrapScalaBoolean(op(_x,_y))
+    case _ => throw new NoValueDefined()
+  }
+}
+
+import ScalaString.{applyBinOp, compare}
+
+case class AddScalaString(x: CriojoString, y: CriojoString) extends ScalaString {
   override def applyValuation(valuation: Valuation): Expression = {
     val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaString]
     val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaString]
@@ -35,12 +40,10 @@ case class AddScalaString(x: ScalaString, y: ScalaString) extends ScalaString {
     expr1 + expr2
   }
 
-  override def reduce(): Expression = {
-    WrapScalaString(x.getValue + y.getValue)
-  }
+  override def reduce(): Expression = applyBinOp(x,y,(a:String,b:String)=>a+b)
 }
 
-case class EqualScalaString(x: ScalaString, y: ScalaString) extends ScalaBoolean {
+case class EqualScalaString(x: CriojoString, y: CriojoString) extends ScalaBoolean {
   override def applyValuation(valuation: Valuation): Expression = {
     val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaString]
     val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaString]
@@ -48,20 +51,18 @@ case class EqualScalaString(x: ScalaString, y: ScalaString) extends ScalaBoolean
     expr1 <=> expr2
   }
 
-  override def reduce(): Expression = {
-    WrapScalaBoolean(x.getValue == y.getValue)
-  }
+  override def reduce(): Expression = compare(x,y,(a:String,b:String)=>a==b)
 }
 
-case class LengthScalaString(s: ScalaString) extends ScalaInt {
+case class LengthScalaString(s: CriojoString) extends ScalaInt {
   override def applyValuation(valuation: Valuation): Expression = {
     val expr = s.applyValuation(valuation).asInstanceOf[ScalaString]
 
     expr.length
   }
 
-  override def reduce(): Expression = {
-    WrapScalaInt(s.getValue.length)
+  override def reduce(): Expression = s match{
+    case _s:WrappedValue[String] => WrapScalaInt(_s.self.length)
   }
 }
 

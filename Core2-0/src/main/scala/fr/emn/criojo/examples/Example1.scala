@@ -2,6 +2,7 @@ package fr.emn.criojo.examples
 
 import fr.emn.criojo.parallel._
 import fr.emn.criojo.expression.scala.WrapScalaInt
+import fr.emn.criojo.expression.CriojoInt
 
 
 /**
@@ -17,7 +18,7 @@ object Example1{
         val gcd = LocalRelation("gcd")
         val Result = LocalRelation("Resultat")
 
-        val n,n1,n2,r,r1,r2,v,x,y,xNew = Var[Int]
+        val n,n1,n2,r,r1,r2,v,x,y,xNew = Var[CriojoInt]
 
 
         rules(

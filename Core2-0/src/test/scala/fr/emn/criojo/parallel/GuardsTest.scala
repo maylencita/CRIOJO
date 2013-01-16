@@ -11,7 +11,7 @@ import fr.emn.criojo.expression.{CriojoTypesPredef}
 
 import org.junit._
 import Assert._
-import fr.emn.criojo.expression.scala.ScalaTypesPredef
+import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef}
 
 class GuardsTest extends ScalaTypesPredef{
 
@@ -25,7 +25,7 @@ class GuardsTest extends ScalaTypesPredef{
       val R = LocalRel
       val S = LocalRel
       val X = LocalRel
-      val x,y,z = Var[Int]
+      val x,y,z = Var[ScalaInt]
 
       val First = NativeRel {case _ => result(0) = i; i+=1 }
       val Second = NativeRel { case _ => result(1) = i }
@@ -93,7 +93,7 @@ class GuardsTest extends ScalaTypesPredef{
         case _ =>
       }
 
-      val x = Var[Int]
+      val x = Var[ScalaInt]
 
       rules(
         (One(x) & R(x)) --> (One(x) & S(x) & S(x) & Concat("one")),
@@ -124,7 +124,7 @@ class GuardsTest extends ScalaTypesPredef{
       val S = LocalRel
       val Test1 = LocalRel
       val Test2 = LocalRel
-      val x,y,z = Var[Int]
+      val x,y,z = Var[ScalaInt]
 
       val Concat = NativeRel {
         case v::Nil => finalword += v
@@ -155,7 +155,7 @@ class GuardsTest extends ScalaTypesPredef{
       val S = LocalRel
       val Passed = NativeRel { l => passed += 1 }
 
-      val x,y,z = Var[Int]
+      val x,y,z = Var[ScalaInt]
 
       rules(
         R(x) --> Ex(y,Prs(S(x,y))) ?: Passed()
@@ -183,7 +183,7 @@ class GuardsTest extends ScalaTypesPredef{
       val R = LocalRel
       val S = LocalRel
       val Session = LocalRel
-      val x,y,z,s = Var[Int]
+      val x,y,z,s = Var[ScalaInt]
 
       val Passed = NativeRel { case _ => passed += 1 }
 

@@ -1,6 +1,7 @@
 package fr.emn.criojo.expression.scala
 
 import fr.emn.criojo.core.model.{Pattern, WrappedValue, Valuation, Expression}
+import fr.emn.criojo.expression.CriojoInt
 
 case class WrapScalaInt(i: Int) extends ScalaInt with Pattern with WrappedValue[Int]{
   val self = i

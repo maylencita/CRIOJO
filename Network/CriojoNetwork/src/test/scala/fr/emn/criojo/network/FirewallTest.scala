@@ -4,7 +4,7 @@ package fr.emn.criojo.network
 import org.junit.{Assert, Test}
 import Assert._
 
-import fr.emn.criojo.expression.scala.{WrapScalaInt, VarScalaInt}
+import fr.emn.criojo.expression.scala.{WrapScalaInt, IntVar}
 import fr.emn.criojo.dsl.Empty
 
 /**

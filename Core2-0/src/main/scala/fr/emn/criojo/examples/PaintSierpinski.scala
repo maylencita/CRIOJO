@@ -3,11 +3,8 @@ package fr.emn.criojo.examples
 import java.io.FileWriter
 import fr.emn.criojo.parallel.Agent
 
-import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef, WrapScalaInt}
-import fr.emn.criojo.dsl.{ChamBody}
+import fr.emn.criojo.expression.scala._
 import fr.emn.criojo.core.model._
-import fr.emn.criojo.expression.tuple2.CriojoTuple2
-import fr.emn.criojo.expression.tuple2.constructor.{WrapScalaTuple2, ArrowAssocCriojoTuple2}
 import fr.emn.criojo.expression.ConversionImpossible
 
 /**
@@ -25,7 +22,6 @@ object PaintSierpinski extends App with ScalaTypesPredef{
   trait SVGPainter{
     self:Agent =>
 
-//    val fw = new FileWriter("etoile.svg")
     val openFile, paintTriangle, closeFile = LocalRel
 
     private val printing, file = LocalRel
@@ -33,13 +29,13 @@ object PaintSierpinski extends App with ScalaTypesPredef{
     private val _openFile = NativeFun {
       case (f:WrappedValue[String])::_ =>
         val fw = new FileWriter(f.self)
-        fw.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n")
+        fw.write("""<svg xmlns="http://www.w3.org/2000/svg" version="1.1">\n""")
         List(file(WrappedFile(fw)))
       case _ => List[Atom]()
     }
     private val _closeFile = NativeRel {
       case (fw:WrappedValue[FileWriter])::_ =>
-        fw.write("</svg>\n")
+        fw.write("""</svg>""")
         fw.close()
         println("[painter] Closing...")
         System.exit(0)
@@ -53,23 +49,23 @@ object PaintSierpinski extends App with ScalaTypesPredef{
       case _ =>
     }
     private def term2StringPoint(term:Term):String = term match {
-      case t:WrappedValue[(_,_)] => t._1 + "," + t._2
+      case t:ScalaTuple2[_,_] => t._1 + "," + t._2
       case _ => throw new ConversionImpossible("Impossible to convert " + term + " to Tuple2")
     }
 
     private val f, x, y, z = Var[ScalaInt]
 
     rules(
-      openFile(f) --> Abs(printing()) ?: (_openFile(f) & printing()),
-      (paintTriangle(x,y,z) & !printing() & !file(f)) --> _printPolygon(f, x, y, z),
-      (closeFile() & printing() & file(f)) --> _closeFile(f)
+      openFile(f) --> Abs(printing()) ?: _openFile(f),
+      (paintTriangle(x,y,z) & !file(f)) --> _printPolygon(f, x, y, z),
+      (closeFile() & file(f)) --> _closeFile(f)
     )
   }
 
   val sierpinskiAgent = new Agent with SVGPainter{
 
     val paintSierpinski = LocalRel
-    private val sierpinski,count,started = LocalRel
+    private val sierpinski,count = LocalRel
     val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl, m = Var[ScalaInt]
 
     rules(
@@ -84,19 +80,6 @@ object PaintSierpinski extends App with ScalaTypesPredef{
 
       count(0) --> Abs(sierpinski(x, y, l, n)) ?: closeFile()
     )
-
-//    final class CriojoArrowAssoc[A](x: A) {
-//      @inline def ->[B <: Term](y: B) = ArrowAssocCriojoTuple2[A, B](x, y)
-//    }
-//
-//    implicit def any2CriojoArrowAssoc(x: TypedVar[ScalaInt]): CriojoArrowAssoc[TypedVar[ScalaInt]] =
-//      new CriojoArrowAssoc[TypedVar[ScalaInt]](x)
-
-      implicit def tuple2CriojoTuple2Pattern[A <: Pattern, B <: Pattern](t:(A,B)):ArrowAssocCriojoTuple2[A,B] =
-        new ArrowAssocCriojoTuple2[A,B](t._1,t._2)
-
-      implicit def tuple2CriojoTuple2Expr[A <: Expression, B <: Expression](t:(A,B)):WrapScalaTuple2[A,B] =
-        new WrapScalaTuple2[A,B](t)
 
   }
   sierpinskiAgent.start()

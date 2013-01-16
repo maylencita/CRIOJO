@@ -1,10 +1,6 @@
 package fr.emn.criojo.expression
 
-import scala.{ScalaInt, WrapScalaBoolean}
-
 //TODO Change to WrappedValue
-import tuple2.CriojoTuple2
-import tuple2.constructor.ArrowAssocCriojoTuple2
 import fr.emn.criojo.core.model._
 import fr.emn.criojo.core.engine.CriojoGuard
 import relation._
@@ -16,20 +12,20 @@ trait CriojoTypesPredef {
   // ************************************************************* ArrowAssoc **
 //  final class CriojoArrowAssoc[A <: Term](x: A) {
 //    @inline def ->[B <: Term](y: B): CriojoTuple2[A, B] =
-//      ArrowAssocCriojoTuple2[A, B](x, y)
+//      ScalaTuple2[A, B](x, y)
 //  }
 
 //  implicit def any2CriojoArrowAssoc[A <: Term](x: A): CriojoArrowAssoc[A] =
 //    new CriojoArrowAssoc[A](x)
 
 //  implicit def anyTuple2CriojoTuple[A <: Term,B <: Term](t:(A,B)):Term =
-//    ArrowAssocCriojoTuple2[A, B](t._1, t._2)
+//    ScalaTuple2[A, B](t._1, t._2)
 
   implicit def LazyGuard(x: => Expression): CriojoGuard = {
     val g = new CriojoGuard {
       override def eval(vals: Valuation) = {
         val xvalue = x.applyValuation(vals).reduce()
-        xvalue.isInstanceOf[WrapScalaBoolean] && xvalue.asInstanceOf[WrapScalaBoolean].value
+        xvalue.isInstanceOf[WrappedValue[Boolean]] && xvalue.asInstanceOf[WrappedValue[Boolean]].self
       }
 
       val observed = Set[Relation]()
@@ -53,7 +49,7 @@ trait CriojoTypesPredef {
     g
   }
 
-  implicit def variable2VarChannel(v:TypedVar[ChannelLocation]): VarChannel = v.asInstanceOf[VarChannel]
+  implicit def variable2VarChannel(v:TypedVar[ChannelLocation]): VarChannel = VarChannel(v.name)
 
   implicit def ChannelToChannelLocation(c: Channel): ChannelLocation = c.location
 

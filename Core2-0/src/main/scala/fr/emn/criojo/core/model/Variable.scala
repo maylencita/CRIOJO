@@ -10,7 +10,7 @@ trait Variable extends Pattern {
   * == Overview ==
   * To use a variable, it's necessary to redefined it and extends en concrete
   * pattern. As you could have static typing benefits (on operation). For
-  * example to construct variable on ScalaInt do as :
+  * example to construct variable on CriojoInt do as :
   * {{{
   *                                            +-+
   *  +---------+                        +------|T|-+
@@ -20,8 +20,8 @@ trait Variable extends Pattern {
   *       |                                   |
   *       |                                   |
   *       |                              +--------+
-  *  +----------+         +--------------|ScalaInt|-+
-  *  | ScalaInt | <|----- | VarScalaInt  +--------+ |
+  *  +----------+         +--------------|CriojoInt|-+
+  *  | CriojoInt | <|----- | IntVar  +--------+ |
   *  +----------+         +-------------------------+
   * }}}
   *

@@ -2,6 +2,8 @@ package fr.emn.criojo.examples
 
 import fr.emn.criojo.parallel.Agent
 import fr.emn.criojo.util.Printer
+import fr.emn.criojo.expression.CriojoInt
+import fr.emn.criojo.expression.scala.ScalaInt
 import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef}
 
 /**
@@ -19,7 +21,7 @@ object HCalcul extends App with ScalaTypesPredef with Printer{
       System.exit(0)
     )
 
-    val x,y,z = Var[ScalaInt]
+    val x,y,z = Var[CriojoInt]
 
     rules(
       (H(1, x) & H(2, y) & H(3, z) ) --> R(x - y / z ),

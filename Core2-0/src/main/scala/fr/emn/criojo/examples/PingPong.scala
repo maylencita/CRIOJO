@@ -3,6 +3,7 @@ package fr.emn.criojo.examples
 import fr.emn.criojo.core.model.relation.{Channel, ChannelLocation, RemoteMessage, VarChannel}
 import fr.emn.criojo.parallel.Agent
 import fr.emn.criojo.expression.scala.ScalaTypesPredef
+import fr.emn.criojo.expression.CriojoInt
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +30,7 @@ object PingPong extends App with ScalaTypesPredef{
       case _ =>
     }
 
-    val x = Var[Int]
+    val x = Var[CriojoInt]
 
     rules(
       Start() --> (Ping(Pong, 1)),
@@ -41,7 +42,7 @@ object PingPong extends App with ScalaTypesPredef{
   val agent2 = new Agent("agent2", LocalGateway){
     val Ping = InputChannel("Ping")
     val k = Var[Channel] //Channel("k")
-    val x = Var[Int]
+    val x = Var[CriojoInt]
 
     val Print = NativeRel{
       case t::_ => println(t)

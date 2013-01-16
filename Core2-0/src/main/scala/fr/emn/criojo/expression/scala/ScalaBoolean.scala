@@ -1,39 +1,44 @@
 package fr.emn.criojo.expression.scala
 
-import fr.emn.criojo.core.model.{Valuation, Expression, Pattern}
-import fr.emn.criojo.expression.NoValueDefined
+import fr.emn.criojo.core.model.{WrappedValue, Valuation, Expression, Pattern}
+import fr.emn.criojo.expression.{CriojoTypesPredef, CriojoBoolean, NoValueDefined}
 
-/** Wrap Scala Boolean type */
-trait ScalaBoolean extends Pattern with Expression {
-  def value: Boolean = {
-    throw new NoValueDefined()
-  }
+trait ScalaBoolean extends CriojoBoolean with CriojoTypesPredef{
 
-  final def ||(that: ScalaBoolean): ScalaBoolean = new OrScalaBoolean(this, that)
+  final def ||(that: CriojoBoolean): CriojoBoolean = new OrScalaBoolean(this, that)
 
-  final def &&(that: ScalaBoolean): ScalaBoolean = new AndScalaBoolean(this, that)
+  final def &&(that: CriojoBoolean): CriojoBoolean = new AndScalaBoolean(this, that)
 
-  final def unary_! : ScalaBoolean = new NotScalaBoolean(this)
+  final def unary_! : CriojoBoolean = new NotScalaBoolean(this)
 
   final def getValue: Boolean = reduce() match {
     case i: ScalaBoolean => i.value
     case _ => throw new NoValueDefined()
   }
+
+  def applyBinOp(x:CriojoBoolean, y:CriojoBoolean, op:(Boolean,Boolean)=>Boolean): Expression =
+    (x.reduce(), y.reduce()) match{
+    case (_x:WrappedValue[Boolean],_y:WrappedValue[Boolean]) => WrapScalaBoolean(op(_x,_y))
+    case _ => throw new NoValueDefined()
+  }
+
 }
 
-case class NotScalaBoolean(x: ScalaBoolean) extends ScalaBoolean {
+case class NotScalaBoolean(x: CriojoBoolean) extends ScalaBoolean {
   override def applyValuation(valuation: Valuation): Expression = {
     val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaBoolean]
 
     NotScalaBoolean(expr1)
   }
 
-  override def reduce(): Expression = {
-    WrapScalaBoolean(!x.getValue)
+  override def reduce(): Expression = x.reduce() match{
+    case _x:WrappedValue[Boolean] =>  WrapScalaBoolean(!(_x.self))
+    case _ => println("No value defined for " + x)
+      throw new NoValueDefined()
   }
 }
 
-case class AndScalaBoolean(x: ScalaBoolean, y: ScalaBoolean) extends ScalaBoolean {
+case class AndScalaBoolean(x: CriojoBoolean, y: CriojoBoolean) extends ScalaBoolean {
   override def applyValuation(valuation: Valuation): Expression = {
     val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaBoolean]
     val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaBoolean]
@@ -41,12 +46,10 @@ case class AndScalaBoolean(x: ScalaBoolean, y: ScalaBoolean) extends ScalaBoolea
     expr1 && expr2
   }
 
-  override def reduce(): Expression = {
-    WrapScalaBoolean(x.getValue && y.getValue)
-  }
+  override def reduce(): Expression = applyBinOp(x,y,(a:Boolean,b:Boolean)=>a && b)
 }
 
-case class OrScalaBoolean(x: ScalaBoolean, y: ScalaBoolean) extends ScalaBoolean {
+case class OrScalaBoolean(x: CriojoBoolean, y: CriojoBoolean) extends ScalaBoolean {
   override def applyValuation(valuation: Valuation): Expression = {
     val expr1 = x.applyValuation(valuation).asInstanceOf[ScalaBoolean]
     val expr2 = y.applyValuation(valuation).asInstanceOf[ScalaBoolean]
@@ -54,9 +57,7 @@ case class OrScalaBoolean(x: ScalaBoolean, y: ScalaBoolean) extends ScalaBoolean
     expr1 || expr2
   }
 
-  override def reduce(): Expression = {
-    WrapScalaBoolean(x.getValue || y.getValue)
-  }
+  override def reduce(): Expression = applyBinOp(x,y,(a:Boolean,b:Boolean)=>a || b)
 }
 
 

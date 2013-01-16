@@ -18,6 +18,10 @@ class Agent(val location:String, val gateway:AtomGateway) extends ChamBody with 
   def this() = {
     this("Agent@"+UUID.randomUUID(), DummyGateway)
   }
+
+  val Stop = NativeRel {tlst =>
+    exit()
+  }
 }
 
 object DummyGateway extends AtomGateway{

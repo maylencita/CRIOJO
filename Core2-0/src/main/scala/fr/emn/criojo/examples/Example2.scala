@@ -1,7 +1,8 @@
 package fr.emn.criojo.examples
 
 import fr.emn.criojo.parallel.Agent
-import fr.emn.criojo.expression.scala.{VarScalaInt, WrapScalaInt}
+import fr.emn.criojo.expression.scala.ScalaTypesPredef
+import fr.emn.criojo.expression.CriojoInt
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,7 @@ import fr.emn.criojo.expression.scala.{VarScalaInt, WrapScalaInt}
  * Time: 6:20 PM
  * To change this template use File | Settings | File Templates.
  */
-object Example2{
+object Example2 extends ScalaTypesPredef{
   def main(args:Array[String]){
     val parCham = new Agent {
       val Print = NativeRel {
@@ -20,7 +21,7 @@ object Example2{
       val gcd = LocalRelation("gcd")
       val Result = LocalRelation("Resultat")
 
-      val n,n1,n2,r,r1,r2,v,x,y,xNew = VarScalaInt()
+      val n,n1,n2,r,r1,r2,v,x,y,xNew = Var[CriojoInt]
 
       rules(
         gcd(x,y) --> {x < y} ?: gcd(y,x),
@@ -29,7 +30,7 @@ object Example2{
       )
     }
     parCham.start()
-    parCham ! parCham.gcd(WrapScalaInt(8),WrapScalaInt(2))
+    parCham ! parCham.gcd(8,2)
 
 //    parCham.introduceAtom(parCham.gcd(WrapScalaInt(8),WrapScalaInt(2)))
 //    parCham.executeRules()

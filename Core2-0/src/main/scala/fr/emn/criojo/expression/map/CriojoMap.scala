@@ -2,8 +2,7 @@ package fr.emn.criojo.expression.map
 
 import fr.emn.criojo.core.model.{Wrapper, Pattern, Expression}
 import operation._
-import fr.emn.criojo.expression.scala.ScalaBoolean
-import fr.emn.criojo.expression.NoValueDefined
+import fr.emn.criojo.expression.{CriojoBoolean, NoValueDefined}
 
 trait CriojoMap[A <: Pattern with Expression, +B <: Pattern with Expression]
   extends Pattern with Expression {

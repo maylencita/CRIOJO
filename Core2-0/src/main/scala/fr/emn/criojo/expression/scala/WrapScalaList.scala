@@ -1,9 +1,10 @@
 package fr.emn.criojo.expression.scala
 
 import fr.emn.criojo.core.model._
+import fr.emn.criojo.expression.list.{CriojoList,CriojoNil}
 
-case class WrapScalaList[A <: Pattern with Expression](l: List[A])
-  extends ScalaList[A] {
+case class WrapScalaList[A <: Expression](l: List[A])
+  extends CriojoList[A] with Expression with WrappedValue[List[A]]{
 
   /**
    * Caution, this method is applicable only when WrapScalaList is an expression
@@ -15,10 +16,13 @@ case class WrapScalaList[A <: Pattern with Expression](l: List[A])
    * Caution, this method is applicable only when WrapScalaList is an expression
    * and not a Pattern.
    */
-  def tail[B >: A <: Pattern with Expression]: WrapScalaList[B] =
-    new WrapScalaList[B](l.tail)
+  def tail =
+    new WrapScalaList[A](l.tail)
 
-  override def value = l
+  def isEmpty = l.isEmpty
+
+  /*override*/ def value = l
+  val self = l
 
   /**
    * With type ScalaList, only WrapScalaList or WrapScalaNil could be in
@@ -26,7 +30,7 @@ case class WrapScalaList[A <: Pattern with Expression](l: List[A])
    * So matches no needs to test match with WrapScalaColonColon.
    */
   override def matches(expr: Expression): Boolean = expr match {
-    case WrapScalaNil => l == Nil
+    case CriojoNil => l == Nil
     case wsl: WrapScalaList[A] => l == wsl.value
     case _ => false
   }
@@ -40,6 +44,7 @@ case class WrapScalaList[A <: Pattern with Expression](l: List[A])
   override def toString: String = l.toString()
 }
 
+/*
 final case class WrapScalaColonColon[A <: Pattern with Expression](hd: A,
                                                                    tl: ScalaList[A]) extends ScalaList[A] {
 
@@ -49,12 +54,10 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](hd: A,
    * only WrapScalaList, WrapScalaNil & WrapScalaColonColon are possible with
    * no variables.
    *
-   * But the reduce of WrapScalaColonColon is done to reduce WrapScalaColonColon
-   * to WrapScalaList, so WrapScalaColonColon could not be in solution. This
-   * will largely simplified the match algorithme.
+   * But the reduce of WrapScalaColonColon produces a WrapScalaList,
+   * so WrapScalaColonColon could not be in solution. This
+   * will largely simplify the match algorithm.
    *
-   * By the way, a WrapScalaNil is an empty list, so it's could never match with
-   * a WrapScalaColonColon which contains, at least, one element.
    */
   override def matches(expr: Expression): Boolean = expr match {
     case wsl: WrapScalaList[A] => matchesOfWrapScalaList(wsl)
@@ -67,7 +70,7 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](hd: A,
    * elements are Expression, so only WrapScalaList, WrapScalaColonColon &
    * WrapScalaNil are possible with no variables.
    *
-   * But the reduce of WrapScalaColonColon produce a WrapScalaList. So Expression
+   * But the reduce of WrapScalaColonColon produces a WrapScalaList. So Expression
    * is obviously one of WrapScalaList or WrapScalaNil but not
    * WrapScalaColonColon.
    *
@@ -153,25 +156,5 @@ final case class WrapScalaColonColon[A <: Pattern with Expression](hd: A,
     headVals.union(tailVals)
   }
 }
-
-case object WrapScalaNil extends ScalaList[Nothing] {
-  override def value = Nil
-
-  def tail: ScalaList[Nothing] =
-    throw new UnsupportedOperationException("tail of empty list")
-
-  override def matches(expr: Expression): Boolean = expr match {
-    case WrapScalaNil => true
-    case WrapScalaList(l) => l == Nil
-    case _ => false
-  }
-
-  override def getValuation(exp: Expression): Valuation = Valuation()
-
-  override def applyValuation(valuation: Valuation): Expression = this
-
-  override def reduce(): Expression = this
-
-  override def toString: String = Nil.toString()
-}
+*/
 

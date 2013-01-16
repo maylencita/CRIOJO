@@ -1,8 +1,11 @@
 package fr.emn.criojo.expression.scala
 
-import fr.emn.criojo.core.model.{Pattern, Expression, TypedVar}
+import fr.emn.criojo.core.model.{Term, Expression, TypedVar}
+import fr.emn.criojo.expression._
+import list.{ListVar, CriojoList}
+
 //import fr.emn.criojo.expression.tuple2.CriojoTuple2
-//import fr.emn.criojo.expression.tuple2.constructor.ArrowAssocCriojoTuple2
+//import fr.emn.criojo.expression.tuple2.constructor.ScalaTuple2
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,24 +20,30 @@ import fr.emn.criojo.core.model.{Pattern, Expression, TypedVar}
  */
 trait ScalaTypesPredef {
 
-//  final class CriojoArrowAssoc[A <: Pattern with Expression](x: A) {
-//    @inline def ->[B <: Pattern with Expression](y: B): CriojoTuple2[A, B] =
-//      ArrowAssocCriojoTuple2[A, B](x, y)
-//  }
+  implicit def typedVar2VarScalaInt(v:TypedVar[CriojoInt]):IntVar = IntVar(v.name)
 
-  implicit def typedVar2VarScalaInt(v:TypedVar[ScalaInt]):VarScalaInt = VarScalaInt(v.name)
+  implicit def typedVar2VarScalaString(v:TypedVar[CriojoString]):StringVar = StringVar(v.name)
 
-//  implicit def intTypedVar2CriojoArrowAssoc(v:TypedVar[Pattern with Expression]):CriojoArrowAssoc[VarScalaInt] = new CriojoArrowAssoc[VarScalaInt](v.asInstanceOf[VarScalaInt])
-//
-  implicit def typedVar2VarScalaString(v:TypedVar[ScalaString]):VarScalaString = VarScalaString(v.name)
-//
-//  implicit def stringTypedVar2CriojoArrowAssoc(v:TypedVar[ScalaString]):CriojoArrowAssoc[VarScalaString] = new CriojoArrowAssoc[VarScalaString](v.asInstanceOf[VarScalaString])
+  implicit def typedVar2ListVar[A <: Expression](v:TypedVar[CriojoList[A]]):CriojoList[A] = ListVar(v.name)
 
-  implicit def intToExpression(i: Int): ScalaInt = WrapScalaInt(i)
+  implicit def intToExpression(i: Int): CriojoInt = WrapScalaInt(i)
 
-  implicit def stringToExpression(s: String): ScalaString = WrapScalaString(s)
+  implicit def stringToExpression(s: String): CriojoString = WrapScalaString(s)
 
-  implicit def booleanToTerm(b: Boolean): ScalaBoolean = WrapScalaBoolean(b)
+  implicit def booleanToTerm(b: Boolean): CriojoBoolean = WrapScalaBoolean(b)
 
+  final class CriojoArrowAssoc[A <: Term](val __leftOfArrow:A){
+    def -> [B <: Term](y:B):ScalaTuple2[A,B] = CriojoArrow(__leftOfArrow, y)
+  }
+
+  implicit def any2CriojoArrowAssoc[A <: Term](x:A):CriojoArrowAssoc[A] = new CriojoArrowAssoc(x)
+
+//  implicit def tuple2CriojoTuple2Pattern[A <: Pattern, B <: Pattern](t:(A,B)):ScalaTuple2[A,B] =
+//    new ScalaTuple2[A,B](t._1,t._2)
+
+//  implicit def tuple2CriojoTuple2Expr[A <: Expression, B <: Expression](t:(A,B)):WrapScalaTuple2[A,B] =
+//    new WrapScalaTuple2[A,B](t)
+
+  implicit def list2WrapedCriojoList[A <: Expression](lst:List[A]):WrapScalaList[A] = WrapScalaList[A](lst)
 }
 

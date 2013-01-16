@@ -3,29 +3,11 @@ package fr.emn.criojo.dsl
 import fr.emn.criojo.core.engine._
 import impure.NativeRelation
 import fr.emn.criojo.core.model._
-import fr.emn.criojo.expression.scala.{ScalaInt, VarScalaInt}
-import fr.emn.criojo.core.model.relation.VarChannel
-import java.util.UUID
 import fr.emn.criojo.core.engine.NotGuard
 import fr.emn.criojo.core.engine.PresenceGuard
-import fr.emn.criojo.core.model.relation.VarChannel
 import fr.emn.criojo.core.engine.AbsGuard
 import fr.emn.criojo.core.engine.ExistsGuard
-import fr.emn.criojo.core.engine.NotGuard
-import fr.emn.criojo.core.engine.PresenceGuard
-import fr.emn.criojo.core.model.relation.VarChannel
-import fr.emn.criojo.core.engine.AbsGuard
-import fr.emn.criojo.core.engine.ExistsGuard
-import fr.emn.criojo.core.engine.NotGuard
-import fr.emn.criojo.core.engine.PresenceGuard
-import fr.emn.criojo.core.model.relation.VarChannel
-import fr.emn.criojo.core.engine.AbsGuard
-import fr.emn.criojo.core.engine.ExistsGuard
-import fr.emn.criojo.core.engine.NotGuard
-import fr.emn.criojo.core.engine.PresenceGuard
-import relation.VarChannel
-import fr.emn.criojo.core.engine.AbsGuard
-import fr.emn.criojo.core.engine.ExistsGuard
+import relation.ChannelLocation
 
 /**
 * Created with IntelliJ IDEA.
@@ -39,6 +21,8 @@ abstract class ChamBody{
   this: Cham =>
 
   type RuleDef = RuleFactory => Rule
+
+  protected trait Channel extends ChannelLocation
 
   def rules(ruleDefs:(RuleFactory => Rule)*) { initRules(ruleDefs.toList) }
 
@@ -72,13 +56,6 @@ abstract class ChamBody{
   def Var[T <: Expression](implicit m:Manifest[T]):TypedVar[T] = new TypedVar[T]("Var@" + ChamBody.getInstanceNum) {
     override def toString = name
   }
-//    m.toString match{
-//        case "Int" => VarScalaInt()
-//        case "fr.emn.criojo.expression.scala.VarScalaInt" => new TypedVar[ScalaInt]("VarScalaInt@" + ChamBody.getInstanceNum){} //VarScalaInt
-//        case "java.lang.String" => VarScalaString()
-//        case "fr.emn.criojo.core.model.relation.Channel" => VarChannel("varchannel"+UUID.randomUUID().toString)
-//        case _ => throw new Error("Undefiend type [" + m + "]")
-//  }
 
   def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
 
