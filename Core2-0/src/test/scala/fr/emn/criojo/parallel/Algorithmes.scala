@@ -5,8 +5,6 @@ import org.junit.Assert._
 import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef, WrapScalaInt}
 import fr.emn.criojo.examples.LocalGateway
 import fr.emn.criojo.core.model.{WrappedValue, Atom}
-import fr.emn.criojo.dsl.ChamBody
-import fr.emn.criojo.core.engine.Cham
 import fr.emn.criojo.util.Printer
 
 
@@ -144,7 +142,7 @@ class Algorithmes extends ScalaTypesPredef{
 
     fCham ! List(fCham.V(2),fCham.V(2),fCham.V(3),fCham.V(4),fCham.V(4))
 
-    Thread.sleep(1000)
+    Thread.sleep(500)
     assertEquals(4, result)
   }
 
@@ -165,7 +163,7 @@ class Algorithmes extends ScalaTypesPredef{
 
 
       rules(
-        (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u) & Print("($1,$2 - $3,$4)",x,v,y,u)),
+        (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u)),
         (!Export() & L(x,y)) --> ExportList(x,y)
       )
     }
@@ -175,9 +173,12 @@ class Algorithmes extends ScalaTypesPredef{
     for (i <- 0 to j)
       fCham ! fCham.L(i, j - i)
 
+    Thread.sleep(500)
+
     fCham ! fCham.Export()
 
-    Thread.sleep(500)
+    Thread.sleep(100)
+    println(atomList.mkString(" , "))
     assertTrue(atomList.forall {p => p._1 == p._2})
   }
 
@@ -206,7 +207,7 @@ class Algorithmes extends ScalaTypesPredef{
       rules(
         Init(x) --> _genList(x),
         (L(x, u) & L(y, v))  --> {(y <=>  (x + 1)) && (v < u)} ?: (L(x, v) & L(y, u)),
-        (Export() & L(x,y)) --> _exportList(x,y)
+        (!Export() & L(x,y)) --> _exportList(x,y)
       )
     }
 
@@ -214,6 +215,10 @@ class Algorithmes extends ScalaTypesPredef{
     agent ! agent.Init(5)
 
     Thread.sleep(500)
+
+    agent ! agent.Export()
+
+    Thread.sleep(100)
     assertTrue(atomList.forall {p => p._1 == p._2})
 
   }

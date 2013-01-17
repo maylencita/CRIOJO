@@ -58,7 +58,7 @@ object PaintSierpinski extends App with ScalaTypesPredef{
     rules(
       openFile(f) --> Abs(printing()) ?: _openFile(f),
       (paintTriangle(x,y,z) & !file(f)) --> _printPolygon(f, x, y, z),
-      (closeFile() & file(f)) --> _closeFile(f)
+      (closeFile() & file(f)) --> Abs(paintTriangle(x,y,z)) ?: _closeFile(f)
     )
   }
 
@@ -66,23 +66,23 @@ object PaintSierpinski extends App with ScalaTypesPredef{
 
     val paintSierpinski = LocalRel
     private val sierpinski,count = LocalRel
-    val x, y, z, a, b, c, lp, xp1, xp2, yp, n, np, l, vx, vy, vl, m = Var[ScalaInt]
+    val x, y, n, l, m = Var[ScalaInt]
 
     rules(
-      paintSierpinski(x, y, l, n) --> (openFile("etoile.svg") & sierpinski(x, y, l, n) & count(1)),
+      paintSierpinski(l, n) --> (openFile("etoile.svg") & sierpinski(l, 0, l, n) & count(1)),
 
-      (sierpinski(x, y, l, n) & count(m)) --> {n <=> 0} ?: (count(m-1) & paintTriangle(x->y, (x-l) -> (y-l), (x+l) -> (y-l))),
+      (sierpinski(x, y, l, n) & count(m)) --> {n <=> 0} ?: (count(m-1) & paintTriangle(x->y, (x-l) -> (y+l), (x+l) -> (y+l))),
 
-      (sierpinski(x, y, l, n) & count(m)) --> {n > 0} ?: (count(m+2) &
-        sierpinski(x, y, l / 2, n - 1) &
-        sierpinski(x - l / 2, y - l / 2, l / 2, n - 1) &
-        sierpinski(x + l / 2, y - l / 2, l / 2, n - 1)),
+      (sierpinski(x, y, l, n) & count(m)) -->
+        {n > 0} ?: (count(m+2) & sierpinski(x, y, l / 2, n - 1) &
+        sierpinski(x - l / 2, y + l / 2, l / 2, n - 1) &
+        sierpinski(x + l / 2, y + l / 2, l / 2, n - 1)),
 
-      count(0) --> Abs(sierpinski(x, y, l, n)) ?: closeFile()
+      count(0) --> closeFile()
     )
 
   }
   sierpinskiAgent.start()
 
-  sierpinskiAgent ! sierpinskiAgent.paintSierpinski(700,700,700,7)
+  sierpinskiAgent ! sierpinskiAgent.paintSierpinski(600,7)
 }

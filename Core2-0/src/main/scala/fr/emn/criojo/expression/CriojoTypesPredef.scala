@@ -9,18 +9,6 @@ import relation.VarChannel
 trait CriojoTypesPredef {
   type PatternExpr = Pattern with Expression
 
-  // ************************************************************* ArrowAssoc **
-//  final class CriojoArrowAssoc[A <: Term](x: A) {
-//    @inline def ->[B <: Term](y: B): CriojoTuple2[A, B] =
-//      ScalaTuple2[A, B](x, y)
-//  }
-
-//  implicit def any2CriojoArrowAssoc[A <: Term](x: A): CriojoArrowAssoc[A] =
-//    new CriojoArrowAssoc[A](x)
-
-//  implicit def anyTuple2CriojoTuple[A <: Term,B <: Term](t:(A,B)):Term =
-//    ScalaTuple2[A, B](t._1, t._2)
-
   implicit def LazyGuard(x: => Expression): CriojoGuard = {
     val g = new CriojoGuard {
       override def eval(vals: Valuation) = {
