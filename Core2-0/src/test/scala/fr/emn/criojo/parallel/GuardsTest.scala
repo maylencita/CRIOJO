@@ -12,6 +12,7 @@ import fr.emn.criojo.expression.{CriojoTypesPredef}
 import org.junit._
 import Assert._
 import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef}
+import fr.emn.criojo.testing.TestCham
 
 class GuardsTest extends ScalaTypesPredef{
 
@@ -78,37 +79,36 @@ class GuardsTest extends ScalaTypesPredef{
 
   @Test
   def absenceTest(){
-    var finalword = ""
 
     //Clonning example
-    val cham = new Agent{
+    val cham = new Agent with TestCham{
+      var rCount = 1
+      val name = "sequenceTest"
       val One = LocalRel("One")
       val Two = LocalRel("Two")
       val Three = LocalRel("Three")
       val R = LocalRel("R")
       val S = LocalRel("S")
+      val count = LocalRel
 
-      val Concat = NativeRel {
-        case v::Nil => finalword += v
-        case _ =>
-      }
-
-      val x = Var[ScalaInt]
+      val x,n = Var[ScalaInt]
 
       rules(
-        (One(x) & R(x)) --> (One(x) & S(x) & S(x) & Concat("one")),
-        One(x) --> Abs(R(x)) ?: (Two(x) & Concat("two")),
-        (Two(x) & S(x)) --> (Two(x) & R(x) & Concat("two")),
-        Two(x) --> Abs(S(x)) ?: (Three(x) & Concat("three"))
+        (One() & R(x)) --> (One() & S(x) & S(x)),
+        One() --> Abs(R(x)) ?: (Two() & count(0)),
+        (Two() & S(x) & count(n)) --> (Two() & R(x) & count(n+1)),
+        (Two() & count(n)) --> Abs(S(x)) ?: (AssertTrue(n<=>(rCount * 2)))
       )
     }
     cham.start()
 
-    cham ! cham.One(1)
-    cham ! cham.R(1)
+    cham ! cham.One()
+    for(i <- 0 to cham.rCount-1){
+      cham ! cham.R(1)
+    }
 
     Thread.sleep(500)
-    assertEquals("onetwotwotwothree",finalword)
+    cham.testAssert()
   }
 
   @Test
@@ -146,65 +146,65 @@ class GuardsTest extends ScalaTypesPredef{
     assertEquals("onetwotwotwothree",finalword)
   }
 
-  @Test
-  def existsTest(){
-    var passed = 0
+//  @Test
+//  def existsTest(){
+//    var passed = 0
+//
+//    val cham = new Agent{
+//      val R = LocalRel
+//      val S = LocalRel
+//      val Passed = NativeRel { l => passed += 1 }
+//
+//      val x,y,z = Var[ScalaInt]
+//
+//      rules(
+//        R(x) --> Ex(y,Prs(S(x,y))) ?: Passed()
+//      )
+//    }
+//    cham.start()
+//
+//    cham ! cham.S(1,2)
+//    cham ! cham.R(1)
+//
+//    Thread.sleep(500)
+//    assertEquals(1, passed)
+//
+//    cham ! cham.R(2)
+//
+//    Thread.sleep(500)
+//    assertEquals(1, passed)
+//  }
 
-    val cham = new Agent{
-      val R = LocalRel
-      val S = LocalRel
-      val Passed = NativeRel { l => passed += 1 }
-
-      val x,y,z = Var[ScalaInt]
-
-      rules(
-        R(x) --> Ex(y,Prs(S(x,y))) ?: Passed()
-      )
-    }
-    cham.start()
-
-    cham ! cham.S(1,2)
-    cham ! cham.R(1)
-
-    Thread.sleep(500)
-    assertEquals(1, passed)
-
-    cham ! cham.R(2)
-
-    Thread.sleep(500)
-    assertEquals(1, passed)
-  }
-
-  @Test
-  def notExistsTest(){
-    var passed = 0
-
-    val cham = new Agent{
-      val R = LocalRel
-      val S = LocalRel
-      val Session = LocalRel
-      val x,y,z,s = Var[ScalaInt]
-
-      val Passed = NativeRel { case _ => passed += 1 }
-
-      rules(
-        (R(x) & Session(s)) --> Not(Ex(y,Prs(S(x,y)))) ?: (R(x) & S(x,s) & Passed() & Session(s + 1))
-      )
-    }
-    cham.start()
-
-    cham ! cham.Session(0)
-    cham ! cham.S(1,2)
-    cham ! cham.R(1)
-
-    Thread.sleep(500)
-    assertEquals(0, passed)
-
-    cham ! cham.R(2)
-
-    Thread.sleep(500)
-    assertEquals(1, passed)
-  }
+//  @Test
+//  def notExistsTest(){
+//    var passed = 0
+//
+//    val cham = new Agent{
+//      val R = LocalRel
+//      val S = LocalRel
+//      val Session = LocalRel
+//      val x,y,z,s = Var[ScalaInt]
+//
+//      val Passed = NativeRel { case _ => passed += 1 }
+//
+//      rules(
+//        (R(x) & Session(s)) --> Not(Ex(y,Prs(S(x,y)))) ?: (R(x) & S(x,s) & Passed() & Session(s + 1))
+//      )
+//    }
+//    cham.start()
+//
+//    cham ! cham.Session(0)
+//    cham ! cham.S(1,2)
+//    cham ! cham.R(1)
+//
+//    Thread.sleep(500)
+//    assertEquals(0, passed)
+//
+//    cham ! cham.R(2)
+//
+//    Thread.sleep(500)
+//    assertEquals(1, passed)
+//  }
 
   @Test
   def andTest(){

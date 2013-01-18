@@ -231,7 +231,8 @@ class MapValuation(kv: Set[Assignment], val sign: Boolean = true) extends Valuat
   def hasExtension(that: Valuation): Boolean =
     this.domain.forall {
       x =>
-        this.sign == (that(x) == this(x))
+        val this_x = this(x).get
+        this.sign == (that(x).getOrElse(this_x) == this_x)
     }
 
   def isEmpty = keyValues.isEmpty

@@ -6,7 +6,7 @@ import fr.emn.criojo.core.model._
 import fr.emn.criojo.core.engine.NotGuard
 import fr.emn.criojo.core.engine.PresenceGuard
 import fr.emn.criojo.core.engine.AbsGuard
-import fr.emn.criojo.core.engine.ExistsGuard
+//import fr.emn.criojo.core.engine.ExistsGuard
 import relation.ChannelLocation
 
 /**
@@ -59,19 +59,19 @@ abstract class ChamBody{
 
   def Abs(atoms:Atom*):ChamGuard =  new AbsGuard(atoms.toList) with ChamGuard
 
-  def Ex(x:Variable, g:ChamGuard):ChamGuard = new ExistsGuard(g,x) with ChamGuard
-
-  def Ex(vlst:List[Variable], g:ChamGuard):ChamGuard = vlst match{
-    case Nil => g
-    case h::tl => Ex(h, Ex(tl, g))
-  }
-
-  def ForAll(x:Variable, g:ChamGuard):ChamGuard = new ForAllGuard(g,x) with ChamGuard
-
-  def ForAll(vlst:List[Variable], g:ChamGuard):ChamGuard = vlst match{
-    case Nil => g
-    case h::tl => ForAll(h, ForAll(tl, g))
-  }
+//  def Ex(x:Variable, g:ChamGuard):ChamGuard = new ExistsGuard(g,x) with ChamGuard
+//
+//  def Ex(vlst:List[Variable], g:ChamGuard):ChamGuard = vlst match{
+//    case Nil => g
+//    case h::tl => Ex(h, Ex(tl, g))
+//  }
+//
+//  def ForAll(x:Variable, g:ChamGuard):ChamGuard = new ForAllGuard(g,x) with ChamGuard
+//
+//  def ForAll(vlst:List[Variable], g:ChamGuard):ChamGuard = vlst match{
+//    case Nil => g
+//    case h::tl => ForAll(h, ForAll(tl, g))
+//  }
 
   def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList) with ChamGuard
 

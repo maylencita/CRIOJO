@@ -2,7 +2,7 @@ package fr.emn.criojo.expression
 
 //TODO Change to WrappedValue
 import fr.emn.criojo.core.model._
-import fr.emn.criojo.core.engine.CriojoGuard
+import fr.emn.criojo.core.engine.{CriojoGuard,TrueGuard}
 import relation._
 import relation.VarChannel
 
@@ -11,7 +11,9 @@ trait CriojoTypesPredef {
 
   implicit def LazyGuard(x: => Expression): CriojoGuard = {
     val g = new CriojoGuard {
-      override def eval(vals: Valuation) = {
+      val empty = false
+      val subGuard = TrueGuard
+      def eval(vals: Valuation) = {
         val xvalue = x.applyValuation(vals).reduce()
         xvalue.isInstanceOf[WrappedValue[Boolean]] && xvalue.asInstanceOf[WrappedValue[Boolean]].self
       }
