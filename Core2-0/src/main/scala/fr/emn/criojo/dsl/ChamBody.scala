@@ -75,7 +75,7 @@ abstract class ChamBody{
 
   def Prs(atoms:Atom*):ChamGuard =  new PresenceGuard(atoms.toList) with ChamGuard
 
-  def Not(g:ChamGuard):ChamGuard = new NotGuard(g) with ChamGuard
+  def Not(g:Guard):ChamGuard = new NotGuard(g) with ChamGuard
 
   def introduceMolecule(molecule:Molecule){
     molecule.toList.foreach(introduceAtom(_))

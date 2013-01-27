@@ -79,12 +79,19 @@ trait ActorBasedCham extends Cham with Actor{
 
   def removeAtom(atom: Atom) {
     for (r <- rules){r match{
-      case reaction:ParRule => reaction ! Remove(atom)
+      case reaction:ParRule => reaction ! (if (atom == $Sol) RemoveAll else Remove(atom))
       case _ =>
     }
     }
   }
 
+  def removeAll(){
+    for (r <- rules){r match{
+      case reaction:ParRule => reaction ! RemoveAll
+      case _ =>
+    }
+    }
+  }
 }
 
 

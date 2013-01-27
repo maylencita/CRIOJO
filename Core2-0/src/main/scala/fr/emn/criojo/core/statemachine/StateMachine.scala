@@ -77,6 +77,15 @@ class StateMachine(pattern: Array[Atom]) extends ExecutionEngine{
     }
   }
 
+  /**
+   * Removes all partial executions from the state machine
+   */
+  def removeAll(){
+    for(s <- states){
+      s.removeExecutions()
+    }
+  }
+
   private def initStates = {
 //    if (size == 0)
 //      size = math.pow(2,pattern.length).intValue

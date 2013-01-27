@@ -4,7 +4,7 @@ import messages._
 import fr.emn.criojo.core.{model,statemachine,engine}
 import statemachine.{PartialExecution, StateMachine}
 import engine.{Rule, Guard, CriojoGuard}
-import model.{Variable, Atom, relation}
+import model.{Variable, Atom, $Sol, relation}
 import relation.Relation
 
 import fr.emn.criojo.core.engine.Reaction
@@ -33,7 +33,7 @@ class ParRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:S
   //Messages are filtered by relation
   val relations = {
     var rset = Set[Relation]()
-    for (a <- head)
+    for (a <- head if a != $Sol)
       rset += a.relation
     guard match{
       case cg:CriojoGuard=>cg.observed.foreach {r => rset += r}
@@ -42,7 +42,7 @@ class ParRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:S
     rset
   }
 
-  val stateMachine = new StateMachine(head.toArray)
+  val stateMachine = new StateMachine(head.filterNot(_ == $Sol).toArray)
 
   /** Executes rule.
     *
@@ -85,6 +85,7 @@ class ParRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:S
           atom.setActive(false)
           stateMachine.removeAtom(atom)
           notifyGuard(atom)
+        case RemoveAll =>  stateMachine.removeAll()
         case Fire =>
           reply( execute match {
           case Some(execution) =>
@@ -103,7 +104,10 @@ class ParRule(val head:List[Atom], val body:List[Atom], val guard:Guard, scope:S
     if(!finalValuation.isEmpty) {
       val newAtoms = this.body.map(_.applyValuation(finalValuation))
       val removeAtoms = for (i <- 0 until head.size; if !head(i).persistent) yield{
-       finalExecution.atom(i)
+        if(head(i) == $Sol)
+          $Sol
+        else
+          finalExecution.atom(i)
       }
       Some(Reaction(removeAtoms, newAtoms))
     }else{

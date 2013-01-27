@@ -47,6 +47,11 @@ trait Cham extends RuleFactory{
    */
   def removeAtom(atom: Atom)
 
+  /**
+   * Removes all the atoms of the solution
+   */
+  def removeAll()
+
   def LocalRel:Relation = this.LocalRelation("LocalRelation"+UUID.randomUUID().toString)
   def LocalRel(name:String):Relation = this.LocalRelation(name)
 

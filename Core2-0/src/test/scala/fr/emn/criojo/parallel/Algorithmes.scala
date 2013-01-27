@@ -4,9 +4,11 @@ import org.junit.Test
 import org.junit.Assert._
 import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef, WrapScalaInt}
 import fr.emn.criojo.examples.LocalGateway
-import fr.emn.criojo.core.model.{WrappedValue, Atom}
+import fr.emn.criojo.core.model.{WrappedValue, Atom, $Sol}
 import fr.emn.criojo.util.Printer
-
+import fr.emn.criojo.core.engine.{SuchThatGuard, Guard, TrueGuard}
+import fr.emn.criojo.dsl.Molecule
+import fr.emn.criojo.core.model.Expression
 
 /*
 * Created by IntelliJ IDEA.
@@ -121,28 +123,58 @@ class Algorithmes extends ScalaTypesPredef{
   }
 
   @Test
-  def maxTest() {
+  def naiveMaxTest() {
     var result:Int = 0
 
-    val fCham = new Agent{
+    val fCham = new Agent with Printer{
       val V = LocalRel
-      val Max = NativeRel {
-        case WrapScalaInt(n)::_ => result = n
+      val Max = LocalRel
+      val _max = NativeRel {
+        case WrapScalaInt(n)::_ => println(n);result = n
         case _ =>
       }
 
       val x, y = Var[ScalaInt]
 
-
       rules(
-        (V(x) & V(y))  --> {x <= y} ?: (V(y) & Max(y))
+        !V(x) --> (Abs(Max(x)) && Not(V(y) -> {y > x})) ?: (Max(x) & _max(x))
       )
+
     }
     fCham.start()
 
-    fCham ! List(fCham.V(2),fCham.V(2),fCham.V(3),fCham.V(4),fCham.V(4))
+    fCham ! List(fCham.V(2),fCham.V(4),fCham.V(4),fCham.V(2),fCham.V(3))
 
-    Thread.sleep(500)
+    Thread.sleep(1000)
+    assertEquals(4, result)
+  }
+
+  @Test
+  def optiMaxTest() {
+    var result:Int = 0
+
+    val fCham = new Agent with Printer{
+      val V,_1, _2 = LocalRel
+      val Max = LocalRel
+      val _max = NativeRel {
+        case WrapScalaInt(n)::_ => println(n);result = n
+        case _ =>
+      }
+
+      val x, y = Var[ScalaInt]
+
+      rules(
+        V(x) --> Abs(_1(x)) ?: (_1(x) & Max(x)),
+        (Max(x) & Max(y)) --> {x <= y} ?: (V(x) & Max(y)),
+        Max(x) --> Not(Max(y) -> {x !<=> y}) ?: (V(x) & _max(x))
+      )
+
+    }
+    fCham.start()
+
+    fCham ! List(fCham.V(2),fCham.V(4),fCham.V(4),fCham.V(2),fCham.V(3))
+
+    Thread.sleep(1000)
     assertEquals(4, result)
   }
 
@@ -222,5 +254,6 @@ class Algorithmes extends ScalaTypesPredef{
     assertTrue(atomList.forall {p => p._1 == p._2})
 
   }
+
 }
 

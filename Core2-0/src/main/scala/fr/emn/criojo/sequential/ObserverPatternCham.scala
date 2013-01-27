@@ -48,6 +48,10 @@ trait ObserverPatternCham extends Cham{
     notifyRelationObservers(atom)
   }
 
+  def removeAll(){
+    //TODO Implement removeAll in the sequential version
+  }
+
   private def formatLocation(chamLoc:String, channelName:String):ChannelLocation = {
     new ChannelLocation{
       val url = chamLoc + "." + channelName

@@ -56,7 +56,12 @@ trait Rule{
   def execute: Option[Reaction]
 
   override def equals(that: Any) = {
-    def innerEq2(a1:Atom, a2:Atom):Boolean = a1.relation.name == a2.relation.name && a1.terms == a2.terms
+    def innerEq2(a1:Atom, a2:Atom):Boolean = {
+      if (a1 == $Sol || a2 == $Sol)
+        a1 == a2
+      else
+        a1.relation.name == a2.relation.name && a1.terms == a2.terms
+    }
     def innerEq(lst1:List[Atom], lst2:List[Atom]) =  lst1.forall(a1=>lst2.exists(a2 => innerEq2(a1,a2)))
 
     that match{

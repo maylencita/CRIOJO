@@ -22,6 +22,7 @@ object Atom{
 
   def apply(rn:String, lst:Term*):Atom = new Atom(LocalRelation(rn), lst.toList)
   def apply(rel:Relation, lst:Term*):Atom = new Atom(rel, lst.toList)
+
 }
 
 /**

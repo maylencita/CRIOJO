@@ -13,6 +13,9 @@ import org.junit._
 import Assert._
 import fr.emn.criojo.expression.scala.{ScalaInt, ScalaTypesPredef}
 import fr.emn.criojo.testing.TestCham
+import fr.emn.criojo.util.Printer
+import fr.emn.criojo.core.model.{Expression, Atom, $Sol}
+import fr.emn.criojo.core.engine.{SuchThatGuard, Guard}
 
 class GuardsTest extends ScalaTypesPredef{
 
@@ -236,4 +239,26 @@ class GuardsTest extends ScalaTypesPredef{
     Thread.sleep(500)
     assertEquals("123456",finalword)
   }
+
+  @Test
+  def guardWithSubguard(){
+    val agent = new Agent() with Printer{
+      val L, Timer, R = LocalRel
+      val x,y = Var[ScalaInt]
+
+      rules(
+        (L(x) & $Sol) --> (Timer(y) -> {y > x}) ?: Println("Final value: $1", x),
+        Timer(x) --> (Timer(x+1) & Println("Timer: $1", x))
+      )
+
+    }
+
+    agent.start()
+
+    agent ! List(agent.L(22), agent.Timer(0))
+
+    Thread.sleep(1000)
+
+  }
+
 }

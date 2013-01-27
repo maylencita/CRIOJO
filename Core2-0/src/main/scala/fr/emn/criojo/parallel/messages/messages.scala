@@ -12,6 +12,7 @@ import fr.emn.criojo.core.model.Atom
 package object messages {
   case class Put(a:Atom) //Introuduces a new atom to the reaction
   case class Remove(a:Atom) //Removes an atom from the reaction
+  object RemoveAll //Removes all the atoms from the solution
   case class Ready(rule:ParRule)
   object Ok
   object Fire //To ask if a reaction is ready to fire

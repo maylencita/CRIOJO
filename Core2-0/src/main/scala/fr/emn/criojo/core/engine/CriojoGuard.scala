@@ -21,7 +21,7 @@ abstract class CriojoGuard extends Guard with RelationObserver{
    * where m is a set of atoms.
    * @return the sub-guard in m --> '''g'''
    */
-  def subGuard:CriojoGuard
+  def subGuard:Guard
 
 //  /**
 //   * The set of valuations that satisfy this guard
@@ -78,39 +78,46 @@ object FalseGuard extends CriojoGuard{
   def receiveUpdate(atom: Atom) {}
 }
 
-case class PresenceGuard(atoms:List[Atom]) extends CriojoGuard {
-
+case class SuchThatGuard(atoms:List[Atom], subGuard:Guard) extends CriojoGuard{
   val empty = false
-
-  val subGuard = TrueGuard
 
   private val stateMachine = new StateMachine(atoms.toArray)
 
   private val finalState = stateMachine.states(stateMachine.size - 1)
 
+  def eval(valuation: Valuation) = {
+    finalState.hasExecution(pe => pe.valuation.hasExtension(valuation) &&
+      subGuard.eval(pe.valuation.union(valuation)))
+  }
+
+  /**
+   * Returns the list of ids of observed relations
+   * @return
+   */
   def observed = atoms.map(a => a.relation).toSet
 
-  def receiveUpdate(atom: Atom){
+  /**
+   * Notifies the guard of the addition of destruction of an Atom
+   * @param atom
+   */
+  def receiveUpdate(atom: Atom) {
     if (atom.isActive){
       stateMachine.addAtom(atom)
     }else{
       stateMachine.removeAtom(atom)
     }
+
+    //Update subguard also
+    subGuard match{
+      case cg:CriojoGuard => cg.receiveUpdate(atom)
+      case _ => //Nothing
+    }
   }
 
-//  override def valuations:ValuationList =
-//    new ValuationList(finalState.executions.map{ex =>
-//      if(ex.valuation.isEmpty)
-//        NormalForm(TopValuation)
-//      else
-//        NormalForm(ex.valuation)
-//    }.toList)
+  override def toString = atoms.mkString(",") + "->" + subGuard
+}
 
-  def eval(valuation: Valuation) = {
-    finalState.hasExecution(pe => pe.valuation.hasExtension(valuation) &&
-      subGuard.eval(pe.valuation))
-  }
-
+case class PresenceGuard(alst:List[Atom]) extends SuchThatGuard(alst, TrueGuard) {
   override def toString= atoms.mkString("<",",",">")
 }
 
@@ -120,16 +127,25 @@ case class AbsGuard(override val atoms:List[Atom]) extends PresenceGuard(atoms){
   override def toString = atoms.mkString("Abs(", ",", ")")
 }
 
-case class NotGuard(guard:CriojoGuard) extends CriojoGuard{
+case class NotGuard(guard:Guard) extends CriojoGuard{
 
   val empty = false
   val subGuard = TrueGuard
 
-  def observed = guard.observed
+  def observed = guard match{
+    case cg:CriojoGuard => cg.observed
+    case _ => Set[Relation]()
+  }
 
 //  override def valuations = guard.valuations.not
 
-  def receiveUpdate(atom: Atom){guard.receiveUpdate(atom)}
+  def receiveUpdate(atom: Atom){
+    guard match{
+      case cg:CriojoGuard => cg.receiveUpdate(atom)
+      case _ =>
+    }
+  }
+
   def eval(valuation:Valuation) = !guard.eval(valuation)
 }
 

@@ -1,7 +1,7 @@
 package fr.emn.criojo.core.model
 
 import relation.Relation
-
+import fr.emn.criojo.core.ProhibitedOperation
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,6 +9,24 @@ import relation.Relation
  * Date: Jun 9, 2010
  * Time: 5:47:03 PM
  */
+
+/**
+ * An object to make reference to the rest of the solution.
+ * Serves to reset rules when executed
+ */
+object $Sol extends Atom{
+  def relation = throw new ProhibitedOperation("relation of Solution variable")
+
+  def terms = throw new ProhibitedOperation("terms of Solution variable")
+
+  override def applyValuation(valuation:Valuation):Atom = this
+
+  override def correspondsTo(that: Atom) = that == $Sol
+
+  override def getValuation(that: Atom) = Valuation()
+
+  override def toString = "$Sol"
+}
 
 /**
  * The Atom class

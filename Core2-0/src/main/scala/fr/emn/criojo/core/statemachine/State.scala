@@ -43,6 +43,11 @@ class State(val id:Int){
     qExecutions.dequeueAll(ex => ex.containsAtom(atom))
   }
 
+  def removeExecutions(){
+    // todo: check if dequeueFirst fix the C() problem, instead of dequeueAll
+    qExecutions.dequeueAll(ex => true)
+  }
+
   def stateZero = (id == 0)
 
   override def equals(that:Any) = that match{
