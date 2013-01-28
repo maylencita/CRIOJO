@@ -161,12 +161,12 @@ class Algorithmes extends ScalaTypesPredef{
         case _ =>
       }
 
-      val x, y = Var[ScalaInt]
+      val x, y, z = Var[ScalaInt]
 
       rules(
         V(x) --> Abs(_1(x)) ?: (_1(x) & Max(x)),
         (Max(x) & Max(y)) --> {x <= y} ?: (V(x) & Max(y)),
-        Max(x) --> Not(Max(y) -> {x !<=> y}) ?: (V(x) & _max(x))
+        Max(x) --> Abs(Max(y),Max(z)) ?: (V(x) & _max(x))
       )
 
     }
