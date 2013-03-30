@@ -42,3 +42,6 @@ local.properties
 # Maven target directory and .class files
 target/**
 *.class
+
+# MacOS stupid file 
+.DS_Store
