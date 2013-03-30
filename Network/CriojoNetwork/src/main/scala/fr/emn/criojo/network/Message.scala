@@ -44,15 +44,15 @@ case class MessageArgsParser(var e:List[Term]) extends JavaTokenParsers {
 
   def args: Parser[List[Term]] = repsep(exp,",") ^^ { case exps => exps.foldLeft(List[Term]()){ (v,e) => v:::List(e) } }
 
-  def exp: Parser[Term] = (
+  def exp: Parser[Expression] = (
     "true" ^^ { case s => WrapScalaBoolean(s.toBoolean) }
   | "false" ^^ { case s => WrapScalaBoolean(s.toBoolean) }
   | fpt ^^ { case s => WrapScalaInt(s.toFloat.toInt) }
-  | str ^^ { case s => WrapScalaString(s) }
   | dec ^^ { case s => WrapScalaInt(s.toFloat.toInt) }
-  | url ^^ { case s:List[String] => new ChannelLocation(s.mkString("."), s.last) }
-  | id ^^ { case s => WrapScalaString(s) }
   | num ^^ { case s => WrapScalaInt(s.toDouble.toInt) }
+  | url ^^ { case s:List[String] => ChannelLocation(s.mkString("."), s.last) }
+  | id ^^ { case s => WrapScalaString(s) }
+  | str ^^ { case s => WrapScalaString(s) }
   )
 
 }
@@ -97,7 +97,7 @@ class Message {
   def atom:Option[Atom] = (channel.get, args.get) match {
     case (sChannel:String, sArgs:String) =>
       Some(
-        new AdhocChannel(sChannel, new ChannelLocation(to.getOrElse(""),sChannel)).newAtom(
+        new AdhocChannel(sChannel, ChannelLocation(to.getOrElse(""),sChannel)).newAtom(
           Message.parseArgs(sArgs))
       )
 //      Some(Atom.apply(LocalRelation(sChanel), Message.parseArgs(sArgs)))

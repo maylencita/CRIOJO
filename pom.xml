@@ -6,7 +6,7 @@
 
   <groupId>fr.emn.criojo</groupId>
   <artifactId>CRIOJO</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>2.0-SNAPSHOT</version>
   <inceptionYear>2010</inceptionYear>
 
   <packaging>pom</packaging>
@@ -18,10 +18,8 @@
         <sonar.language>scala</sonar.language>
     </properties>
 
-    <modules>
-    <module>Core</module>
-    <module>Core2-0</module>
-    <module>CriojoCompiler</module>
+  <modules>
+    <module>criojo-core</module>
     <module>Network</module>
   </modules>
 
