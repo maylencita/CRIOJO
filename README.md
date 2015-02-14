@@ -1,4 +1,4 @@
-=Thesis Abstract
+#Thesis Abstract
 
 With the emergence of cloud computing and mobile applications, 
 it is possible to find a web service for almost everything. 
@@ -29,3 +29,5 @@ dedicated to service-oriented computing.
 The consequence of adopting this approach would be an improvement in the interoperability of services 
 and orchestration languages, thus easing the development of composite services.
 The high level of abstraction of Criojo could allow developers to write very concise orchestrations since message exchanges are represented in a natural and intuitive way.
+
+# Presentation
